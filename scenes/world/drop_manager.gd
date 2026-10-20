@@ -16,9 +16,13 @@ func _ready() -> void:
 	Events.wave_ended.connect(_on_wave_ended)
 
 
-func _on_enemy_killed(data: EnemyData, position: Vector2) -> void:
+func _on_enemy_killed(data: EnemyData, position: Vector2, info: DamageInfo) -> void:
 	var rng: RandomNumberGenerator = GameState.rng
-	_spawn_sparks(data.sparks, position)
+	var sparks: int = data.sparks
+	# Funkensieb: Chance auf +1 Funke, wenn die Waffe den Kill landet
+	if info != null and info.spark_on_kill_chance > 0.0 and rng.randf() < info.spark_on_kill_chance:
+		sparks += 1
+	_spawn_sparks(sparks, position)
 	if data.guaranteed_crate:
 		_spawn_crate(position)
 	elif rng.randf() < Economy.battery_chance(DROPS.consumable_base_chance, _luck()):

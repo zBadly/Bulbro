@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scenes/world/arena.gd" id="1_arena"]
 [ext_resource type="Resource" path="res://data/config/arena_config.tres" id="2_config"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" path="res://scenes/ui/crate_screen.gd" id="18_crate"]
 [ext_resource type="Script" path="res://scenes/ui/level_up_screen.gd" id="19_level_up"]
 [ext_resource type="Script" path="res://scenes/ui/shop_screen.gd" id="20_shop"]
+[ext_resource type="Script" path="res://scenes/world/effect_system.gd" id="21_effects"]
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_arena")
@@ -37,6 +38,12 @@ region_enabled = true
 y_sort_enabled = true
 
 [node name="Player" parent="Entities" instance=ExtResource("4_player")]
+
+[node name="Fx" type="Node2D" parent="." groups=["fx_layer"]]
+z_index = 20
+
+[node name="EffectSystem" type="Node" parent="."]
+script = ExtResource("21_effects")
 
 [node name="WaveManager" type="Node" parent="."]
 script = ExtResource("6_waves")

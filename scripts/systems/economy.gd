@@ -68,6 +68,6 @@ static func reroll_price(wave: int, rerolls_done: int, increment_factor: float, 
 	return maxi(1, roundi(price))
 
 
-## Funken beim Recyceln.
-static func recycle_value(price: int, share: float) -> int:
-	return maxi(1, floori(price * share))
+## Funken beim Recyceln, optional mit Bonus in % (Recyclingschild).
+static func recycle_value(price: int, share: float, bonus_pct: float = 0.0) -> int:
+	return maxi(1, floori(price * share * maxf(0.0, 1.0 + bonus_pct / PERCENT)))

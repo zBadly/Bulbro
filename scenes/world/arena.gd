@@ -19,6 +19,7 @@ const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 @onready var player: Player = $Entities/Player
 @onready var wave_manager: WaveManager = $WaveManager
 @onready var _drop_manager: DropManager = $DropManager
+@onready var _effect_system: EffectSystem = $EffectSystem
 @onready var _neutral_spawner: NeutralSpawner = $NeutralSpawner
 @onready var _hud: Hud = $Hud
 @onready var _game_over: GameOverScreen = $GameOver
@@ -64,6 +65,7 @@ func _ready() -> void:
 	for screen: FlowScreen in [_crate_screen, _level_up_screen, _shop_screen]:
 		screen.player = player
 	_drop_manager.player = player
+	_effect_system.player = player
 	_neutral_spawner.wave_manager = wave_manager
 	_neutral_spawner.player = player
 	_neutral_spawner.container = _entities

@@ -21,5 +21,13 @@ func get_modifiers() -> Array[StatModifier]:
 	return result
 
 
+## Vollständige Beschreibung (BBCode): Stat-Änderungen plus Sondereffekte.
+func get_description() -> String:
+	var lines: PackedStringArray = [TextFormat.describe_modifiers(get_modifiers())]
+	for effect: ItemEffect in effects:
+		lines.append_array(effect.describe())
+	return "\n".join(lines).strip_edges()
+
+
 func is_at_limit(owned_count: int) -> bool:
 	return limit > 0 and owned_count >= limit

@@ -25,6 +25,10 @@ func is_alive() -> bool:
 	return _alive
 
 
+func is_neutral() -> bool:
+	return true
+
+
 func take_damage(info: DamageInfo) -> void:
 	if not _alive:
 		return

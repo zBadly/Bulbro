@@ -21,6 +21,7 @@ var speed: float = 0.0
 var _alive: bool = false
 var _behavior: EnemyBehavior
 var _contact_distance: float = 0.0
+var _last_hit: DamageInfo
 
 @onready var visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -53,6 +54,7 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	damage = data.damage_for_wave(wave)
 	speed = rng.randf_range(data.speed_min, data.speed_max)
 	knockback_velocity = Vector2.ZERO
+	_last_hit = null
 	_contact_distance = data.collision_radius + player.config.collision_radius
 	_sprite.flip_h = false
 	visual.rotation = 0.0
@@ -77,6 +79,7 @@ func take_damage(info: DamageInfo) -> void:
 	if not _alive:
 		return
 	hp -= info.amount
+	_last_hit = info
 	Juice.hit_flash(_sprite)
 	Pools.spawn_damage_number(get_tree(), info.amount, info.is_crit, get_hit_position())
 	apply_knockback(info.knockback_dir * info.knockback * COMBAT.knockback_to_speed * (1.0 - data.knockback_resistance))
@@ -89,7 +92,7 @@ func die() -> void:
 	if not _alive:
 		return
 	_alive = false
-	Events.enemy_killed.emit(data, global_position)
+	Events.enemy_killed.emit(data, global_position, _last_hit)
 	died.emit(self)
 	Juice.squash_pop(visual).finished.connect(_release, CONNECT_ONE_SHOT)
 

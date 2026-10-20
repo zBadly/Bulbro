@@ -24,6 +24,8 @@ var _invulnerable_left: float = 0.0
 var _elapsed: float = 0.0
 var _last_lifesteal_time: float = -INF
 var _known_max_hp: float = 0.0
+## Registrierte Trigger-Effekte von Items und Charakter (vom EffectSystem aufgerufen).
+var triggers: Array[TriggerEntry] = []
 
 @onready var _visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -108,6 +110,10 @@ func take_hit(raw_damage: float) -> int:
 func apply_item(item: ItemData) -> void:
 	for effect: ItemEffect in item.effects:
 		effect.apply(self)
+
+
+func add_trigger(effect: ItemEffect) -> void:
+	triggers.append(TriggerEntry.create(effect))
 
 
 func heal(amount: float) -> void:

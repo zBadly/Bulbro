@@ -8,6 +8,11 @@ var is_crit: bool = false
 var knockback: float = 0.0
 var knockback_dir: Vector2 = Vector2.ZERO
 var source: Node
+## Zusatzwirkungen des Treffers (von der Waffe gesetzt).
+var burn_damage: float = 0.0
+var burn_ticks: int = 0
+var heal_on_hit_chance: float = 0.0
+var spark_on_kill_chance: float = 0.0
 
 
 static func create(p_amount: int, p_is_crit: bool, p_knockback: float, p_source: Node) -> DamageInfo:

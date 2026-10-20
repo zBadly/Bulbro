@@ -18,13 +18,13 @@ func open() -> void:
 		return
 	var wave: int = GameState.current_wave
 	var price: int = Economy.inflated_price(_item.price, wave, player.stats.get_stat(Stats.ITEM_PRICE_PCT))
-	_recycle_value = Economy.recycle_value(price, SHOP.recycle_share)
+	_recycle_value = Economy.recycle_value(price, SHOP.recycle_share, player.stats.get_stat(Stats.RECYCLE_PCT))
 
 	_add_title(tr("CRATE_TITLE"))
 	if GameState.pending_crates > 1:
 		_add_title(tr("CRATE_REMAINING") % (GameState.pending_crates - 1), SUBTITLE_SIZE)
 	var card: OfferCard = OfferCard.new()
-	card.configure(_item.icon, tr(_item.name_key), _item.tier, TextFormat.describe_modifiers(_item.get_modifiers()))
+	card.configure(_item.icon, tr(_item.name_key), _item.tier, _item.get_description())
 	var take: Button = card.add_action(tr("TAKE"), _on_take)
 	card.add_action(tr("RECYCLE") % _recycle_value, _on_recycle)
 	_add_row().add_child(card)

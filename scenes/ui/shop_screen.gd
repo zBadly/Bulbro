@@ -80,7 +80,7 @@ func _offer_card(index: int, offer: ShopOffer) -> OfferCard:
 			TextFormat.describe_weapon(offer.weapon, offer.tier))
 	else:
 		card.configure(offer.item.icon, tr(offer.item.name_key), offer.tier,
-			TextFormat.describe_modifiers(offer.item.get_modifiers()))
+			offer.item.get_description())
 		card.preview_modifiers = offer.get_modifiers()
 	card.focused.connect(func(c: OfferCard) -> void: _stat_panel.refresh(c.preview_modifiers))
 	if offer.sold:
@@ -180,7 +180,7 @@ func _build_preview(parent: VBoxContainer) -> void:
 
 func _weapon_recycle_value(weapon: Weapon) -> int:
 	var price: int = Economy.inflated_price(weapon.get_tier_stats().price, _ctx.wave, _ctx.item_price_pct)
-	return Economy.recycle_value(price, CONFIG.recycle_share)
+	return Economy.recycle_value(price, CONFIG.recycle_share, player.stats.get_stat(Stats.RECYCLE_PCT))
 
 
 func _refresh_context() -> void:

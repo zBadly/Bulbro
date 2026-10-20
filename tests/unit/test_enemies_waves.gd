@@ -31,7 +31,7 @@ func after_each() -> void:
 	Events.enemy_killed.disconnect(_on_killed)
 
 
-func _on_killed(data: EnemyData, _pos: Vector2) -> void:
+func _on_killed(data: EnemyData, _pos: Vector2, _info: DamageInfo) -> void:
 	_killed.append(data)
 
 

@@ -19,6 +19,11 @@ func is_alive() -> bool:
 	return true
 
 
+## Neutrale Ziele (Leuchtkristalle) werden von Item-Effekten wie Blitzen nicht gewählt.
+func is_neutral() -> bool:
+	return false
+
+
 func get_hit_position() -> Vector2:
 	return global_position + Vector2(0.0, -hit_height)
 

@@ -128,3 +128,13 @@ WEAPON_KNOCKBACK,Rückstoß: %s,Knockback: %s
 WEAPON_PIERCING,Durchschlag: %d,Piercing: %d
 WEAPON_BOUNCES,Abprall: %d,Bounces: %d
 WEAPON_CLASSES,Klassen: %s,Classes: %s
+STAT_RECYCLE_PCT,Recycling-Bonus %,Recycle Bonus %
+ACTION_DAMAGE_RANDOM,%s Schaden an %d zufälligen Gegnern,%s damage to %d random enemies
+ACTION_EXPLOSION,Explosion für %s Schaden,explosion for %s damage
+ACTION_SPAWN_PICKUP_0,erzeugt einen Funken,spawns a spark
+ACTION_SPAWN_PICKUP_1,erzeugt eine Batterie,spawns a battery
+ACTION_SPAWN_PICKUP_2,erzeugt einen Karton,spawns a crate
+TRIGGER_ON_KILL,%d %% Chance bei Gegnertod: %s,%d %% chance on kill: %s
+TRIGGER_ON_HIT,%d %% Chance bei erlittenem Treffer: %s,%d %% chance when hit: %s
+TRIGGER_ON_SPARK,%d %% Chance beim Funken-Aufheben: %s,%d %% chance on spark pickup: %s
+TRIGGER_TIMED,Alle %s s: %s,Every %s s: %s

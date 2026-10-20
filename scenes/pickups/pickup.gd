@@ -68,6 +68,7 @@ func collect() -> void:
 	match kind:
 		Kind.SPARK:
 			GameState.collect_spark(value, _player.stats.get_stat(Stats.XP_GAIN_PCT))
+			Events.spark_collected.emit()
 		Kind.BATTERY:
 			_player.heal(Economy.consumable_heal(DROPS.battery_heal, _player.stats.get_stat(Stats.CONSUMABLE_HEAL)))
 		Kind.CRATE:
