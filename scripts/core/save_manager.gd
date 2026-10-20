@@ -2,12 +2,16 @@ extends Node
 ## Speichert dauerhaften Fortschritt (Freischaltungen, Optionen) als ConfigFile (Autoload "SaveManager").
 
 const SAVE_PATH: String = "user://save.cfg"
+const OPTIONS_SECTION: String = "options"
+const LOCALE_KEY: String = "locale"
+const DEFAULT_LOCALE: String = "de"
 
 var _config: ConfigFile = ConfigFile.new()
 
 
 func _ready() -> void:
 	load_game()
+	TranslationServer.set_locale(get_value(OPTIONS_SECTION, LOCALE_KEY, DEFAULT_LOCALE))
 
 
 func load_game() -> void:

@@ -13,3 +13,5 @@ signal wave_started(wave_number: int)
 signal wave_ended(wave_number: int)
 @warning_ignore("unused_signal")
 signal pause_toggled(is_paused: bool)
+@warning_ignore("unused_signal")
+signal player_died

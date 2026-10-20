@@ -1,0 +1,139 @@
+class_name Player
+extends CharacterBody2D
+## Spielfigur Bulbro: Bewegung, HP, Regeneration, Trefferablauf und Lebensraub.
+## Trefferablauf (GDD 4): Ausweichwurf -> Rüstungsreduktion -> HP abziehen -> Unverwundbarkeit.
+
+signal hp_changed(current: float, maximum: float)
+signal damaged(amount: int)
+signal dodged
+signal died
+
+const GROUP: StringName = &"player"
+
+@export var config: PlayerConfig
+
+var stats: StatSystem
+var current_hp: float = 0.0
+var is_dead: bool = false
+## Bewegungsgrenze; leeres Rect = keine Begrenzung. Wird von der Arena gesetzt.
+var arena_bounds: Rect2 = Rect2()
+## Zufallsquelle für Ausweichen und Lebensraub. Standard: der Run-RNG mit Seed.
+var rng: RandomNumberGenerator
+
+var _invulnerable_left: float = 0.0
+var _elapsed: float = 0.0
+var _last_lifesteal_time: float = -INF
+var _known_max_hp: float = 0.0
+
+@onready var _visual: Node2D = $Visual
+@onready var _sprite: Sprite2D = $Visual/Sprite
+@onready var _light: PointLight2D = $Light
+
+
+func _ready() -> void:
+	add_to_group(GROUP)
+	if rng == null:
+		rng = GameState.rng
+	stats = StatSystem.new(config.base_stats)
+	stats.stats_changed.connect(_on_stats_changed)
+	_known_max_hp = get_max_hp()
+	current_hp = _known_max_hp
+	_light.color = config.light_color
+	_light.energy = config.light_energy
+	_light.texture_scale = config.light_texture_scale
+	Juice.idle_bob(_visual)
+	hp_changed.emit(current_hp, _known_max_hp)
+
+
+func _physics_process(delta: float) -> void:
+	_elapsed += delta
+	if _invulnerable_left > 0.0:
+		_invulnerable_left -= delta
+	if is_dead:
+		return
+	var direction: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	velocity = direction * get_move_speed()
+	move_and_slide()
+	_clamp_to_arena()
+	Juice.walk_tilt(_visual, velocity)
+	_regenerate(delta)
+
+
+func get_max_hp() -> float:
+	return CombatMath.effective_max_hp(stats.get_stat(Stats.MAX_HP))
+
+
+func get_move_speed() -> float:
+	return CombatMath.move_speed(config.base_move_speed, stats.get_stat(Stats.SPEED))
+
+
+func is_invulnerable() -> bool:
+	return _invulnerable_left > 0.0
+
+
+## Wendet einen gegnerischen Treffer an. Gibt den tatsächlich erlittenen Schaden zurück (0 = ausgewichen oder unverwundbar).
+func take_hit(raw_damage: float) -> int:
+	if is_dead or is_invulnerable():
+		return 0
+	var amount: int = CombatMath.resolve_incoming_damage(
+		raw_damage, stats.get_stat(Stats.ARMOR), stats.get_stat(Stats.DODGE), config.dodge_cap, rng.randf())
+	if amount == 0:
+		dodged.emit()
+		return 0
+	current_hp -= amount
+	_invulnerable_left = config.invulnerability_time
+	Juice.hit_flash(_sprite)
+	damaged.emit(amount)
+	hp_changed.emit(current_hp, get_max_hp())
+	if current_hp <= 0.0:
+		_die()
+	return amount
+
+
+func heal(amount: float) -> void:
+	if is_dead or amount <= 0.0:
+		return
+	current_hp = minf(current_hp + amount, get_max_hp())
+	hp_changed.emit(current_hp, get_max_hp())
+
+
+## Von Waffen bei jedem Treffer aufgerufen. Gibt true zurück, wenn Lebensraub geheilt hat.
+func try_lifesteal() -> bool:
+	if not CombatMath.lifesteal_ready(_elapsed, _last_lifesteal_time):
+		return false
+	if rng.randf() >= CombatMath.lifesteal_chance(stats.get_stat(Stats.LIFESTEAL)):
+		return false
+	_last_lifesteal_time = _elapsed
+	heal(1.0)
+	return true
+
+
+func _regenerate(delta: float) -> void:
+	var per_second: float = CombatMath.hp_regen_per_second(stats.get_stat(Stats.HP_REGEN))
+	if per_second > 0.0 and current_hp < get_max_hp():
+		heal(per_second * delta)
+
+
+func _clamp_to_arena() -> void:
+	if not arena_bounds.has_area():
+		return
+	var margin: Vector2 = Vector2.ONE * config.collision_radius
+	global_position = global_position.clamp(arena_bounds.position + margin, arena_bounds.end - margin)
+
+
+func _die() -> void:
+	is_dead = true
+	current_hp = 0.0
+	died.emit()
+	Events.player_died.emit()
+	Juice.squash_pop(_visual)
+
+
+## Steigt Max HP, steigen die aktuellen HP um denselben Betrag; sinkt es, werden sie nur gekappt.
+func _on_stats_changed() -> void:
+	var new_max: float = get_max_hp()
+	if new_max > _known_max_hp:
+		current_hp += new_max - _known_max_hp
+	current_hp = minf(current_hp, new_max)
+	_known_max_hp = new_max
+	hp_changed.emit(current_hp, new_max)

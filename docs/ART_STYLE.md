@@ -93,6 +93,30 @@ Ankerpunkt: Figuren werden in Godot mit `offset.y = -Höhe/2` platziert, damit S
 | Spawn | Rotes X pulsiert 1 s, dann Pop-in mit Überschwingen |
 | Buff | `outline.gdshader` mit roter Kontur |
 
+## Gegner unterscheidbar machen
+
+Alle Gegner bleiben im Violett/Indigo-Grundton, damit sie sich klar vom warmen Spieler abheben. Unterschieden werden sie über drei Kanäle, die sich gegenseitig verstärken. Eine Rolle muss auch ohne Farbe allein an der Silhouette erkennbar sein (Farbenblindheit).
+
+| Kanal | Regel |
+|---|---|
+| Akzentfarbe = Verhalten | Ein leuchtendes Detail pro Gegner verrät, was er tut (Tabelle unten). |
+| Silhouette = Bewegung | Nahkämpfer rund und tropfenförmig, Sprinter mit Hörnern/Panzer, Flieger mit Flügeln, Schützen mit Rohr/Öffnung, Unterstützer mit Antenne/Heiligenschein. |
+| Größe = Bedrohung | Schwache Massengegner 40–48 px, Standard 56 px, robuste 64 px, Elites 120+ px. |
+| Augen = Charakter | Rund und neugierig (harmlos), schmal mit Brauen (Schütze), leuchtend ohne Pupille (gefährlich/Elite). |
+
+| Rolle | Akzent | Beispiel |
+|---|---|---|
+| Nahkampf, verfolgt | keiner (reines Violett) | Schattenling, Helmmotte (grauer Helm) |
+| Schwarm/schnell | helles Lavendel `#A98BDB` | Mottenschwarm |
+| Sprint/Ansturm | Horn/Panzer in Türkis `#4FC1B5` | Rammkäfer, Schattenklotz |
+| Fernkampf | glühendes Orange `#FF8C42` an Rohr/Mund | Rußspucker (Schlund glüht), Rußschütze |
+| Heilen | Grün `#7ED957` mit Glow | Flackerer |
+| Buffen | Rot `#E74C3C` (passend zur Buff-Kontur) | Verstärker |
+| Beute/Fliehen | Gold `#FFD43B` (trägt Funken) | Funkendieb |
+| Wird schneller | Magenta `#E056A0`, Streifen | Hetzer |
+
+Die Projektile der Fernkämpfer übernehmen deren Akzentfarbe, damit der Spieler sieht, woher die Gefahr kommt.
+
 ## Do's
 
 - Runde, weiche Silhouetten; große Augen; klare Lesbarkeit bei 1× Zoom.

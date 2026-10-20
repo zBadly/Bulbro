@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ArenaConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/arena_config.gd" id="1_oapwl"]
+
+[resource]
+script = ExtResource("1_oapwl")
+size = Vector2(2000, 1300)
+border_width = 10.0
+border_color = Color(0.36078432, 0.3882353, 0.47058824, 1)
+camera_smoothing_speed = 6.0
+camera_margin = 150.0
+darkness_color = Color(0.6392157, 0.6392157, 0.7490196, 1)

@@ -1,0 +1,46 @@
+keys,de,en
+STAT_MAX_HP,Max. HP,Max HP
+STAT_HP_REGEN,HP-Regeneration,HP Regeneration
+STAT_LIFESTEAL,Lebensraub,Life Steal
+STAT_DAMAGE_PCT,Schaden %,Damage %
+STAT_MELEE_DMG,Nah,Melee
+STAT_RANGED_DMG,Fern,Ranged
+STAT_ELEMENTAL_DMG,Strom,Elemental
+STAT_ATTACK_SPEED,Angriffstempo,Attack Speed
+STAT_CRIT_CHANCE,Krit-Chance,Crit Chance
+STAT_ENGINEERING,Technik,Engineering
+STAT_RANGE,Reichweite,Range
+STAT_ARMOR,Rüstung,Armor
+STAT_DODGE,Ausweichen,Dodge
+STAT_SPEED,Tempo,Speed
+STAT_LUCK,Glück,Luck
+STAT_HARVESTING,Aufladung,Harvesting
+STAT_XP_GAIN_PCT,XP-Gewinn %,XP Gain %
+STAT_PICKUP_RANGE_PCT,Aufsammelradius %,Pickup Range %
+STAT_ITEM_PRICE_PCT,Item-Preise %,Item Price %
+STAT_EXPLOSION_DMG_PCT,Explosionsschaden %,Explosion Damage %
+STAT_EXPLOSION_SIZE_PCT,Explosionsgröße %,Explosion Size %
+STAT_BOUNCES,Abpraller,Bounces
+STAT_PIERCING,Durchschlag,Piercing
+STAT_PIERCING_DMG_PCT,Durchschlagschaden %,Piercing Damage %
+STAT_BOSS_DMG_PCT,Bossschaden %,Boss Damage %
+STAT_STRUCTURE_ATTACK_SPEED_PCT,Struktur-Angriffstempo %,Structure Attack Speed %
+STAT_BURN_SPEED_PCT,Brandtempo %,Burn Speed %
+STAT_BURN_SPREAD,Brandausbreitung,Burn Spread
+STAT_KNOCKBACK,Rückstoß,Knockback
+STAT_DOUBLE_SPARK_CHANCE,Doppelte Funken %,Double Spark Chance %
+STAT_FREE_REROLLS,Gratis-Rerolls,Free Rerolls
+STAT_CRYSTALS,Leuchtkristalle,Crystals
+STAT_ENEMIES_PCT,Gegner %,Enemies %
+STAT_ENEMY_SPEED_PCT,Gegnertempo %,Enemy Speed %
+STAT_REROLL_PRICE_PCT,Reroll-Preis %,Reroll Price %
+STAT_CONSUMABLE_HEAL,Heilung durch Batterien,Consumable Heal
+DEBUG_TITLE,Debug (F3),Debug (F3)
+DEBUG_HP,HP,HP
+DEBUG_DERIVED,Abgeleitet,Derived
+DEBUG_REGEN_PER_SEC,Regen/s,Regen/s
+DEBUG_DODGE_CHANCE,Ausweichchance,Dodge chance
+DEBUG_ARMOR_REDUCTION,Schadensreduktion,Damage reduction
+DEBUG_MOVE_SPEED,Tempo px/s,Speed px/s
+DEBUG_PRIMARY,Primär,Primary
+DEBUG_SECONDARY,Sekundär,Secondary
