@@ -12,6 +12,30 @@ const LIGHTNING_JITTER: float = 14.0
 const LIGHTNING_TIME: float = 0.18
 
 
+const JUICE_HOST_GROUP: StringName = &"juice_host"
+
+
+## Partikel-Effekt (siehe ParticleFx.Kind) an einer Position, optional in eine Richtung.
+static func particles(tree: SceneTree, kind: int, at: Vector2, direction: Vector2 = Vector2.ZERO) -> void:
+	var emitters: ParticleFx = tree.get_first_node_in_group(ParticleFx.GROUP) as ParticleFx
+	if emitters != null:
+		emitters.emit(kind, at, direction)
+
+
+## Bildschirmwackeln (Trauma 0..1, addiert sich).
+static func shake(tree: SceneTree, trauma: float) -> void:
+	var host: Node = tree.get_first_node_in_group(JUICE_HOST_GROUP)
+	if host != null:
+		host.call("add_trauma", trauma)
+
+
+## Kurzer Hit-Stop (Zeitlupe für wenige Millisekunden), z. B. bei Krits.
+static func hit_stop(tree: SceneTree) -> void:
+	var host: Node = tree.get_first_node_in_group(JUICE_HOST_GROUP)
+	if host != null:
+		host.call("hit_stop")
+
+
 static func layer(tree: SceneTree) -> Node2D:
 	return tree.get_first_node_in_group(FX_GROUP) as Node2D
 

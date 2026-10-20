@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="AudioConfig" format=3]
+
+[ext_resource type="AudioStream" path="res://audio/music/bulbro_loop.wav" id="1_uwkpo"]
+[ext_resource type="Script" path="res://scripts/data/audio_config.gd" id="2_3hf32"]
+
+[resource]
+script = ExtResource("2_3hf32")
+sfx_folder = "res://audio/sfx"
+sfx_volume_db = Dictionary[StringName, float]({
+&"boss_warning": -2.0,
+&"buy": -4.0,
+&"enemy_death": -9.0,
+&"explosion": -6.0,
+&"heal": -6.0,
+&"hit": -10.0,
+&"hit_crit": -6.0,
+&"level_up": -4.0,
+&"player_hurt": -2.0,
+&"reroll": -6.0,
+&"shoot": -12.0,
+&"spark": -12.0,
+&"swing": -10.0,
+&"ui_click": -10.0,
+&"wave_clear": -4.0
+})
+max_instances = Dictionary[StringName, int]({
+&"enemy_death": 4,
+&"explosion": 3,
+&"hit": 3,
+&"hit_crit": 2,
+&"shoot": 3,
+&"spark": 3,
+&"swing": 3
+})
+default_max_instances = 2
+player_pool_size = 24
+pitch_variation = 0.08
+spark_series_window = 0.45
+spark_pitch_step = 0.04
+spark_pitch_max = 1.8
+music = ExtResource("1_uwkpo")
+music_volume_db = -8.0

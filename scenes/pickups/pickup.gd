@@ -73,6 +73,8 @@ func collect() -> void:
 			Events.spark_collected.emit()
 		Kind.BATTERY:
 			_player.heal(Economy.consumable_heal(DROPS.battery_heal, _player.stats.get_stat(Stats.CONSUMABLE_HEAL)))
+			AudioManager.play(&"heal")
+			Fx.particles(get_tree(), ParticleFx.Kind.HEAL, _player.get_center())
 		Kind.CRATE, Kind.LEGENDARY_CRATE:
 			_player.heal(Economy.consumable_heal(DROPS.crate_heal, _player.stats.get_stat(Stats.CONSUMABLE_HEAL)))
 			GameState.add_crate(kind == Kind.LEGENDARY_CRATE)

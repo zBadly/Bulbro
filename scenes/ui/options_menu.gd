@@ -61,6 +61,8 @@ func open() -> void:
 
 	_label(grid, "OPT_LIGHTING")
 	grid.add_child(_toggle(SaveManager.LIGHTING_KEY, true, func(_on: bool) -> void: pass))
+	_label(grid, "OPT_SCREENSHAKE")
+	grid.add_child(_toggle(SaveManager.SCREENSHAKE_KEY, true, func(_on: bool) -> void: pass))
 	_label(grid, "OPT_FULLSCREEN")
 	grid.add_child(_toggle(SaveManager.FULLSCREEN_KEY, false, func(_on: bool) -> void: SaveManager.apply_options()))
 	_label(grid, "OPT_LANGUAGE")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://scenes/world/arena.gd" id="1_arena"]
 [ext_resource type="Resource" path="res://data/config/arena_config.tres" id="2_config"]
@@ -22,6 +22,9 @@
 [ext_resource type="Script" path="res://scenes/ui/shop_screen.gd" id="20_shop"]
 [ext_resource type="Script" path="res://scenes/world/effect_system.gd" id="21_effects"]
 [ext_resource type="Script" path="res://scenes/ui/debug_menu.gd" id="22_debug_menu"]
+[ext_resource type="Script" path="res://scenes/fx/particle_fx.gd" id="23_particles"]
+[ext_resource type="Script" path="res://scenes/world/juice_hooks.gd" id="24_juice"]
+[ext_resource type="PackedScene" path="res://scenes/fx/splat.tscn" id="25_splat"]
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_arena")
@@ -43,6 +46,13 @@ y_sort_enabled = true
 [node name="Fx" type="Node2D" parent="." groups=["fx_layer"]]
 z_index = 20
 
+[node name="Particles" type="Node2D" parent="."]
+z_index = 15
+script = ExtResource("23_particles")
+
+[node name="JuiceHooks" type="Node" parent="."]
+script = ExtResource("24_juice")
+
 [node name="EffectSystem" type="Node" parent="."]
 script = ExtResource("21_effects")
 
@@ -56,6 +66,11 @@ script = ExtResource("15_drops")
 script = ExtResource("16_neutral")
 
 [node name="Pools" type="Node" parent="."]
+
+[node name="Splats" type="Node" parent="Pools"]
+script = ExtResource("7_pool")
+scene = ExtResource("25_splat")
+group_name = &"pool_splats"
 
 [node name="Pickups" type="Node" parent="Pools"]
 script = ExtResource("7_pool")

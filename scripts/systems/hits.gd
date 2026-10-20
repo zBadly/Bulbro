@@ -3,6 +3,7 @@ extends RefCounted
 ## Zielauswahl und Flächenschaden für Waffen und Effekte.
 
 const PERCENT: float = 100.0
+const EXPLOSION_TRAUMA: float = 0.15
 
 
 ## Alle lebenden Ziele. Neutrale Objekte (Leuchtkristalle) nur auf Wunsch.
@@ -58,6 +59,9 @@ static func explode(tree: SceneTree, player: Player, origin: Vector2, radius: fl
 		size *= maxf(0.0, 1.0 + player.stats.get_stat(Stats.EXPLOSION_SIZE_PCT) / PERCENT)
 		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * maxf(0.0, 1.0 + player.stats.get_stat(Stats.EXPLOSION_DMG_PCT) / PERCENT)))
 	Fx.explosion(tree, origin, size)
+	Fx.particles(tree, ParticleFx.Kind.EXPLOSION, origin)
+	Fx.shake(tree, EXPLOSION_TRAUMA)
+	AudioManager.play(&"explosion")
 	var blast: DamageInfo = DamageInfo.create(amount, info.is_crit, info.knockback, info.source)
 	for target: Damageable in alive_targets(tree, true):
 		var hit_pos: Vector2 = target.get_hit_position()

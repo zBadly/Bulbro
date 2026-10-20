@@ -9,6 +9,13 @@ const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const ENEMY_CATEGORY: String = "enemies"
 const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 const STRUCTURE_SCENE: PackedScene = preload("res://scenes/structures/structure.tscn")
+const SPLAT_POOL_SIZE: int = 60
+## Screenshake (Trauma-Modell) und Hit-Stop: reine Effekt-Werte.
+const SHAKE_MAX_OFFSET: float = 14.0
+const SHAKE_DECAY: float = 1.8
+const HIT_STOP_TIME: float = 0.03
+const HIT_STOP_SCALE: float = 0.05
+const HIT_STOP_COOLDOWN: float = 0.15
 
 @export var config: ArenaConfig
 
@@ -20,6 +27,8 @@ const STRUCTURE_SCENE: PackedScene = preload("res://scenes/structures/structure.
 @onready var wave_manager: WaveManager = $WaveManager
 @onready var _drop_manager: DropManager = $DropManager
 @onready var _effect_system: EffectSystem = $EffectSystem
+@onready var _juice_hooks: JuiceHooks = $JuiceHooks
+@onready var _splat_pool: ObjectPool = $Pools/Splats
 @onready var _neutral_spawner: NeutralSpawner = $NeutralSpawner
 @onready var _hud: Hud = $Hud
 @onready var _game_over: GameOverScreen = $GameOver
@@ -35,10 +44,18 @@ const STRUCTURE_SCENE: PackedScene = preload("res://scenes/structures/structure.
 @onready var _pickup_pool: ObjectPool = $Pools/Pickups
 
 var _structures: Array[Structure] = []
+var _trauma: float = 0.0
+var _screenshake: bool = true
+var _hit_stop_ready_at: float = 0.0
 
 
 func _ready() -> void:
 	GameState.start_run()
+	add_to_group(Fx.JUICE_HOST_GROUP)
+	_screenshake = SaveManager.get_value(SaveManager.OPTIONS_SECTION, SaveManager.SCREENSHAKE_KEY, true)
+	_splat_pool.container = $Floor
+	_splat_pool.prewarm(SPLAT_POOL_SIZE)
+	AudioManager.play_music()
 	_projectile_pool.prewarm(COMBAT.projectile_pool_size)
 	_damage_number_pool.prewarm(COMBAT.damage_number_pool_size)
 	_enemy_projectile_pool.prewarm(WAVES.enemy_projectile_pool_size)
@@ -72,14 +89,41 @@ func _ready() -> void:
 	_debug_menu.wave_manager = wave_manager
 	_drop_manager.player = player
 	_effect_system.player = player
+	_juice_hooks.player = player
 	_neutral_spawner.wave_manager = wave_manager
 	_neutral_spawner.player = player
 	_neutral_spawner.container = _entities
 	wave_manager.start(player, rect, _entities)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	_camera.global_position = player.global_position
+	if _trauma > 0.0:
+		_trauma = maxf(0.0, _trauma - SHAKE_DECAY * delta)
+		var strength: float = _trauma * _trauma * SHAKE_MAX_OFFSET
+		_camera.offset = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)) * strength
+	else:
+		_camera.offset = Vector2.ZERO
+
+
+func _exit_tree() -> void:
+	Engine.time_scale = 1.0
+
+
+## Bildschirmwackeln: Trauma addiert sich, Ausschlag wächst quadratisch und klingt ab.
+func add_trauma(amount: float) -> void:
+	if _screenshake:
+		_trauma = minf(1.0, _trauma + amount)
+
+
+## Hit-Stop: Spielzeit für wenige Millisekunden fast anhalten. Mit Abklingzeit, damit Krit-Serien nicht ruckeln.
+func hit_stop() -> void:
+	var now: float = Time.get_ticks_msec() / 1000.0
+	if now < _hit_stop_ready_at or Engine.time_scale < 1.0 or get_tree().paused:
+		return
+	_hit_stop_ready_at = now + HIT_STOP_COOLDOWN
+	Engine.time_scale = HIT_STOP_SCALE
+	get_tree().create_timer(HIT_STOP_TIME, true, false, true).timeout.connect(func() -> void: Engine.time_scale = 1.0)
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -60,10 +60,12 @@ func _reroll_price() -> int:
 func _on_reroll() -> void:
 	if not GameState.spend(_reroll_price()):
 		return
+	AudioManager.play(&"reroll")
 	_rerolls += 1
 	_build.call_deferred()
 
 
 func _on_choose(mod: StatModifier) -> void:
+	AudioManager.play(&"ui_click")
 	player.stats.add_modifier(mod)
 	GameState.finish_level_up.call_deferred()

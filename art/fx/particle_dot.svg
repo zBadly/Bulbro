@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+  <!-- Weicher Partikelpunkt (wird per Farbverlauf eingefärbt, daher weiß und ohne Outline) -->
+  <defs><radialGradient id="dot"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.6" stop-color="#FFFFFF" stop-opacity="0.8"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="6" cy="6" r="6" fill="url(#dot)"/>
+</svg>

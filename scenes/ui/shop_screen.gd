@@ -202,6 +202,7 @@ func _on_buy(index: int) -> void:
 	else:
 		GameState.add_item(offer.item)
 		player.apply_item(offer.item)
+	AudioManager.play(&"buy")
 	GameState.shop.mark_sold(index)
 	_refresh_context()
 	_build.call_deferred("lock_%d" % index)
@@ -215,17 +216,20 @@ func _on_lock(index: int) -> void:
 func _on_reroll() -> void:
 	if not GameState.spend(GameState.shop.reroll_price(_ctx)):
 		return
+	AudioManager.play(&"reroll")
 	GameState.shop.reroll(_ctx)
 	_build.call_deferred("reroll")
 
 
 func _on_combine(weapon: Weapon) -> void:
+	AudioManager.play(&"buy")
 	player.weapon_slots.combine(weapon)
 	_refresh_context()
 	_build.call_deferred("next")
 
 
 func _on_recycle_weapon(weapon: Weapon) -> void:
+	AudioManager.play(&"ui_click")
 	GameState.add_sparks(_weapon_recycle_value(weapon))
 	player.weapon_slots.remove_weapon(weapon)
 	_refresh_context()
@@ -233,4 +237,5 @@ func _on_recycle_weapon(weapon: Weapon) -> void:
 
 
 func _on_next_wave() -> void:
+	AudioManager.play(&"ui_click")
 	GameState.set_phase.call_deferred(GameState.Phase.WAVE)

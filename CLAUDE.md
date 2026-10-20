@@ -25,6 +25,18 @@ Alle Namen, Grafiken (SVG), Texte und Sounds sind eigene Kreationen; das Spiel i
 - Systeme kommunizieren über den Signalbus `Events` statt über direkte Referenzen.
 - Tests liegen unter `tests/` (Dateien `test_*.gd`, Basisklasse `GutTest`).
 
+## Sound und Musik
+
+Soundeffekte und der Musik-Platzhalter werden per Skript synthetisiert (Python 3, nur Standardbibliothek + numpy):
+
+```bash
+python tools/make_sfx.py     # 15 Effekte nach audio/sfx/
+python tools/make_music.py   # Loop nach audio/music/bulbro_loop.wav
+```
+
+Lautstärken, Instanz-Limits und Musik stehen in `data/config/audio_config.tres`. Wiedergabe immer über `AudioManager.play(&"name")`.
+Für echte Musik CC0-Tracks (z. B. kenney.nl, opengameart.org; Lizenz prüfen) nach `audio/music` legen und in der Config eintragen.
+
 ## Debug-Tasten
 
 - **F3**: Debug-Overlay mit allen Stats

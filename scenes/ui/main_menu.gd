@@ -20,6 +20,7 @@ var _options: OptionsMenu
 
 func _ready() -> void:
 	get_tree().paused = false
+	AudioManager.play_music()
 	_options = OptionsMenu.new()
 	add_child(_options)
 	_options.closed.connect(_build)

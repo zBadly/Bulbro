@@ -114,6 +114,10 @@ func take_damage(info: DamageInfo) -> void:
 	hp -= info.amount
 	_last_hit = info
 	Juice.hit_flash(_sprite)
+	AudioManager.play(&"hit_crit" if info.is_crit else &"hit")
+	Fx.particles(get_tree(), ParticleFx.Kind.HIT, get_hit_position(), info.knockback_dir)
+	if info.is_crit:
+		Fx.hit_stop(get_tree())
 	Pools.spawn_damage_number(get_tree(), info.amount, info.is_crit, get_hit_position())
 	apply_knockback(info.knockback_dir * info.knockback * COMBAT.knockback_to_speed * (1.0 - data.knockback_resistance))
 	if hp <= 0.0:

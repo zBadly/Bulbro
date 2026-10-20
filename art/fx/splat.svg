@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="36" viewBox="0 0 56 36">
+  <!-- Fleck eines besiegten Gegners am Boden -->
+  <path d="M8,18 C4,8 18,4 26,8 C34,2 50,6 48,16 C56,22 46,32 36,28 C28,34 14,32 12,26 C4,26 4,22 8,18 Z" fill="#2A1E3F"/>
+  <circle cx="52" cy="8" r="2.5" fill="#2A1E3F"/>
+  <circle cx="4" cy="30" r="2" fill="#2A1E3F"/>
+</svg>

@@ -161,6 +161,9 @@ func _fire() -> void:
 		spec.homing_turn_deg = t.homing_turn_deg
 		spec.player = player
 		(pool.acquire() as Projectile).launch(global_position + Vector2.from_angle(angle) * COMBAT.muzzle_offset, angle, spec)
+	AudioManager.play(&"shoot")
+	var muzzle: Vector2 = global_position + Vector2.from_angle(_aim_angle) * COMBAT.muzzle_offset
+	Fx.particles(get_tree(), ParticleFx.Kind.MUZZLE, muzzle, Vector2.from_angle(_aim_angle))
 	_recoil()
 
 
@@ -173,6 +176,7 @@ func _recoil() -> void:
 # --- Nahkampf ---
 
 func _melee() -> void:
+	AudioManager.play(&"swing")
 	_attacking = true
 	_hit_ids.clear()
 	_attack_info = _roll_damage()

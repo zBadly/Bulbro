@@ -44,11 +44,13 @@ func _roll_item() -> ItemData:
 
 
 func _on_take() -> void:
+	AudioManager.play(&"buy")
 	GameState.add_item(_item)
 	player.apply_item(_item)
 	GameState.finish_crate.call_deferred()
 
 
 func _on_recycle() -> void:
+	AudioManager.play(&"ui_click")
 	GameState.add_sparks(_recycle_value)
 	GameState.finish_crate.call_deferred()
