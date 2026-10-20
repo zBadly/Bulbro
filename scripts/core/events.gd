@@ -15,3 +15,5 @@ signal wave_ended(wave_number: int)
 signal pause_toggled(is_paused: bool)
 @warning_ignore("unused_signal")
 signal player_died
+@warning_ignore("unused_signal")
+signal enemy_killed(data: EnemyData, position: Vector2)

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/chase_data.gd" id="1_ohajf"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="2_1cf27"]
+[ext_resource type="Texture2D" path="res://art/enemies/schattenling.svg" id="3_oc2c1"]
+
+[sub_resource type="Resource" id="Resource_11g48"]
+script = ExtResource("1_ohajf")
+
+[resource]
+script = ExtResource("2_1cf27")
+id = &"schattenling"
+name_key = "ENEMY_SCHATTENLING"
+texture = ExtResource("3_oc2c1")
+collision_radius = 20.0
+base_hp = 3.0
+hp_per_wave = 2.0
+base_damage = 1.0
+damage_per_wave = 0.6
+speed_min = 200.0
+speed_max = 300.0
+behavior = SubResource("Resource_11g48")
+sparks = 1

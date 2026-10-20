@@ -62,3 +62,18 @@ CLASS_GUN,Schusswaffe,Gun
 CLASS_MEDICAL,Medizinisch,Medical
 CLASS_ETHEREAL,Ätherisch,Ethereal
 CLASS_SUPPORT,Support,Support
+HUD_WAVE,Welle %d,Wave %d
+HUD_LEVEL,Lv %d,Lv %d
+WAVE_CLEARED,Welle %d geschafft!,Wave %d cleared!
+GAME_OVER,Erloschen!,Burnt out!
+VICTORY,Gewonnen!,Victory!
+REACHED_WAVE,Welle %d erreicht,Reached wave %d
+RESTART,Neustart,Restart
+PAUSE,Pause,Paused
+RESUME,Weiter,Resume
+DEBUG_FPS,FPS,FPS
+DEBUG_ENEMIES,Gegner,Enemies
+ENEMY_SCHATTENLING,Schattenling,Shadeling
+ENEMY_MOTTE,Mottenschwarm,Moth Swarm
+ENEMY_RAMMKAEFER,Rammkäfer,Ram Beetle
+ENEMY_RUSSSPUCKER,Rußspucker,Soot Spitter

@@ -20,6 +20,8 @@ const HIT_FLASH_TIME: float = 0.1
 const MARKER_PULSE_PERIOD: float = 0.4
 const MARKER_PULSE_SCALE: float = 1.2
 const MARKER_PULSE_ALPHA: float = 0.55
+const TELEGRAPH_SQUASH: Vector2 = Vector2(1.2, 0.8)
+const TELEGRAPH_RELEASE_TIME: float = 0.08
 
 const META_BASE_SCALE: StringName = &"juice_base_scale"
 const META_BOB: StringName = &"juice_bob_tween"
@@ -98,6 +100,19 @@ static func marker_pulse(node: Node2D) -> Tween:
 	tween.parallel().tween_property(node, "modulate:a", MARKER_PULSE_ALPHA, MARKER_PULSE_PERIOD * 0.5)
 	tween.tween_property(node, "scale", base, MARKER_PULSE_PERIOD * 0.5)
 	tween.parallel().tween_property(node, "modulate:a", 1.0, MARKER_PULSE_PERIOD * 0.5)
+	return tween
+
+
+## Warnung vor einer Aktion (z. B. Sprint): zusammendrücken, halten, zurückfedern. Ersetzt idle_bob und
+## wird wie dieses von squash_pop abgebrochen.
+static func telegraph(node: Node2D, hold_time: float) -> Tween:
+	_kill(node, META_BOB)
+	var base: Vector2 = _base_scale(node)
+	var tween: Tween = node.create_tween()
+	tween.tween_property(node, "scale", base * TELEGRAPH_SQUASH, hold_time).set_ease(Tween.EASE_OUT)
+	tween.tween_property(node, "scale", base, TELEGRAPH_RELEASE_TIME)
+	tween.finished.connect(func() -> void: idle_bob(node), CONNECT_ONE_SHOT)
+	node.set_meta(META_BOB, tween)
 	return tween
 
 

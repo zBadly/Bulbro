@@ -28,7 +28,8 @@
     <path d="M45,22 L34,25"/>
   </g>
 
-  <!-- Spuckrohr -->
+  <!-- Spuckrohr mit glühendem Schlund (Akzent Orange = Fernkampf) -->
   <ellipse cx="30" cy="43" rx="9" ry="7" fill="#3A2A5C" stroke="#2A1E2E" stroke-width="3.5"/>
-  <ellipse cx="30" cy="44" rx="5" ry="3.8" fill="#1A1220"/>
+  <ellipse cx="30" cy="44" rx="5" ry="3.8" fill="#C9541C"/>
+  <ellipse cx="30" cy="44.5" rx="3" ry="2.2" fill="#FF8C42"/>
 </svg>

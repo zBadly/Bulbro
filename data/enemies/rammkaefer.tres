@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/charge_data.gd" id="1_7kdn0"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="2_4v2x8"]
+[ext_resource type="Texture2D" path="res://art/enemies/rammkaefer.svg" id="3_pw8ns"]
+
+[sub_resource type="Resource" id="Resource_xg8um"]
+script = ExtResource("1_7kdn0")
+interval_min = 2.5
+interval_max = 3.5
+windup_time = 0.35
+charge_time = 0.45
+charge_speed = 800.0
+
+[resource]
+script = ExtResource("2_4v2x8")
+id = &"rammkaefer"
+name_key = "ENEMY_RAMMKAEFER"
+texture = ExtResource("3_pw8ns")
+collision_radius = 22.0
+base_hp = 4.0
+hp_per_wave = 2.5
+base_damage = 1.0
+damage_per_wave = 0.85
+speed_min = 220.0
+speed_max = 260.0
+behavior = SubResource("Resource_xg8um")
+sparks = 1

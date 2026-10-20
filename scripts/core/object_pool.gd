@@ -1,14 +1,20 @@
 class_name ObjectPool
 extends Node
-## Wiederverwendbare Instanzen einer Szene (Projektile, Schadenszahlen, später Gegner und Pickups).
+## Wiederverwendbare Instanzen einer Szene (Projektile, Schadenszahlen, Gegner, Pickups).
 ## Freie Instanzen sind versteckt und deaktiviert (PROCESS_MODE_DISABLED entfernt sie auch aus der Physik).
-## Hat die Instanz eine Eigenschaft "pool", wird sie beim Holen auf diesen Pool gesetzt.
+## Hat die Instanz eine Eigenschaft "pool", wird sie beim Erzeugen auf diesen Pool gesetzt.
 
 @export var scene: PackedScene
 ## Gruppe, über die andere Systeme den Pool finden (siehe Pools).
 @export var group_name: StringName
 
+## Elternknoten der Instanzen. Standard: der Pool selbst. Für Y-Sortierung z. B. den Entities-Knoten setzen.
+var container: Node
+## Wird einmalig mit jeder neu erzeugten Instanz aufgerufen (nach add_child).
+var on_create: Callable
+
 var _free: Array[Node] = []
+var _active: Array[Node] = []
 
 
 func _ready() -> void:
@@ -28,25 +34,43 @@ func acquire() -> Node:
 	node.process_mode = Node.PROCESS_MODE_INHERIT
 	if node is CanvasItem:
 		(node as CanvasItem).show()
+	_active.append(node)
 	return node
 
 
 func release(node: Node) -> void:
 	if node == null or _free.has(node):
 		return
+	_active.erase(node)
 	_deactivate(node)
 	_free.append(node)
+
+
+## Gibt alle aktiven Instanzen zurück (z. B. am Wellenende).
+func release_all() -> void:
+	for node: Node in _active.duplicate():
+		release(node)
 
 
 func free_count() -> int:
 	return _free.size()
 
 
+func active_count() -> int:
+	return _active.size()
+
+
+func get_active() -> Array[Node]:
+	return _active.duplicate()
+
+
 func _create() -> Node:
 	var node: Node = scene.instantiate()
 	if &"pool" in node:
 		node.set(&"pool", self)
-	add_child(node)
+	(container if container != null else self).add_child(node)
+	if on_create.is_valid():
+		on_create.call(node)
 	return node
 
 

@@ -1,20 +1,29 @@
 class_name Arena
 extends Node2D
-## Rechteckige Arena mit kachelbarem Boden, sichtbarem Rand und Kamera, die dem Spieler folgt.
+## Spielszene eines Runs: Arena mit Boden, Rand und Kamera, Spieler, Wellen, HUD und Endbildschirm.
 
 const LIGHTING_SECTION: String = "options"
 const LIGHTING_KEY: String = "lighting"
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
+const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const WEAPON_CATEGORY: String = "weapons"
+const ENEMY_CATEGORY: String = "enemies"
 
 @export var config: ArenaConfig
 
 @onready var _floor: Sprite2D = $Floor
 @onready var _darkness: CanvasModulate = $Darkness
 @onready var _camera: Camera2D = $Camera
+@onready var _entities: Node2D = $Entities
 @onready var player: Player = $Entities/Player
+@onready var wave_manager: WaveManager = $WaveManager
+@onready var _hud: Hud = $Hud
+@onready var _game_over: GameOverScreen = $GameOver
+@onready var _pause_menu: PauseMenu = $PauseMenu
 @onready var _projectile_pool: ObjectPool = $Pools/PlayerProjectiles
 @onready var _damage_number_pool: ObjectPool = $Pools/DamageNumbers
+@onready var _enemy_projectile_pool: ObjectPool = $Pools/EnemyProjectiles
+@onready var _spawn_marker_pool: ObjectPool = $Pools/SpawnMarkers
 
 var _debug_weapon_index: int = 0
 
@@ -23,15 +32,48 @@ func _ready() -> void:
 	GameState.start_run()
 	_projectile_pool.prewarm(COMBAT.projectile_pool_size)
 	_damage_number_pool.prewarm(COMBAT.damage_number_pool_size)
+	_enemy_projectile_pool.prewarm(WAVES.enemy_projectile_pool_size)
+	_spawn_marker_pool.prewarm(WAVES.spawn_marker_pool_size)
+
 	var rect: Rect2 = config.get_rect()
 	_floor.region_rect = Rect2(Vector2.ZERO, config.size)
 	_floor.position = rect.get_center()
 	player.arena_bounds = rect
+	for weapon: WeaponData in player.config.starting_weapons:
+		player.weapon_slots.add_weapon(weapon)
 
 	var lighting: bool = SaveManager.get_value(LIGHTING_SECTION, LIGHTING_KEY, true)
 	_darkness.color = config.darkness_color
 	_darkness.visible = lighting
+	_setup_camera(rect)
+	queue_redraw()
 
+	_hud.bind(player, wave_manager)
+	player.died.connect(_on_player_died)
+	wave_manager.run_won.connect(_on_run_won)
+	wave_manager.start(player, rect, _entities)
+
+
+func _process(_delta: float) -> void:
+	_camera.global_position = player.global_position
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not OS.is_debug_build():
+		return
+	if event.is_action_pressed(&"debug_add_weapon"):
+		_debug_add_weapon()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed(&"debug_spawn_enemies"):
+		_debug_spawn_enemies()
+		get_viewport().set_input_as_handled()
+
+
+func _draw() -> void:
+	draw_rect(config.get_rect(), config.border_color, false, config.border_width)
+
+
+func _setup_camera(rect: Rect2) -> void:
 	_camera.zoom = Vector2.ONE * config.camera_zoom
 	_camera.position_smoothing_speed = config.camera_smoothing_speed
 	_camera.limit_left = floori(rect.position.x - config.camera_margin)
@@ -40,17 +82,17 @@ func _ready() -> void:
 	_camera.limit_bottom = ceili(rect.end.y + config.camera_margin)
 	_camera.global_position = player.global_position
 	_camera.reset_smoothing()
-	queue_redraw()
 
 
-func _process(_delta: float) -> void:
-	_camera.global_position = player.global_position
+func _on_player_died() -> void:
+	_pause_menu.enabled = false
+	await get_tree().create_timer(WAVES.game_over_delay).timeout
+	_game_over.show_result(false, wave_manager.get_wave_number())
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if OS.is_debug_build() and event.is_action_pressed(&"debug_add_weapon"):
-		_debug_add_weapon()
-		get_viewport().set_input_as_handled()
+func _on_run_won() -> void:
+	_pause_menu.enabled = false
+	_game_over.show_result(true, wave_manager.get_wave_number())
 
 
 ## Debug (F4): fügt reihum die nächste Waffe aus res://data/weapons hinzu.
@@ -64,5 +106,13 @@ func _debug_add_weapon() -> void:
 	player.weapon_slots.add_weapon(data)
 
 
-func _draw() -> void:
-	draw_rect(config.get_rect(), config.border_color, false, config.border_width)
+## Debug (F6): füllt die Arena bis zum Gegnerlimit (Performance-Test).
+func _debug_spawn_enemies() -> void:
+	var enemies: Array[Resource] = DataRegistry.get_all(ENEMY_CATEGORY).filter(
+		func(r: Resource) -> bool: return (r as EnemyData).despawnable)
+	if enemies.is_empty():
+		return
+	var rng: RandomNumberGenerator = GameState.rng
+	for i in WAVES.max_enemies - wave_manager.active_enemy_count():
+		var data: EnemyData = enemies[rng.randi_range(0, enemies.size() - 1)] as EnemyData
+		wave_manager.spawn_enemy(data, wave_manager.pick_spawn_point())

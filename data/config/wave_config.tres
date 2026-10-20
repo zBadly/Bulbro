@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WaveConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/wave_config.gd" id="1_y318x"]
+
+[resource]
+script = ExtResource("1_y318x")
+max_enemies = 100
+spawn_warning_time = 1.0
+min_player_distance = 200.0
+spawn_margin = 60.0
+group_radius = 90.0
+spawn_position_attempts = 12
+intermission_time = 2.5
+game_over_delay = 0.8
+enemy_pool_size = 30
+enemy_projectile_pool_size = 60
+spawn_marker_pool_size = 60

@@ -54,6 +54,7 @@ func test_death_signal() -> void:
 	watch_signals(_player)
 	_player.take_hit(100.0)
 	assert_true(_player.is_dead)
+	assert_eq(_player.current_hp, 0.0, "HP fallen nicht unter 0")
 	assert_signal_emitted(_player, "died")
 
 

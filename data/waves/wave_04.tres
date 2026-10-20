@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="WaveData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/spawn_group_data.gd" id="1_i54fs"]
+[ext_resource type="Resource" path="res://data/enemies/schattenling.tres" id="2_8ytxd"]
+[ext_resource type="Resource" path="res://data/enemies/motte.tres" id="3_ulci7"]
+[ext_resource type="Resource" path="res://data/enemies/rammkaefer.tres" id="4_uwefa"]
+[ext_resource type="Resource" path="res://data/enemies/russspucker.tres" id="5_j71w4"]
+[ext_resource type="Script" path="res://scripts/data/wave_data.gd" id="6_o0ube"]
+
+[sub_resource type="Resource" id="Resource_0vh7g"]
+script = ExtResource("1_i54fs")
+enemy = ExtResource("2_8ytxd")
+interval = 2.0
+group_min = 2
+group_max = 3
+start_time = 0.5
+
+[sub_resource type="Resource" id="Resource_rts85"]
+script = ExtResource("1_i54fs")
+enemy = ExtResource("3_ulci7")
+interval = 6.45
+group_min = 4
+group_max = 7
+start_time = 3.0
+
+[sub_resource type="Resource" id="Resource_odyjp"]
+script = ExtResource("1_i54fs")
+enemy = ExtResource("4_uwefa")
+interval = 7.3500000000000005
+start_time = 5.0
+
+[sub_resource type="Resource" id="Resource_xpmuj"]
+script = ExtResource("1_i54fs")
+enemy = ExtResource("5_j71w4")
+interval = 8.3
+start_time = 6.0
+
+[resource]
+script = ExtResource("6_o0ube")
+wave_number = 4
+duration = 35.0
+groups = Array[ExtResource("1_i54fs")]([SubResource("Resource_0vh7g"), SubResource("Resource_rts85"), SubResource("Resource_odyjp"), SubResource("Resource_xpmuj")])

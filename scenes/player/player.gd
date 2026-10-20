@@ -84,7 +84,7 @@ func take_hit(raw_damage: float) -> int:
 	if amount == 0:
 		dodged.emit()
 		return 0
-	current_hp -= amount
+	current_hp = maxf(0.0, current_hp - amount)
 	_invulnerable_left = config.invulnerability_time
 	Juice.hit_flash(_sprite)
 	damaged.emit(amount)
@@ -130,6 +130,7 @@ func _die() -> void:
 	current_hp = 0.0
 	died.emit()
 	Events.player_died.emit()
+	weapon_slots.hide()
 	Juice.squash_pop(_visual)
 
 

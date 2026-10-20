@@ -5,6 +5,8 @@ extends Resource
 @export var base_stats: StatBlock
 @export var base_move_speed: float = 0.0
 @export var weapon_slots: int = 0
+## Startwaffen, bis die Charakterauswahl existiert.
+@export var starting_weapons: Array[WeaponData] = []
 @export var weapon_orbit_radius: float = 0.0
 @export var pickup_radius: float = 0.0
 @export var invulnerability_time: float = 0.0

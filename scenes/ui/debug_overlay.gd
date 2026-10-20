@@ -7,6 +7,8 @@ const PANEL_COLOR: Color = Color("#1B1B24D9")
 const PANEL_RADIUS: int = 12
 const PANEL_PADDING: int = 14
 const SCREEN_MARGIN: float = 16.0
+## Platz für die HUD-Balken oben links.
+const HUD_CLEARANCE: float = 110.0
 const REFRESH_INTERVAL: float = 0.2
 const PERCENT: float = 100.0
 
@@ -22,7 +24,7 @@ func _ready() -> void:
 	style.set_corner_radius_all(PANEL_RADIUS)
 	style.set_content_margin_all(PANEL_PADDING)
 	panel.add_theme_stylebox_override("panel", style)
-	panel.position = Vector2.ONE * SCREEN_MARGIN
+	panel.position = Vector2(SCREEN_MARGIN, HUD_CLEARANCE)
 	_label = Label.new()
 	_label.add_theme_font_override("font", FONT)
 	_label.add_theme_font_size_override("font_size", FONT_SIZE)
@@ -54,6 +56,8 @@ func _refresh() -> void:
 		return
 	var s: StatSystem = player.stats
 	var lines: PackedStringArray = [tr("DEBUG_TITLE"), ""]
+	lines.append("%s: %d" % [tr("DEBUG_FPS"), Engine.get_frames_per_second()])
+	lines.append("%s: %d" % [tr("DEBUG_ENEMIES"), _count_alive_enemies()])
 	lines.append("%s: %.1f / %.0f" % [tr("DEBUG_HP"), player.current_hp, player.get_max_hp()])
 	lines.append("")
 	lines.append("— %s —" % tr("DEBUG_DERIVED"))
@@ -72,6 +76,14 @@ func _refresh() -> void:
 		if not is_zero_approx(value):
 			lines.append("%s: %s" % [tr(Stats.label_key(stat)), _format(value)])
 	_label.text = "\n".join(lines)
+
+
+func _count_alive_enemies() -> int:
+	var count: int = 0
+	for node: Node in get_tree().get_nodes_in_group(Damageable.GROUP):
+		if (node as Damageable).is_alive():
+			count += 1
+	return count
 
 
 func _format(value: float) -> String:

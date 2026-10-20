@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/chase_data.gd" id="1_mkjgu"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="2_r0bvq"]
+[ext_resource type="Texture2D" path="res://art/enemies/motte.svg" id="3_oyfrg"]
+
+[sub_resource type="Resource" id="Resource_11g48"]
+script = ExtResource("1_mkjgu")
+
+[resource]
+script = ExtResource("2_r0bvq")
+id = &"motte"
+name_key = "ENEMY_MOTTE"
+texture = ExtResource("3_oyfrg")
+collision_radius = 16.0
+base_hp = 1.0
+hp_per_wave = 1.0
+base_damage = 1.0
+damage_per_wave = 0.6
+speed_min = 380.0
+speed_max = 380.0
+behavior = SubResource("Resource_11g48")
+sparks = 1

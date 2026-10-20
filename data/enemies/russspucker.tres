@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/fx/enemy_projectile.svg" id="1_pfque"]
+[ext_resource type="Script" path="res://scripts/data/behaviors/shooter_data.gd" id="2_s0vv7"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="3_1qpvf"]
+[ext_resource type="Texture2D" path="res://art/enemies/russspucker.svg" id="4_ia51j"]
+
+[sub_resource type="Resource" id="Resource_s6xt0"]
+script = ExtResource("2_s0vv7")
+preferred_distance = 350.0
+distance_tolerance = 60.0
+fire_interval_min = 2.0
+fire_interval_max = 3.0
+projectile_speed = 380.0
+projectile_range = 650.0
+projectile_texture = ExtResource("1_pfque")
+
+[resource]
+script = ExtResource("3_1qpvf")
+id = &"russspucker"
+name_key = "ENEMY_RUSSSPUCKER"
+texture = ExtResource("4_ia51j")
+collision_radius = 22.0
+base_hp = 8.0
+hp_per_wave = 1.0
+base_damage = 1.0
+damage_per_wave = 0.75
+speed_min = 200.0
+speed_max = 200.0
+behavior = SubResource("Resource_s6xt0")
+sparks = 1
