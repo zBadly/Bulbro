@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_p2o4s"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_6ughp"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_t2055"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_7ep7x"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_7etbl"]
+[ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="6_txp8q"]
+[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="7_bv26f"]
+[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="8_6ll5f"]
+[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="9_h533c"]
+[ext_resource type="Texture2D" path="res://art/characters/standardbirne.svg" id="10_olhf7"]
+
+[sub_resource type="Resource" id="Resource_c8ekg"]
+script = ExtResource("2_6ughp")
+stat = &"max_hp"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_e03ay"]
+script = ExtResource("2_6ughp")
+stat = &"speed"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_e7j4q"]
+script = ExtResource("2_6ughp")
+stat = &"harvesting"
+value = 8.0
+
+[sub_resource type="Resource" id="Resource_chdfv"]
+script = ExtResource("3_t2055")
+modifiers = Array[ExtResource("2_6ughp")]([SubResource("Resource_c8ekg"), SubResource("Resource_e03ay"), SubResource("Resource_e7j4q")])
+
+[resource]
+script = ExtResource("4_7ep7x")
+id = &"standardbirne"
+name_key = "CHAR_STANDARDBIRNE"
+texture = ExtResource("10_olhf7")
+effects = Array[ExtResource("1_p2o4s")]([SubResource("Resource_chdfv")])
+starting_weapons = Array[ExtResource("5_7etbl")]([ExtResource("6_txp8q"), ExtResource("7_bv26f"), ExtResource("8_6ll5f"), ExtResource("9_h533c")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([])
+order = 0
+set_bonus_multiplier = Dictionary[StringName, float]({})
+banned_classes = Array[StringName]([])
+no_melee = false
+unlock = 0
+unlock_value = 0.0

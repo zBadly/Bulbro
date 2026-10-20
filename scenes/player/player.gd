@@ -9,6 +9,8 @@ signal dodged
 signal died
 
 const GROUP: StringName = &"player"
+## Standardanzahl Waffenslots (Charaktere wie die Lichterkette weichen davon ab).
+const DEFAULT_WEAPON_SLOTS: int = 6
 
 @export var config: PlayerConfig
 
@@ -31,7 +33,14 @@ var triggers: Array[TriggerEntry] = []
 ## Multiplikator für Set-Boni einzelner Klassen (z. B. Kerze: Primitiv doppelt).
 var set_bonus_multiplier: Dictionary[StringName, float] = {}
 
+var character: CharacterData
+## Klassen-Boni des Charakters (z. B. +50 % Angriffstempo mit Unbewaffnet).
+var class_bonuses: Array[ClassBonusEffect] = []
+var per_weapon_effects: Array[PerWeaponStatEffect] = []
+var standing_still_modifiers: Array[StatModifier] = []
+
 var _set_modifiers: Array[StatModifier] = []
+var _still_active: bool = false
 
 @onready var _visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -54,7 +63,8 @@ func _ready() -> void:
 	weapon_slots.player = self
 	weapon_slots.max_slots = config.weapon_slots
 	weapon_slots.orbit_radius = config.weapon_orbit_radius
-	weapon_slots.weapons_changed.connect(update_set_bonuses)
+	weapon_slots.weapons_changed.connect(update_weapon_modifiers)
+	weapon_slots.weapons_changed.connect(_track_run)
 	Juice.idle_bob(_visual)
 	Events.level_up.connect(_on_level_up)
 	hp_changed.emit(current_hp, _known_max_hp)
@@ -71,6 +81,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_clamp_to_arena()
 	Juice.walk_tilt(_visual, velocity)
+	_update_standing_still()
 	_regenerate(delta)
 
 
@@ -119,8 +130,48 @@ func apply_item(item: ItemData) -> void:
 		effect.apply(self)
 
 
-## Klassen-Set-Boni (GDD 8) aus der Anzahl Waffen je Klasse neu berechnen.
-func update_set_bonuses() -> void:
+## Charakter anwenden: Grafik, Waffenslots, Effekte, Sonderregeln, Shop-Vorlieben.
+func apply_character(data: CharacterData) -> void:
+	character = data
+	_sprite.texture = data.texture
+	_sprite.offset = Vector2(0.0, -data.texture.get_height() * 0.5)
+	if data.weapon_slots > 0:
+		weapon_slots.max_slots = data.weapon_slots
+	set_bonus_multiplier = data.set_bonus_multiplier.duplicate()
+	for effect: ItemEffect in data.effects:
+		_apply_character_effect(effect)
+	GameState.preferred_tags = data.preferred_tags.duplicate()
+	update_weapon_modifiers()
+
+
+## Flache Stat-Boni des Charakters gehen in die Basis: "X-Modifikationen" wirken nur auf spätere Zuwächse.
+func _apply_character_effect(effect: ItemEffect) -> void:
+	var stat_effect: StatEffect = effect as StatEffect
+	if stat_effect == null:
+		effect.apply(self)
+		return
+	for mod: StatModifier in stat_effect.modifiers:
+		if mod.kind == StatModifier.Kind.FLAT:
+			stats.add_base_value(mod.stat, mod.value)
+		else:
+			stats.add_modifier(mod)
+
+
+func can_use_weapon(weapon: WeaponData) -> bool:
+	return character == null or character.can_use_weapon(weapon)
+
+
+## Summe der Klassen-Boni auf `stat` für eine Waffe mit diesen Klassen.
+func class_bonus(stat: StringName, classes: Array[StringName]) -> float:
+	var total: float = 0.0
+	for bonus: ClassBonusEffect in class_bonuses:
+		if bonus.stat == stat and bonus.weapon_class in classes:
+			total += bonus.value
+	return total
+
+
+## Waffenabhängige Modifikatoren neu berechnen: Klassen-Set-Boni (GDD 8) und Effekte pro Waffe.
+func update_weapon_modifiers() -> void:
 	var counts: Dictionary[StringName, int] = {}
 	for weapon: Weapon in weapon_slots.get_weapons():
 		for weapon_class: StringName in weapon.data.classes:
@@ -131,6 +182,9 @@ func update_set_bonuses() -> void:
 		var factor: float = set_bonus_multiplier.get(set_bonus.weapon_class, 1.0)
 		for mod: StatModifier in set_bonus.modifiers_for(counts.get(set_bonus.weapon_class, 0)):
 			new_mods.append(StatModifier.create(mod.stat, mod.value * factor, mod.kind))
+	var weapon_count: int = weapon_slots.get_weapons().size()
+	for effect: PerWeaponStatEffect in per_weapon_effects:
+		new_mods.append(StatModifier.create(effect.stat, effect.value_per_weapon * weapon_count))
 	stats.remove_modifiers(_set_modifiers)
 	_set_modifiers = new_mods
 	stats.add_modifiers(new_mods)
@@ -147,7 +201,9 @@ func add_trigger(effect: ItemEffect) -> void:
 func heal(amount: float) -> void:
 	if is_dead or amount <= 0.0:
 		return
+	var before: float = current_hp
 	current_hp = minf(current_hp + amount, get_max_hp())
+	GameState.run_stats.healed += current_hp - before
 	hp_changed.emit(current_hp, get_max_hp())
 
 
@@ -175,6 +231,39 @@ func _clamp_to_arena() -> void:
 	global_position = global_position.clamp(arena_bounds.position + margin, arena_bounds.end - margin)
 
 
+## Blitzlicht: Modifikatoren gelten nur, solange der Spieler stillsteht.
+func _update_standing_still() -> void:
+	if standing_still_modifiers.is_empty():
+		return
+	var still: bool = velocity.is_zero_approx()
+	if still == _still_active:
+		return
+	_still_active = still
+	if still:
+		stats.add_modifiers(standing_still_modifiers)
+	else:
+		stats.remove_modifiers(standing_still_modifiers)
+
+
+## Werte für Freischaltungen mitschreiben (höchster Schaden-%, Tempo-%, verschiedene Waffen, nur Primitiv).
+func _track_run() -> void:
+	var run: RunStats = GameState.run_stats
+	run.max_damage_pct = maxf(run.max_damage_pct, stats.get_stat(Stats.DAMAGE_PCT))
+	run.max_speed_pct = maxf(run.max_speed_pct, stats.get_stat(Stats.SPEED))
+	var ids: Dictionary[StringName, bool] = {}
+	for weapon: Weapon in weapon_slots.get_weapons():
+		ids[weapon.data.id] = true
+		if WeaponClasses.PRIMITIVE not in weapon.data.classes:
+			run.primitive_only = false
+	run.max_distinct_weapons = maxi(run.max_distinct_weapons, ids.size())
+
+
+## Aufgeben im Pausemenü: Run sofort als Niederlage beenden.
+func kill() -> void:
+	if not is_dead:
+		_die()
+
+
 func _die() -> void:
 	is_dead = true
 	current_hp = 0.0
@@ -197,3 +286,4 @@ func _on_stats_changed() -> void:
 	current_hp = minf(current_hp, new_max)
 	_known_max_hp = new_max
 	hp_changed.emit(current_hp, new_max)
+	_track_run()

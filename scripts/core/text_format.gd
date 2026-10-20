@@ -64,6 +64,27 @@ static func tier_name(tier: int) -> String:
 	return t("TIER_%d" % tier)
 
 
+## Beschreibung eines Charakters: Stat-Änderungen, Sondereffekte und Sonderregeln (BBCode).
+static func describe_character(character: CharacterData) -> String:
+	var mods: Array[StatModifier] = []
+	var lines: PackedStringArray = []
+	for effect: ItemEffect in character.effects:
+		mods.append_array(effect.get_modifiers())
+	if not mods.is_empty():
+		lines.append(describe_modifiers(mods))
+	for effect: ItemEffect in character.effects:
+		lines.append_array(effect.describe())
+	if character.weapon_slots != Player.DEFAULT_WEAPON_SLOTS:
+		lines.append(t("CHAR_RULE_SLOTS") % character.weapon_slots)
+	if character.no_melee:
+		lines.append(t("CHAR_RULE_NO_MELEE"))
+	for weapon_class: StringName in character.banned_classes:
+		lines.append(t("CHAR_RULE_BANNED") % t(WeaponClasses.label_key(weapon_class)))
+	for weapon_class: StringName in character.set_bonus_multiplier:
+		lines.append(t("CHAR_RULE_SET_MULT") % [t(WeaponClasses.label_key(weapon_class)), number(character.set_bonus_multiplier[weapon_class])])
+	return "\n".join(lines)
+
+
 ## Übersetzung als String (für den %-Operator auch außerhalb von Nodes).
 static func t(key: String) -> String:
 	return String(TranslationServer.translate(key))

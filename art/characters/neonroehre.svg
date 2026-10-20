@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="96" viewBox="0 0 72 96">
+  <!-- Neonröhre: lange pinke Leuchtröhre mit Metallkappen -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#FF6EC7" stop-opacity="0.6"/><stop offset="1" stop-color="#FF6EC7" stop-opacity="0"/></radialGradient></defs><circle cx="36" cy="48" r="36" fill="url(#glow)"/>
+  <rect x="20" y="10" width="32" height="76" rx="16" fill="#FF6EC7" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="25" y="16" width="7" height="60" rx="3.5" fill="#FFC2EA"/>
+  <rect x="22" y="2" width="28" height="10" rx="3" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="22" y="84" width="28" height="10" rx="3" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="29" cy="42" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="43" cy="42" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="31" cy="38" r="2.2" fill="#FFFFFF"/>
+  <circle cx="45" cy="38" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,54 Q36,59 41,54" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+</svg>

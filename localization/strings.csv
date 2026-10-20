@@ -194,3 +194,74 @@ DEBUG_INVULNERABLE,Unverwundbar,Invulnerable
 DEBUG_ADD_SPARKS,+%d Funken,+%d sparks
 DEBUG_LEVEL_UP,Level-up,Level up
 DEBUG_CLOSE,Schließen,Close
+CHAR_STANDARDBIRNE,Standardbirne,Standard Bulb
+CHAR_GLUEHFADEN_BOXER,Glühfaden-Boxer,Filament Boxer
+CHAR_NEONROEHRE,Neonröhre,Neon Tube
+CHAR_LED_SCHUETZE,LED-Schütze,LED Marksman
+CHAR_LAVALAMPE,Lavalampe,Lava Lamp
+CHAR_TASCHENLAMPE,Taschenlampe,Flashlight
+CHAR_DISCOKUGEL,Discokugel,Disco Ball
+CHAR_LICHTERKETTE,Lichterkette,String Lights
+CHAR_HALOGENSTRAHLER,Halogenstrahler,Halogen Floodlight
+CHAR_NACHTLICHT,Nachtlicht,Night Light
+CHAR_BLITZLICHT,Blitzlicht,Camera Flash
+CHAR_KERZE,Kerze,Candle
+UNLOCK_0,Von Beginn an verfügbar,Available from the start
+UNLOCK_1,%s Lampentürme gleichzeitig besitzen,Own %s lamp towers at once
+UNLOCK_2,Insgesamt %s Funken sammeln,Collect %s sparks in total
+UNLOCK_3,%s verschiedene Waffen gleichzeitig tragen,Carry %s different weapons at once
+UNLOCK_4,+%s %% Schaden in einem Run erreichen,Reach +%s %% damage in one run
+UNLOCK_5,%s HP in einem Run heilen,Heal %s HP in one run
+UNLOCK_6,+%s %% Tempo in einem Run erreichen,Reach +%s %% speed in one run
+UNLOCK_7,Einen Run nur mit Primitiv-Waffen gewinnen,Win a run with primitive weapons only
+EFFECT_CLASS_BONUS,%s %s mit %s-Waffen,%s %s with %s weapons
+EFFECT_PER_WEAPON,%s pro Waffe,%s per weapon
+EFFECT_CONVERSION,+%s %s pro %s %s,+%s %s per %s %s
+EFFECT_STANDING_STILL,Beim Stillstehen: %s,While standing still: %s
+CHAR_RULE_SLOTS,%d Waffenslots,%d weapon slots
+CHAR_RULE_NO_MELEE,Kann keine Nahkampfwaffen tragen,Cannot use melee weapons
+CHAR_RULE_BANNED,Kann keine %s-Waffen tragen,Cannot use %s weapons
+CHAR_RULE_SET_MULT,%s-Set-Bonus x%s,%s set bonus x%s
+SPANNUNG_0,Spannung 0,Tension 0
+SPANNUNG_1,Spannung 1,Tension 1
+SPANNUNG_2,Spannung 2,Tension 2
+SPANNUNG_3,Spannung 3,Tension 3
+SPANNUNG_4,Spannung 4,Tension 4
+SPANNUNG_5,Spannung 5,Tension 5
+SPANNUNG_0_DESC,Der normale Einstieg.,The standard experience.
+SPANNUNG_1_DESC,"Neue Gegnertypen, +8 % Gegner-HP und -Schaden.","New enemy types, +8 % enemy HP and damage."
+SPANNUNG_2_DESC,"Eine Elite- oder Hordewelle (Welle 11/12), +16 %.","One elite or horde wave (wave 11/12), +16 %."
+SPANNUNG_3_DESC,"Eine Elite- oder Hordewelle, +24 %.","One elite or horde wave, +24 %."
+SPANNUNG_4_DESC,"Drei Elite- oder Hordewellen, die letzte immer Elite, +32 %.","Three elite or horde waves, the last always elite, +32 %."
+SPANNUNG_5_DESC,"Wie Spannung 4, +40 % und beide Bosse gleichzeitig.","Like tension 4, +40 % and both bosses at once."
+MENU_TITLE,BULBRO,BULBRO
+MENU_SUBTITLE,Ein Arena-Roguelite voller Licht,An arena roguelite full of light
+MENU_START,Start,Start
+MENU_OPTIONS,Optionen,Options
+MENU_QUIT,Beenden,Quit
+SELECT_CHARACTER,Wähle deinen Charakter,Choose your character
+SELECT_WEAPON,Wähle deine Startwaffe,Choose your starting weapon
+SELECT_DIFFICULTY,Wähle die Spannung,Choose the tension
+LOCKED,Gesperrt,Locked
+BACK,Zurück,Back
+CONFIRM,Weiter,Continue
+START_RUN,Los geht's!,Let's go!
+WINS,Siege: %d,Wins: %d
+OPTIONS_TITLE,Optionen,Options
+OPT_MASTER,Gesamtlautstärke,Master volume
+OPT_MUSIC,Musik,Music
+OPT_SFX,Effekte,Sound effects
+OPT_LIGHTING,Licht und Abdunklung,Lighting and darkness
+OPT_FULLSCREEN,Vollbild,Fullscreen
+OPT_LANGUAGE,Sprache,Language
+LANG_DE,Deutsch,Deutsch
+LANG_EN,English,English
+GIVE_UP,Aufgeben,Give up
+RUN_END_CHARACTER,%s · %s,%s · %s
+RUN_END_NEW_RUN,Neuer Run,New run
+RUN_END_RETRY,Nochmal,Retry
+RUN_END_MAIN_MENU,Hauptmenü,Main menu
+RUN_END_UNLOCKED,Neu freigeschaltet: %s,Newly unlocked: %s
+RUN_END_STATS,Level %d · %d Funken · %d Gegner besiegt,Level %d · %d sparks · %d enemies defeated
+RUN_END_WEAPONS,Waffen,Weapons
+RUN_END_ITEMS,Items,Items

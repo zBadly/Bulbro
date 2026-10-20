@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="96" viewBox="0 0 72 96">
+  <!-- Lavalampe: Glaskegel mit orangen Blasen auf Metallsockel -->
+  <path d="M14,92 L58,92 L52,74 L20,74 Z" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M22,74 L16,22 Q36,8 56,22 L50,74 Z" fill="#7A4FB5" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="30" cy="62" rx="7" ry="6" fill="#FF8C42"/>
+  <ellipse cx="44" cy="24" rx="6" ry="5" fill="#FF8C42"/>
+  <ellipse cx="42" cy="66" rx="4" ry="3" fill="#FFB574"/>
+  <path d="M22,74 L16,22 Q36,8 56,22 L50,74 Z" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M20,12 L52,12 L50,4 L22,4 Z" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="28" cy="40" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="44" cy="40" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="30" cy="36" r="2.2" fill="#FFFFFF"/>
+  <circle cx="46" cy="36" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,51 Q36,56 41,51" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+</svg>

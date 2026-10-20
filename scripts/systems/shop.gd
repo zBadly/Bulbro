@@ -99,11 +99,12 @@ func generate_offer(ctx: ShopContext, counts: Dictionary[StringName, int]) -> Sh
 ## 15 % der Waffenangebote stammen aus Klassen, die der Spieler bereits besitzt.
 func pick_weapon(ctx: ShopContext) -> WeaponData:
 	var rng: RandomNumberGenerator = ctx.rng
-	var pool: Array[WeaponData] = weapons
+	var pool: Array[WeaponData] = []
+	pool.assign(weapons.filter(ctx.weapon_allowed) if ctx.weapon_allowed.is_valid() else weapons)
 	var classes: Array[StringName] = ctx.owned_classes()
 	if not classes.is_empty() and rng.randf() < CONFIG.class_bias_chance:
 		var matching: Array[WeaponData] = []
-		for weapon: WeaponData in weapons:
+		for weapon: WeaponData in pool:
 			for weapon_class: StringName in weapon.classes:
 				if weapon_class in classes:
 					matching.append(weapon)

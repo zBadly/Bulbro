@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="96" viewBox="0 0 72 96">
+  <!-- Halogenstrahler: kastenförmiger Strahler auf Bügel -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#FFF4B8" stop-opacity="0.6"/><stop offset="1" stop-color="#FFF4B8" stop-opacity="0"/></radialGradient></defs><circle cx="36" cy="40" r="40" fill="url(#glow)"/>
+  <path d="M10,46 L4,86 M62,46 L68,86" stroke="#2A1E2E" stroke-width="7" stroke-linecap="round"/>
+  <path d="M10,46 L4,86 M62,46 L68,86" stroke="#5A5F66" stroke-width="3" stroke-linecap="round"/>
+  <rect x="2" y="84" width="68" height="8" rx="3" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="8" y="16" width="56" height="48" rx="6" fill="#2E2E3D" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="14" y="22" width="44" height="36" rx="3" fill="#FFF4B8" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M18,28 L54,28 M18,36 L54,36 M18,44 L54,44 M18,52 L54,52" stroke="#FFD43B" stroke-width="2"/>
+  <ellipse cx="27" cy="38" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="45" cy="38" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="29" cy="34" r="2.2" fill="#FFFFFF"/>
+  <circle cx="47" cy="34" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,49 Q36,54 41,49" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+</svg>

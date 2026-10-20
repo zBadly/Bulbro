@@ -42,8 +42,9 @@ GODOT="/d/Game/Tools/Godot/Godot_v4.7.2-stable_win64_console.exe"
 # Assets/Skripte importieren (nach neuen Dateien oder class_name-Änderungen)
 "$GODOT" --headless --path . --import
 
-# Headless-Fehlercheck: startet die Hauptszene für 300 Frames
+# Headless-Fehlercheck: Hauptmenü und Run-Szene je 300 Frames
 "$GODOT" --headless --path . --quit-after 300
+"$GODOT" --headless --path . --quit-after 300 res://scenes/world/main.tscn
 
 # GUT-Testlauf (Konfiguration in .gutconfig.json)
 "$GODOT" --headless --path . -s addons/gut/gut_cmdln.gd

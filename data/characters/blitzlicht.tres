@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_ugfeh"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_6vwwq"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_065j0"]
+[ext_resource type="Script" path="res://scripts/data/effects/stat_conversion_effect.gd" id="4_8u5ut"]
+[ext_resource type="Script" path="res://scripts/data/effects/standing_still_effect.gd" id="5_02hy4"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="6_cach6"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="7_4ksy0"]
+[ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="8_ebunf"]
+[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="9_fm1ko"]
+[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="10_uo4yr"]
+[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="11_iq5cr"]
+[ext_resource type="Texture2D" path="res://art/characters/blitzlicht.svg" id="12_wpe7u"]
+
+[sub_resource type="Resource" id="Resource_t6oi3"]
+script = ExtResource("2_6vwwq")
+stat = &"speed"
+value = 30.0
+
+[sub_resource type="Resource" id="Resource_btps6"]
+script = ExtResource("2_6vwwq")
+stat = &"armor"
+value = -3.0
+
+[sub_resource type="Resource" id="Resource_qnp05"]
+script = ExtResource("3_065j0")
+modifiers = Array[ExtResource("2_6vwwq")]([SubResource("Resource_t6oi3"), SubResource("Resource_btps6")])
+
+[sub_resource type="Resource" id="Resource_iuhxl"]
+script = ExtResource("4_8u5ut")
+from_stat = &"speed"
+to_stat = &"melee_dmg"
+per = 2.0
+
+[sub_resource type="Resource" id="Resource_rurg6"]
+script = ExtResource("2_6vwwq")
+stat = &"armor"
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_cgvtu"]
+script = ExtResource("5_02hy4")
+modifier = SubResource("Resource_rurg6")
+
+[resource]
+script = ExtResource("6_cach6")
+id = &"blitzlicht"
+name_key = "CHAR_BLITZLICHT"
+texture = ExtResource("12_wpe7u")
+effects = Array[ExtResource("1_ugfeh")]([SubResource("Resource_qnp05"), SubResource("Resource_iuhxl"), SubResource("Resource_cgvtu")])
+starting_weapons = Array[ExtResource("7_4ksy0")]([ExtResource("8_ebunf"), ExtResource("9_fm1ko"), ExtResource("10_uo4yr"), ExtResource("11_iq5cr")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"speed"])
+order = 10
+set_bonus_multiplier = Dictionary[StringName, float]({})
+banned_classes = Array[StringName]([])
+no_melee = false
+unlock = 6
+unlock_value = 50.0

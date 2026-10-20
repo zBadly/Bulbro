@@ -124,7 +124,7 @@ func _update_pending(delta: float) -> void:
 
 func _queue_group(group: SpawnGroupData) -> void:
 	var rng: RandomNumberGenerator = GameState.rng
-	var count: int = rng.randi_range(group.group_min, group.group_max)
+	var count: int = _scaled_count(rng.randi_range(group.group_min, group.group_max), rng)
 	var center: Vector2 = pick_spawn_point()
 	var marker_pool: ObjectPool = Pools.get_pool(get_tree(), Pools.SPAWN_MARKERS)
 	for i in count:
@@ -193,6 +193,13 @@ func _get_pool(data: EnemyData) -> ObjectPool:
 
 func _on_enemy_died(enemy: Enemy) -> void:
 	_active.erase(enemy)
+
+
+## Gegner-Stat (Halogenstrahler +25 %): Gruppengröße skalieren, Rest per Zufall aufrunden.
+func _scaled_count(count: int, rng: RandomNumberGenerator) -> int:
+	var scaled: float = count * maxf(0.0, 1.0 + player.stats.get_stat(Stats.ENEMIES_PCT) / CombatMath.PERCENT)
+	var whole: int = floori(scaled)
+	return whole + (1 if rng.randf() < scaled - whole else 0)
 
 
 func pick_spawn_point() -> Vector2:

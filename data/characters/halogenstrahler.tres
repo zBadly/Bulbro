@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_3hch0"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_j8esa"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_5qrqq"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_o3j6g"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_mtdsl"]
+[ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="6_8akjm"]
+[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="7_tusyr"]
+[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="8_iegwx"]
+[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="9_eu72p"]
+[ext_resource type="Texture2D" path="res://art/characters/halogenstrahler.svg" id="10_tsyof"]
+
+[sub_resource type="Resource" id="Resource_7w353"]
+script = ExtResource("2_j8esa")
+stat = &"damage_pct"
+value = 30.0
+
+[sub_resource type="Resource" id="Resource_jr8q6"]
+script = ExtResource("2_j8esa")
+stat = &"enemies_pct"
+value = 25.0
+
+[sub_resource type="Resource" id="Resource_vrjb5"]
+script = ExtResource("2_j8esa")
+stat = &"dodge"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_6ystl"]
+script = ExtResource("3_5qrqq")
+modifiers = Array[ExtResource("2_j8esa")]([SubResource("Resource_7w353"), SubResource("Resource_jr8q6"), SubResource("Resource_vrjb5")])
+
+[resource]
+script = ExtResource("4_o3j6g")
+id = &"halogenstrahler"
+name_key = "CHAR_HALOGENSTRAHLER"
+texture = ExtResource("10_tsyof")
+effects = Array[ExtResource("1_3hch0")]([SubResource("Resource_6ystl")])
+starting_weapons = Array[ExtResource("5_mtdsl")]([ExtResource("6_8akjm"), ExtResource("7_tusyr"), ExtResource("8_iegwx"), ExtResource("9_eu72p")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"damage"])
+order = 8
+set_bonus_multiplier = Dictionary[StringName, float]({})
+banned_classes = Array[StringName]([])
+no_melee = false
+unlock = 4
+unlock_value = 50.0

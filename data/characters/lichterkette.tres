@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_v1nw8"]
+[ext_resource type="Script" path="res://scripts/data/effects/per_weapon_stat_effect.gd" id="2_4d2mi"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="3_kmbda"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="4_akeya"]
+[ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="5_enmux"]
+[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="6_8vsel"]
+[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="7_58jp2"]
+[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="8_q5uog"]
+[ext_resource type="Texture2D" path="res://art/characters/lichterkette.svg" id="9_lpemx"]
+
+[sub_resource type="Resource" id="Resource_eqtwc"]
+script = ExtResource("2_4d2mi")
+stat = &"damage_pct"
+value_per_weapon = -5.0
+
+[resource]
+script = ExtResource("3_kmbda")
+id = &"lichterkette"
+name_key = "CHAR_LICHTERKETTE"
+texture = ExtResource("9_lpemx")
+effects = Array[ExtResource("1_v1nw8")]([SubResource("Resource_eqtwc")])
+starting_weapons = Array[ExtResource("4_akeya")]([ExtResource("5_enmux"), ExtResource("6_8vsel"), ExtResource("7_58jp2"), ExtResource("8_q5uog")])
+weapon_slots = 12
+preferred_tags = Array[StringName]([])
+order = 7
+set_bonus_multiplier = Dictionary[StringName, float]({})
+banned_classes = Array[StringName]([])
+no_melee = false
+unlock = 3
+unlock_value = 6.0

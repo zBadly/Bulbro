@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_p857a"]
+[ext_resource type="Script" path="res://scripts/data/effects/class_bonus_effect.gd" id="2_a4hcf"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="3_hcsma"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="4_hisj3"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="5_uhryv"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="6_rft8l"]
+[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="7_6yh84"]
+[ext_resource type="Texture2D" path="res://art/characters/neonroehre.svg" id="8_u47bu"]
+
+[sub_resource type="Resource" id="Resource_3kgnn"]
+script = ExtResource("2_a4hcf")
+weapon_class = &"precise"
+stat = &"range"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_a5nii"]
+script = ExtResource("3_hcsma")
+stat = &"attack_speed"
+value = 25.0
+
+[sub_resource type="Resource" id="Resource_upidt"]
+script = ExtResource("3_hcsma")
+stat = &"dodge"
+value = -30.0
+
+[sub_resource type="Resource" id="Resource_pfc75"]
+script = ExtResource("3_hcsma")
+stat = &"engineering"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_vcbgf"]
+script = ExtResource("3_hcsma")
+stat = &"ranged_dmg"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_qd1ih"]
+script = ExtResource("4_hisj3")
+modifiers = Array[ExtResource("3_hcsma")]([SubResource("Resource_a5nii"), SubResource("Resource_upidt"), SubResource("Resource_pfc75"), SubResource("Resource_vcbgf")])
+
+[resource]
+script = ExtResource("5_uhryv")
+id = &"neonroehre"
+name_key = "CHAR_NEONROEHRE"
+texture = ExtResource("8_u47bu")
+effects = Array[ExtResource("1_p857a")]([SubResource("Resource_3kgnn"), SubResource("Resource_qd1ih")])
+starting_weapons = Array[ExtResource("6_rft8l")]([ExtResource("7_6yh84")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"crit"])
+order = 2
+set_bonus_multiplier = Dictionary[StringName, float]({})
+banned_classes = Array[StringName]([])
+no_melee = false
+unlock = 0
+unlock_value = 0.0

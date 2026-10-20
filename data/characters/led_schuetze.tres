@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_d86tu"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_bt2ts"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_pqin4"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_4t5gk"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_eedne"]
+[ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="6_pt0ju"]
+[ext_resource type="Texture2D" path="res://art/characters/led_schuetze.svg" id="7_1ovt4"]
+
+[sub_resource type="Resource" id="Resource_npnja"]
+script = ExtResource("2_bt2ts")
+stat = &"range"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_0fruo"]
+script = ExtResource("3_pqin4")
+modifiers = Array[ExtResource("2_bt2ts")]([SubResource("Resource_npnja")])
+
+[sub_resource type="Resource" id="Resource_dhlug"]
+script = ExtResource("2_bt2ts")
+stat = &"ranged_dmg"
+kind = 2
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_7rd5m"]
+script = ExtResource("2_bt2ts")
+stat = &"max_hp"
+kind = 2
+value = -25.0
+
+[sub_resource type="Resource" id="Resource_e07gv"]
+script = ExtResource("3_pqin4")
+modifiers = Array[ExtResource("2_bt2ts")]([SubResource("Resource_dhlug"), SubResource("Resource_7rd5m")])
+
+[resource]
+script = ExtResource("4_4t5gk")
+id = &"led_schuetze"
+name_key = "CHAR_LED_SCHUETZE"
+texture = ExtResource("7_1ovt4")
+effects = Array[ExtResource("1_d86tu")]([SubResource("Resource_0fruo"), SubResource("Resource_e07gv")])
+starting_weapons = Array[ExtResource("5_eedne")]([ExtResource("6_pt0ju")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"ranged", &"range"])
+order = 3
+set_bonus_multiplier = Dictionary[StringName, float]({})
+banned_classes = Array[StringName]([])
+no_melee = true
+unlock = 0
+unlock_value = 0.0

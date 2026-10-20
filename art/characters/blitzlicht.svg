@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="96" viewBox="0 0 72 96">
+  <!-- Blitzlicht: Blitzgerät mit gelbem Blitzfenster -->
+  <path d="M46,4 L38,16 L44,16 L36,28" fill="none" stroke="#2A1E2E" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M46,4 L38,16 L44,16 L36,28" fill="none" stroke="#FFD43B" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="24" y="64" width="24" height="28" rx="4" fill="#2E2E3D" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="8" y="22" width="56" height="46" rx="8" fill="#F4F0EA" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="14" y="28" width="44" height="14" rx="4" fill="#FFE066" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M18,32 L54,32" stroke="#FFF4B8" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="27" cy="52" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="45" cy="52" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="29" cy="48" r="2.2" fill="#FFFFFF"/>
+  <circle cx="47" cy="48" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,61 Q36,66 41,61" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -33,6 +33,16 @@ var preferred_tags: Array[StringName] = []
 var shop: Shop
 ## Höchste Zahl gleichzeitiger Strukturen in diesem Run (Freischaltung Taschenlampe).
 var max_structures: int = 0
+var run_stats: RunStats = RunStats.new()
+
+## Run-Einstellungen aus dem Menü (bleiben über start_run und Neustart erhalten).
+var character: CharacterData
+var starting_weapon: WeaponData
+var difficulty: DifficultyData
+
+
+func _ready() -> void:
+	Events.enemy_killed.connect(func(_data: EnemyData, _pos: Vector2, _info: DamageInfo) -> void: run_stats.enemies_killed += 1)
 
 
 ## Startet einen neuen Run. Ohne Seed wird ein zufälliger gewählt.
@@ -56,9 +66,31 @@ func start_run(seed_value: int = 0) -> void:
 	preferred_tags.clear()
 	shop = Shop.create_from_registry()
 	max_structures = 0
+	run_stats = RunStats.new()
+	_ensure_setup()
 	phase = Phase.WAVE
 	is_run_active = true
 	Events.run_started.emit(run_seed)
+
+
+const DEFAULT_CHARACTER: String = "res://data/characters/standardbirne.tres"
+const DEFAULT_DIFFICULTY: String = "res://data/difficulties/spannung_0.tres"
+
+
+## Ohne Menü (Szene direkt gestartet, Tests): Standardbirne, erste Startwaffe, Spannung 0.
+func _ensure_setup() -> void:
+	if character == null:
+		character = load(DEFAULT_CHARACTER)
+	if starting_weapon == null or not character.can_use_weapon(starting_weapon):
+		starting_weapon = character.starting_weapons[0] if not character.starting_weapons.is_empty() else null
+	if difficulty == null:
+		difficulty = load(DEFAULT_DIFFICULTY)
+
+
+func set_run_setup(p_character: CharacterData, p_weapon: WeaponData, p_difficulty: DifficultyData) -> void:
+	character = p_character
+	starting_weapon = p_weapon
+	difficulty = p_difficulty
 
 
 func end_run(victory: bool) -> void:

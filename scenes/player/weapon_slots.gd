@@ -64,6 +64,8 @@ func find_combine_partner(data: WeaponData, tier: int, exclude: Weapon = null) -
 
 ## Kann diese Waffe gekauft werden (freier Slot oder automatisches Kombinieren)?
 func can_accept(data: WeaponData, tier: int) -> bool:
+	if player != null and not player.can_use_weapon(data):
+		return false
 	return not is_full() or find_combine_partner(data, tier) != null
 
 

@@ -11,6 +11,8 @@ var owned_items: Dictionary[StringName, int] = {}
 var owned_weapons: Array[WeaponData] = []
 var preferred_tags: Array[StringName] = []
 var rng: RandomNumberGenerator
+## Filter für Waffenangebote (Charakter-Verbote). Ungültig = alle erlaubt.
+var weapon_allowed: Callable
 
 
 static func from_run(player: Player) -> ShopContext:
@@ -25,6 +27,7 @@ static func from_run(player: Player) -> ShopContext:
 		ctx.owned_weapons.append(weapon.data)
 	ctx.preferred_tags = GameState.preferred_tags
 	ctx.rng = GameState.rng
+	ctx.weapon_allowed = player.can_use_weapon
 	return ctx
 
 

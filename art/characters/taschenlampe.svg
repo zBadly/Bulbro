@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="96" viewBox="0 0 72 96">
+  <!-- Taschenlampe: aufrechter Körper mit Leuchtkopf -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#FFF4B8" stop-opacity="0.6"/><stop offset="1" stop-color="#FFF4B8" stop-opacity="0"/></radialGradient></defs><circle cx="36" cy="14" r="22" fill="url(#glow)"/>
+  <rect x="20" y="34" width="32" height="56" rx="8" fill="#4A90E2" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="24" y="38" width="6" height="46" rx="3" fill="#8CC0F2"/>
+  <path d="M12,14 L60,14 L52,36 L20,36 Z" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="36" cy="14" rx="24" ry="7" fill="#FFF4B8" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="32" y="76" width="8" height="8" rx="3" fill="#E74C3C" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="29" cy="50" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="43" cy="50" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="31" cy="46" r="2.2" fill="#FFFFFF"/>
+  <circle cx="45" cy="46" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,60 Q36,65 41,60" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+</svg>

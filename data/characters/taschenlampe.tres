@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_js1w3"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_sqdft"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_dftfm"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_ta7ki"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_6kdsa"]
+[ext_resource type="Resource" path="res://data/weapons/schraubenzieher.tres" id="6_6tkbm"]
+[ext_resource type="Texture2D" path="res://art/characters/taschenlampe.svg" id="7_5ym6d"]
+
+[sub_resource type="Resource" id="Resource_l12wp"]
+script = ExtResource("2_sqdft")
+stat = &"engineering"
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_bed7n"]
+script = ExtResource("2_sqdft")
+stat = &"damage_pct"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_i03ib"]
+script = ExtResource("3_dftfm")
+modifiers = Array[ExtResource("2_sqdft")]([SubResource("Resource_l12wp"), SubResource("Resource_bed7n")])
+
+[sub_resource type="Resource" id="Resource_1mt7o"]
+script = ExtResource("2_sqdft")
+stat = &"engineering"
+kind = 2
+value = 25.0
+
+[sub_resource type="Resource" id="Resource_ehrqa"]
+script = ExtResource("3_dftfm")
+modifiers = Array[ExtResource("2_sqdft")]([SubResource("Resource_1mt7o")])
+
+[resource]
+script = ExtResource("4_ta7ki")
+id = &"taschenlampe"
+name_key = "CHAR_TASCHENLAMPE"
+texture = ExtResource("7_5ym6d")
+effects = Array[ExtResource("1_js1w3")]([SubResource("Resource_i03ib"), SubResource("Resource_ehrqa")])
+starting_weapons = Array[ExtResource("5_6kdsa")]([ExtResource("6_6tkbm")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"structure"])
+order = 5
+set_bonus_multiplier = Dictionary[StringName, float]({})
+banned_classes = Array[StringName]([])
+no_melee = false
+unlock = 1
+unlock_value = 3.0

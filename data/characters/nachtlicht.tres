@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_t2emj"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_fkp22"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_dqui5"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_i1h2e"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_yq7on"]
+[ext_resource type="Resource" path="res://data/weapons/heilstrahl.tres" id="6_innj5"]
+[ext_resource type="Texture2D" path="res://art/characters/nachtlicht.svg" id="7_s71no"]
+
+[sub_resource type="Resource" id="Resource_5gt3u"]
+script = ExtResource("2_fkp22")
+stat = &"hp_regen"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_r43lm"]
+script = ExtResource("2_fkp22")
+stat = &"damage_pct"
+value = -25.0
+
+[sub_resource type="Resource" id="Resource_mgteh"]
+script = ExtResource("3_dqui5")
+modifiers = Array[ExtResource("2_fkp22")]([SubResource("Resource_5gt3u"), SubResource("Resource_r43lm")])
+
+[sub_resource type="Resource" id="Resource_qrgcg"]
+script = ExtResource("2_fkp22")
+stat = &"hp_regen"
+kind = 2
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_nh1by"]
+script = ExtResource("3_dqui5")
+modifiers = Array[ExtResource("2_fkp22")]([SubResource("Resource_qrgcg")])
+
+[resource]
+script = ExtResource("4_i1h2e")
+id = &"nachtlicht"
+name_key = "CHAR_NACHTLICHT"
+texture = ExtResource("7_s71no")
+effects = Array[ExtResource("1_t2emj")]([SubResource("Resource_mgteh"), SubResource("Resource_nh1by")])
+starting_weapons = Array[ExtResource("5_yq7on")]([ExtResource("6_innj5")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"regen", &"hp"])
+order = 9
+set_bonus_multiplier = Dictionary[StringName, float]({})
+banned_classes = Array[StringName]([])
+no_melee = false
+unlock = 5
+unlock_value = 200.0

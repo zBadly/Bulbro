@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DifficultyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/difficulty_data.gd" id="1_atepg"]
+
+[resource]
+script = ExtResource("1_atepg")
+level = 2
+name_key = "SPANNUNG_2"
+description_key = "SPANNUNG_2_DESC"
+enemy_hp_pct = 16.0
+enemy_damage_pct = 16.0
+special_wave_pairs = Array[Vector2i]([Vector2i(11, 12)])
+horde_chance = 0.4
+extra_enemy_types = true

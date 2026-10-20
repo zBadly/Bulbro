@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_lk6ux"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_4kun0"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_durma"]
+[ext_resource type="Script" path="res://scripts/data/effects/damage_random_enemies_action.gd" id="4_i1c0o"]
+[ext_resource type="Script" path="res://scripts/data/effects/on_spark_collected_effect.gd" id="5_e7dnx"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="6_jm61q"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="7_nelm7"]
+[ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="8_b6u11"]
+[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="9_30oet"]
+[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="10_2okta"]
+[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="11_uyfu3"]
+[ext_resource type="Texture2D" path="res://art/characters/discokugel.svg" id="12_3353g"]
+
+[sub_resource type="Resource" id="Resource_lu578"]
+script = ExtResource("2_4kun0")
+stat = &"luck"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_vhjej"]
+script = ExtResource("2_4kun0")
+stat = &"attack_speed"
+value = -60.0
+
+[sub_resource type="Resource" id="Resource_v8dp5"]
+script = ExtResource("2_4kun0")
+stat = &"xp_gain_pct"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_vl3yb"]
+script = ExtResource("3_durma")
+modifiers = Array[ExtResource("2_4kun0")]([SubResource("Resource_lu578"), SubResource("Resource_vhjej"), SubResource("Resource_v8dp5")])
+
+[sub_resource type="Resource" id="Resource_e7vxy"]
+script = ExtResource("2_4kun0")
+stat = &"luck"
+kind = 2
+value = 25.0
+
+[sub_resource type="Resource" id="Resource_lia6a"]
+script = ExtResource("3_durma")
+modifiers = Array[ExtResource("2_4kun0")]([SubResource("Resource_e7vxy")])
+
+[sub_resource type="Resource" id="Resource_54jg2"]
+script = ExtResource("4_i1c0o")
+count = 1
+base_damage = 1.0
+scalings = Dictionary[StringName, float]({
+&"luck": 0.15
+})
+
+[sub_resource type="Resource" id="Resource_3wkn3"]
+script = ExtResource("5_e7dnx")
+chance = 0.75
+action = SubResource("Resource_54jg2")
+
+[resource]
+script = ExtResource("6_jm61q")
+id = &"discokugel"
+name_key = "CHAR_DISCOKUGEL"
+texture = ExtResource("12_3353g")
+effects = Array[ExtResource("1_lk6ux")]([SubResource("Resource_vl3yb"), SubResource("Resource_lia6a"), SubResource("Resource_3wkn3")])
+starting_weapons = Array[ExtResource("7_nelm7")]([ExtResource("8_b6u11"), ExtResource("9_30oet"), ExtResource("10_2okta"), ExtResource("11_uyfu3")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"luck"])
+order = 6
+set_bonus_multiplier = Dictionary[StringName, float]({})
+banned_classes = Array[StringName]([])
+no_melee = false
+unlock = 2
+unlock_value = 300.0

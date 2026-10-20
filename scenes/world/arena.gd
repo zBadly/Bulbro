@@ -49,8 +49,9 @@ func _ready() -> void:
 	_floor.region_rect = Rect2(Vector2.ZERO, config.size)
 	_floor.position = rect.get_center()
 	player.arena_bounds = rect
-	for weapon: WeaponData in player.config.starting_weapons:
-		player.weapon_slots.add_weapon(weapon)
+	player.apply_character(GameState.character)
+	if GameState.starting_weapon != null:
+		player.weapon_slots.add_weapon(GameState.starting_weapon)
 
 	var lighting: bool = SaveManager.get_value(LIGHTING_SECTION, LIGHTING_KEY, true)
 	_darkness.color = config.darkness_color
@@ -60,6 +61,7 @@ func _ready() -> void:
 
 	_hud.bind(player, wave_manager)
 	player.died.connect(_on_player_died)
+	_pause_menu.give_up_requested.connect(player.kill)
 	wave_manager.run_won.connect(_on_run_won)
 	wave_manager.wave_ended.connect(_on_wave_ended)
 	wave_manager.wave_started.connect(_on_wave_started)
@@ -159,13 +161,13 @@ func _on_player_died() -> void:
 	_pause_menu.enabled = false
 	GameState.end_run(false)
 	await get_tree().create_timer(WAVES.game_over_delay).timeout
-	_game_over.show_result(false, wave_manager.get_wave_number())
+	_game_over.show_result(false, wave_manager.get_wave_number(), player)
 
 
 func _on_run_won() -> void:
 	_pause_menu.enabled = false
 	GameState.end_run(true)
-	_game_over.show_result(true, wave_manager.get_wave_number())
+	_game_over.show_result(true, wave_manager.get_wave_number(), player)
 
 
 ## Debug (F6): füllt die Arena bis zum Gegnerlimit (Performance-Test).

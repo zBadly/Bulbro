@@ -12,6 +12,9 @@ const PERCENT: float = 100.0
 var _base: StatBlock = StatBlock.new()
 var _modifiers: Array[StatModifier] = []
 var _cache: Dictionary[StringName, float] = {}
+## Abgeleitete Stats: to += floor(from x ratio). `from` darf selbst nicht abgeleitet sein.
+var _conversions: Array[Dictionary] = []
+var _owns_base: bool = false
 
 
 func _init(base: StatBlock = null) -> void:
@@ -48,6 +51,21 @@ func remove_modifiers(mods: Array[StatModifier]) -> void:
 		var index: int = _modifiers.find(mod)
 		if index >= 0:
 			_modifiers.remove_at(index)
+	_changed()
+
+
+## Erhöht einen Basiswert (z. B. Startboni eines Charakters, die nicht als "Zuwachs" zählen).
+## Die geteilte Basis-Resource wird dabei kopiert, nie verändert.
+func add_base_value(stat: StringName, value: float) -> void:
+	if not _owns_base:
+		_base = _base.duplicate(true)
+		_owns_base = true
+	_base.values[stat] = _base.get_value(stat) + value
+	_changed()
+
+
+func add_conversion(from_stat: StringName, to_stat: StringName, ratio: float) -> void:
+	_conversions.append({"from": from_stat, "to": to_stat, "ratio": ratio})
 	_changed()
 
 
@@ -89,7 +107,11 @@ func _compute(stat: StringName) -> float:
 				flat += mod.value
 			StatModifier.Kind.PERCENT:
 				percent += mod.value
-	return (_base.get_value(stat) + flat * get_gain_multiplier(stat)) * (1.0 + percent / PERCENT)
+	var value: float = (_base.get_value(stat) + flat * get_gain_multiplier(stat)) * (1.0 + percent / PERCENT)
+	for conversion: Dictionary in _conversions:
+		if conversion["to"] == stat:
+			value += floorf(maxf(0.0, get_stat(conversion["from"])) * conversion["ratio"])
+	return value
 
 
 func _changed() -> void:

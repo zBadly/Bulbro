@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_3yssm"]
+[ext_resource type="Script" path="res://scripts/data/effects/class_bonus_effect.gd" id="2_oy71n"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="3_acl64"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="4_ed2ex"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="5_3har3"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="6_7yu6f"]
+[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="7_40biv"]
+[ext_resource type="Texture2D" path="res://art/characters/gluehfaden_boxer.svg" id="8_4io72"]
+
+[sub_resource type="Resource" id="Resource_jagdv"]
+script = ExtResource("2_oy71n")
+weapon_class = &"unarmed"
+stat = &"attack_speed"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_djqek"]
+script = ExtResource("3_acl64")
+stat = &"dodge"
+value = 15.0
+
+[sub_resource type="Resource" id="Resource_k58xk"]
+script = ExtResource("3_acl64")
+stat = &"range"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_066qe"]
+script = ExtResource("3_acl64")
+stat = &"ranged_dmg"
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_y2agg"]
+script = ExtResource("4_ed2ex")
+modifiers = Array[ExtResource("3_acl64")]([SubResource("Resource_djqek"), SubResource("Resource_k58xk"), SubResource("Resource_066qe")])
+
+[resource]
+script = ExtResource("5_3har3")
+id = &"gluehfaden_boxer"
+name_key = "CHAR_GLUEHFADEN_BOXER"
+texture = ExtResource("8_4io72")
+effects = Array[ExtResource("1_3yssm")]([SubResource("Resource_jagdv"), SubResource("Resource_y2agg")])
+starting_weapons = Array[ExtResource("6_7yu6f")]([ExtResource("7_40biv")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"dodge", &"melee"])
+order = 1
+set_bonus_multiplier = Dictionary[StringName, float]({})
+banned_classes = Array[StringName]([])
+no_melee = false
+unlock = 0
+unlock_value = 0.0

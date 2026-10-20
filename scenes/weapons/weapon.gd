@@ -49,11 +49,13 @@ func get_tier_stats() -> WeaponTierStats:
 
 
 func get_range() -> float:
-	return CombatMath.effective_range(get_tier_stats().range, player.stats.get_stat(Stats.RANGE), data.is_melee())
+	var range_stat: float = player.stats.get_stat(Stats.RANGE) + player.class_bonus(Stats.RANGE, data.classes)
+	return CombatMath.effective_range(get_tier_stats().range, range_stat, data.is_melee())
 
 
 func get_cooldown() -> float:
-	return CombatMath.attack_cooldown(get_tier_stats().cooldown, player.stats.get_stat(Stats.ATTACK_SPEED))
+	var attack_speed: float = player.stats.get_stat(Stats.ATTACK_SPEED) + player.class_bonus(Stats.ATTACK_SPEED, data.classes)
+	return CombatMath.attack_cooldown(get_tier_stats().cooldown, attack_speed)
 
 
 func is_attacking() -> bool:

@@ -17,6 +17,8 @@ var max_hp: float = 0.0
 var hp: float = 0.0
 var damage: float = 0.0
 var speed: float = 0.0
+## Zusätzlicher HP-Faktor für diesen Spawn (z. B. Elites auf Welle 11/12, doppelter Boss).
+var hp_multiplier: float = 1.0
 
 var _alive: bool = false
 var _behavior: EnemyBehavior
@@ -53,10 +55,14 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	arena_bounds = bounds
 	rng = p_rng
 	global_position = spawn_position
-	max_hp = data.hp_for_wave(wave)
+	var difficulty: DifficultyData = GameState.difficulty
+	var hp_factor: float = 1.0 + (difficulty.enemy_hp_pct / CombatMath.PERCENT if difficulty != null else 0.0)
+	var damage_factor: float = 1.0 + (difficulty.enemy_damage_pct / CombatMath.PERCENT if difficulty != null else 0.0)
+	max_hp = data.hp_for_wave(wave) * hp_factor * hp_multiplier
 	hp = max_hp
-	damage = data.damage_for_wave(wave)
-	speed = rng.randf_range(data.speed_min, data.speed_max)
+	damage = data.damage_for_wave(wave) * damage_factor
+	var speed_factor: float = maxf(0.0, 1.0 + p_player.stats.get_stat(Stats.ENEMY_SPEED_PCT) / CombatMath.PERCENT)
+	speed = rng.randf_range(data.speed_min, data.speed_max) * speed_factor
 	knockback_velocity = Vector2.ZERO
 	_last_hit = null
 	_burn_ticks_left = 0
