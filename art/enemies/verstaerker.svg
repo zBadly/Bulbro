@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="64" viewBox="0 0 56 64">
+  <!-- Verstärker: Unterstützer mit roter Antenne und rotem Ring (Akzent Rot) -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#E74C3C" stop-opacity="0.7"/><stop offset="1" stop-color="#E74C3C" stop-opacity="0"/></radialGradient></defs><circle cx="28" cy="10" r="12" fill="url(#glow)"/>
+  <path d="M28,24 L28,10" stroke="#2A1E2E" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="28" cy="8" r="5" fill="#E74C3C" stroke="#2A1E2E" stroke-width="3"/>
+  <ellipse cx="28" cy="42" rx="21" ry="19" fill="#3A2A5C"/><ellipse cx="25.48" cy="39.72" rx="18.900000000000002" ry="16.72" fill="#5B3F8C"/><ellipse cx="18.549999999999997" cy="32.5" rx="4.62" ry="2.66" fill="#8A6BC0" transform="rotate(-30 18.549999999999997 32.5)"/><ellipse cx="28" cy="42" rx="21" ry="19" fill="none" stroke="#2A1E2E" stroke-width="4"/>
+  <ellipse cx="28" cy="42" rx="25" ry="8" fill="none" stroke="#2A1E2E" stroke-width="6"/>
+  <ellipse cx="28" cy="42" rx="25" ry="8" fill="none" stroke="#E74C3C" stroke-width="3"/>
+  <ellipse cx="21" cy="38" rx="4.5" ry="5.175" fill="#F7F0FF"/><ellipse cx="35" cy="38" rx="4.5" ry="5.175" fill="#F7F0FF"/><circle cx="22" cy="39" r="2.25" fill="#2A1E2E"/><circle cx="34" cy="39" r="2.25" fill="#2A1E2E"/>
+</svg>

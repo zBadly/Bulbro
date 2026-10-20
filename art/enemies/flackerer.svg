@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="64" viewBox="0 0 56 64">
+  <!-- Flackerer: Heiler mit grünem Heiligenschein (Akzent Grün) -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#7ED957" stop-opacity="0.7"/><stop offset="1" stop-color="#7ED957" stop-opacity="0"/></radialGradient></defs><circle cx="28" cy="14" r="16" fill="url(#glow)"/>
+  <ellipse cx="28" cy="12" rx="13" ry="5" fill="none" stroke="#2A1E2E" stroke-width="6"/>
+  <ellipse cx="28" cy="12" rx="13" ry="5" fill="none" stroke="#7ED957" stroke-width="3"/>
+  <ellipse cx="28" cy="40" rx="20" ry="20" fill="#3A2A5C"/><ellipse cx="25.6" cy="37.6" rx="18.0" ry="17.6" fill="#5B3F8C"/><ellipse cx="19.0" cy="30.0" rx="4.4" ry="2.8000000000000003" fill="#8A6BC0" transform="rotate(-30 19.0 30.0)"/><ellipse cx="28" cy="40" rx="20" ry="20" fill="none" stroke="#2A1E2E" stroke-width="4"/>
+  <ellipse cx="21" cy="38" rx="5" ry="5.75" fill="#F7F0FF"/><ellipse cx="35" cy="38" rx="5" ry="5.75" fill="#F7F0FF"/><circle cx="22" cy="39" r="2.5" fill="#2A1E2E"/><circle cx="34" cy="39" r="2.5" fill="#2A1E2E"/>
+  <path d="M24,49 Q28,52 32,49" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M28,22 L28,30 M24,26 L32,26" stroke="#7ED957" stroke-width="3" stroke-linecap="round"/>
+</svg>

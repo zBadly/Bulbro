@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/healer_data.gd" id="1_eebjo"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="2_t80md"]
+[ext_resource type="Texture2D" path="res://art/enemies/flackerer.svg" id="3_gbgst"]
+
+[sub_resource type="Resource" id="Resource_mv7nf"]
+script = ExtResource("1_eebjo")
+keep_distance = 300.0
+heal_interval = 2.5
+heal_radius = 180.0
+heal_pct = 15.0
+
+[resource]
+script = ExtResource("2_t80md")
+id = &"flackerer"
+name_key = "ENEMY_FLACKERER"
+texture = ExtResource("3_gbgst")
+collision_radius = 20.0
+base_hp = 10.0
+hp_per_wave = 8.0
+base_damage = 1.0
+damage_per_wave = 0.85
+speed_min = 400.0
+speed_max = 400.0
+knockback_resistance = 0.0
+behavior = SubResource("Resource_mv7nf")
+projectile_damage_base = 0.0
+projectile_damage_per_wave = 0.0
+sparks = 2
+guaranteed_crate = false
+legendary_crate = false
+despawnable = true
+is_elite = false
+is_boss = false
+death_spawn_count = 0

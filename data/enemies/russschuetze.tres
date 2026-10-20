@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/fx/enemy_projectile.svg" id="1_7g2ok"]
+[ext_resource type="Script" path="res://scripts/data/behaviors/orbit_shooter_data.gd" id="2_nts2d"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="3_w7sa7"]
+[ext_resource type="Texture2D" path="res://art/enemies/russschuetze.svg" id="4_tfn7s"]
+
+[sub_resource type="Resource" id="Resource_0dleb"]
+script = ExtResource("2_nts2d")
+orbit_radius = 240.0
+fire_interval_min = 1.6
+fire_interval_max = 2.4
+projectile_speed = 360.0
+projectile_range = 320.0
+projectile_texture = ExtResource("1_7g2ok")
+
+[resource]
+script = ExtResource("3_w7sa7")
+id = &"russschuetze"
+name_key = "ENEMY_RUSSSCHUETZE"
+texture = ExtResource("4_tfn7s")
+collision_radius = 16.0
+base_hp = 5.0
+hp_per_wave = 5.0
+base_damage = 1.0
+damage_per_wave = 1.0
+speed_min = 350.0
+speed_max = 350.0
+knockback_resistance = 0.0
+behavior = SubResource("Resource_0dleb")
+projectile_damage_base = 0.0
+projectile_damage_per_wave = 0.0
+sparks = 1
+guaranteed_crate = false
+legendary_crate = false
+despawnable = true
+is_elite = false
+is_boss = false
+death_spawn_count = 0

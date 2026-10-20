@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/chase_data.gd" id="1_06nx6"]
+[ext_resource type="Resource" path="res://data/enemies/russschuetze.tres" id="2_7w112"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="3_tgkiu"]
+[ext_resource type="Texture2D" path="res://art/enemies/brutsack.svg" id="4_8enar"]
+
+[sub_resource type="Resource" id="Resource_7g28i"]
+script = ExtResource("1_06nx6")
+
+[resource]
+script = ExtResource("3_tgkiu")
+id = &"brutsack"
+name_key = "ENEMY_BRUTSACK"
+texture = ExtResource("4_8enar")
+collision_radius = 28.0
+base_hp = 10.0
+hp_per_wave = 1.0
+base_damage = 1.0
+damage_per_wave = 0.85
+speed_min = 120.0
+speed_max = 120.0
+knockback_resistance = 0.0
+behavior = SubResource("Resource_7g28i")
+projectile_damage_base = 0.0
+projectile_damage_per_wave = 0.0
+sparks = 1
+guaranteed_crate = false
+legendary_crate = false
+despawnable = true
+is_elite = false
+is_boss = false
+death_spawn = ExtResource("2_7w112")
+death_spawn_count = 3

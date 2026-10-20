@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="230" height="230" viewBox="0 0 230 230">
+  <!-- Boss Der Dimmer: Drehregler-Kreatur mit Skalenring -->
+  <defs><radialGradient id="aura"><stop offset="0" stop-color="#9B59B6" stop-opacity="0.7"/><stop offset="1" stop-color="#9B59B6" stop-opacity="0"/></radialGradient></defs><circle cx="115" cy="115" r="112" fill="url(#aura)"/>
+  <circle cx="115" cy="118" r="96" fill="#3A2A5C" stroke="#2A1E2E" stroke-width="7"/>
+  <g stroke="#C9A8F2" stroke-width="6" stroke-linecap="round">
+    <path d="M115,30 L115,44 M175,55 L166,65 M200,118 L186,118 M175,181 L166,171 M55,181 L64,171 M30,118 L44,118 M55,55 L64,65"/>
+  </g>
+  <ellipse cx="115" cy="118" rx="72" ry="70" fill="#3A2A5C"/><ellipse cx="106.36" cy="109.6" rx="64.8" ry="61.6" fill="#5B3F8C"/><ellipse cx="82.6" cy="83.0" rx="15.84" ry="9.8" fill="#8A6BC0" transform="rotate(-30 82.6 83.0)"/><ellipse cx="115" cy="118" rx="72" ry="70" fill="none" stroke="#2A1E2E" stroke-width="7"/>
+  <rect x="107" y="44" width="16" height="36" rx="8" fill="#FFD43B" stroke="#2A1E2E" stroke-width="5"/>
+  <defs><radialGradient id="eyeglow"><stop offset="0" stop-color="#FFE066" stop-opacity="0.7"/><stop offset="1" stop-color="#FFE066" stop-opacity="0"/></radialGradient></defs><circle cx="115" cy="118" r="46" fill="url(#eyeglow)"/>
+  <ellipse cx="90" cy="118" rx="16" ry="20" fill="#FFE066" stroke="#2A1E2E" stroke-width="4"/>
+  <ellipse cx="140" cy="118" rx="16" ry="20" fill="#FFE066" stroke="#2A1E2E" stroke-width="4"/>
+  <path d="M66,92 L104,104 M164,92 L126,104" stroke="#2A1E2E" stroke-width="8" stroke-linecap="round"/>
+  <path d="M96,160 Q115,148 134,160" fill="none" stroke="#2A1E2E" stroke-width="6" stroke-linecap="round"/>
+</svg>

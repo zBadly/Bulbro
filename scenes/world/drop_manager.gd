@@ -23,6 +23,8 @@ func _on_enemy_killed(data: EnemyData, position: Vector2, info: DamageInfo) -> v
 	if info != null and info.spark_on_kill_chance > 0.0 and rng.randf() < info.spark_on_kill_chance:
 		sparks += 1
 	_spawn_sparks(sparks, position)
+	if data.legendary_crate:
+		_spawn_pickup(Pickup.Kind.LEGENDARY_CRATE, 1, position)
 	if data.guaranteed_crate:
 		_spawn_crate(position)
 	elif rng.randf() < Economy.battery_chance(DROPS.consumable_base_chance, _luck()):
@@ -87,6 +89,8 @@ func _sweep_pickups() -> void:
 				leftover += pickup.value
 			Pickup.Kind.CRATE:
 				GameState.add_crate()
+			Pickup.Kind.LEGENDARY_CRATE:
+				GameState.add_crate(true)
 		pickup.release()
 	if leftover > 0:
 		GameState.add_to_bag(leftover)

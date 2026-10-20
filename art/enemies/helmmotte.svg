@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
+  <!-- Helmmotte: robuste Motte mit grauem Helm -->
+  <path d="M24,26 C14,12 3,16 5,28 C6,36 15,38 24,32 Z M32,26 C42,12 53,16 51,28 C50,36 41,38 32,32 Z" fill="#6B4FA3" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="28" cy="34" rx="9" ry="13" fill="#3A2A5C"/><ellipse cx="26.92" cy="32.44" rx="8.1" ry="11.44" fill="#5B3F8C"/><ellipse cx="23.95" cy="27.5" rx="1.98" ry="1.8200000000000003" fill="#8A6BC0" transform="rotate(-30 23.95 27.5)"/><ellipse cx="28" cy="34" rx="9" ry="13" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <path d="M17,24 A11,11 0 0 1 39,24 L39,28 L17,28 Z" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="26" y="12" width="4" height="6" rx="1.5" fill="#C9CED3" stroke="#2A1E2E" stroke-width="2"/>
+  <path d="M20,22 L36,22" stroke="#C9CED3" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="24" cy="32" rx="3" ry="3.4499999999999997" fill="#F7F0FF"/><ellipse cx="32" cy="32" rx="3" ry="3.4499999999999997" fill="#F7F0FF"/><circle cx="25" cy="33" r="1.5" fill="#2A1E2E"/><circle cx="31" cy="33" r="1.5" fill="#2A1E2E"/>
+</svg>

@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/boss_phase_data.gd" id="1_on0j7"]
+[ext_resource type="Script" path="res://scripts/data/attacks/attack_pattern_data.gd" id="2_rwb8f"]
+[ext_resource type="Texture2D" path="res://art/fx/boss_orb.svg" id="3_yvvan"]
+[ext_resource type="Script" path="res://scripts/data/attacks/radial_burst_attack.gd" id="4_tmehi"]
+[ext_resource type="Script" path="res://scripts/data/behaviors/phased_data.gd" id="5_28a8p"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="6_q2kpn"]
+[ext_resource type="Texture2D" path="res://art/enemies/dimmer.svg" id="7_lrjlj"]
+
+[sub_resource type="Resource" id="Resource_hb2mj"]
+script = ExtResource("4_tmehi")
+count = 4
+aim_at_player = false
+rotation_step_deg = 12.0
+projectile_speed = 320.0
+projectile_range = 800.0
+projectile_texture = ExtResource("3_yvvan")
+cooldown = 0.25
+
+[sub_resource type="Resource" id="Resource_cx384"]
+script = ExtResource("1_on0j7")
+next_at_hp = 0.5
+movement = 3
+charge_interval = 3.0
+charge_windup = 0.5
+charge_time = 0.6
+charge_speed = 1000.0
+attacks = Array[ExtResource("2_rwb8f")]([SubResource("Resource_hb2mj")])
+
+[sub_resource type="Resource" id="Resource_4mpex"]
+script = ExtResource("4_tmehi")
+count = 20
+projectile_speed = 360.0
+projectile_range = 900.0
+projectile_texture = ExtResource("3_yvvan")
+cooldown = 1.6
+
+[sub_resource type="Resource" id="Resource_50bvy"]
+script = ExtResource("4_tmehi")
+count = 2
+aim_at_player = false
+rotation_step_deg = 19.0
+projectile_speed = 300.0
+projectile_range = 800.0
+projectile_texture = ExtResource("3_yvvan")
+cooldown = 0.2
+
+[sub_resource type="Resource" id="Resource_iu1gx"]
+script = ExtResource("1_on0j7")
+speed_multiplier = 0.7
+attacks = Array[ExtResource("2_rwb8f")]([SubResource("Resource_4mpex"), SubResource("Resource_50bvy")])
+
+[sub_resource type="Resource" id="Resource_yuobf"]
+script = ExtResource("5_28a8p")
+phases = Array[ExtResource("1_on0j7")]([SubResource("Resource_cx384"), SubResource("Resource_iu1gx")])
+
+[resource]
+script = ExtResource("6_q2kpn")
+id = &"dimmer"
+name_key = "ENEMY_DIMMER"
+texture = ExtResource("7_lrjlj")
+collision_radius = 95.0
+base_hp = 29000.0
+hp_per_wave = 0.0
+base_damage = 30.0
+damage_per_wave = 0.0
+speed_min = 230.0
+speed_max = 230.0
+knockback_resistance = 1.0
+behavior = SubResource("Resource_yuobf")
+projectile_damage_base = 23.0
+projectile_damage_per_wave = 0.0
+sparks = 0
+guaranteed_crate = false
+legendary_crate = false
+despawnable = false
+is_elite = false
+is_boss = true
+death_spawn_count = 0

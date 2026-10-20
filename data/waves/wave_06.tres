@@ -10,7 +10,7 @@
 [sub_resource type="Resource" id="Resource_oxm81"]
 script = ExtResource("1_julh7")
 enemy = ExtResource("2_rvs57")
-interval = 1.85
+interval = 1.9000000000000001
 group_min = 2
 group_max = 4
 start_time = 0.5
@@ -18,22 +18,21 @@ start_time = 0.5
 [sub_resource type="Resource" id="Resource_5xlyv"]
 script = ExtResource("1_julh7")
 enemy = ExtResource("3_nw887")
-interval = 6.1000000000000005
-group_min = 5
+interval = 6.2
+group_min = 4
 group_max = 7
 start_time = 3.0
 
 [sub_resource type="Resource" id="Resource_vsmkg"]
 script = ExtResource("1_julh7")
 enemy = ExtResource("4_0fpwu")
-interval = 6.95
-group_max = 2
+interval = 7.300000000000001
 start_time = 5.0
 
 [sub_resource type="Resource" id="Resource_oeked"]
 script = ExtResource("1_julh7")
 enemy = ExtResource("5_8vso8")
-interval = 7.800000000000001
+interval = 8.450000000000001
 start_time = 6.0
 
 [resource]

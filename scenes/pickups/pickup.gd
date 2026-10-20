@@ -3,7 +3,7 @@ extends Node2D
 ## Gepooltes Pickup: Funke, Batterie oder Ersatzteil-Karton.
 ## Funken werden im Aufsammelradius des Spielers angezogen, Verbrauchsgegenstände nur aus der Nähe.
 
-enum Kind { SPARK, BATTERY, CRATE }
+enum Kind { SPARK, BATTERY, CRATE, LEGENDARY_CRATE }
 
 const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 
@@ -34,6 +34,8 @@ func drop(p_kind: Kind, p_value: int, from: Vector2, to: Vector2, player: Player
 			_sprite.texture = DROPS.battery_texture
 		Kind.CRATE:
 			_sprite.texture = DROPS.crate_texture
+		Kind.LEGENDARY_CRATE:
+			_sprite.texture = DROPS.legendary_crate_texture
 	global_position = from
 	if _tween != null and _tween.is_valid():
 		_tween.kill()
@@ -71,9 +73,9 @@ func collect() -> void:
 			Events.spark_collected.emit()
 		Kind.BATTERY:
 			_player.heal(Economy.consumable_heal(DROPS.battery_heal, _player.stats.get_stat(Stats.CONSUMABLE_HEAL)))
-		Kind.CRATE:
+		Kind.CRATE, Kind.LEGENDARY_CRATE:
 			_player.heal(Economy.consumable_heal(DROPS.crate_heal, _player.stats.get_stat(Stats.CONSUMABLE_HEAL)))
-			GameState.add_crate()
+			GameState.add_crate(kind == Kind.LEGENDARY_CRATE)
 	release()
 
 

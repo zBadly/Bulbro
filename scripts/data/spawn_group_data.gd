@@ -11,3 +11,5 @@ extends Resource
 @export var start_time: float = 0.0
 ## Keine neuen Gruppen mehr nach dieser Wellenzeit (0 = bis zum Ende).
 @export var end_time: float = 0.0
+## Gruppe erscheint erst ab dieser Spannung (Flackerer ab Spannung 1).
+@export var min_difficulty: int = 0

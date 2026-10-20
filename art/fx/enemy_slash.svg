@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="28" viewBox="0 0 40 28">
+  <!-- Schnittwelle der Rußmutter -->
+  <path d="M8,4 Q34,14 8,24 Q22,14 8,4 Z" fill="#C9A8F2" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M14,8 Q28,14 14,20" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+</svg>

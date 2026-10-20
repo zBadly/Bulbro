@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/charge_data.gd" id="1_1jegf"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="2_gt38i"]
+[ext_resource type="Texture2D" path="res://art/enemies/schattenklotz.svg" id="3_nqff8"]
+
+[sub_resource type="Resource" id="Resource_1grjp"]
+script = ExtResource("1_1jegf")
+interval_min = 2.5
+interval_max = 3.5
+windup_time = 0.45
+charge_time = 0.5
+charge_speed = 700.0
+
+[resource]
+script = ExtResource("2_gt38i")
+id = &"schattenklotz"
+name_key = "ENEMY_SCHATTENKLOTZ"
+texture = ExtResource("3_nqff8")
+collision_radius = 30.0
+base_hp = 20.0
+hp_per_wave = 11.0
+base_damage = 2.0
+damage_per_wave = 0.85
+speed_min = 300.0
+speed_max = 300.0
+knockback_resistance = 0.8
+behavior = SubResource("Resource_1grjp")
+projectile_damage_base = 0.0
+projectile_damage_per_wave = 0.0
+sparks = 3
+guaranteed_crate = false
+legendary_crate = false
+despawnable = true
+is_elite = false
+is_boss = false
+death_spawn_count = 0

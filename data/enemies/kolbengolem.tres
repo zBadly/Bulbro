@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/boss_phase_data.gd" id="1_0o5cb"]
+[ext_resource type="Script" path="res://scripts/data/attacks/attack_pattern_data.gd" id="2_63swd"]
+[ext_resource type="Texture2D" path="res://art/fx/boss_orb.svg" id="3_75v76"]
+[ext_resource type="Script" path="res://scripts/data/attacks/radial_burst_attack.gd" id="4_w1e34"]
+[ext_resource type="Script" path="res://scripts/data/behaviors/phased_data.gd" id="5_s2wly"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="6_clixl"]
+[ext_resource type="Texture2D" path="res://art/enemies/kolbengolem.svg" id="7_ll6qr"]
+
+[sub_resource type="Resource" id="Resource_lhrnm"]
+script = ExtResource("4_w1e34")
+count = 8
+projectile_speed = 380.0
+projectile_range = 600.0
+projectile_texture = ExtResource("3_75v76")
+
+[sub_resource type="Resource" id="Resource_ptxi4"]
+script = ExtResource("1_0o5cb")
+next_at_hp = 0.6
+max_duration = 25.0
+movement = 3
+charge_interval = 2.0
+charge_windup = 0.4
+charge_time = 0.5
+charge_speed = 900.0
+charge_attack = SubResource("Resource_lhrnm")
+
+[sub_resource type="Resource" id="Resource_8rag0"]
+script = ExtResource("4_w1e34")
+count = 12
+projectile_speed = 420.0
+projectile_range = 650.0
+projectile_texture = ExtResource("3_75v76")
+
+[sub_resource type="Resource" id="Resource_yvc74"]
+script = ExtResource("1_0o5cb")
+movement = 3
+speed_multiplier = 1.1
+charge_interval = 1.3
+charge_windup = 0.3
+charge_time = 0.35
+charge_speed = 1000.0
+charge_attack = SubResource("Resource_8rag0")
+
+[sub_resource type="Resource" id="Resource_5yaqk"]
+script = ExtResource("5_s2wly")
+phases = Array[ExtResource("1_0o5cb")]([SubResource("Resource_ptxi4"), SubResource("Resource_yvc74")])
+
+[resource]
+script = ExtResource("6_clixl")
+id = &"kolbengolem"
+name_key = "ENEMY_KOLBENGOLEM"
+texture = ExtResource("7_ll6qr")
+collision_radius = 58.0
+base_hp = 1.0
+hp_per_wave = 750.0
+base_damage = 3.0
+damage_per_wave = 1.0
+speed_min = 180.0
+speed_max = 180.0
+knockback_resistance = 1.0
+behavior = SubResource("Resource_5yaqk")
+projectile_damage_base = 2.0
+projectile_damage_per_wave = 0.8
+sparks = 20
+guaranteed_crate = false
+legendary_crate = true
+despawnable = false
+is_elite = true
+is_boss = false
+death_spawn_count = 0

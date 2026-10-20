@@ -13,6 +13,9 @@ const SPARK_ICON: Texture2D = preload("res://art/pickups/spark.svg")
 const SPARK_TEXT_SIZE: int = 30
 const BAG_TEXT_SIZE: int = 20
 const BAG_COLOR: Color = Color("#FFD43B")
+const BOSS_BAR_SIZE: Vector2 = Vector2(720, 26)
+const BOSS_NAME_SIZE: int = 24
+const BOSS_COLOR: Color = Color("#9B59B6")
 
 var _hp_bar: ProgressBar
 var _hp_label: Label
@@ -24,6 +27,9 @@ var _banner: Label
 var _spark_label: Label
 var _bag_label: Label
 var _wave_manager: WaveManager
+var _boss_box: VBoxContainer
+## Elite/Boss -> eigener HP-Balken.
+var _boss_bars: Dictionary[Enemy, ProgressBar] = {}
 
 
 func _ready() -> void:
@@ -62,6 +68,9 @@ func _ready() -> void:
 	_timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	top.add_child(_timer_label)
 	top.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	_boss_box = VBoxContainer.new()
+	_boss_box.add_theme_constant_override("separation", ROW_GAP)
+	top.add_child(_boss_box)
 
 	_banner = UiStyle.make_label(BANNER_TEXT_SIZE)
 	_banner.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
@@ -74,6 +83,7 @@ func _ready() -> void:
 	Events.sparks_changed.connect(_on_sparks_changed)
 	Events.xp_changed.connect(set_xp)
 	Events.run_phase_changed.connect(_on_phase_changed)
+	Events.boss_spawned.connect(_on_boss_spawned)
 	_on_sparks_changed(GameState.sparks, GameState.bag)
 	set_xp(GameState.xp, GameState.xp_needed(), GameState.level)
 
@@ -98,6 +108,31 @@ func set_xp(current: float, needed: float, level: int) -> void:
 func _process(_delta: float) -> void:
 	if _wave_manager != null and _wave_manager.state == WaveManager.State.WAVE:
 		_timer_label.text = str(ceili(_wave_manager.time_left))
+	_update_boss_bars()
+
+
+func _on_boss_spawned(enemy: Enemy) -> void:
+	var name_label: Label = UiStyle.make_label(BOSS_NAME_SIZE, BOSS_COLOR)
+	name_label.text = tr(enemy.data.name_key)
+	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_boss_box.add_child(name_label)
+	var bar: ProgressBar = UiStyle.make_bar(UiStyle.HP_COLOR, BOSS_BAR_SIZE)
+	bar.max_value = 1.0
+	bar.value = 1.0
+	bar.set_meta(&"label", name_label)
+	_boss_box.add_child(bar)
+	_boss_bars[enemy] = bar
+
+
+func _update_boss_bars() -> void:
+	for enemy: Enemy in _boss_bars.keys():
+		var bar: ProgressBar = _boss_bars[enemy]
+		if not is_instance_valid(enemy) or not enemy.is_alive():
+			(bar.get_meta(&"label") as Label).queue_free()
+			bar.queue_free()
+			_boss_bars.erase(enemy)
+		else:
+			bar.value = enemy.hp / enemy.max_hp
 
 
 func _bar_label(bar: ProgressBar) -> Label:

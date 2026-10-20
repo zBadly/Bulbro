@@ -172,8 +172,10 @@ func _build_preview(parent: VBoxContainer) -> void:
 			continue
 		if wave.is_boss:
 			specials.append(tr("PREVIEW_BOSS") % wave.wave_number)
-		elif wave.is_elite:
+		elif GameState.special_waves.get(wave.wave_number, "") == WaveManager.SPECIAL_ELITE:
 			specials.append(tr("PREVIEW_ELITE") % wave.wave_number)
+		elif GameState.special_waves.get(wave.wave_number, "") == WaveManager.SPECIAL_HORDE:
+			specials.append(tr("PREVIEW_HORDE") % wave.wave_number)
 	label.text = tr("PREVIEW_TITLE") % (", ".join(specials) if not specials.is_empty() else tr("PREVIEW_NONE"))
 	parent.add_child(label)
 

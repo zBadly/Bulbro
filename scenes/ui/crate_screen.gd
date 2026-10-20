@@ -20,7 +20,7 @@ func open() -> void:
 	var price: int = Economy.inflated_price(_item.price, wave, player.stats.get_stat(Stats.ITEM_PRICE_PCT))
 	_recycle_value = Economy.recycle_value(price, SHOP.recycle_share, player.stats.get_stat(Stats.RECYCLE_PCT))
 
-	_add_title(tr("CRATE_TITLE"))
+	_add_title(tr("CRATE_LEGENDARY_TITLE") if GameState.pending_legendary_crates > 0 else tr("CRATE_TITLE"))
 	if GameState.pending_crates > 1:
 		_add_title(tr("CRATE_REMAINING") % (GameState.pending_crates - 1), SUBTITLE_SIZE)
 	var card: OfferCard = OfferCard.new()
@@ -38,6 +38,8 @@ func _roll_item() -> ItemData:
 		items.append(res as ItemData)
 	var rng: RandomNumberGenerator = GameState.rng
 	var tier: int = Rarity.roll_tier(GameState.current_wave, player.stats.get_stat(Stats.LUCK), RARITY, rng.randf())
+	if GameState.pending_legendary_crates > 0:
+		tier = Rarity.MAX_TIER
 	return Loot.pick_item(items, tier, GameState.item_counts(), GameState.preferred_tags, SHOP.preferred_tag_weight, rng)
 
 

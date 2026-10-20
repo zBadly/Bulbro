@@ -265,3 +265,17 @@ RUN_END_UNLOCKED,Neu freigeschaltet: %s,Newly unlocked: %s
 RUN_END_STATS,Level %d · %d Funken · %d Gegner besiegt,Level %d · %d sparks · %d enemies defeated
 RUN_END_WEAPONS,Waffen,Weapons
 RUN_END_ITEMS,Items,Items
+ENEMY_FLACKERER,Flackerer,Flickerer
+ENEMY_SCHATTENKLOTZ,Schattenklotz,Shadow Block
+ENEMY_HETZER,Hetzer,Hounder
+ENEMY_HELMMOTTE,Helmmotte,Helmet Moth
+ENEMY_BRUTSACK,Brutsack,Brood Sac
+ENEMY_RUSSSCHUETZE,Rußschütze,Soot Shooter
+ENEMY_VERSTAERKER,Verstärker,Amplifier
+ENEMY_KOLBENGOLEM,Kolbengolem,Piston Golem
+ENEMY_RUSSMUTTER,Rußmutter,Soot Mother
+ENEMY_SCHATTENWEBER,Schattenweber,Shadow Weaver
+ENEMY_DIMMER,Der Dimmer,The Dimmer
+ENEMY_FINSTERNIS,Die Finsternis,The Darkness
+CRATE_LEGENDARY_TITLE,Legendärer Karton,Legendary Crate
+PREVIEW_HORDE,Welle %d Horde,Wave %d horde

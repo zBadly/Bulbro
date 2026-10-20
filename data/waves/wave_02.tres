@@ -16,7 +16,7 @@ start_time = 0.5
 [sub_resource type="Resource" id="Resource_d88ok"]
 script = ExtResource("1_tltcp")
 enemy = ExtResource("3_ow1wx")
-interval = 6.800000000000001
+interval = 7.0
 group_min = 4
 group_max = 6
 start_time = 3.0

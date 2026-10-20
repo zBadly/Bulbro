@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150">
+  <!-- Elite Kolbengolem: Steinkörper mit Kolbenarmen, leuchtende Augen ohne Pupillen -->
+  <rect x="2" y="60" width="30" height="20" rx="6" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="5"/>
+  <rect x="118" y="60" width="30" height="20" rx="6" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="5"/>
+  <rect x="10" y="80" width="14" height="40" rx="5" fill="#6F757C" stroke="#2A1E2E" stroke-width="5"/>
+  <rect x="126" y="80" width="14" height="40" rx="5" fill="#6F757C" stroke="#2A1E2E" stroke-width="5"/>
+  <rect x="28" y="26" width="94" height="104" rx="26" fill="#3A2A5C"/>
+  <rect x="28" y="24" width="88" height="98" rx="26" fill="#5B3F8C"/>
+  <path d="M40,96 L110,96 M40,108 L110,108" stroke="#3A2A5C" stroke-width="5"/>
+  <ellipse cx="50" cy="40" rx="10" ry="5" fill="#8A6BC0" transform="rotate(-25 50 40)"/>
+  <rect x="28" y="26" width="94" height="104" rx="26" fill="none" stroke="#2A1E2E" stroke-width="6"/>
+  <rect x="44" y="132" width="20" height="14" rx="4" fill="#3A2A5C" stroke="#2A1E2E" stroke-width="5"/>
+  <rect x="86" y="132" width="20" height="14" rx="4" fill="#3A2A5C" stroke="#2A1E2E" stroke-width="5"/>
+  <defs><radialGradient id="eyeglow"><stop offset="0" stop-color="#FFD43B" stop-opacity="0.7"/><stop offset="1" stop-color="#FFD43B" stop-opacity="0"/></radialGradient></defs><circle cx="75" cy="62" r="34" fill="url(#eyeglow)"/>
+  <ellipse cx="60" cy="62" rx="9" ry="11" fill="#FFD43B" stroke="#2A1E2E" stroke-width="3"/>
+  <ellipse cx="90" cy="62" rx="9" ry="11" fill="#FFD43B" stroke="#2A1E2E" stroke-width="3"/>
+  <path d="M46,46 L68,52 M104,46 L82,52" stroke="#2A1E2E" stroke-width="6" stroke-linecap="round"/>
+</svg>

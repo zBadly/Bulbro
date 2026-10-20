@@ -14,6 +14,7 @@ extends Resource
 @export var spark_texture: Texture2D
 @export var battery_texture: Texture2D
 @export var crate_texture: Texture2D
+@export var legendary_crate_texture: Texture2D
 ## Verbrauchsgegenstände werden nur in diesem kleinen Radius angezogen.
 @export var consumable_pickup_radius: float = 0.0
 @export var collect_distance: float = 0.0

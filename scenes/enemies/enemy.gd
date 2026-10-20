@@ -4,6 +4,12 @@ extends Damageable
 ## Kontaktschaden per Abstandsprüfung (günstiger als Area2D bei 100 Gegnern).
 
 signal died(enemy: Enemy)
+## Bitte an den WaveManager, Gegner zu erzeugen (Beschwörung, Brutsack).
+signal summon_requested(data: EnemyData, count: int, position: Vector2)
+
+const OUTLINE_SHADER: Shader = preload("res://art/shaders/outline.gdshader")
+const BUFF_OUTLINE_PARAM: StringName = &"outline_color"
+const BUFF_COLOR: Color = Color("#E74C3C")
 
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 
@@ -17,6 +23,10 @@ var max_hp: float = 0.0
 var hp: float = 0.0
 var damage: float = 0.0
 var speed: float = 0.0
+var projectile_damage: float = 0.0
+## Multiplikator auf alle Tempos (Gegnertempo-Stat, Verstärker-Buff).
+var speed_factor: float = 1.0
+var is_buffed: bool = false
 ## Zusätzlicher HP-Faktor für diesen Spawn (z. B. Elites auf Welle 11/12, doppelter Boss).
 var hp_multiplier: float = 1.0
 
@@ -28,6 +38,8 @@ var _burn_damage: float = 0.0
 var _burn_ticks_left: int = 0
 var _burn_timer: float = 0.0
 var _burn_source: Player
+var _flash_material: ShaderMaterial
+var _buff_material: ShaderMaterial
 
 @onready var visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -43,6 +55,10 @@ func setup(p_data: EnemyData) -> void:
 	hit_height = half_height
 	_shape.position = Vector2(0.0, -half_height)
 	(_shape.shape as CircleShape2D).radius = data.collision_radius
+	_flash_material = _sprite.material as ShaderMaterial
+	_buff_material = ShaderMaterial.new()
+	_buff_material.shader = OUTLINE_SHADER
+	_buff_material.set_shader_parameter(BUFF_OUTLINE_PARAM, BUFF_COLOR)
 	_behavior = data.behavior.create_behavior()
 	_behavior.enemy = self
 	add_child(_behavior)
@@ -61,8 +77,11 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	max_hp = data.hp_for_wave(wave) * hp_factor * hp_multiplier
 	hp = max_hp
 	damage = data.damage_for_wave(wave) * damage_factor
-	var speed_factor: float = maxf(0.0, 1.0 + p_player.stats.get_stat(Stats.ENEMY_SPEED_PCT) / CombatMath.PERCENT)
+	projectile_damage = data.projectile_damage_for_wave(wave) * damage_factor
+	speed_factor = maxf(0.0, 1.0 + p_player.stats.get_stat(Stats.ENEMY_SPEED_PCT) / CombatMath.PERCENT)
 	speed = rng.randf_range(data.speed_min, data.speed_max) * speed_factor
+	is_buffed = false
+	_sprite.material = _flash_material
 	knockback_velocity = Vector2.ZERO
 	_last_hit = null
 	_burn_ticks_left = 0
@@ -73,6 +92,8 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	_alive = true
 	_behavior.reset()
 	Juice.spawn_pop(visual).finished.connect(_on_spawned, CONNECT_ONE_SHOT)
+	if data.is_boss or data.is_elite:
+		Events.boss_spawned.emit(self)
 
 
 func is_alive() -> bool:
@@ -105,6 +126,8 @@ func die() -> void:
 		return
 	_alive = false
 	Events.enemy_killed.emit(data, global_position, _last_hit)
+	if data.death_spawn != null and data.death_spawn_count > 0:
+		summon_requested.emit(data.death_spawn, data.death_spawn_count, global_position)
 	died.emit(self)
 	Juice.squash_pop(visual).finished.connect(_release, CONNECT_ONE_SHOT)
 
@@ -122,11 +145,49 @@ func despawn(animated: bool = false) -> void:
 
 
 func fire_projectile(direction: Vector2, projectile_speed: float, projectile_range: float, texture: Texture2D) -> void:
+	fire_projectile_from(get_hit_position(), direction, projectile_speed, projectile_range, texture)
+
+
+func fire_projectile_from(origin: Vector2, direction: Vector2, projectile_speed: float, projectile_range: float, texture: Texture2D) -> void:
 	var projectile_pool: ObjectPool = Pools.get_pool(get_tree(), Pools.ENEMY_PROJECTILES)
 	if projectile_pool == null:
 		return
 	var projectile: EnemyProjectile = projectile_pool.acquire() as EnemyProjectile
-	projectile.launch(get_hit_position(), direction, projectile_speed, projectile_range, damage, texture)
+	projectile.launch(origin, direction, projectile_speed, projectile_range, projectile_damage, texture)
+
+
+func heal(amount: float) -> void:
+	if _alive:
+		hp = minf(max_hp, hp + amount)
+
+
+## Verstärker-Buff: mehr HP, Schaden und Tempo, rote Kontur. Wirkt nur einmal.
+func apply_buff(hp_mult: float, damage_mult: float, speed_mult: float) -> void:
+	if not _alive or is_buffed:
+		return
+	is_buffed = true
+	max_hp *= hp_mult
+	hp *= hp_mult
+	damage *= damage_mult
+	projectile_damage *= damage_mult
+	speed *= speed_mult
+	speed_factor *= speed_mult
+	_sprite.material = _buff_material
+
+
+## Nächster lebender Verbündeter (für Heiler).
+func nearest_ally() -> Enemy:
+	var best: Enemy = null
+	var best_dist: float = INF
+	for target: Damageable in Hits.alive_targets(get_tree()):
+		var other: Enemy = target as Enemy
+		if other == null or other == self:
+			continue
+		var dist: float = other.global_position.distance_squared_to(global_position)
+		if dist < best_dist:
+			best = other
+			best_dist = dist
+	return best
 
 
 ## Überspannung: Brandschaden über Zeit. Ein stärkerer oder längerer Brand ersetzt den alten.

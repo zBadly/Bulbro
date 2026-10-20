@@ -1,45 +1,104 @@
 [gd_resource type="Resource" script_class="WaveData" format=3]
 
-[ext_resource type="Script" path="res://scripts/data/spawn_group_data.gd" id="1_qhj4a"]
-[ext_resource type="Resource" path="res://data/enemies/schattenling.tres" id="2_dl1gd"]
-[ext_resource type="Resource" path="res://data/enemies/motte.tres" id="3_m0qmi"]
-[ext_resource type="Resource" path="res://data/enemies/rammkaefer.tres" id="4_ojlv1"]
-[ext_resource type="Resource" path="res://data/enemies/russspucker.tres" id="5_jokfx"]
-[ext_resource type="Script" path="res://scripts/data/wave_data.gd" id="6_mxlr0"]
+[ext_resource type="Script" path="res://scripts/data/spawn_group_data.gd" id="1_en1d0"]
+[ext_resource type="Resource" path="res://data/enemies/schattenling.tres" id="2_ldqdi"]
+[ext_resource type="Resource" path="res://data/enemies/motte.tres" id="3_k2k0d"]
+[ext_resource type="Resource" path="res://data/enemies/rammkaefer.tres" id="4_pqtbr"]
+[ext_resource type="Resource" path="res://data/enemies/russspucker.tres" id="5_f2i7h"]
+[ext_resource type="Resource" path="res://data/enemies/flackerer.tres" id="6_jsx0y"]
+[ext_resource type="Resource" path="res://data/enemies/schattenklotz.tres" id="7_nssgs"]
+[ext_resource type="Resource" path="res://data/enemies/hetzer.tres" id="8_1451d"]
+[ext_resource type="Resource" path="res://data/enemies/helmmotte.tres" id="9_hcqpx"]
+[ext_resource type="Resource" path="res://data/enemies/brutsack.tres" id="10_px4n1"]
+[ext_resource type="Resource" path="res://data/enemies/russschuetze.tres" id="11_5v8gf"]
+[ext_resource type="Resource" path="res://data/enemies/verstaerker.tres" id="12_0gnqj"]
+[ext_resource type="Script" path="res://scripts/data/wave_data.gd" id="13_t48xe"]
 
-[sub_resource type="Resource" id="Resource_eueo4"]
-script = ExtResource("1_qhj4a")
-enemy = ExtResource("2_dl1gd")
-interval = 1.1
+[sub_resource type="Resource" id="Resource_pq3xe"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("2_ldqdi")
+interval = 1.2000000000000002
 group_min = 3
 group_max = 6
 start_time = 0.5
 
-[sub_resource type="Resource" id="Resource_en1d0"]
-script = ExtResource("1_qhj4a")
-enemy = ExtResource("3_m0qmi")
-interval = 4.05
+[sub_resource type="Resource" id="Resource_b44eo"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("3_k2k0d")
+interval = 4.1000000000000005
 group_min = 6
 group_max = 9
 start_time = 3.0
 
-[sub_resource type="Resource" id="Resource_ldqdi"]
-script = ExtResource("1_qhj4a")
-enemy = ExtResource("4_ojlv1")
-interval = 4.65
+[sub_resource type="Resource" id="Resource_7xvdw"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("4_pqtbr")
+interval = 4.7
 group_min = 2
 group_max = 3
 start_time = 5.0
 
-[sub_resource type="Resource" id="Resource_k2k0d"]
-script = ExtResource("1_qhj4a")
-enemy = ExtResource("5_jokfx")
-interval = 5.2
+[sub_resource type="Resource" id="Resource_ifrig"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("5_f2i7h")
+interval = 5.3500000000000005
 group_max = 2
 start_time = 6.0
 
+[sub_resource type="Resource" id="Resource_odtjr"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("6_jsx0y")
+interval = 9.4
+group_max = 2
+start_time = 8.0
+min_difficulty = 1
+
+[sub_resource type="Resource" id="Resource_gyqur"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("7_nssgs")
+interval = 7.5
+group_max = 2
+start_time = 7.0
+
+[sub_resource type="Resource" id="Resource_1yny5"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("8_1451d")
+interval = 6.65
+group_min = 2
+group_max = 3
+start_time = 9.0
+
+[sub_resource type="Resource" id="Resource_2pdmq"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("9_hcqpx")
+interval = 4.3
+group_min = 3
+group_max = 4
+start_time = 4.0
+
+[sub_resource type="Resource" id="Resource_rh0pl"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("10_px4n1")
+interval = 11.0
+group_max = 2
+start_time = 10.0
+
+[sub_resource type="Resource" id="Resource_h6ga5"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("11_5v8gf")
+interval = 7.0
+group_min = 2
+group_max = 4
+start_time = 6.0
+
+[sub_resource type="Resource" id="Resource_sgocb"]
+script = ExtResource("1_en1d0")
+enemy = ExtResource("12_0gnqj")
+interval = 16.0
+start_time = 12.0
+
 [resource]
-script = ExtResource("6_mxlr0")
+script = ExtResource("13_t48xe")
 wave_number = 17
 duration = 60.0
-groups = Array[ExtResource("1_qhj4a")]([SubResource("Resource_eueo4"), SubResource("Resource_en1d0"), SubResource("Resource_ldqdi"), SubResource("Resource_k2k0d")])
+groups = Array[ExtResource("1_en1d0")]([SubResource("Resource_pq3xe"), SubResource("Resource_b44eo"), SubResource("Resource_7xvdw"), SubResource("Resource_ifrig"), SubResource("Resource_odtjr"), SubResource("Resource_gyqur"), SubResource("Resource_1yny5"), SubResource("Resource_2pdmq"), SubResource("Resource_rh0pl"), SubResource("Resource_h6ga5"), SubResource("Resource_sgocb")])

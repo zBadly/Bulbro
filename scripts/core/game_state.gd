@@ -23,6 +23,10 @@ var pending_level_ups: int = 0
 var crates_this_wave: int = 0
 ## Eingesammelte Kartons, die am Wellenende geöffnet werden.
 var pending_crates: int = 0
+## Davon legendär (Elites/Boss): garantiert Tier IV.
+var pending_legendary_crates: int = 0
+## Sonderwellen dieses Runs nach Spannung: Wellennummer -> "elite" oder "horde".
+var special_waves: Dictionary[int, String] = {}
 var total_sparks_collected: int = 0
 var phase: Phase = Phase.WAVE
 ## Alle gekauften oder aus Kartons genommenen Items (Mehrfachbesitz möglich).
@@ -61,6 +65,8 @@ func start_run(seed_value: int = 0) -> void:
 	pending_level_ups = 0
 	crates_this_wave = 0
 	pending_crates = 0
+	pending_legendary_crates = 0
+	special_waves.clear()
 	total_sparks_collected = 0
 	items.clear()
 	preferred_tags.clear()
@@ -116,6 +122,7 @@ func advance_post_wave() -> void:
 
 func finish_crate() -> void:
 	pending_crates = maxi(0, pending_crates - 1)
+	pending_legendary_crates = maxi(0, pending_legendary_crates - 1)
 	advance_post_wave()
 
 
@@ -193,6 +200,8 @@ func add_xp(amount: float) -> void:
 	Events.xp_changed.emit(xp, xp_needed(), level)
 
 
-func add_crate() -> void:
+func add_crate(legendary: bool = false) -> void:
 	pending_crates += 1
+	if legendary:
+		pending_legendary_crates += 1
 	Events.crate_collected.emit(pending_crates)

@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/chase_data.gd" id="1_mljsd"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="2_nje4f"]
+[ext_resource type="Texture2D" path="res://art/enemies/helmmotte.svg" id="3_o4eox"]
+
+[sub_resource type="Resource" id="Resource_c68mi"]
+script = ExtResource("1_mljsd")
+
+[resource]
+script = ExtResource("2_nje4f")
+id = &"helmmotte"
+name_key = "ENEMY_HELMMOTTE"
+texture = ExtResource("3_o4eox")
+collision_radius = 18.0
+base_hp = 8.0
+hp_per_wave = 4.0
+base_damage = 1.0
+damage_per_wave = 1.0
+speed_min = 225.0
+speed_max = 275.0
+knockback_resistance = 0.3
+behavior = SubResource("Resource_c68mi")
+projectile_damage_base = 0.0
+projectile_damage_per_wave = 0.0
+sparks = 1
+guaranteed_crate = false
+legendary_crate = false
+despawnable = true
+is_elite = false
+is_boss = false
+death_spawn_count = 0

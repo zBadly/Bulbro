@@ -1,45 +1,95 @@
 [gd_resource type="Resource" script_class="WaveData" format=3]
 
-[ext_resource type="Script" path="res://scripts/data/spawn_group_data.gd" id="1_ft5ya"]
-[ext_resource type="Resource" path="res://data/enemies/schattenling.tres" id="2_2kktg"]
-[ext_resource type="Resource" path="res://data/enemies/motte.tres" id="3_yol8m"]
-[ext_resource type="Resource" path="res://data/enemies/rammkaefer.tres" id="4_f4d30"]
-[ext_resource type="Resource" path="res://data/enemies/russspucker.tres" id="5_dd7k7"]
-[ext_resource type="Script" path="res://scripts/data/wave_data.gd" id="6_wsvs4"]
+[ext_resource type="Script" path="res://scripts/data/spawn_group_data.gd" id="1_h7mre"]
+[ext_resource type="Resource" path="res://data/enemies/schattenling.tres" id="2_gfosy"]
+[ext_resource type="Resource" path="res://data/enemies/motte.tres" id="3_vonwq"]
+[ext_resource type="Resource" path="res://data/enemies/rammkaefer.tres" id="4_3i8ha"]
+[ext_resource type="Resource" path="res://data/enemies/russspucker.tres" id="5_wwrm5"]
+[ext_resource type="Resource" path="res://data/enemies/flackerer.tres" id="6_3p82t"]
+[ext_resource type="Resource" path="res://data/enemies/schattenklotz.tres" id="7_dt5us"]
+[ext_resource type="Resource" path="res://data/enemies/hetzer.tres" id="8_asgew"]
+[ext_resource type="Resource" path="res://data/enemies/helmmotte.tres" id="9_s6o3j"]
+[ext_resource type="Resource" path="res://data/enemies/brutsack.tres" id="10_7crq8"]
+[ext_resource type="Resource" path="res://data/enemies/russschuetze.tres" id="11_6vpid"]
+[ext_resource type="Script" path="res://scripts/data/wave_data.gd" id="12_l3nb1"]
 
-[sub_resource type="Resource" id="Resource_h7mre"]
-script = ExtResource("1_ft5ya")
-enemy = ExtResource("2_2kktg")
-interval = 1.25
+[sub_resource type="Resource" id="Resource_fleoq"]
+script = ExtResource("1_h7mre")
+enemy = ExtResource("2_gfosy")
+interval = 1.3
 group_min = 3
 group_max = 5
 start_time = 0.5
 
-[sub_resource type="Resource" id="Resource_gfosy"]
-script = ExtResource("1_ft5ya")
-enemy = ExtResource("3_yol8m")
-interval = 4.4
+[sub_resource type="Resource" id="Resource_xbsiw"]
+script = ExtResource("1_h7mre")
+enemy = ExtResource("3_vonwq")
+interval = 4.45
 group_min = 5
 group_max = 9
 start_time = 3.0
 
-[sub_resource type="Resource" id="Resource_vonwq"]
-script = ExtResource("1_ft5ya")
-enemy = ExtResource("4_f4d30")
-interval = 5.050000000000001
+[sub_resource type="Resource" id="Resource_26bkf"]
+script = ExtResource("1_h7mre")
+enemy = ExtResource("4_3i8ha")
+interval = 5.2
 group_min = 2
 group_max = 2
 start_time = 5.0
 
-[sub_resource type="Resource" id="Resource_3i8ha"]
-script = ExtResource("1_ft5ya")
-enemy = ExtResource("5_dd7k7")
-interval = 5.7
+[sub_resource type="Resource" id="Resource_pty3g"]
+script = ExtResource("1_h7mre")
+enemy = ExtResource("5_wwrm5")
+interval = 5.9
 group_max = 2
 start_time = 6.0
 
+[sub_resource type="Resource" id="Resource_l4i5f"]
+script = ExtResource("1_h7mre")
+enemy = ExtResource("6_3p82t")
+interval = 10.3
+group_max = 2
+start_time = 8.0
+min_difficulty = 1
+
+[sub_resource type="Resource" id="Resource_k3qjg"]
+script = ExtResource("1_h7mre")
+enemy = ExtResource("7_dt5us")
+interval = 8.5
+group_max = 2
+start_time = 7.0
+
+[sub_resource type="Resource" id="Resource_vhn87"]
+script = ExtResource("1_h7mre")
+enemy = ExtResource("8_asgew")
+interval = 7.800000000000001
+group_max = 2
+start_time = 9.0
+
+[sub_resource type="Resource" id="Resource_f548v"]
+script = ExtResource("1_h7mre")
+enemy = ExtResource("9_s6o3j")
+interval = 5.15
+group_min = 2
+group_max = 4
+start_time = 4.0
+
+[sub_resource type="Resource" id="Resource_l65gy"]
+script = ExtResource("1_h7mre")
+enemy = ExtResource("10_7crq8")
+interval = 13.0
+start_time = 10.0
+
+[sub_resource type="Resource" id="Resource_2xug4"]
+script = ExtResource("1_h7mre")
+enemy = ExtResource("11_6vpid")
+interval = 8.35
+group_min = 2
+group_max = 3
+start_time = 6.0
+
 [resource]
-script = ExtResource("6_wsvs4")
+script = ExtResource("12_l3nb1")
 wave_number = 15
 duration = 60.0
-groups = Array[ExtResource("1_ft5ya")]([SubResource("Resource_h7mre"), SubResource("Resource_gfosy"), SubResource("Resource_vonwq"), SubResource("Resource_3i8ha")])
+groups = Array[ExtResource("1_h7mre")]([SubResource("Resource_fleoq"), SubResource("Resource_xbsiw"), SubResource("Resource_26bkf"), SubResource("Resource_pty3g"), SubResource("Resource_l4i5f"), SubResource("Resource_k3qjg"), SubResource("Resource_vhn87"), SubResource("Resource_f548v"), SubResource("Resource_l65gy"), SubResource("Resource_2xug4")])

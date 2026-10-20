@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Rußschütze: kleiner Kreiser mit orange glühendem Rohr (Fernkampf) -->
+  <path d="M10,22 L2,16 M38,22 L46,16" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="24" cy="24" rx="16" ry="15" fill="#3A2A5C"/><ellipse cx="22.08" cy="22.2" rx="14.4" ry="13.2" fill="#5B3F8C"/><ellipse cx="16.8" cy="16.5" rx="3.52" ry="2.1" fill="#8A6BC0" transform="rotate(-30 16.8 16.5)"/><ellipse cx="24" cy="24" rx="16" ry="15" fill="none" stroke="#2A1E2E" stroke-width="4"/>
+  <ellipse cx="18" cy="20" rx="4" ry="4.6" fill="#F7F0FF"/><ellipse cx="30" cy="20" rx="4" ry="4.6" fill="#F7F0FF"/><circle cx="19" cy="21" r="2.0" fill="#2A1E2E"/><circle cx="29" cy="21" r="2.0" fill="#2A1E2E"/>
+  <ellipse cx="24" cy="32" rx="6" ry="4.5" fill="#3A2A5C" stroke="#2A1E2E" stroke-width="2.5"/>
+  <ellipse cx="24" cy="32.5" rx="3" ry="2" fill="#FF8C42"/>
+</svg>

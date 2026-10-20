@@ -1,0 +1,97 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/boss_phase_data.gd" id="1_tghap"]
+[ext_resource type="Script" path="res://scripts/data/attacks/attack_pattern_data.gd" id="2_fbrqp"]
+[ext_resource type="Texture2D" path="res://art/fx/boss_orb.svg" id="3_6374j"]
+[ext_resource type="Script" path="res://scripts/data/attacks/radial_burst_attack.gd" id="4_8bv5j"]
+[ext_resource type="Script" path="res://scripts/data/attacks/zone_attack.gd" id="5_k8h4i"]
+[ext_resource type="Script" path="res://scripts/data/behaviors/phased_data.gd" id="6_lajav"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="7_3hk8i"]
+[ext_resource type="Texture2D" path="res://art/enemies/finsternis.svg" id="8_1d02k"]
+
+[sub_resource type="Resource" id="Resource_wksfm"]
+script = ExtResource("4_8bv5j")
+count = 8
+aim_at_player = false
+projectile_speed = 320.0
+projectile_range = 500.0
+projectile_texture = ExtResource("3_6374j")
+
+[sub_resource type="Resource" id="Resource_ci8yg"]
+script = ExtResource("5_k8h4i")
+zone_count = 3
+zone_radius = 70.0
+spread = 260.0
+warning_time = 1.0
+burst = SubResource("Resource_wksfm")
+cooldown = 3.0
+
+[sub_resource type="Resource" id="Resource_1emgk"]
+script = ExtResource("1_tghap")
+next_at_hp = 0.75
+attacks = Array[ExtResource("2_fbrqp")]([SubResource("Resource_ci8yg")])
+
+[sub_resource type="Resource" id="Resource_veteq"]
+script = ExtResource("4_8bv5j")
+count = 12
+aim_at_player = false
+projectile_speed = 340.0
+projectile_range = 550.0
+projectile_texture = ExtResource("3_6374j")
+
+[sub_resource type="Resource" id="Resource_agte2"]
+script = ExtResource("5_k8h4i")
+zone_count = 4
+zone_radius = 110.0
+spread = 260.0
+warning_time = 1.0
+burst = SubResource("Resource_veteq")
+cooldown = 2.6
+
+[sub_resource type="Resource" id="Resource_haseg"]
+script = ExtResource("1_tghap")
+next_at_hp = 0.4
+attacks = Array[ExtResource("2_fbrqp")]([SubResource("Resource_agte2")])
+
+[sub_resource type="Resource" id="Resource_pcepg"]
+script = ExtResource("4_8bv5j")
+count = 16
+aim_at_player = false
+rotation_step_deg = 11.0
+projectile_speed = 340.0
+projectile_range = 800.0
+projectile_texture = ExtResource("3_6374j")
+cooldown = 2.0
+
+[sub_resource type="Resource" id="Resource_uqa6g"]
+script = ExtResource("1_tghap")
+speed_multiplier = 2.5
+attacks = Array[ExtResource("2_fbrqp")]([SubResource("Resource_agte2"), SubResource("Resource_pcepg")])
+
+[sub_resource type="Resource" id="Resource_plw3k"]
+script = ExtResource("6_lajav")
+phases = Array[ExtResource("1_tghap")]([SubResource("Resource_1emgk"), SubResource("Resource_haseg"), SubResource("Resource_uqa6g")])
+
+[resource]
+script = ExtResource("7_3hk8i")
+id = &"finsternis"
+name_key = "ENEMY_FINSTERNIS"
+texture = ExtResource("8_1d02k")
+collision_radius = 100.0
+base_hp = 29000.0
+hp_per_wave = 0.0
+base_damage = 30.0
+damage_per_wave = 0.0
+speed_min = 140.0
+speed_max = 140.0
+knockback_resistance = 1.0
+behavior = SubResource("Resource_plw3k")
+projectile_damage_base = 23.0
+projectile_damage_per_wave = 0.0
+sparks = 0
+guaranteed_crate = false
+legendary_crate = false
+despawnable = false
+is_elite = false
+is_boss = true
+death_spawn_count = 0

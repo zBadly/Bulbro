@@ -38,6 +38,28 @@ static func lightning(tree: SceneTree, from: Vector2, to: Vector2) -> void:
 		tween.finished.connect(line.queue_free)
 
 
+## Ring, der kurz aufleuchtet (z. B. Heilung des Flackerers).
+static func pulse(tree: SceneTree, position: Vector2, radius: float, color: Color) -> void:
+	var parent: Node2D = layer(tree)
+	if parent == null:
+		return
+	var fx: ExplosionFx = ExplosionFx.new()
+	fx.fill_color = Color(color, 0.25)
+	fx.ring_color = color
+	parent.add_child(fx)
+	fx.play(position, radius)
+
+
+## Rote, pulsierende Warnzone am Boden (Finsternis); verschwindet nach `duration`.
+static func zone_warning(tree: SceneTree, position: Vector2, radius: float, duration: float) -> void:
+	var parent: Node2D = layer(tree)
+	if parent == null:
+		return
+	var zone: ZoneWarningFx = ZoneWarningFx.new()
+	parent.add_child(zone)
+	zone.play(position, radius, duration)
+
+
 static func explosion(tree: SceneTree, position: Vector2, radius: float) -> void:
 	var parent: Node2D = layer(tree)
 	if parent == null:

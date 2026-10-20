@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="56" viewBox="0 0 60 56">
+  <!-- Hetzer: schlanker Läufer mit Magenta-Streifen (wird schneller) -->
+  <path d="M2,22 L12,22 M0,30 L10,30 M2,38 L12,38" stroke="#E056A0" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="34" cy="32" rx="22" ry="18" fill="#3A2A5C"/>
+  <ellipse cx="32" cy="30" rx="20" ry="16" fill="#5B3F8C"/>
+  <path d="M22,16 Q26,30 22,46 M32,14 Q36,30 32,48 M42,16 Q46,30 42,46" fill="none" stroke="#E056A0" stroke-width="3.5"/>
+  <ellipse cx="34" cy="32" rx="22" ry="18" fill="none" stroke="#2A1E2E" stroke-width="4"/>
+  <path d="M46,16 L52,6 M50,20 L58,12" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="34" cy="28" rx="4.5" ry="5.175" fill="#F7F0FF"/><ellipse cx="46" cy="28" rx="4.5" ry="5.175" fill="#F7F0FF"/><circle cx="35" cy="29" r="2.25" fill="#2A1E2E"/><circle cx="45" cy="29" r="2.25" fill="#2A1E2E"/>
+</svg>

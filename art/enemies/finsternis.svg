@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="250" height="230" viewBox="0 0 250 230">
+  <!-- Boss Die Finsternis: dunkle Wolke mit vielen Augen und Schattenranken -->
+  <defs><radialGradient id="aura"><stop offset="0" stop-color="#3A2A5C" stop-opacity="0.7"/><stop offset="1" stop-color="#3A2A5C" stop-opacity="0"/></radialGradient></defs><circle cx="125" cy="115" r="120" fill="url(#aura)"/>
+  <path d="M40,190 Q30,220 52,226 M90,200 Q86,226 104,228 M150,200 Q156,226 140,228 M206,190 Q222,218 198,226" fill="none" stroke="#2A1E2E" stroke-width="12" stroke-linecap="round"/>
+  <path d="M40,190 Q30,220 52,226 M90,200 Q86,226 104,228 M150,200 Q156,226 140,228 M206,190 Q222,218 198,226" fill="none" stroke="#3A2A5C" stroke-width="6" stroke-linecap="round"/>
+  <path d="M30,150 C0,120 20,64 64,66 C70,22 130,8 160,40 C200,26 246,62 228,110 C252,140 232,196 190,196 C160,214 90,214 62,196 C30,200 10,176 30,150 Z" fill="#241A3A" stroke="#2A1E2E" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M60,90 C70,60 110,48 140,62" fill="none" stroke="#5B3F8C" stroke-width="10" stroke-linecap="round"/>
+  <defs><radialGradient id="eyeglow"><stop offset="0" stop-color="#E74C3C" stop-opacity="0.7"/><stop offset="1" stop-color="#E74C3C" stop-opacity="0"/></radialGradient></defs><circle cx="125" cy="120" r="60" fill="url(#eyeglow)"/>
+  <ellipse cx="84" cy="118" rx="13" ry="14.95" fill="#FF6B5A"/><ellipse cx="136" cy="118" rx="13" ry="14.95" fill="#FF6B5A"/>
+  <ellipse cx="70" cy="150" rx="7" ry="8" fill="#FF6B5A"/><ellipse cx="180" cy="152" rx="7" ry="8" fill="#FF6B5A"/>
+  <ellipse cx="125" cy="80" rx="6" ry="7" fill="#FF6B5A"/><ellipse cx="190" cy="100" rx="5" ry="6" fill="#FF6B5A"/>
+  <path d="M100,165 Q125,150 150,165" fill="none" stroke="#FF6B5A" stroke-width="5" stroke-linecap="round"/>
+</svg>

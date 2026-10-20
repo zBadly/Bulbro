@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/boss_phase_data.gd" id="1_bp0nq"]
+[ext_resource type="Script" path="res://scripts/data/attacks/attack_pattern_data.gd" id="2_dnqgo"]
+[ext_resource type="Texture2D" path="res://art/fx/boss_orb.svg" id="3_bcicu"]
+[ext_resource type="Script" path="res://scripts/data/attacks/radial_burst_attack.gd" id="4_4red8"]
+[ext_resource type="Script" path="res://scripts/data/behaviors/phased_data.gd" id="5_cuj1i"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="6_2ugut"]
+[ext_resource type="Texture2D" path="res://art/enemies/schattenweber.svg" id="7_hflks"]
+
+[sub_resource type="Resource" id="Resource_xmgxe"]
+script = ExtResource("4_4red8")
+count = 16
+aim_at_player = false
+rotation_step_deg = 11.0
+projectile_speed = 300.0
+projectile_range = 700.0
+projectile_texture = ExtResource("3_bcicu")
+cooldown = 2.0
+
+[sub_resource type="Resource" id="Resource_r804v"]
+script = ExtResource("1_bp0nq")
+next_at_hp = 0.6
+max_duration = 25.0
+speed_multiplier = 0.7
+attacks = Array[ExtResource("2_dnqgo")]([SubResource("Resource_xmgxe")])
+
+[sub_resource type="Resource" id="Resource_3jexy"]
+script = ExtResource("4_4red8")
+count = 3
+rotation_step_deg = 17.0
+projectile_speed = 340.0
+projectile_range = 750.0
+projectile_texture = ExtResource("3_bcicu")
+cooldown = 0.18
+
+[sub_resource type="Resource" id="Resource_w34nh"]
+script = ExtResource("1_bp0nq")
+attacks = Array[ExtResource("2_dnqgo")]([SubResource("Resource_3jexy")])
+
+[sub_resource type="Resource" id="Resource_cbhhn"]
+script = ExtResource("5_cuj1i")
+phases = Array[ExtResource("1_bp0nq")]([SubResource("Resource_r804v"), SubResource("Resource_w34nh")])
+
+[resource]
+script = ExtResource("6_2ugut")
+id = &"schattenweber"
+name_key = "ENEMY_SCHATTENWEBER"
+texture = ExtResource("7_hflks")
+collision_radius = 52.0
+base_hp = 1.0
+hp_per_wave = 750.0
+base_damage = 3.0
+damage_per_wave = 1.0
+speed_min = 110.0
+speed_max = 110.0
+knockback_resistance = 1.0
+behavior = SubResource("Resource_cbhhn")
+projectile_damage_base = 2.0
+projectile_damage_per_wave = 0.8
+sparks = 20
+guaranteed_crate = false
+legendary_crate = true
+despawnable = false
+is_elite = true
+is_boss = false
+death_spawn_count = 0

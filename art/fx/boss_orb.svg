@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <!-- Boss-Projektil: heller Magenta-Kern mit Schein, damit es auf dem dunklen Boden lesbar bleibt -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#FF6EC7" stop-opacity="0.8"/><stop offset="1" stop-color="#FF6EC7" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="15" cy="15" r="15" fill="url(#glow)"/>
+  <circle cx="15" cy="15" r="8" fill="#E056A0" stroke="#2A1E2E" stroke-width="2.5"/>
+  <circle cx="13" cy="13" r="3" fill="#FFD1EC"/>
+</svg>

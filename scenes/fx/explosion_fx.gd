@@ -9,6 +9,9 @@ const RING_WIDTH: float = 6.0
 const GROW_TIME: float = 0.12
 const FADE_TIME: float = 0.18
 
+var fill_color: Color = FILL_COLOR
+var ring_color: Color = RING_COLOR
+
 var _radius: float = 0.0
 
 
@@ -26,6 +29,6 @@ func _set_radius(value: float) -> void:
 
 
 func _draw() -> void:
-	draw_circle(Vector2.ZERO, _radius, FILL_COLOR)
+	draw_circle(Vector2.ZERO, _radius, fill_color)
 	draw_arc(Vector2.ZERO, _radius, 0.0, TAU, 48, OUTLINE_COLOR, RING_WIDTH * 1.6, true)
-	draw_arc(Vector2.ZERO, _radius, 0.0, TAU, 48, RING_COLOR, RING_WIDTH, true)
+	draw_arc(Vector2.ZERO, _radius, 0.0, TAU, 48, ring_color, RING_WIDTH, true)
