@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_7h3dy"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_26u52"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_xlj23"]
+[ext_resource type="Texture2D" path="res://art/items/schutzbrille.svg" id="4_iixmb"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_sai5w"]
+
+[sub_resource type="Resource" id="Resource_7yw8d"]
+script = ExtResource("2_26u52")
+stat = &"crit_chance"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_4e1w5"]
+script = ExtResource("2_26u52")
+stat = &"armor"
+value = -1.0
+
+[sub_resource type="Resource" id="Resource_dwvey"]
+script = ExtResource("3_xlj23")
+modifiers = Array[ExtResource("2_26u52")]([SubResource("Resource_7yw8d"), SubResource("Resource_4e1w5")])
+
+[resource]
+script = ExtResource("5_sai5w")
+id = &"schutzbrille"
+name_key = "ITEM_SCHUTZBRILLE"
+tier = 2
+icon = ExtResource("4_iixmb")
+price = 35
+tags = Array[StringName]([&"crit"])
+effects = Array[ExtResource("1_7h3dy")]([SubResource("Resource_dwvey")])

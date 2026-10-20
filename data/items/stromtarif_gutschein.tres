@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_tv0qs"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_vlyx6"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_wiksg"]
+[ext_resource type="Texture2D" path="res://art/items/stromtarif_gutschein.svg" id="4_2nbxe"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_q1hpe"]
+
+[sub_resource type="Resource" id="Resource_vke8a"]
+script = ExtResource("2_vlyx6")
+stat = &"item_price_pct"
+value = -5.0
+
+[sub_resource type="Resource" id="Resource_1xnnn"]
+script = ExtResource("3_wiksg")
+modifiers = Array[ExtResource("2_vlyx6")]([SubResource("Resource_vke8a")])
+
+[resource]
+script = ExtResource("5_q1hpe")
+id = &"stromtarif_gutschein"
+name_key = "ITEM_STROMTARIF_GUTSCHEIN"
+icon = ExtResource("4_2nbxe")
+price = 15
+limit = 5
+tags = Array[StringName]([&"economy"])
+effects = Array[ExtResource("1_tv0qs")]([SubResource("Resource_1xnnn")])

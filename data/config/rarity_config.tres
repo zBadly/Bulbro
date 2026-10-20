@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RarityConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/rarity_config.gd" id="1_g0rrs"]
+
+[resource]
+script = ExtResource("1_g0rrs")
+unlock = Array[int]([1, 2, 4, 8])
+step = Array[float]([0.0, 0.06, 0.02, 0.0023])
+max_chance = Array[float]([1.0, 0.6, 0.25, 0.08])
+guaranteed_tier_2_level = 5
+guaranteed_tier_3_levels = Array[int]([10, 15, 20])
+guaranteed_tier_4_from_level = 25
+guaranteed_tier_4_every = 5

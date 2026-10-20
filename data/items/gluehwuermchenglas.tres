@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_jarli"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_5qwnh"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_6xgfe"]
+[ext_resource type="Texture2D" path="res://art/items/gluehwuermchenglas.svg" id="4_53f3t"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_lmqwd"]
+
+[sub_resource type="Resource" id="Resource_b63rl"]
+script = ExtResource("2_5qwnh")
+stat = &"luck"
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_e1dcc"]
+script = ExtResource("2_5qwnh")
+stat = &"damage_pct"
+value = -2.0
+
+[sub_resource type="Resource" id="Resource_7imj4"]
+script = ExtResource("3_6xgfe")
+modifiers = Array[ExtResource("2_5qwnh")]([SubResource("Resource_b63rl"), SubResource("Resource_e1dcc")])
+
+[resource]
+script = ExtResource("5_lmqwd")
+id = &"gluehwuermchenglas"
+name_key = "ITEM_GLUEHWUERMCHENGLAS"
+icon = ExtResource("4_53f3t")
+price = 20
+tags = Array[StringName]([&"luck"])
+effects = Array[ExtResource("1_jarli")]([SubResource("Resource_7imj4")])

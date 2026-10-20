@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://scenes/world/arena.gd" id="1_arena"]
 [ext_resource type="Resource" path="res://data/config/arena_config.tres" id="2_config"]
@@ -17,6 +17,9 @@
 [ext_resource type="Script" path="res://scenes/world/drop_manager.gd" id="15_drops"]
 [ext_resource type="Script" path="res://scenes/world/neutral_spawner.gd" id="16_neutral"]
 [ext_resource type="PackedScene" path="res://scenes/pickups/pickup.tscn" id="17_pickup"]
+[ext_resource type="Script" path="res://scenes/ui/crate_screen.gd" id="18_crate"]
+[ext_resource type="Script" path="res://scenes/ui/level_up_screen.gd" id="19_level_up"]
+[ext_resource type="Script" path="res://scenes/ui/shop_screen.gd" id="20_shop"]
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_arena")
@@ -79,6 +82,18 @@ layer = 10
 script = ExtResource("12_hud")
 
 [node name="DebugOverlay" parent="." instance=ExtResource("5_debug")]
+
+[node name="CrateScreen" type="CanvasLayer" parent="."]
+layer = 40
+script = ExtResource("18_crate")
+
+[node name="LevelUpScreen" type="CanvasLayer" parent="."]
+layer = 40
+script = ExtResource("19_level_up")
+
+[node name="ShopScreen" type="CanvasLayer" parent="."]
+layer = 40
+script = ExtResource("20_shop")
 
 [node name="PauseMenu" type="CanvasLayer" parent="."]
 layer = 50

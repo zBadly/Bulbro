@@ -105,6 +105,11 @@ func take_hit(raw_damage: float) -> int:
 	return amount
 
 
+func apply_item(item: ItemData) -> void:
+	for effect: ItemEffect in item.effects:
+		effect.apply(self)
+
+
 func heal(amount: float) -> void:
 	if is_dead or amount <= 0.0:
 		return

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Gutschein mit Prozent-Symbol (Preise) -->
+  <path d="M6,18 L58,18 L58,27 A5,5 0 0 0 58,37 L58,46 L6,46 L6,37 A5,5 0 0 0 6,27 Z" fill="#7ED957" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M10,22 L54,22 L54,26 L10,26 Z" fill="#B6EE98"/>
+  <path d="M38,24 L38,40" stroke="#2A1E2E" stroke-width="2.5" stroke-dasharray="3 3"/>
+  <circle cx="17" cy="27" r="3.5" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <circle cx="29" cy="38" r="3.5" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <path d="M30,25 L16,40" stroke="#2A1E2E" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M47,26 L44,33 L48,33 L45,40" fill="none" stroke="#FFD43B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

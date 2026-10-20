@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_7dm6q"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_acp7f"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_xurc3"]
+[ext_resource type="Texture2D" path="res://art/items/ueberspannung.svg" id="4_l010j"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_lqfqi"]
+
+[sub_resource type="Resource" id="Resource_slp1f"]
+script = ExtResource("2_acp7f")
+stat = &"damage_pct"
+value = 25.0
+
+[sub_resource type="Resource" id="Resource_eam7g"]
+script = ExtResource("2_acp7f")
+stat = &"armor"
+value = -3.0
+
+[sub_resource type="Resource" id="Resource_ql3a5"]
+script = ExtResource("3_xurc3")
+modifiers = Array[ExtResource("2_acp7f")]([SubResource("Resource_slp1f"), SubResource("Resource_eam7g")])
+
+[resource]
+script = ExtResource("5_lqfqi")
+id = &"ueberspannung"
+name_key = "ITEM_UEBERSPANNUNG"
+tier = 3
+icon = ExtResource("4_l010j")
+price = 80
+tags = Array[StringName]([&"damage"])
+effects = Array[ExtResource("1_7dm6q")]([SubResource("Resource_ql3a5")])

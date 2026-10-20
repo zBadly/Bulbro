@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Leuchtender Reaktorkern mit Ringen (HP, Regeneration) -->
+  <defs>
+    <radialGradient id="glow"><stop offset="0" stop-color="#7ED957" stop-opacity="0.7"/><stop offset="1" stop-color="#7ED957" stop-opacity="0"/></radialGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="url(#glow)"/>
+  <ellipse cx="32" cy="32" rx="26" ry="10" fill="none" stroke="#2A1E2E" stroke-width="7" transform="rotate(30 32 32)"/>
+  <ellipse cx="32" cy="32" rx="26" ry="10" fill="none" stroke="#9AA0A6" stroke-width="3" transform="rotate(30 32 32)"/>
+  <ellipse cx="32" cy="32" rx="26" ry="10" fill="none" stroke="#2A1E2E" stroke-width="7" transform="rotate(-30 32 32)"/>
+  <ellipse cx="32" cy="32" rx="26" ry="10" fill="none" stroke="#9AA0A6" stroke-width="3" transform="rotate(-30 32 32)"/>
+  <circle cx="32" cy="32" r="11" fill="#7ED957" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="28.5" cy="28.5" r="3.5" fill="#D8F7C6"/>
+</svg>

@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_0s40x"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_ejkar"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_5ke1s"]
+[ext_resource type="Texture2D" path="res://art/items/staubtuch.svg" id="4_8hdhx"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_g6jq8"]
+
+[sub_resource type="Resource" id="Resource_n78y8"]
+script = ExtResource("2_ejkar")
+stat = &"dodge"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_ki6x6"]
+script = ExtResource("2_ejkar")
+stat = &"max_hp"
+value = -1.0
+
+[sub_resource type="Resource" id="Resource_ehew5"]
+script = ExtResource("3_5ke1s")
+modifiers = Array[ExtResource("2_ejkar")]([SubResource("Resource_n78y8"), SubResource("Resource_ki6x6")])
+
+[resource]
+script = ExtResource("5_g6jq8")
+id = &"staubtuch"
+name_key = "ITEM_STAUBTUCH"
+icon = ExtResource("4_8hdhx")
+price = 15
+tags = Array[StringName]([&"dodge"])
+effects = Array[ExtResource("1_0s40x")]([SubResource("Resource_ehew5")])

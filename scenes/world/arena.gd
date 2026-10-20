@@ -23,6 +23,9 @@ const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 @onready var _hud: Hud = $Hud
 @onready var _game_over: GameOverScreen = $GameOver
 @onready var _pause_menu: PauseMenu = $PauseMenu
+@onready var _crate_screen: CrateScreen = $CrateScreen
+@onready var _level_up_screen: LevelUpScreen = $LevelUpScreen
+@onready var _shop_screen: ShopScreen = $ShopScreen
 @onready var _projectile_pool: ObjectPool = $Pools/PlayerProjectiles
 @onready var _damage_number_pool: ObjectPool = $Pools/DamageNumbers
 @onready var _enemy_projectile_pool: ObjectPool = $Pools/EnemyProjectiles
@@ -56,6 +59,10 @@ func _ready() -> void:
 	_hud.bind(player, wave_manager)
 	player.died.connect(_on_player_died)
 	wave_manager.run_won.connect(_on_run_won)
+	wave_manager.wave_ended.connect(_on_wave_ended)
+	Events.run_phase_changed.connect(_on_phase_changed)
+	for screen: FlowScreen in [_crate_screen, _level_up_screen, _shop_screen]:
+		screen.player = player
 	_drop_manager.player = player
 	_neutral_spawner.wave_manager = wave_manager
 	_neutral_spawner.player = player
@@ -93,14 +100,43 @@ func _setup_camera(rect: Rect2) -> void:
 	_camera.reset_smoothing()
 
 
+## Nach dem Wellenende kurz warten (Banner, Pop), dann Spiel anhalten und Kartons/Level-ups/Shop abarbeiten.
+func _on_wave_ended(wave_number: int) -> void:
+	if wave_number >= wave_manager.get_wave_count():
+		return
+	GameState.set_phase(GameState.Phase.POST_WAVE)
+	await get_tree().create_timer(WAVES.intermission_time).timeout
+	if player.is_dead:
+		return
+	get_tree().paused = true
+	GameState.advance_post_wave()
+
+
+func _on_phase_changed(phase: int) -> void:
+	for screen: FlowScreen in [_crate_screen, _level_up_screen, _shop_screen]:
+		screen.close()
+	match phase:
+		GameState.Phase.CRATES:
+			_crate_screen.open()
+		GameState.Phase.LEVEL_UP:
+			_level_up_screen.open()
+		GameState.Phase.SHOP:
+			_shop_screen.open()
+		GameState.Phase.WAVE:
+			get_tree().paused = false
+			wave_manager.start_next_wave()
+
+
 func _on_player_died() -> void:
 	_pause_menu.enabled = false
+	GameState.end_run(false)
 	await get_tree().create_timer(WAVES.game_over_delay).timeout
 	_game_over.show_result(false, wave_manager.get_wave_number())
 
 
 func _on_run_won() -> void:
 	_pause_menu.enabled = false
+	GameState.end_run(true)
 	_game_over.show_result(true, wave_manager.get_wave_number())
 
 

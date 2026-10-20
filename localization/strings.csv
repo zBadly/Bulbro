@@ -80,3 +80,29 @@ ENEMY_RUSSSPUCKER,Rußspucker,Soot Spitter
 HUD_LEVEL_PENDING,Lv %d  (+%d),Lv %d  (+%d)
 HUD_BAG,Beutel %d,Bag %d
 ENEMY_FUNKENDIEB,Funkendieb,Spark Thief
+TIER_1,Tier I,Tier I
+TIER_2,Tier II,Tier II
+TIER_3,Tier III,Tier III
+TIER_4,Tier IV,Tier IV
+MOD_GAIN,%s-Modifikationen %s,%s modifications %s
+PRICE,%d Funken,%d sparks
+CRATE_TITLE,Ersatzteil-Karton,Spare Parts Crate
+CRATE_REMAINING,noch %d weitere,%d more
+TAKE,Nehmen,Take
+RECYCLE,Recyceln (+%d),Recycle (+%d)
+LEVEL_UP_TITLE,Level %d erreicht!,Level %d reached!
+SPARKS_AVAILABLE,Funken: %d,Sparks: %d
+CHOOSE,Wählen,Choose
+REROLL,Neu würfeln (%d),Reroll (%d)
+SHOP_TITLE,Shop,Shop
+NEXT_WAVE,Nächste Welle,Next wave
+ITEM_ERSATZSICHERUNG,Ersatzsicherung,Spare Fuse
+ITEM_STAUBTUCH,Staubtuch,Dust Cloth
+ITEM_GLUEHWUERMCHENGLAS,Glühwürmchenglas,Firefly Jar
+ITEM_STROMTARIF_GUTSCHEIN,Stromtarif-Gutschein,Power Coupon
+ITEM_SCHUTZBRILLE,Schutzbrille,Safety Goggles
+ITEM_VORSCHALTGERAET,Vorschaltgerät,Ballast
+ITEM_WUERFELLAMPE,Würfellampe,Dice Lamp
+ITEM_HOCHSPANNUNGSSCHILD,Hochspannungsschild,High Voltage Shield
+ITEM_UEBERSPANNUNG,Überspannung,Overvoltage
+ITEM_KERNREAKTOR,Kernreaktor,Core Reactor

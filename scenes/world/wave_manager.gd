@@ -33,7 +33,6 @@ var _next_group_time: Array[float] = []
 var _pending: Array[PendingSpawn] = []
 var _active: Array[Enemy] = []
 var _enemy_pools: Dictionary[StringName, ObjectPool] = {}
-var _intermission_left: float = 0.0
 
 
 func start(p_player: Player, rect: Rect2, container: Node2D) -> void:
@@ -57,6 +56,11 @@ func get_wave_count() -> int:
 
 func active_enemy_count() -> int:
 	return _active.size()
+
+
+## Nach Wellenende, Level-ups und Shop aufgerufen.
+func start_next_wave() -> void:
+	start_wave(get_wave_number() + 1)
 
 
 func start_wave(number: int) -> void:
@@ -83,10 +87,6 @@ func _physics_process(delta: float) -> void:
 			_update_pending(delta)
 			if time_left <= 0.0:
 				_end_wave()
-		State.INTERMISSION:
-			_intermission_left -= delta
-			if _intermission_left <= 0.0:
-				start_wave(_wave.wave_number + 1)
 
 
 func _update_groups() -> void:
@@ -147,7 +147,7 @@ func _end_wave() -> void:
 		pending.marker.release()
 	_pending.clear()
 	for enemy: Enemy in _active.duplicate():
-		enemy.despawn()
+		enemy.despawn(true)
 	var projectile_pool: ObjectPool = Pools.get_pool(get_tree(), Pools.ENEMY_PROJECTILES)
 	if projectile_pool != null:
 		projectile_pool.release_all()
@@ -159,7 +159,6 @@ func _end_wave() -> void:
 		run_won.emit()
 	else:
 		state = State.INTERMISSION
-		_intermission_left = CONFIG.intermission_time
 
 
 func _get_pool(data: EnemyData) -> ObjectPool:

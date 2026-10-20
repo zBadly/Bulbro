@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Doppelblitz (Schaden) -->
+  <defs>
+    <radialGradient id="glow"><stop offset="0" stop-color="#FF8C42" stop-opacity="0.6"/><stop offset="1" stop-color="#FF8C42" stop-opacity="0"/></radialGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="url(#glow)"/>
+  <path d="M26,4 L12,34 L24,34 L18,60 L40,26 L28,26 L36,4 Z" fill="#FFD43B" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M46,14 L38,32 L45,32 L41,48 L54,28 L47,28 L52,14 Z" fill="#E74C3C" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M28,8 L20,26" stroke="#FFF4B8" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -73,6 +73,7 @@ func _ready() -> void:
 
 	Events.sparks_changed.connect(_on_sparks_changed)
 	Events.xp_changed.connect(set_xp)
+	Events.run_phase_changed.connect(_on_phase_changed)
 	_on_sparks_changed(GameState.sparks, GameState.bag)
 	set_xp(GameState.xp, GameState.xp_needed(), GameState.level)
 
@@ -128,3 +129,9 @@ func _on_wave_ended(number: int) -> void:
 	_timer_label.text = ""
 	_banner.text = tr("WAVE_CLEARED") % number
 	_banner.show()
+
+
+## Banner nur zwischen Wellenende und den Karton-/Level-up-/Shop-Bildschirmen zeigen.
+func _on_phase_changed(phase: int) -> void:
+	if phase != GameState.Phase.POST_WAVE:
+		_banner.hide()

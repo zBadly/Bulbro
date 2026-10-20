@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Schild mit Blitz (Rüstung, Max HP) -->
+  <path d="M32,6 L54,14 L52,34 Q48,50 32,58 Q16,50 12,34 L10,14 Z" fill="#4A90E2" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M32,10 L50,17 L49,24 Q32,18 14,24 L14,17 Z" fill="#8CC0F2"/>
+  <path d="M35,16 L24,36 L32,36 L28,50 L42,28 L34,28 L38,16 Z" fill="#FFD43B" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+</svg>

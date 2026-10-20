@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Gefaltetes Staubtuch (Ausweichen) -->
+  <path d="M10,22 Q32,12 54,22 L50,52 Q32,44 14,52 Z" fill="#7FC8E8" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M14,24 Q32,16 50,24 L48,32 Q32,25 16,32 Z" fill="#BFEFFF"/>
+  <path d="M18,38 Q32,32 46,38" fill="none" stroke="#4FA3C8" stroke-width="3" stroke-linecap="round"/>
+  <path d="M10,22 Q32,12 54,22 L50,52 Q32,44 14,52 Z" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="48" cy="12" r="3" fill="#F4F0EA"/>
+  <circle cx="54" cy="8" r="2" fill="#F4F0EA"/>
+</svg>

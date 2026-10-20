@@ -1,6 +1,11 @@
 extends Node
 ## Zustand des aktuellen Runs (Autoload "GameState").
-## Hält den Run-RNG mit Seed, damit Runs für Debugging reproduzierbar sind, sowie Funken, Beutel, XP und Level.
+## Hält den Run-RNG mit Seed, damit Runs für Debugging reproduzierbar sind, sowie Funken, Beutel, XP, Level, Items
+## und die State Machine des Ablaufs nach einer Welle:
+##   WAVE -> POST_WAVE -> CRATES (je Karton) -> LEVEL_UP (je Level) -> SHOP -> WAVE
+
+## Phasen eines Runs.
+enum Phase { WAVE, POST_WAVE, CRATES, LEVEL_UP, SHOP, ENDED }
 
 var run_seed: int = 0
 var current_wave: int = 0
@@ -19,6 +24,11 @@ var crates_this_wave: int = 0
 ## Eingesammelte Kartons, die am Wellenende geöffnet werden.
 var pending_crates: int = 0
 var total_sparks_collected: int = 0
+var phase: Phase = Phase.WAVE
+## Alle gekauften oder aus Kartons genommenen Items (Mehrfachbesitz möglich).
+var items: Array[ItemData] = []
+## Tags, die der aktuelle Charakter bevorzugt (Shop-Gewichtung).
+var preferred_tags: Array[StringName] = []
 
 
 ## Startet einen neuen Run. Ohne Seed wird ein zufälliger gewählt.
@@ -38,13 +48,76 @@ func start_run(seed_value: int = 0) -> void:
 	crates_this_wave = 0
 	pending_crates = 0
 	total_sparks_collected = 0
+	items.clear()
+	preferred_tags.clear()
+	phase = Phase.WAVE
 	is_run_active = true
 	Events.run_started.emit(run_seed)
 
 
 func end_run(victory: bool) -> void:
 	is_run_active = false
+	set_phase(Phase.ENDED)
 	Events.run_ended.emit(victory)
+
+
+func set_phase(new_phase: Phase) -> void:
+	phase = new_phase
+	Events.run_phase_changed.emit(new_phase)
+
+
+## Nächster Schritt nach einer Welle: erst alle Kartons, dann alle Level-ups, dann der Shop.
+func advance_post_wave() -> void:
+	if pending_crates > 0:
+		set_phase(Phase.CRATES)
+	elif pending_level_ups > 0:
+		set_phase(Phase.LEVEL_UP)
+	else:
+		set_phase(Phase.SHOP)
+
+
+func finish_crate() -> void:
+	pending_crates = maxi(0, pending_crates - 1)
+	advance_post_wave()
+
+
+func finish_level_up() -> void:
+	pending_level_ups = maxi(0, pending_level_ups - 1)
+	Events.xp_changed.emit(xp, xp_needed(), level)
+	advance_post_wave()
+
+
+## Level, dessen Upgrade gerade gewählt wird (für die garantierte Seltenheit).
+func level_being_upgraded() -> int:
+	return level - pending_level_ups + 1
+
+
+func item_count(item_id: StringName) -> int:
+	var count: int = 0
+	for item: ItemData in items:
+		if item.id == item_id:
+			count += 1
+	return count
+
+
+func item_counts() -> Dictionary[StringName, int]:
+	var counts: Dictionary[StringName, int] = {}
+	for item: ItemData in items:
+		counts[item.id] = counts.get(item.id, 0) + 1
+	return counts
+
+
+func add_item(item: ItemData) -> void:
+	items.append(item)
+	Events.item_added.emit(item)
+
+
+## Zieht Funken ab, wenn genug vorhanden sind.
+func spend(amount: int) -> bool:
+	if amount > sparks:
+		return false
+	add_sparks(-amount)
+	return true
 
 
 func xp_needed() -> float:

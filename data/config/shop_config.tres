@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ShopConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/shop_config.gd" id="1_qnlro"]
+
+[resource]
+script = ExtResource("1_qnlro")
+offer_count = 4
+weapon_offer_chance = 0.35
+class_bias_chance = 0.15
+reroll_increment_factor = 0.5
+recycle_share = 0.25
+preferred_tag_weight = 2.0
+upgrade_card_count = 4

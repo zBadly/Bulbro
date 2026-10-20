@@ -39,7 +39,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if enabled and event.is_action_pressed(&"pause"):
+	if enabled and GameState.phase == GameState.Phase.WAVE and event.is_action_pressed(&"pause"):
 		_toggle()
 		get_viewport().set_input_as_handled()
 

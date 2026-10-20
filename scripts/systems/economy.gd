@@ -7,6 +7,9 @@ const PERCENT: float = 100.0
 const XP_LEVEL_OFFSET: int = 3
 ## Aufladung wächst nach jeder Welle um 5 % (aufgerundet), nur wenn positiv.
 const HARVESTING_GROWTH: float = 0.05
+## Inflation (GDD 7): pro Welle + (10 % des Grundpreises + 1)
+const INFLATION_SHARE: float = 0.1
+const INFLATION_FLAT: float = 1.0
 
 
 ## XP, die von `level` auf `level + 1` nötig sind.
@@ -50,3 +53,21 @@ static func consumable_heal(base_heal: float, bonus: float) -> float:
 ## Schaden an Leuchtkristallen: mindestens so viel, dass er nach max_hits Treffern zerbricht.
 static func crystal_hit_damage(damage: float, max_hp: float, max_hits: int) -> float:
 	return maxf(damage, ceilf(max_hp / max_hits))
+
+
+## Preis nach Inflation und Preis-Stat: Grundpreis + Welle x (10 % Grundpreis + 1), dann x (1 + pct/100).
+static func inflated_price(base_price: int, wave: int, item_price_pct: float) -> int:
+	var price: float = base_price + wave * (base_price * INFLATION_SHARE + INFLATION_FLAT)
+	return maxi(1, roundi(price * maxf(0.0, 1.0 + item_price_pct / PERCENT)))
+
+
+## Rerollpreis: erster = Welle + Zuschlag, jeder weitere + Zuschlag. Zuschlag = max(1, Welle x Faktor).
+static func reroll_price(wave: int, rerolls_done: int, increment_factor: float, reroll_price_pct: float) -> int:
+	var increment: int = maxi(1, roundi(wave * increment_factor))
+	var price: float = (wave + increment * (rerolls_done + 1)) * maxf(0.0, 1.0 + reroll_price_pct / PERCENT)
+	return maxi(1, roundi(price))
+
+
+## Funken beim Recyceln.
+static func recycle_value(price: int, share: float) -> int:
+	return maxi(1, floori(price * share))

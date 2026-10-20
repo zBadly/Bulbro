@@ -54,6 +54,14 @@ func get_stat(stat: StringName) -> float:
 	return _cache[stat]
 
 
+## Wert des Stats, als wären `extra` zusätzlich aktiv (Vorschau im Shop, ohne Zustand zu ändern).
+func get_stat_with(stat: StringName, extra: Array[StatModifier]) -> float:
+	_modifiers.append_array(extra)
+	var value: float = _compute(stat)
+	_modifiers.resize(_modifiers.size() - extra.size())
+	return value
+
+
 func get_gain_multiplier(stat: StringName) -> float:
 	var gain: float = 0.0
 	for mod: StatModifier in _modifiers:

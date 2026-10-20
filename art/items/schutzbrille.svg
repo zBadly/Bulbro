@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Schutzbrille (Krit) -->
+  <path d="M4,30 Q32,22 60,30" fill="none" stroke="#2A1E2E" stroke-width="8" stroke-linecap="round"/>
+  <path d="M4,30 Q32,22 60,30" fill="none" stroke="#5A5F66" stroke-width="3" stroke-linecap="round"/>
+  <rect x="8" y="24" width="22" height="20" rx="9" fill="#F28C38" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="34" y="24" width="22" height="20" rx="9" fill="#F28C38" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="17" cy="31" rx="5" ry="3" fill="#FFD0A0"/>
+  <ellipse cx="43" cy="31" rx="5" ry="3" fill="#FFD0A0"/>
+  <path d="M30,32 L34,32" stroke="#2A1E2E" stroke-width="4"/>
+</svg>

@@ -94,13 +94,16 @@ func die() -> void:
 	Juice.squash_pop(visual).finished.connect(_release, CONNECT_ONE_SHOT)
 
 
-## Verschwinden ohne Drop (Gegnerlimit, Wellenende).
-func despawn() -> void:
+## Verschwinden ohne Drop: sofort (Gegnerlimit) oder mit Pop-Animation (Wellenende).
+func despawn(animated: bool = false) -> void:
 	if not _alive:
 		return
 	_alive = false
 	died.emit(self)
-	_release()
+	if animated:
+		Juice.squash_pop(visual).finished.connect(_release, CONNECT_ONE_SHOT)
+	else:
+		_release()
 
 
 func fire_projectile(direction: Vector2, projectile_speed: float, projectile_range: float, texture: Texture2D) -> void:

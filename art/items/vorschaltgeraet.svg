@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Vorschaltgerät: Kasten mit Kabeln (Max HP) -->
+  <path d="M6,40 Q2,52 12,54" fill="none" stroke="#2A1E2E" stroke-width="7" stroke-linecap="round"/>
+  <path d="M6,40 Q2,52 12,54" fill="none" stroke="#E74C3C" stroke-width="3" stroke-linecap="round"/>
+  <path d="M58,40 Q62,52 52,54" fill="none" stroke="#2A1E2E" stroke-width="7" stroke-linecap="round"/>
+  <path d="M58,40 Q62,52 52,54" fill="none" stroke="#4A90E2" stroke-width="3" stroke-linecap="round"/>
+  <rect x="8" y="16" width="48" height="30" rx="6" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="12" y="20" width="40" height="6" rx="3" fill="#C9CED3"/>
+  <rect x="20" y="30" width="24" height="10" rx="3" fill="#5A5F66" stroke="#2A1E2E" stroke-width="3"/>
+  <path d="M28,32 L26,36 L30,36 L28,40" fill="none" stroke="#FFD43B" stroke-width="2" stroke-linejoin="round"/>
+</svg>

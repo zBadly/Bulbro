@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/upgrade_data.gd" id="1_1q11b"]
+
+[resource]
+script = ExtResource("1_1q11b")
+id = &"upgrade_range"
+stat = &"range"
+tier_values = Array[float]([15.0, 30.0, 45.0, 60.0])

@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_vw26w"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_48mq5"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_yskew"]
+[ext_resource type="Texture2D" path="res://art/items/vorschaltgeraet.svg" id="4_f1dc5"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_tsq4v"]
+
+[sub_resource type="Resource" id="Resource_iun2f"]
+script = ExtResource("2_48mq5")
+stat = &"max_hp"
+value = 8.0
+
+[sub_resource type="Resource" id="Resource_54fag"]
+script = ExtResource("2_48mq5")
+stat = &"dodge"
+value = -4.0
+
+[sub_resource type="Resource" id="Resource_634wa"]
+script = ExtResource("3_yskew")
+modifiers = Array[ExtResource("2_48mq5")]([SubResource("Resource_iun2f"), SubResource("Resource_54fag")])
+
+[resource]
+script = ExtResource("5_tsq4v")
+id = &"vorschaltgeraet"
+name_key = "ITEM_VORSCHALTGERAET"
+tier = 2
+icon = ExtResource("4_f1dc5")
+price = 40
+tags = Array[StringName]([&"hp"])
+effects = Array[ExtResource("1_vw26w")]([SubResource("Resource_634wa")])

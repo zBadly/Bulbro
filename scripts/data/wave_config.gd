@@ -10,7 +10,7 @@ extends Resource
 ## Radius, in dem die Mitglieder einer Gruppe um den Gruppenmittelpunkt erscheinen.
 @export var group_radius: float = 0.0
 @export var spawn_position_attempts: int = 0
-## Pause zwischen zwei Wellen (bis der Shop existiert).
+## Zeit zwischen Wellenende (Banner, Pop der Gegner) und den Bildschirmen für Kartons/Level-ups/Shop.
 @export var intermission_time: float = 0.0
 ## Verzögerung zwischen Tod des Spielers und Game-Over-Bildschirm (Tod-Animation).
 @export var game_over_delay: float = 0.0
