@@ -1,6 +1,13 @@
-# Godot 4
+# Godot 4 (Import-Cache, Editor-Daten)
 .godot/
+*.tmp
+
+# Exporte
 /android/
-*.translation
+/build/
+/exports/
 export_presets.cfg
+*.translation
+
+# GUT
 .gutconfig.local.json
