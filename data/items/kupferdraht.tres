@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_nli2w"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_u1cjx"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_wn3lf"]
+[ext_resource type="Texture2D" path="res://art/items/kupferdraht.svg" id="4_f7rq6"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_3qafi"]
+
+[sub_resource type="Resource" id="Resource_yl052"]
+script = ExtResource("2_u1cjx")
+stat = &"elemental_dmg"
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_lbmlw"]
+script = ExtResource("2_u1cjx")
+stat = &"armor"
+value = -1.0
+
+[sub_resource type="Resource" id="Resource_bhlxa"]
+script = ExtResource("3_wn3lf")
+modifiers = Array[ExtResource("2_u1cjx")]([SubResource("Resource_yl052"), SubResource("Resource_lbmlw")])
+
+[resource]
+script = ExtResource("5_3qafi")
+id = &"kupferdraht"
+name_key = "ITEM_KUPFERDRAHT"
+icon = ExtResource("4_f7rq6")
+price = 18
+tags = Array[StringName]([&"elemental"])
+effects = Array[ExtResource("1_nli2w")]([SubResource("Resource_bhlxa")])

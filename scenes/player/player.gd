@@ -15,6 +15,8 @@ const GROUP: StringName = &"player"
 var stats: StatSystem
 var current_hp: float = 0.0
 var is_dead: bool = false
+## Debug-Menü: Treffer werden ignoriert.
+var debug_invulnerable: bool = false
 ## Bewegungsgrenze; leeres Rect = keine Begrenzung. Wird von der Arena gesetzt.
 var arena_bounds: Rect2 = Rect2()
 ## Zufallsquelle für Ausweichen und Lebensraub. Standard: der Run-RNG mit Seed.
@@ -95,7 +97,7 @@ func is_invulnerable() -> bool:
 
 ## Wendet einen gegnerischen Treffer an. Gibt den tatsächlich erlittenen Schaden zurück (0 = ausgewichen oder unverwundbar).
 func take_hit(raw_damage: float) -> int:
-	if is_dead or is_invulnerable():
+	if is_dead or is_invulnerable() or debug_invulnerable:
 		return 0
 	var amount: int = CombatMath.resolve_incoming_damage(
 		raw_damage, stats.get_stat(Stats.ARMOR), stats.get_stat(Stats.DODGE), config.dodge_cap, rng.randf())

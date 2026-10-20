@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Discosplitter: Spiegelscherben -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#C9A8F2" stop-opacity="0.75"/><stop offset="1" stop-color="#C9A8F2" stop-opacity="0"/></radialGradient></defs><circle cx="32" cy="32" r="30" fill="url(#glow)"/>
+  <path d="M32,6 L50,22 L42,54 L16,46 L12,20 Z" fill="#C9CED3" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M32,6 L30,30 L12,20 Z" fill="#E6FAFF"/>
+  <path d="M30,30 L50,22 L42,54 Z" fill="#9B59B6"/>
+  <path d="M30,30 L16,46 L42,54 Z" fill="#4A90E2"/>
+  <path d="M32,6 L50,22 L42,54 L16,46 L12,20 Z M30,30 L32,6 M30,30 L50,22 M30,30 L42,54 M30,30 L16,46 M30,30 L12,20" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

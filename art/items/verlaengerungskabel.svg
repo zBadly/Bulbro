@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Verlängerungskabel mit Steckdose -->
+  <path d="M8,50 C20,30 36,58 48,30" fill="none" stroke="#2A1E2E" stroke-width="8" stroke-linecap="round"/>
+  <path d="M8,50 C20,30 36,58 48,30" fill="none" stroke="#F4F0EA" stroke-width="4" stroke-linecap="round"/>
+  <rect x="38" y="8" width="20" height="24" rx="5" fill="#F4F0EA" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="44" cy="20" r="2" fill="#2A1E2E"/><circle cx="52" cy="20" r="2" fill="#2A1E2E"/>
+</svg>

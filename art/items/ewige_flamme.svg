@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Ewige Flamme in Laterne -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#FF8C42" stop-opacity="0.75"/><stop offset="1" stop-color="#FF8C42" stop-opacity="0"/></radialGradient></defs><circle cx="32" cy="32" r="30" fill="url(#glow)"/>
+  <path d="M32,8 C44,22 46,32 40,44 C38,50 26,50 24,44 C18,32 22,24 32,8 Z" fill="#FF8C42" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M32,24 C38,32 38,38 35,44 C34,46 30,46 29,44 C26,38 27,32 32,24 Z" fill="#FFD43B"/>
+  <rect x="20" y="48" width="24" height="10" rx="3" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

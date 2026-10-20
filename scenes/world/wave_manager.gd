@@ -58,6 +58,19 @@ func active_enemy_count() -> int:
 	return _active.size()
 
 
+## Debug: aktuelle Welle sofort abbrechen (ohne Drops) und Welle `number` starten.
+func jump_to_wave(number: int) -> void:
+	for pending: PendingSpawn in _pending:
+		pending.marker.release()
+	_pending.clear()
+	for enemy: Enemy in _active.duplicate():
+		enemy.despawn()
+	var projectile_pool: ObjectPool = Pools.get_pool(get_tree(), Pools.ENEMY_PROJECTILES)
+	if projectile_pool != null:
+		projectile_pool.release_all()
+	start_wave(clampi(number, 1, _waves.size()))
+
+
 ## Nach Wellenende, Level-ups und Shop aufgerufen.
 func start_next_wave() -> void:
 	start_wave(get_wave_number() + 1)

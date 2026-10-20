@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_hmndw"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_ya35a"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_um81q"]
+[ext_resource type="Texture2D" path="res://art/items/laserzielfernrohr.svg" id="4_y5htq"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_j8htw"]
+
+[sub_resource type="Resource" id="Resource_5es0r"]
+script = ExtResource("2_ya35a")
+stat = &"crit_chance"
+value = 15.0
+
+[sub_resource type="Resource" id="Resource_5axpe"]
+script = ExtResource("2_ya35a")
+stat = &"range"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_lqifh"]
+script = ExtResource("2_ya35a")
+stat = &"max_hp"
+value = -3.0
+
+[sub_resource type="Resource" id="Resource_ggk1x"]
+script = ExtResource("2_ya35a")
+stat = &"armor"
+value = -2.0
+
+[sub_resource type="Resource" id="Resource_o5s1v"]
+script = ExtResource("3_um81q")
+modifiers = Array[ExtResource("2_ya35a")]([SubResource("Resource_5es0r"), SubResource("Resource_5axpe"), SubResource("Resource_lqifh"), SubResource("Resource_ggk1x")])
+
+[resource]
+script = ExtResource("5_j8htw")
+id = &"laserzielfernrohr"
+name_key = "ITEM_LASERZIELFERNROHR"
+tier = 4
+icon = ExtResource("4_y5htq")
+price = 110
+tags = Array[StringName]([&"crit", &"range"])
+effects = Array[ExtResource("1_hmndw")]([SubResource("Resource_o5s1v")])

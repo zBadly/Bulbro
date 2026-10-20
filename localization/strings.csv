@@ -162,3 +162,35 @@ WEAPON_PROJECTILES,%d Projektile im Fächer,%d projectiles in a fan
 WEAPON_STRUCTURE,Baut pro Welle: %s,Builds each wave: %s
 WEAPON_PER_SAME,+%s Schaden pro weiterer Waffe dieser Art,+%s damage per other copy
 WEAPON_PIERCING_ALL,Durchschlägt alle Gegner,Pierces all enemies
+ITEM_KUPFERDRAHT,Kupferdraht,Copper Wire
+ITEM_KLEINER_AKKU,Kleiner Akku,Small Battery Pack
+ITEM_LUPE,Lupe,Magnifier
+ITEM_GUMMIHANDSCHUH,Gummihandschuh,Rubber Glove
+ITEM_SCHMIERFETT,Schmierfett,Grease
+ITEM_ISOLIERBAND,Isolierband,Insulating Tape
+ITEM_ENERGIERIEGEL,Energieriegel,Energy Bar
+ITEM_SPARSCHWEIN,Sparschwein,Piggy Bank
+ITEM_SCHALTPLAN,Schaltplan,Circuit Diagram
+ITEM_DYNAMO,Dynamo,Dynamo
+ITEM_TESLA_SPULE,Tesla-Spule,Tesla Coil
+ITEM_RECYCLINGSCHILD,Recyclingschild,Recycling Shield
+ITEM_FUNKENMAGNET,Funkenmagnet,Spark Magnet
+ITEM_VERLAENGERUNGSKABEL,Verlängerungskabel,Extension Cord
+ITEM_DISCOSPLITTER,Discosplitter,Disco Shard
+ITEM_GLASFASER,Glasfaser,Optical Fiber
+ITEM_PRISMENLINSE,Prismenlinse,Prism Lens
+ITEM_WERKSTATTKOFFER,Werkstattkoffer,Toolbox
+ITEM_LADESTATION,Ladestation,Charging Station
+ITEM_SONNENKOLLEKTOR,Sonnenkollektor,Solar Panel
+ITEM_BLITZABLEITER,Blitzableiter,Lightning Rod
+ITEM_LASERZIELFERNROHR,Laserzielfernrohr,Laser Scope
+ITEM_EWIGE_FLAMME,Ewige Flamme,Eternal Flame
+ITEM_SUPERNOVA,Supernova,Supernova
+DEBUG_MENU_TITLE,Debug-Menü (F4),Debug menu (F4)
+DEBUG_GIVE_ITEM,Item geben,Give item
+DEBUG_GIVE_WEAPON,Waffe geben (Tier),Give weapon (tier)
+DEBUG_JUMP_WAVE,Zu Welle springen,Jump to wave
+DEBUG_INVULNERABLE,Unverwundbar,Invulnerable
+DEBUG_ADD_SPARKS,+%d Funken,+%d sparks
+DEBUG_LEVEL_UP,Level-up,Level up
+DEBUG_CLOSE,Schließen,Close

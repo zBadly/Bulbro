@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_qsg5o"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_6lmli"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_v2mep"]
+[ext_resource type="Texture2D" path="res://art/items/discosplitter.svg" id="4_2ilai"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_1hdl6"]
+
+[sub_resource type="Resource" id="Resource_gxs8q"]
+script = ExtResource("2_6lmli")
+stat = &"luck"
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_5kmt5"]
+script = ExtResource("2_6lmli")
+stat = &"dodge"
+value = 6.0
+
+[sub_resource type="Resource" id="Resource_fe7tp"]
+script = ExtResource("2_6lmli")
+stat = &"lifesteal"
+value = -2.0
+
+[sub_resource type="Resource" id="Resource_dkicx"]
+script = ExtResource("3_v2mep")
+modifiers = Array[ExtResource("2_6lmli")]([SubResource("Resource_gxs8q"), SubResource("Resource_5kmt5"), SubResource("Resource_fe7tp")])
+
+[resource]
+script = ExtResource("5_1hdl6")
+id = &"discosplitter"
+name_key = "ITEM_DISCOSPLITTER"
+tier = 3
+icon = ExtResource("4_2ilai")
+price = 70
+tags = Array[StringName]([&"luck", &"dodge"])
+effects = Array[ExtResource("1_qsg5o")]([SubResource("Resource_dkicx")])

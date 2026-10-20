@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_vuc2j"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_se8an"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_2287d"]
+[ext_resource type="Texture2D" path="res://art/items/dynamo.svg" id="4_a6is3"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_l4fw7"]
+
+[sub_resource type="Resource" id="Resource_8q37x"]
+script = ExtResource("2_se8an")
+stat = &"attack_speed"
+value = 6.0
+
+[sub_resource type="Resource" id="Resource_yseth"]
+script = ExtResource("2_se8an")
+stat = &"hp_regen"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_j2gfu"]
+script = ExtResource("2_se8an")
+stat = &"speed"
+value = -3.0
+
+[sub_resource type="Resource" id="Resource_am50o"]
+script = ExtResource("3_2287d")
+modifiers = Array[ExtResource("2_se8an")]([SubResource("Resource_8q37x"), SubResource("Resource_yseth"), SubResource("Resource_j2gfu")])
+
+[resource]
+script = ExtResource("5_l4fw7")
+id = &"dynamo"
+name_key = "ITEM_DYNAMO"
+tier = 2
+icon = ExtResource("4_a6is3")
+price = 40
+tags = Array[StringName]([&"attack_speed", &"regen"])
+effects = Array[ExtResource("1_vuc2j")]([SubResource("Resource_am50o")])

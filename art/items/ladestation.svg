@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Ladestation mit Batterie -->
+  <rect x="10" y="44" width="44" height="14" rx="4" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="22" y="12" width="20" height="34" rx="6" fill="#6CCB4A" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="27" y="7" width="10" height="6" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M34,18 L28,30 L34,30 L30,40" fill="none" stroke="#F4F0EA" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="18" cy="51" r="2.5" fill="#7ED957"/>
+</svg>

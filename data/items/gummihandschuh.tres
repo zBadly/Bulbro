@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_mk50k"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_bie6v"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_dtrhx"]
+[ext_resource type="Texture2D" path="res://art/items/gummihandschuh.svg" id="4_gdbdq"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_3r64p"]
+
+[sub_resource type="Resource" id="Resource_h8w1i"]
+script = ExtResource("2_bie6v")
+stat = &"armor"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_nyuui"]
+script = ExtResource("2_bie6v")
+stat = &"speed"
+value = -2.0
+
+[sub_resource type="Resource" id="Resource_jxv0u"]
+script = ExtResource("3_dtrhx")
+modifiers = Array[ExtResource("2_bie6v")]([SubResource("Resource_h8w1i"), SubResource("Resource_nyuui")])
+
+[resource]
+script = ExtResource("5_3r64p")
+id = &"gummihandschuh"
+name_key = "ITEM_GUMMIHANDSCHUH"
+icon = ExtResource("4_gdbdq")
+price = 15
+tags = Array[StringName]([&"armor"])
+effects = Array[ExtResource("1_mk50k")]([SubResource("Resource_jxv0u")])

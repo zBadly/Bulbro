@@ -6,7 +6,6 @@ const LIGHTING_SECTION: String = "options"
 const LIGHTING_KEY: String = "lighting"
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
-const WEAPON_CATEGORY: String = "weapons"
 const ENEMY_CATEGORY: String = "enemies"
 const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 const STRUCTURE_SCENE: PackedScene = preload("res://scenes/structures/structure.tscn")
@@ -25,6 +24,7 @@ const STRUCTURE_SCENE: PackedScene = preload("res://scenes/structures/structure.
 @onready var _hud: Hud = $Hud
 @onready var _game_over: GameOverScreen = $GameOver
 @onready var _pause_menu: PauseMenu = $PauseMenu
+@onready var _debug_menu: DebugMenu = $DebugMenu
 @onready var _crate_screen: CrateScreen = $CrateScreen
 @onready var _level_up_screen: LevelUpScreen = $LevelUpScreen
 @onready var _shop_screen: ShopScreen = $ShopScreen
@@ -34,7 +34,6 @@ const STRUCTURE_SCENE: PackedScene = preload("res://scenes/structures/structure.
 @onready var _spawn_marker_pool: ObjectPool = $Pools/SpawnMarkers
 @onready var _pickup_pool: ObjectPool = $Pools/Pickups
 
-var _debug_weapon_index: int = 0
 var _structures: Array[Structure] = []
 
 
@@ -67,6 +66,8 @@ func _ready() -> void:
 	Events.run_phase_changed.connect(_on_phase_changed)
 	for screen: FlowScreen in [_crate_screen, _level_up_screen, _shop_screen]:
 		screen.player = player
+	_debug_menu.player = player
+	_debug_menu.wave_manager = wave_manager
 	_drop_manager.player = player
 	_effect_system.player = player
 	_neutral_spawner.wave_manager = wave_manager
@@ -82,10 +83,7 @@ func _process(_delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not OS.is_debug_build():
 		return
-	if event.is_action_pressed(&"debug_add_weapon"):
-		_debug_add_weapon()
-		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed(&"debug_spawn_enemies"):
+	if event.is_action_pressed(&"debug_spawn_enemies"):
 		_debug_spawn_enemies()
 		get_viewport().set_input_as_handled()
 
@@ -168,17 +166,6 @@ func _on_run_won() -> void:
 	_pause_menu.enabled = false
 	GameState.end_run(true)
 	_game_over.show_result(true, wave_manager.get_wave_number())
-
-
-## Debug (F4): fügt reihum die nächste Waffe aus res://data/weapons hinzu.
-func _debug_add_weapon() -> void:
-	var weapons: Array[Resource] = DataRegistry.get_all(WEAPON_CATEGORY)
-	if weapons.is_empty():
-		return
-	weapons.sort_custom(func(a: Resource, b: Resource) -> bool: return String((a as WeaponData).id) < String((b as WeaponData).id))
-	var data: WeaponData = weapons[_debug_weapon_index % weapons.size()] as WeaponData
-	_debug_weapon_index += 1
-	player.weapon_slots.add_weapon(data)
 
 
 ## Debug (F6): füllt die Arena bis zum Gegnerlimit (Performance-Test).

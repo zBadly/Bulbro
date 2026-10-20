@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Prismenlinse mit abprallendem Strahl -->
+  <path d="M4,20 L28,32 L4,44" fill="none" stroke="#FFD43B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="34" cy="32" rx="10" ry="22" fill="#BFEFFF" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M30,16 Q28,24 30,30" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M44,28 L60,18 M44,36 L60,46" stroke="#9B59B6" stroke-width="4" stroke-linecap="round"/>
+</svg>

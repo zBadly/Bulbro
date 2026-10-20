@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Laserzielfernrohr -->
+  <rect x="6" y="22" width="44" height="16" rx="6" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="48" y="18" width="10" height="24" rx="3" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="18" y="38" width="8" height="10" rx="2" fill="#5A5F66" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="53" cy="30" r="4" fill="#E74C3C" stroke="#2A1E2E" stroke-width="2"/>
+  <rect x="12" y="25" width="20" height="4" rx="2" fill="#9AA0A6"/>
+</svg>

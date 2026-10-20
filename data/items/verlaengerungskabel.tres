@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_tqyoh"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_3kf3f"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_0nyae"]
+[ext_resource type="Texture2D" path="res://art/items/verlaengerungskabel.svg" id="4_s0e5e"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_3jdh6"]
+
+[sub_resource type="Resource" id="Resource_vw3jv"]
+script = ExtResource("2_3kf3f")
+stat = &"range"
+value = 40.0
+
+[sub_resource type="Resource" id="Resource_sh2r7"]
+script = ExtResource("2_3kf3f")
+stat = &"melee_dmg"
+value = -3.0
+
+[sub_resource type="Resource" id="Resource_lkwvy"]
+script = ExtResource("3_0nyae")
+modifiers = Array[ExtResource("2_3kf3f")]([SubResource("Resource_vw3jv"), SubResource("Resource_sh2r7")])
+
+[resource]
+script = ExtResource("5_3jdh6")
+id = &"verlaengerungskabel"
+name_key = "ITEM_VERLAENGERUNGSKABEL"
+tier = 2
+icon = ExtResource("4_s0e5e")
+price = 40
+tags = Array[StringName]([&"range"])
+effects = Array[ExtResource("1_tqyoh")]([SubResource("Resource_lkwvy")])

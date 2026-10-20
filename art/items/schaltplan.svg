@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Schaltplan (XP, Technik) -->
+  <rect x="8" y="10" width="48" height="44" rx="4" fill="#4A90E2" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M16,22 L30,22 L30,34 L46,34 M16,44 L24,44 L24,34 M38,22 L48,22" fill="none" stroke="#F4F0EA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="30" cy="22" r="3" fill="#FFD43B"/><circle cx="46" cy="34" r="3" fill="#FFD43B"/><circle cx="24" cy="44" r="3" fill="#FFD43B"/>
+</svg>

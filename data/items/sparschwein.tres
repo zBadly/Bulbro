@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_yojae"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_etft1"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_mc45s"]
+[ext_resource type="Texture2D" path="res://art/items/sparschwein.svg" id="4_1kbgq"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_snij1"]
+
+[sub_resource type="Resource" id="Resource_jmtwk"]
+script = ExtResource("2_etft1")
+stat = &"harvesting"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_xaaok"]
+script = ExtResource("3_mc45s")
+modifiers = Array[ExtResource("2_etft1")]([SubResource("Resource_jmtwk")])
+
+[resource]
+script = ExtResource("5_snij1")
+id = &"sparschwein"
+name_key = "ITEM_SPARSCHWEIN"
+icon = ExtResource("4_1kbgq")
+price = 20
+tags = Array[StringName]([&"economy"])
+effects = Array[ExtResource("1_yojae")]([SubResource("Resource_xaaok")])

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_dud71"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_nntjf"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_ep14v"]
+[ext_resource type="Texture2D" path="res://art/items/recyclingschild.svg" id="4_8wdt5"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_0r22i"]
+
+[sub_resource type="Resource" id="Resource_51n10"]
+script = ExtResource("2_nntjf")
+stat = &"recycle_pct"
+value = 35.0
+
+[sub_resource type="Resource" id="Resource_vhyag"]
+script = ExtResource("3_ep14v")
+modifiers = Array[ExtResource("2_nntjf")]([SubResource("Resource_51n10")])
+
+[resource]
+script = ExtResource("5_0r22i")
+id = &"recyclingschild"
+name_key = "ITEM_RECYCLINGSCHILD"
+tier = 2
+icon = ExtResource("4_8wdt5")
+price = 35
+limit = 1
+tags = Array[StringName]([&"economy"])
+effects = Array[ExtResource("1_dud71")]([SubResource("Resource_vhyag")])

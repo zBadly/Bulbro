@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Sonnenkollektor mit Sonne -->
+  <circle cx="48" cy="14" r="8" fill="#FFD43B" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M8,56 L16,28 L52,28 L58,56 Z" fill="#3A4A8C" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M14,42 L55,42 M27,28 L24,56 M40,28 L42,56" stroke="#8CC0F2" stroke-width="2.5"/>
+</svg>

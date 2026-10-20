@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Gummihandschuh (Rüstung) -->
+  <path d="M18,58 L18,30 L14,18 Q14,12 20,14 L24,26 L24,10 Q28,6 31,10 L32,24 L34,8 Q38,5 40,9 L40,26 L44,12 Q48,10 49,15 L46,34 Q46,48 42,58 Z" fill="#FFD43B" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M18,50 L42,50" stroke="#E0A800" stroke-width="3" stroke-linecap="round"/>
+</svg>

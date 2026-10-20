@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_q2f3v"]
+[ext_resource type="Script" path="res://scripts/data/effects/damage_random_enemies_action.gd" id="2_tx37u"]
+[ext_resource type="Script" path="res://scripts/data/effects/on_hit_taken_effect.gd" id="3_q4akn"]
+[ext_resource type="Texture2D" path="res://art/items/blitzableiter.svg" id="4_xtldn"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_3s2ee"]
+
+[sub_resource type="Resource" id="Resource_12fsw"]
+script = ExtResource("2_tx37u")
+count = 3
+base_damage = 10.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 1.0
+})
+
+[sub_resource type="Resource" id="Resource_gk8b2"]
+script = ExtResource("3_q4akn")
+chance = 0.5
+action = SubResource("Resource_12fsw")
+
+[resource]
+script = ExtResource("5_3s2ee")
+id = &"blitzableiter"
+name_key = "ITEM_BLITZABLEITER"
+tier = 4
+icon = ExtResource("4_xtldn")
+price = 110
+limit = 1
+tags = Array[StringName]([&"elemental"])
+effects = Array[ExtResource("1_q2f3v")]([SubResource("Resource_gk8b2")])

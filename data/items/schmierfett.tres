@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_wh1d1"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_lm160"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_45410"]
+[ext_resource type="Texture2D" path="res://art/items/schmierfett.svg" id="4_44faq"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_re3k7"]
+
+[sub_resource type="Resource" id="Resource_alo23"]
+script = ExtResource("2_lm160")
+stat = &"speed"
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_3bbmq"]
+script = ExtResource("2_lm160")
+stat = &"luck"
+value = -6.0
+
+[sub_resource type="Resource" id="Resource_meljq"]
+script = ExtResource("3_45410")
+modifiers = Array[ExtResource("2_lm160")]([SubResource("Resource_alo23"), SubResource("Resource_3bbmq")])
+
+[resource]
+script = ExtResource("5_re3k7")
+id = &"schmierfett"
+name_key = "ITEM_SCHMIERFETT"
+icon = ExtResource("4_44faq")
+price = 15
+tags = Array[StringName]([&"speed"])
+effects = Array[ExtResource("1_wh1d1")]([SubResource("Resource_meljq")])

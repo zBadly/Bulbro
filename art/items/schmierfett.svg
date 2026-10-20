@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Schmierfett-Dose (Tempo) -->
+  <rect x="12" y="20" width="40" height="36" rx="6" fill="#4A90E2" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="32" cy="20" rx="20" ry="6" fill="#8CC0F2" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M24,14 Q32,2 40,14" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linecap="round"/>
+  <path d="M22,36 Q26,30 30,36 Q26,44 22,36 Z" fill="#3A2A5C"/>
+  <path d="M36,40 L46,40 M38,46 L48,46" stroke="#F4F0EA" stroke-width="3" stroke-linecap="round"/>
+</svg>

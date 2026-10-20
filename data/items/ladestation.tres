@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_kxnk3"]
+[ext_resource type="Script" path="res://scripts/data/effects/spawn_pickup_action.gd" id="2_3u2lo"]
+[ext_resource type="Script" path="res://scripts/data/effects/timed_spawn_effect.gd" id="3_goec8"]
+[ext_resource type="Texture2D" path="res://art/items/ladestation.svg" id="4_3dr5i"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_nwxmb"]
+
+[sub_resource type="Resource" id="Resource_cmka6"]
+script = ExtResource("2_3u2lo")
+kind = 1
+count = 1
+scatter = 80.0
+
+[sub_resource type="Resource" id="Resource_6kghx"]
+script = ExtResource("3_goec8")
+interval = 15.0
+action = SubResource("Resource_cmka6")
+
+[resource]
+script = ExtResource("5_nwxmb")
+id = &"ladestation"
+name_key = "ITEM_LADESTATION"
+tier = 3
+icon = ExtResource("4_3dr5i")
+price = 60
+tags = Array[StringName]([&"hp"])
+effects = Array[ExtResource("1_kxnk3")]([SubResource("Resource_6kghx")])

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Recycling-Schild mit Pfeilkreis -->
+  <path d="M32,6 L54,14 L52,34 Q48,50 32,58 Q16,50 12,34 L10,14 Z" fill="#6CCB4A" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M22,36 A11,11 0 0 1 32,22 M42,28 A11,11 0 0 1 32,43" fill="none" stroke="#F4F0EA" stroke-width="4" stroke-linecap="round"/>
+  <path d="M30,17 L36,22 L30,27 Z M34,38 L28,43 L34,48 Z" fill="#F4F0EA"/>
+</svg>

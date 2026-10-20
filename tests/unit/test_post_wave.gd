@@ -88,7 +88,10 @@ func test_guaranteed_level_up_tiers() -> void:
 
 # Items und Upgrades
 func test_pick_item_respects_limit_and_falls_back() -> void:
-	var items: Array[ItemData] = _all_items()
+	var items: Array[ItemData] = [
+		load("res://data/items/kernreaktor.tres") as ItemData,
+		load("res://data/items/ueberspannung.tres") as ItemData,
+	]
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	var owned: Dictionary[StringName, int] = {&"kernreaktor": 1}
 	for i in 50:

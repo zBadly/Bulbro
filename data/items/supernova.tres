@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_t8b1d"]
+[ext_resource type="Script" path="res://scripts/data/effects/explosion_action.gd" id="2_togxq"]
+[ext_resource type="Script" path="res://scripts/data/effects/on_kill_effect.gd" id="3_5h3pu"]
+[ext_resource type="Texture2D" path="res://art/items/supernova.svg" id="4_4cjln"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_k6hlq"]
+
+[sub_resource type="Resource" id="Resource_5fjq0"]
+script = ExtResource("2_togxq")
+radius = 90.0
+base_damage = 10.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 0.5
+})
+
+[sub_resource type="Resource" id="Resource_3p0ws"]
+script = ExtResource("3_5h3pu")
+chance = 0.2
+action = SubResource("Resource_5fjq0")
+
+[resource]
+script = ExtResource("5_k6hlq")
+id = &"supernova"
+name_key = "ITEM_SUPERNOVA"
+tier = 4
+icon = ExtResource("4_4cjln")
+price = 120
+limit = 1
+tags = Array[StringName]([&"explosive"])
+effects = Array[ExtResource("1_t8b1d")]([SubResource("Resource_3p0ws")])
