@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="SetBonusData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="1_62prf"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_pp14h"]
+[ext_resource type="Script" path="res://scripts/data/set_bonus_data.gd" id="3_thadl"]
+
+[sub_resource type="Resource" id="Resource_78c2l"]
+script = ExtResource("2_pp14h")
+stat = &"crit_chance"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_1swip"]
+script = ExtResource("1_62prf")
+modifiers = Array[ExtResource("2_pp14h")]([SubResource("Resource_78c2l")])
+
+[sub_resource type="Resource" id="Resource_a1p05"]
+script = ExtResource("2_pp14h")
+stat = &"crit_chance"
+value = 6.0
+
+[sub_resource type="Resource" id="Resource_u2pvm"]
+script = ExtResource("1_62prf")
+modifiers = Array[ExtResource("2_pp14h")]([SubResource("Resource_a1p05")])
+
+[sub_resource type="Resource" id="Resource_cost8"]
+script = ExtResource("2_pp14h")
+stat = &"crit_chance"
+value = 9.0
+
+[sub_resource type="Resource" id="Resource_7nkq2"]
+script = ExtResource("1_62prf")
+modifiers = Array[ExtResource("2_pp14h")]([SubResource("Resource_cost8")])
+
+[sub_resource type="Resource" id="Resource_lddpf"]
+script = ExtResource("2_pp14h")
+stat = &"crit_chance"
+value = 12.0
+
+[sub_resource type="Resource" id="Resource_vn1ek"]
+script = ExtResource("1_62prf")
+modifiers = Array[ExtResource("2_pp14h")]([SubResource("Resource_lddpf")])
+
+[sub_resource type="Resource" id="Resource_iq7cu"]
+script = ExtResource("2_pp14h")
+stat = &"crit_chance"
+value = 15.0
+
+[sub_resource type="Resource" id="Resource_jiv36"]
+script = ExtResource("1_62prf")
+modifiers = Array[ExtResource("2_pp14h")]([SubResource("Resource_iq7cu")])
+
+[resource]
+script = ExtResource("3_thadl")
+weapon_class = &"precise"
+levels = Array[ExtResource("1_62prf")]([SubResource("Resource_1swip"), SubResource("Resource_u2pvm"), SubResource("Resource_7nkq2"), SubResource("Resource_vn1ek"), SubResource("Resource_jiv36")])

@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/fx/projectile_rocket.svg" id="1_4nxdb"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="2_ylaf3"]
+[ext_resource type="Texture2D" path="res://art/weapons/leuchtrakete.svg" id="3_31aqp"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="4_b40ta"]
+
+[sub_resource type="Resource" id="Resource_xnnmr"]
+script = ExtResource("4_b40ta")
+base_damage = 20.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 1.0
+})
+cooldown = 1.6
+range = 450.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 40
+explosion_radius = 75.0
+
+[sub_resource type="Resource" id="Resource_0d0ic"]
+script = ExtResource("4_b40ta")
+base_damage = 30.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 1.0
+})
+cooldown = 1.47
+range = 450.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 80
+explosion_radius = 75.0
+
+[sub_resource type="Resource" id="Resource_ohj41"]
+script = ExtResource("4_b40ta")
+base_damage = 44.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 1.0
+})
+cooldown = 1.36
+range = 450.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 144
+explosion_radius = 75.0
+
+[sub_resource type="Resource" id="Resource_5sadb"]
+script = ExtResource("4_b40ta")
+base_damage = 64.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 1.0
+})
+cooldown = 1.25
+range = 450.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 260
+explosion_radius = 75.0
+
+[resource]
+script = ExtResource("2_ylaf3")
+id = &"leuchtrakete"
+name_key = "WEAPON_LEUCHTRAKETE"
+kind = 2
+classes = Array[StringName]([&"explosive", &"gun"])
+texture = ExtResource("3_31aqp")
+tiers = Array[ExtResource("4_b40ta")]([SubResource("Resource_xnnmr"), SubResource("Resource_0d0ic"), SubResource("Resource_ohj41"), SubResource("Resource_5sadb")])
+projectile_texture = ExtResource("1_4nxdb")
+projectile_speed = 1100.0

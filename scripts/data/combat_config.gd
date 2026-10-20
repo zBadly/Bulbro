@@ -21,6 +21,17 @@ extends Resource
 @export var recoil_distance: float = 0.0
 @export var recoil_time: float = 0.0
 
+@export_group("Brand und Spezialprojektile")
+## Abstand zwischen zwei Brand-Ticks in Sekunden (wird durch Brandtempo verkürzt).
+@export var burn_interval: float = 0.0
+## Radius, in dem sich Brand auf andere Gegner ausbreitet (Stat burn_spread = Anzahl).
+@export var burn_spread_radius: float = 0.0
+@export var burn_tint: Color = Color.WHITE
+@export var homing_retarget_interval: float = 0.0
+
+@export_group("Strukturen")
+@export var structure_spawn_radius: float = 0.0
+
 @export_group("Pools")
 @export var projectile_pool_size: int = 0
 @export var damage_number_pool_size: int = 0

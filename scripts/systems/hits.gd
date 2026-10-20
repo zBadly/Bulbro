@@ -37,6 +37,19 @@ static func nearest_target(tree: SceneTree, origin: Vector2, max_range: float, e
 	return best
 
 
+## Ein Waffentreffer mit allen Zusatzwirkungen: Schaden, Brand, Lebensraub, Heilchance.
+static func apply_weapon_hit(target: Damageable, info: DamageInfo, player: Player, lifesteal: bool = true) -> void:
+	target.take_damage(info)
+	if info.burn_damage > 0.0 and target is Enemy:
+		(target as Enemy).apply_burn(info.burn_damage, info.burn_ticks, player)
+	if player == null:
+		return
+	if lifesteal:
+		player.try_lifesteal()
+	if info.heal_on_hit_chance > 0.0 and player.rng.randf() < info.heal_on_hit_chance:
+		player.heal(1.0)
+
+
 ## Explosion: Radius und Schaden wachsen mit Explosionsgröße/-schaden des Spielers. Trifft alle Ziele im Radius.
 static func explode(tree: SceneTree, player: Player, origin: Vector2, radius: float, info: DamageInfo) -> void:
 	var size: float = radius

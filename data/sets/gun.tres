@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="SetBonusData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="1_jmdkx"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_kcpsx"]
+[ext_resource type="Script" path="res://scripts/data/set_bonus_data.gd" id="3_lt60r"]
+
+[sub_resource type="Resource" id="Resource_yw3cx"]
+script = ExtResource("2_kcpsx")
+stat = &"range"
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_r1fax"]
+script = ExtResource("1_jmdkx")
+modifiers = Array[ExtResource("2_kcpsx")]([SubResource("Resource_yw3cx")])
+
+[sub_resource type="Resource" id="Resource_yc1yu"]
+script = ExtResource("2_kcpsx")
+stat = &"range"
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_31wll"]
+script = ExtResource("1_jmdkx")
+modifiers = Array[ExtResource("2_kcpsx")]([SubResource("Resource_yc1yu")])
+
+[sub_resource type="Resource" id="Resource_jpql4"]
+script = ExtResource("2_kcpsx")
+stat = &"range"
+value = 30.0
+
+[sub_resource type="Resource" id="Resource_w38pu"]
+script = ExtResource("1_jmdkx")
+modifiers = Array[ExtResource("2_kcpsx")]([SubResource("Resource_jpql4")])
+
+[sub_resource type="Resource" id="Resource_3r8e1"]
+script = ExtResource("2_kcpsx")
+stat = &"range"
+value = 40.0
+
+[sub_resource type="Resource" id="Resource_8yvsa"]
+script = ExtResource("1_jmdkx")
+modifiers = Array[ExtResource("2_kcpsx")]([SubResource("Resource_3r8e1")])
+
+[sub_resource type="Resource" id="Resource_6hljc"]
+script = ExtResource("2_kcpsx")
+stat = &"range"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_ejnsm"]
+script = ExtResource("1_jmdkx")
+modifiers = Array[ExtResource("2_kcpsx")]([SubResource("Resource_6hljc")])
+
+[resource]
+script = ExtResource("3_lt60r")
+weapon_class = &"gun"
+levels = Array[ExtResource("1_jmdkx")]([SubResource("Resource_r1fax"), SubResource("Resource_31wll"), SubResource("Resource_w38pu"), SubResource("Resource_8yvsa"), SubResource("Resource_ejnsm")])

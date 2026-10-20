@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Blitzwerfer: Tesla-Werfer mit Spulenkugel -->
+  <path d="M12,28 L20,28 L17,41 L10,41 Z" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="6" y="16" width="26" height="13" rx="5" fill="#4A90E2" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M32,20 L36,20 M32,25 L36,25" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="40" cy="22.5" r="6" fill="#BFF3FF" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M40,18 L38,23 L41,23 L39,27" fill="none" stroke="#4A90E2" stroke-width="2" stroke-linejoin="round"/>
+</svg>

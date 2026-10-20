@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Lötkolben mit glühender Spitze -->
+  <path d="M30,24 L45,24" stroke="#2A1E2E" stroke-width="7" stroke-linecap="round"/>
+  <path d="M30,24 L45,24" stroke="#FF8C42" stroke-width="3" stroke-linecap="round"/>
+  <rect x="20" y="19" width="12" height="10" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="3" y="17" width="19" height="14" rx="6" fill="#4A90E2" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

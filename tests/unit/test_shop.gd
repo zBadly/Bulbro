@@ -121,7 +121,9 @@ func test_class_bias_favors_owned_classes() -> void:
 	for i in DRAWS:
 		if WeaponClasses.GUN in _shop.pick_weapon(ctx).classes:
 			guns += 1
-	var expected: float = CONFIG.class_bias_chance + (1.0 - CONFIG.class_bias_chance) / _shop.weapons.size()
+	var gun_count: int = _shop.weapons.filter(func(w: WeaponData) -> bool: return WeaponClasses.GUN in w.classes).size()
+	var base_share: float = float(gun_count) / _shop.weapons.size()
+	var expected: float = CONFIG.class_bias_chance + (1.0 - CONFIG.class_bias_chance) * base_share
 	assert_almost_eq(float(guns) / DRAWS, expected, TOLERANCE)
 
 

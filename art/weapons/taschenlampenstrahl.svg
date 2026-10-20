@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Taschenlampe mit breitem Kopf -->
+  <rect x="4" y="19" width="24" height="10" rx="4" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M28,16 L40,12 L40,36 L28,32 Z" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="41" cy="24" rx="3" ry="11" fill="#FFF4B8" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="10" y="21" width="5" height="3" rx="1.5" fill="#E74C3C"/>
+</svg>

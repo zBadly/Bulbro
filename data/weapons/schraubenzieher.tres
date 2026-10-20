@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="1_8ca3l"]
+[ext_resource type="Resource" path="res://data/structures/lampenturm.tres" id="2_5nn32"]
+[ext_resource type="Texture2D" path="res://art/weapons/schraubenzieher.svg" id="3_7gswo"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="4_81bs1"]
+
+[sub_resource type="Resource" id="Resource_nr05q"]
+script = ExtResource("4_81bs1")
+base_damage = 12.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 1.7
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 25
+
+[sub_resource type="Resource" id="Resource_0sfol"]
+script = ExtResource("4_81bs1")
+base_damage = 18.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 1.56
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 50
+
+[sub_resource type="Resource" id="Resource_e4dew"]
+script = ExtResource("4_81bs1")
+base_damage = 26.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 1.44
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 90
+
+[sub_resource type="Resource" id="Resource_215u2"]
+script = ExtResource("4_81bs1")
+base_damage = 38.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 1.33
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 163
+
+[resource]
+script = ExtResource("1_8ca3l")
+id = &"schraubenzieher"
+name_key = "WEAPON_SCHRAUBENZIEHER"
+kind = 1
+classes = Array[StringName]([&"tool"])
+texture = ExtResource("3_7gswo")
+tiers = Array[ExtResource("4_81bs1")]([SubResource("Resource_nr05q"), SubResource("Resource_0sfol"), SubResource("Resource_e4dew"), SubResource("Resource_215u2")])
+structure = ExtResource("2_5nn32")

@@ -43,6 +43,14 @@ func remove_modifier(mod: StatModifier) -> bool:
 	return true
 
 
+func remove_modifiers(mods: Array[StatModifier]) -> void:
+	for mod: StatModifier in mods:
+		var index: int = _modifiers.find(mod)
+		if index >= 0:
+			_modifiers.remove_at(index)
+	_changed()
+
+
 func clear_modifiers() -> void:
 	_modifiers.clear()
 	_changed()

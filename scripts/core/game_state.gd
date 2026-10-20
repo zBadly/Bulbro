@@ -31,6 +31,8 @@ var items: Array[ItemData] = []
 var preferred_tags: Array[StringName] = []
 ## Shop-Zustand über die Wellen hinweg (gesperrte Angebote).
 var shop: Shop
+## Höchste Zahl gleichzeitiger Strukturen in diesem Run (Freischaltung Taschenlampe).
+var max_structures: int = 0
 
 
 ## Startet einen neuen Run. Ohne Seed wird ein zufälliger gewählt.
@@ -53,6 +55,7 @@ func start_run(seed_value: int = 0) -> void:
 	items.clear()
 	preferred_tags.clear()
 	shop = Shop.create_from_registry()
+	max_structures = 0
 	phase = Phase.WAVE
 	is_run_active = true
 	Events.run_started.emit(run_seed)

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Laserpointer -->
+  <rect x="6" y="19" width="32" height="10" rx="5" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="10" y="21" width="12" height="3" rx="1.5" fill="#9AA0A6"/>
+  <circle cx="25" cy="24" r="2.5" fill="#E74C3C" stroke="#2A1E2E" stroke-width="1.5"/>
+  <circle cx="42" cy="24" r="4" fill="#E74C3C" stroke="#2A1E2E" stroke-width="2.5"/>
+</svg>

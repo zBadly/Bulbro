@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/fx/projectile_bolt.svg" id="1_ogrvo"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="2_rgd54"]
+[ext_resource type="Texture2D" path="res://art/weapons/blitzwerfer.svg" id="3_5w57t"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="4_6qkhr"]
+
+[sub_resource type="Resource" id="Resource_igaae"]
+script = ExtResource("4_6qkhr")
+base_damage = 6.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 1.0
+})
+cooldown = 0.6
+range = 300.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 30
+chain_count = 2
+chain_range = 220.0
+
+[sub_resource type="Resource" id="Resource_tb2f7"]
+script = ExtResource("4_6qkhr")
+base_damage = 9.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 1.0
+})
+cooldown = 0.55
+range = 300.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 60
+chain_count = 2
+chain_range = 220.0
+
+[sub_resource type="Resource" id="Resource_186ut"]
+script = ExtResource("4_6qkhr")
+base_damage = 13.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 1.0
+})
+cooldown = 0.51
+range = 300.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 108
+chain_count = 2
+chain_range = 220.0
+
+[sub_resource type="Resource" id="Resource_3gqx3"]
+script = ExtResource("4_6qkhr")
+base_damage = 19.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 1.0
+})
+cooldown = 0.47000000000000003
+range = 300.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 195
+chain_count = 2
+chain_range = 220.0
+
+[resource]
+script = ExtResource("2_rgd54")
+id = &"blitzwerfer"
+name_key = "WEAPON_BLITZWERFER"
+kind = 2
+classes = Array[StringName]([&"elemental"])
+texture = ExtResource("3_5w57t")
+tiers = Array[ExtResource("4_6qkhr")]([SubResource("Resource_igaae"), SubResource("Resource_tb2f7"), SubResource("Resource_186ut"), SubResource("Resource_3gqx3")])
+projectile_texture = ExtResource("1_ogrvo")
+projectile_speed = 1500.0

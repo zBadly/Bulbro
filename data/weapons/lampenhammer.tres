@@ -1,0 +1,66 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="1_ujfue"]
+[ext_resource type="Texture2D" path="res://art/weapons/lampenhammer.svg" id="2_xuo7m"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="3_eb3x5"]
+
+[sub_resource type="Resource" id="Resource_a1m5n"]
+script = ExtResource("3_eb3x5")
+base_damage = 30.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 2.0
+})
+cooldown = 2.2
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+knockback = 30.0
+price = 40
+
+[sub_resource type="Resource" id="Resource_n8goa"]
+script = ExtResource("3_eb3x5")
+base_damage = 45.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 2.0
+})
+cooldown = 2.02
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+knockback = 30.0
+price = 80
+
+[sub_resource type="Resource" id="Resource_7ioen"]
+script = ExtResource("3_eb3x5")
+base_damage = 66.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 2.0
+})
+cooldown = 1.87
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+knockback = 30.0
+price = 144
+
+[sub_resource type="Resource" id="Resource_hfkn3"]
+script = ExtResource("3_eb3x5")
+base_damage = 96.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 2.0
+})
+cooldown = 1.72
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+knockback = 30.0
+price = 260
+
+[resource]
+script = ExtResource("1_ujfue")
+id = &"lampenhammer"
+name_key = "WEAPON_LAMPENHAMMER"
+kind = 1
+classes = Array[StringName]([&"blunt", &"heavy"])
+texture = ExtResource("2_xuo7m")
+tiers = Array[ExtResource("3_eb3x5")]([SubResource("Resource_a1m5n"), SubResource("Resource_n8goa"), SubResource("Resource_7ioen"), SubResource("Resource_hfkn3")])

@@ -26,6 +26,10 @@ var _last_lifesteal_time: float = -INF
 var _known_max_hp: float = 0.0
 ## Registrierte Trigger-Effekte von Items und Charakter (vom EffectSystem aufgerufen).
 var triggers: Array[TriggerEntry] = []
+## Multiplikator für Set-Boni einzelner Klassen (z. B. Kerze: Primitiv doppelt).
+var set_bonus_multiplier: Dictionary[StringName, float] = {}
+
+var _set_modifiers: Array[StatModifier] = []
 
 @onready var _visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -48,6 +52,7 @@ func _ready() -> void:
 	weapon_slots.player = self
 	weapon_slots.max_slots = config.weapon_slots
 	weapon_slots.orbit_radius = config.weapon_orbit_radius
+	weapon_slots.weapons_changed.connect(update_set_bonuses)
 	Juice.idle_bob(_visual)
 	Events.level_up.connect(_on_level_up)
 	hp_changed.emit(current_hp, _known_max_hp)
@@ -110,6 +115,27 @@ func take_hit(raw_damage: float) -> int:
 func apply_item(item: ItemData) -> void:
 	for effect: ItemEffect in item.effects:
 		effect.apply(self)
+
+
+## Klassen-Set-Boni (GDD 8) aus der Anzahl Waffen je Klasse neu berechnen.
+func update_set_bonuses() -> void:
+	var counts: Dictionary[StringName, int] = {}
+	for weapon: Weapon in weapon_slots.get_weapons():
+		for weapon_class: StringName in weapon.data.classes:
+			counts[weapon_class] = counts.get(weapon_class, 0) + 1
+	var new_mods: Array[StatModifier] = []
+	for res: Resource in DataRegistry.get_all("sets"):
+		var set_bonus: SetBonusData = res as SetBonusData
+		var factor: float = set_bonus_multiplier.get(set_bonus.weapon_class, 1.0)
+		for mod: StatModifier in set_bonus.modifiers_for(counts.get(set_bonus.weapon_class, 0)):
+			new_mods.append(StatModifier.create(mod.stat, mod.value * factor, mod.kind))
+	stats.remove_modifiers(_set_modifiers)
+	_set_modifiers = new_mods
+	stats.add_modifiers(new_mods)
+
+
+func get_set_modifiers() -> Array[StatModifier]:
+	return _set_modifiers
 
 
 func add_trigger(effect: ItemEffect) -> void:

@@ -1,0 +1,100 @@
+[gd_resource type="Resource" script_class="SetBonusData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="1_u7rju"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_p0mww"]
+[ext_resource type="Script" path="res://scripts/data/set_bonus_data.gd" id="3_8kaaq"]
+
+[sub_resource type="Resource" id="Resource_rxsop"]
+script = ExtResource("2_p0mww")
+stat = &"armor"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_bke5v"]
+script = ExtResource("2_p0mww")
+stat = &"speed"
+value = -2.0
+
+[sub_resource type="Resource" id="Resource_6s46f"]
+script = ExtResource("1_u7rju")
+modifiers = Array[ExtResource("2_p0mww")]([SubResource("Resource_rxsop"), SubResource("Resource_bke5v")])
+
+[sub_resource type="Resource" id="Resource_j1pvx"]
+script = ExtResource("2_p0mww")
+stat = &"armor"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_soipy"]
+script = ExtResource("2_p0mww")
+stat = &"max_hp"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_b21sb"]
+script = ExtResource("2_p0mww")
+stat = &"speed"
+value = -4.0
+
+[sub_resource type="Resource" id="Resource_vdjcg"]
+script = ExtResource("1_u7rju")
+modifiers = Array[ExtResource("2_p0mww")]([SubResource("Resource_j1pvx"), SubResource("Resource_soipy"), SubResource("Resource_b21sb")])
+
+[sub_resource type="Resource" id="Resource_gn71r"]
+script = ExtResource("2_p0mww")
+stat = &"armor"
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_wgt67"]
+script = ExtResource("2_p0mww")
+stat = &"max_hp"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_f3u1m"]
+script = ExtResource("2_p0mww")
+stat = &"speed"
+value = -6.0
+
+[sub_resource type="Resource" id="Resource_ut5qo"]
+script = ExtResource("1_u7rju")
+modifiers = Array[ExtResource("2_p0mww")]([SubResource("Resource_gn71r"), SubResource("Resource_wgt67"), SubResource("Resource_f3u1m")])
+
+[sub_resource type="Resource" id="Resource_plbig"]
+script = ExtResource("2_p0mww")
+stat = &"armor"
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_30lg2"]
+script = ExtResource("2_p0mww")
+stat = &"max_hp"
+value = 6.0
+
+[sub_resource type="Resource" id="Resource_l41qm"]
+script = ExtResource("2_p0mww")
+stat = &"speed"
+value = -8.0
+
+[sub_resource type="Resource" id="Resource_nfpdk"]
+script = ExtResource("1_u7rju")
+modifiers = Array[ExtResource("2_p0mww")]([SubResource("Resource_plbig"), SubResource("Resource_30lg2"), SubResource("Resource_l41qm")])
+
+[sub_resource type="Resource" id="Resource_hb8ee"]
+script = ExtResource("2_p0mww")
+stat = &"armor"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_6pxcy"]
+script = ExtResource("2_p0mww")
+stat = &"max_hp"
+value = 6.0
+
+[sub_resource type="Resource" id="Resource_ysey2"]
+script = ExtResource("2_p0mww")
+stat = &"speed"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_ujtj1"]
+script = ExtResource("1_u7rju")
+modifiers = Array[ExtResource("2_p0mww")]([SubResource("Resource_hb8ee"), SubResource("Resource_6pxcy"), SubResource("Resource_ysey2")])
+
+[resource]
+script = ExtResource("3_8kaaq")
+weapon_class = &"blunt"
+levels = Array[ExtResource("1_u7rju")]([SubResource("Resource_6s46f"), SubResource("Resource_vdjcg"), SubResource("Resource_ut5qo"), SubResource("Resource_nfpdk"), SubResource("Resource_ujtj1")])

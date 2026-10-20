@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Kabelpeitsche: Griff mit geschwungenem Kabel und Stecker -->
+  <path d="M10,34 C18,20 26,40 34,24 C37,18 40,16 42,14" fill="none" stroke="#2A1E2E" stroke-width="8" stroke-linecap="round"/>
+  <path d="M10,34 C18,20 26,40 34,24 C37,18 40,16 42,14" fill="none" stroke="#E74C3C" stroke-width="4" stroke-linecap="round"/>
+  <rect x="38" y="8" width="8" height="9" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" transform="rotate(35 42 12)"/>
+  <rect x="3" y="31" width="12" height="9" rx="3" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

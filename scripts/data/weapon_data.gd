@@ -29,6 +29,8 @@ const MAX_TIER: int = 4
 @export_group("Besonderheiten")
 ## Zusätzlicher Grundschaden pro weiterer Waffe derselben Art (Ast).
 @export var damage_per_same_weapon: float = 0.0
+## Baut zu Beginn jeder Welle diese Struktur (Schraubenzieher -> Lampenturm).
+@export var structure: StructureData
 
 
 func is_melee() -> bool:

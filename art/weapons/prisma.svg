@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Prisma auf Griff mit Regenbogenfächer -->
+  <path d="M35,23 L45,17" stroke="#E74C3C" stroke-width="3" stroke-linecap="round"/>
+  <path d="M35,24 L45,24" stroke="#FFD43B" stroke-width="3" stroke-linecap="round"/>
+  <path d="M35,25 L45,31" stroke="#4A90E2" stroke-width="3" stroke-linecap="round"/>
+  <rect x="4" y="21" width="14" height="7" rx="3" fill="#9C6B3F" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M26,12 L36,32 L16,32 Z" fill="#BFEFFF" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M26,17 L21,28" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

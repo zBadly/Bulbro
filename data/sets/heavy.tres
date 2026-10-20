@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="SetBonusData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="1_3a82s"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_t8ube"]
+[ext_resource type="Script" path="res://scripts/data/set_bonus_data.gd" id="3_6xx8o"]
+
+[sub_resource type="Resource" id="Resource_6i57r"]
+script = ExtResource("2_t8ube")
+stat = &"damage_pct"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_uhwwi"]
+script = ExtResource("1_3a82s")
+modifiers = Array[ExtResource("2_t8ube")]([SubResource("Resource_6i57r")])
+
+[sub_resource type="Resource" id="Resource_mv6i1"]
+script = ExtResource("2_t8ube")
+stat = &"damage_pct"
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_k7aig"]
+script = ExtResource("1_3a82s")
+modifiers = Array[ExtResource("2_t8ube")]([SubResource("Resource_mv6i1")])
+
+[sub_resource type="Resource" id="Resource_ned83"]
+script = ExtResource("2_t8ube")
+stat = &"damage_pct"
+value = 15.0
+
+[sub_resource type="Resource" id="Resource_0pbjm"]
+script = ExtResource("1_3a82s")
+modifiers = Array[ExtResource("2_t8ube")]([SubResource("Resource_ned83")])
+
+[sub_resource type="Resource" id="Resource_b5tdu"]
+script = ExtResource("2_t8ube")
+stat = &"damage_pct"
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_3fjvn"]
+script = ExtResource("1_3a82s")
+modifiers = Array[ExtResource("2_t8ube")]([SubResource("Resource_b5tdu")])
+
+[sub_resource type="Resource" id="Resource_sv41d"]
+script = ExtResource("2_t8ube")
+stat = &"damage_pct"
+value = 25.0
+
+[sub_resource type="Resource" id="Resource_an0bf"]
+script = ExtResource("1_3a82s")
+modifiers = Array[ExtResource("2_t8ube")]([SubResource("Resource_sv41d")])
+
+[resource]
+script = ExtResource("3_6xx8o")
+weapon_class = &"heavy"
+levels = Array[ExtResource("1_3a82s")]([SubResource("Resource_uhwwi"), SubResource("Resource_k7aig"), SubResource("Resource_0pbjm"), SubResource("Resource_3fjvn"), SubResource("Resource_an0bf")])

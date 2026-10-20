@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="1_bvijh"]
+[ext_resource type="Texture2D" path="res://art/weapons/kabelpeitsche.svg" id="2_odo15"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="3_506yh"]
+
+[sub_resource type="Resource" id="Resource_q8vb0"]
+script = ExtResource("3_506yh")
+base_damage = 10.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 1.1
+range = 200.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 25
+
+[sub_resource type="Resource" id="Resource_xkcaa"]
+script = ExtResource("3_506yh")
+base_damage = 15.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 1.01
+range = 200.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 50
+
+[sub_resource type="Resource" id="Resource_tfnqc"]
+script = ExtResource("3_506yh")
+base_damage = 22.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 0.9400000000000001
+range = 200.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 90
+
+[sub_resource type="Resource" id="Resource_drqmf"]
+script = ExtResource("3_506yh")
+base_damage = 32.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 0.86
+range = 200.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 163
+
+[resource]
+script = ExtResource("1_bvijh")
+id = &"kabelpeitsche"
+name_key = "WEAPON_KABELPEITSCHE"
+kind = 1
+classes = Array[StringName]([&"precise"])
+texture = ExtResource("2_odo15")
+tiers = Array[ExtResource("3_506yh")]([SubResource("Resource_q8vb0"), SubResource("Resource_xkcaa"), SubResource("Resource_tfnqc"), SubResource("Resource_drqmf")])

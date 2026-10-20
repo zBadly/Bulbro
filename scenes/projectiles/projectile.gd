@@ -1,20 +1,21 @@
 class_name Projectile
 extends Area2D
-## Gepooltes Spieler-Projektil mit Durchschlag, Abprall, Rückstoß und Lebensraub.
-## Fliegt bis zur Reichweite der Waffe; jeder Gegner wird höchstens einmal getroffen.
+## Gepooltes Spieler-Projektil: Durchschlag, Abprall, Ketten-Blitz, Explosion, Zielsuche, Rückstoß, Lebensraub.
+## Fliegt bis zur Reichweite; jedes Ziel wird höchstens einmal getroffen.
+
+const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 
 var pool: ObjectPool
 
+var _spec: ProjectileSpec
 var _direction: Vector2 = Vector2.RIGHT
-var _speed: float = 0.0
-var _range: float = 0.0
 var _travel_left: float = 0.0
-var _info: DamageInfo
 var _piercing_left: int = 0
 var _bounces_left: int = 0
-var _player: Player
 var _active: bool = false
 var _hit_ids: Dictionary[int, bool] = {}
+var _homing_target: Damageable
+var _retarget_left: float = 0.0
 
 @onready var _sprite: Sprite2D = $Sprite
 
@@ -23,69 +24,88 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 
-func launch(start: Vector2, angle: float, texture: Texture2D, speed: float, max_range: float,
-		info: DamageInfo, piercing: int, bounces: int, player: Player) -> void:
+func launch(start: Vector2, angle: float, spec: ProjectileSpec) -> void:
+	_spec = spec
 	global_position = start
 	_set_direction(Vector2.from_angle(angle))
-	_sprite.texture = texture
-	_speed = speed
-	_range = max_range
-	_travel_left = max_range
-	_info = info
-	_piercing_left = piercing
-	_bounces_left = bounces
-	_player = player
+	_sprite.texture = spec.texture
+	_travel_left = spec.max_range
+	_piercing_left = spec.piercing
+	_bounces_left = spec.bounces
 	_hit_ids.clear()
+	_homing_target = null
+	_retarget_left = 0.0
 	_active = true
 
 
 func _physics_process(delta: float) -> void:
 	if not _active:
 		return
-	var step: float = _speed * delta
+	if _spec.homing_turn_deg > 0.0:
+		_steer(delta)
+	var step: float = _spec.speed * delta
 	global_position += _direction * step
 	_travel_left -= step
 	if _travel_left <= 0.0:
 		_finish()
 
 
+func _steer(delta: float) -> void:
+	_retarget_left -= delta
+	if _retarget_left <= 0.0 or _homing_target == null or not is_instance_valid(_homing_target) or not _homing_target.is_alive():
+		_retarget_left = COMBAT.homing_retarget_interval
+		_homing_target = Hits.nearest_target(get_tree(), global_position, _spec.max_range, _hit_ids)
+	if _homing_target == null:
+		return
+	var desired: float = global_position.direction_to(_homing_target.get_hit_position()).angle()
+	var max_turn: float = deg_to_rad(_spec.homing_turn_deg) * delta
+	_set_direction(Vector2.from_angle(rotate_toward(_direction.angle(), desired, max_turn)))
+
+
 func _on_body_entered(body: Node2D) -> void:
 	if not _active:
 		return
-	var enemy: Damageable = body as Damageable
-	if enemy == null or not enemy.is_alive() or _hit_ids.has(enemy.get_instance_id()):
+	var target: Damageable = body as Damageable
+	if target == null or not target.is_alive() or _hit_ids.has(target.get_instance_id()):
 		return
-	_hit_ids[enemy.get_instance_id()] = true
-	_info.knockback_dir = _direction
-	enemy.take_damage(_info)
-	if _player != null:
-		_player.try_lifesteal()
+	_hit_ids[target.get_instance_id()] = true
+	var info: DamageInfo = _spec.info
+	info.knockback_dir = _direction
 
+	if _spec.explosion_radius > 0.0:
+		Hits.explode(get_tree(), _spec.player, target.get_hit_position(), _spec.explosion_radius, info)
+		_finish()
+		return
+	Hits.apply_weapon_hit(target, info, _spec.player, _spec.lifesteal)
+	if _spec.chain_count > 0:
+		_chain_from(target)
+		_finish()
+		return
 	if _piercing_left > 0:
 		_piercing_left -= 1
 		return
 	if _bounces_left > 0:
-		var next: Damageable = _find_bounce_target()
+		var next: Damageable = Hits.nearest_target(get_tree(), global_position, _spec.max_range, _hit_ids)
 		if next != null:
 			_bounces_left -= 1
-			_set_direction((next.get_hit_position() - global_position).normalized())
-			_travel_left = _range
+			_set_direction(global_position.direction_to(next.get_hit_position()))
+			_travel_left = _spec.max_range
 			return
 	_finish()
 
 
-func _find_bounce_target() -> Damageable:
-	var best: Damageable = null
-	var best_dist: float = _range * _range
-	for node: Node in get_tree().get_nodes_in_group(Damageable.GROUP):
-		var enemy: Damageable = node as Damageable
-		if enemy == null or not enemy.is_alive() or _hit_ids.has(enemy.get_instance_id()):
-			continue
-		var dist: float = global_position.distance_squared_to(enemy.get_hit_position())
-		if dist < best_dist:
-			best = enemy
-			best_dist = dist
-	return best
+## Ketten-Blitz: springt vom getroffenen Ziel auf die nächsten Ziele in Reichweite.
+func _chain_from(first: Damageable) -> void:
+	var current: Damageable = first
+	for i in _spec.chain_count:
+		var next: Damageable = Hits.nearest_target(get_tree(), current.get_hit_position(), _spec.chain_range, _hit_ids)
+		if next == null:
+			return
+		_hit_ids[next.get_instance_id()] = true
+		Fx.lightning(get_tree(), current.get_hit_position(), next.get_hit_position())
+		_spec.info.knockback_dir = current.get_hit_position().direction_to(next.get_hit_position())
+		Hits.apply_weapon_hit(next, _spec.info, _spec.player, _spec.lifesteal)
+		current = next
 
 
 func _set_direction(direction: Vector2) -> void:

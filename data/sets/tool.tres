@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="SetBonusData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="1_odd4m"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_u4pnl"]
+[ext_resource type="Script" path="res://scripts/data/set_bonus_data.gd" id="3_dni5i"]
+
+[sub_resource type="Resource" id="Resource_utx08"]
+script = ExtResource("2_u4pnl")
+stat = &"engineering"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_1tr26"]
+script = ExtResource("1_odd4m")
+modifiers = Array[ExtResource("2_u4pnl")]([SubResource("Resource_utx08")])
+
+[sub_resource type="Resource" id="Resource_6k231"]
+script = ExtResource("2_u4pnl")
+stat = &"engineering"
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_bifan"]
+script = ExtResource("1_odd4m")
+modifiers = Array[ExtResource("2_u4pnl")]([SubResource("Resource_6k231")])
+
+[sub_resource type="Resource" id="Resource_twniy"]
+script = ExtResource("2_u4pnl")
+stat = &"engineering"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_kfjoy"]
+script = ExtResource("1_odd4m")
+modifiers = Array[ExtResource("2_u4pnl")]([SubResource("Resource_twniy")])
+
+[sub_resource type="Resource" id="Resource_qo1k8"]
+script = ExtResource("2_u4pnl")
+stat = &"engineering"
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_ij3k8"]
+script = ExtResource("1_odd4m")
+modifiers = Array[ExtResource("2_u4pnl")]([SubResource("Resource_qo1k8")])
+
+[sub_resource type="Resource" id="Resource_v8cdi"]
+script = ExtResource("2_u4pnl")
+stat = &"engineering"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_hpj7q"]
+script = ExtResource("1_odd4m")
+modifiers = Array[ExtResource("2_u4pnl")]([SubResource("Resource_v8cdi")])
+
+[resource]
+script = ExtResource("3_dni5i")
+weapon_class = &"tool"
+levels = Array[ExtResource("1_odd4m")]([SubResource("Resource_1tr26"), SubResource("Resource_bifan"), SubResource("Resource_kfjoy"), SubResource("Resource_ij3k8"), SubResource("Resource_hpj7q")])

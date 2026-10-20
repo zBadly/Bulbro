@@ -138,3 +138,27 @@ TRIGGER_ON_KILL,%d %% Chance bei Gegnertod: %s,%d %% chance on kill: %s
 TRIGGER_ON_HIT,%d %% Chance bei erlittenem Treffer: %s,%d %% chance when hit: %s
 TRIGGER_ON_SPARK,%d %% Chance beim Funken-Aufheben: %s,%d %% chance on spark pickup: %s
 TRIGGER_TIMED,Alle %s s: %s,Every %s s: %s
+WEAPON_KABELPEITSCHE,Kabelpeitsche,Cable Whip
+WEAPON_LAMPENHAMMER,Lampenhammer,Lamp Hammer
+WEAPON_SCHRAUBENZIEHER,Schraubenzieher,Screwdriver
+WEAPON_LOETKOLBEN,Lötkolben,Soldering Iron
+WEAPON_FUNKENSIEB,Funkensieb,Spark Sieve
+WEAPON_LASERPOINTER,Laserpointer,Laser Pointer
+WEAPON_BATTERIE_SCHLEUDER,Batterie-Schleuder,Battery Slingshot
+WEAPON_BLITZWERFER,Blitzwerfer,Bolt Thrower
+WEAPON_LEUCHTRAKETE,Leuchtrakete,Flare Rocket
+WEAPON_PRISMA,Prisma,Prism
+WEAPON_TASCHENLAMPENSTRAHL,Taschenlampenstrahl,Flashlight Beam
+WEAPON_HEILSTRAHL,Heilstrahl,Healing Ray
+WEAPON_GLUEHWUERMCHEN_STAB,Glühwürmchen-Stab,Firefly Wand
+STRUCTURE_LAMPENTURM,Lampenturm,Lamp Tower
+WEAPON_BURN,Überspannung: %s Brandschaden x%d,Overvoltage: %s burn damage x%d
+WEAPON_CHAIN,Springt auf %d weitere Ziele,Chains to %d more targets
+WEAPON_EXPLOSION,Explosion %s px,Explosion %s px
+WEAPON_HOMING,Zielsuchend,Homing
+WEAPON_HEAL,%d %% Chance +1 HP pro Treffer,%d %% chance +1 HP per hit
+WEAPON_SPARK,%d %% Chance +1 Funke bei Kill,%d %% chance +1 spark on kill
+WEAPON_PROJECTILES,%d Projektile im Fächer,%d projectiles in a fan
+WEAPON_STRUCTURE,Baut pro Welle: %s,Builds each wave: %s
+WEAPON_PER_SAME,+%s Schaden pro weiterer Waffe dieser Art,+%s damage per other copy
+WEAPON_PIERCING_ALL,Durchschlägt alle Gegner,Pierces all enemies

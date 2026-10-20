@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="SetBonusData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="1_0vsp6"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_lr4ym"]
+[ext_resource type="Script" path="res://scripts/data/set_bonus_data.gd" id="3_71stf"]
+
+[sub_resource type="Resource" id="Resource_bwonl"]
+script = ExtResource("2_lr4ym")
+stat = &"elemental_dmg"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_7l30l"]
+script = ExtResource("1_0vsp6")
+modifiers = Array[ExtResource("2_lr4ym")]([SubResource("Resource_bwonl")])
+
+[sub_resource type="Resource" id="Resource_jp4uk"]
+script = ExtResource("2_lr4ym")
+stat = &"elemental_dmg"
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_j770e"]
+script = ExtResource("1_0vsp6")
+modifiers = Array[ExtResource("2_lr4ym")]([SubResource("Resource_jp4uk")])
+
+[sub_resource type="Resource" id="Resource_p70je"]
+script = ExtResource("2_lr4ym")
+stat = &"elemental_dmg"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_v001d"]
+script = ExtResource("1_0vsp6")
+modifiers = Array[ExtResource("2_lr4ym")]([SubResource("Resource_p70je")])
+
+[sub_resource type="Resource" id="Resource_uwawa"]
+script = ExtResource("2_lr4ym")
+stat = &"elemental_dmg"
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_tl0ub"]
+script = ExtResource("1_0vsp6")
+modifiers = Array[ExtResource("2_lr4ym")]([SubResource("Resource_uwawa")])
+
+[sub_resource type="Resource" id="Resource_afpdm"]
+script = ExtResource("2_lr4ym")
+stat = &"elemental_dmg"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_m5bx8"]
+script = ExtResource("1_0vsp6")
+modifiers = Array[ExtResource("2_lr4ym")]([SubResource("Resource_afpdm")])
+
+[resource]
+script = ExtResource("3_71stf")
+weapon_class = &"elemental"
+levels = Array[ExtResource("1_0vsp6")]([SubResource("Resource_7l30l"), SubResource("Resource_j770e"), SubResource("Resource_v001d"), SubResource("Resource_tl0ub"), SubResource("Resource_m5bx8")])

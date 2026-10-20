@@ -9,6 +9,8 @@ const PERCENT_SUFFIX_STATS: Array[StringName] = [
 	&"lifesteal", &"attack_speed", &"crit_chance", &"dodge", &"speed",
 ]
 ## Stats, bei denen ein negativer Wert gut für den Spieler ist.
+## Ab diesem Durchschlag gilt eine Waffe als "durchschlägt alle".
+const PIERCE_ALL: int = 99
 const GOOD_WHEN_NEGATIVE: Array[StringName] = [
 	&"item_price_pct", &"reroll_price_pct", &"enemy_speed_pct",
 ]
@@ -80,10 +82,30 @@ static func describe_weapon(weapon: WeaponData, tier: int) -> String:
 	lines.append(t("WEAPON_CRIT") % [number(tier_stats.crit_chance * 100.0), number(tier_stats.crit_multiplier)])
 	if tier_stats.knockback > 0.0:
 		lines.append(t("WEAPON_KNOCKBACK") % number(tier_stats.knockback))
-	if tier_stats.piercing > 0:
+	if tier_stats.piercing >= PIERCE_ALL:
+		lines.append(t("WEAPON_PIERCING_ALL"))
+	elif tier_stats.piercing > 0:
 		lines.append(t("WEAPON_PIERCING") % tier_stats.piercing)
 	if tier_stats.bounces > 0:
 		lines.append(t("WEAPON_BOUNCES") % tier_stats.bounces)
+	if tier_stats.projectile_count > 1:
+		lines.append(t("WEAPON_PROJECTILES") % tier_stats.projectile_count)
+	if tier_stats.burn_ticks > 0:
+		lines.append(t("WEAPON_BURN") % [number(tier_stats.burn_damage), tier_stats.burn_ticks])
+	if tier_stats.chain_count > 0:
+		lines.append(t("WEAPON_CHAIN") % tier_stats.chain_count)
+	if tier_stats.explosion_radius > 0.0:
+		lines.append(t("WEAPON_EXPLOSION") % number(tier_stats.explosion_radius))
+	if tier_stats.homing_turn_deg > 0.0:
+		lines.append(t("WEAPON_HOMING"))
+	if tier_stats.heal_on_hit_chance > 0.0:
+		lines.append(t("WEAPON_HEAL") % roundi(tier_stats.heal_on_hit_chance * 100.0))
+	if tier_stats.spark_on_kill_chance > 0.0:
+		lines.append(t("WEAPON_SPARK") % roundi(tier_stats.spark_on_kill_chance * 100.0))
+	if weapon.damage_per_same_weapon != 0.0:
+		lines.append(t("WEAPON_PER_SAME") % number(weapon.damage_per_same_weapon))
+	if weapon.structure != null:
+		lines.append(t("WEAPON_STRUCTURE") % t(weapon.structure.name_key))
 	var classes: PackedStringArray = []
 	for weapon_class: StringName in weapon.classes:
 		classes.append(t(WeaponClasses.label_key(weapon_class)))

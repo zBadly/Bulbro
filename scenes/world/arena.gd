@@ -9,6 +9,7 @@ const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const WEAPON_CATEGORY: String = "weapons"
 const ENEMY_CATEGORY: String = "enemies"
 const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
+const STRUCTURE_SCENE: PackedScene = preload("res://scenes/structures/structure.tscn")
 
 @export var config: ArenaConfig
 
@@ -34,6 +35,7 @@ const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 @onready var _pickup_pool: ObjectPool = $Pools/Pickups
 
 var _debug_weapon_index: int = 0
+var _structures: Array[Structure] = []
 
 
 func _ready() -> void:
@@ -61,6 +63,7 @@ func _ready() -> void:
 	player.died.connect(_on_player_died)
 	wave_manager.run_won.connect(_on_run_won)
 	wave_manager.wave_ended.connect(_on_wave_ended)
+	wave_manager.wave_started.connect(_on_wave_started)
 	Events.run_phase_changed.connect(_on_phase_changed)
 	for screen: FlowScreen in [_crate_screen, _level_up_screen, _shop_screen]:
 		screen.player = player
@@ -102,8 +105,33 @@ func _setup_camera(rect: Rect2) -> void:
 	_camera.reset_smoothing()
 
 
+## Zu Beginn jeder Welle baut jede Waffe mit Struktur (Schraubenzieher) einen Lampenturm in der Nähe.
+func _on_wave_started(_wave_number: int) -> void:
+	_clear_structures()
+	var rng: RandomNumberGenerator = GameState.rng
+	var area: Rect2 = config.get_rect().grow(-COMBAT.structure_spawn_radius * 0.5)
+	for weapon: Weapon in player.weapon_slots.get_weapons():
+		if weapon.data.structure == null:
+			continue
+		var structure: Structure = STRUCTURE_SCENE.instantiate() as Structure
+		structure.setup(weapon.data.structure, weapon.tier, player)
+		var offset: Vector2 = Vector2.from_angle(rng.randf() * TAU) * rng.randf_range(0.5, 1.0) * COMBAT.structure_spawn_radius
+		structure.position = (player.global_position + offset).clamp(area.position, area.end)
+		_entities.add_child(structure)
+		_structures.append(structure)
+	GameState.max_structures = maxi(GameState.max_structures, _structures.size())
+
+
+func _clear_structures() -> void:
+	for structure: Structure in _structures:
+		if is_instance_valid(structure):
+			structure.queue_free()
+	_structures.clear()
+
+
 ## Nach dem Wellenende kurz warten (Banner, Pop), dann Spiel anhalten und Kartons/Level-ups/Shop abarbeiten.
 func _on_wave_ended(wave_number: int) -> void:
+	_clear_structures()
 	if wave_number >= wave_manager.get_wave_count():
 		return
 	GameState.set_phase(GameState.Phase.POST_WAVE)

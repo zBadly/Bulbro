@@ -22,6 +22,10 @@ var _alive: bool = false
 var _behavior: EnemyBehavior
 var _contact_distance: float = 0.0
 var _last_hit: DamageInfo
+var _burn_damage: float = 0.0
+var _burn_ticks_left: int = 0
+var _burn_timer: float = 0.0
+var _burn_source: Player
 
 @onready var visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -55,6 +59,8 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	speed = rng.randf_range(data.speed_min, data.speed_max)
 	knockback_velocity = Vector2.ZERO
 	_last_hit = null
+	_burn_ticks_left = 0
+	_sprite.modulate = Color.WHITE
 	_contact_distance = data.collision_radius + player.config.collision_radius
 	_sprite.flip_h = false
 	visual.rotation = 0.0
@@ -117,7 +123,57 @@ func fire_projectile(direction: Vector2, projectile_speed: float, projectile_ran
 	projectile.launch(get_hit_position(), direction, projectile_speed, projectile_range, damage, texture)
 
 
+## Überspannung: Brandschaden über Zeit. Ein stärkerer oder längerer Brand ersetzt den alten.
+func apply_burn(damage_per_tick: float, ticks: int, source: Player) -> void:
+	if not _alive or ticks <= 0:
+		return
+	_burn_damage = maxf(_burn_damage if _burn_ticks_left > 0 else 0.0, damage_per_tick)
+	_burn_ticks_left = maxi(_burn_ticks_left, ticks)
+	_burn_source = source
+	_sprite.modulate = COMBAT.burn_tint
+
+
+func is_burning() -> bool:
+	return _burn_ticks_left > 0
+
+
+func _update_burn(delta: float) -> void:
+	if _burn_ticks_left <= 0:
+		return
+	var speed_pct: float = _burn_source.stats.get_stat(Stats.BURN_SPEED_PCT) if is_instance_valid(_burn_source) else 0.0
+	_burn_timer += delta * maxf(0.1, 1.0 + speed_pct / CombatMath.PERCENT)
+	if _burn_timer < COMBAT.burn_interval:
+		return
+	_burn_timer -= COMBAT.burn_interval
+	_burn_ticks_left -= 1
+	if _burn_ticks_left <= 0:
+		_sprite.modulate = Color.WHITE
+	_spread_burn()
+	take_damage(DamageInfo.create(maxi(CombatMath.MIN_DAMAGE, roundi(_burn_damage)), false, 0.0, null))
+
+
+## Brandausbreitung: so viele nahe, nicht brennende Gegner wie der Stat burn_spread angibt.
+func _spread_burn() -> void:
+	if not is_instance_valid(_burn_source):
+		return
+	var spread: int = roundi(_burn_source.stats.get_stat(Stats.BURN_SPREAD))
+	if spread <= 0:
+		return
+	for target: Damageable in Hits.alive_targets(get_tree()):
+		if spread <= 0:
+			break
+		var other: Enemy = target as Enemy
+		if other == null or other == self or other.is_burning():
+			continue
+		if other.global_position.distance_to(global_position) <= COMBAT.burn_spread_radius:
+			other.apply_burn(_burn_damage, _burn_ticks_left + 1, _burn_source)
+			spread -= 1
+
+
 func _physics_process(delta: float) -> void:
+	if not _alive:
+		return
+	_update_burn(delta)
 	if not _alive:
 		return
 	var move: Vector2 = _behavior.get_velocity(delta)

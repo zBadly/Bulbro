@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/fx/projectile_prism.svg" id="1_uy3jq"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="2_v3dlq"]
+[ext_resource type="Texture2D" path="res://art/weapons/prisma.svg" id="3_ofe4o"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="4_gsi8o"]
+
+[sub_resource type="Resource" id="Resource_o52py"]
+script = ExtResource("4_gsi8o")
+base_damage = 6.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 0.8
+})
+cooldown = 1.0
+range = 350.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+projectile_count = 3
+spread_deg = 30.0
+price = 35
+
+[sub_resource type="Resource" id="Resource_3nrmd"]
+script = ExtResource("4_gsi8o")
+base_damage = 9.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 0.8
+})
+cooldown = 0.92
+range = 350.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+projectile_count = 3
+spread_deg = 30.0
+price = 70
+
+[sub_resource type="Resource" id="Resource_ecn73"]
+script = ExtResource("4_gsi8o")
+base_damage = 13.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 0.8
+})
+cooldown = 0.85
+range = 350.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+projectile_count = 3
+spread_deg = 30.0
+price = 126
+
+[sub_resource type="Resource" id="Resource_p72m0"]
+script = ExtResource("4_gsi8o")
+base_damage = 19.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 0.8
+})
+cooldown = 0.78
+range = 350.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+projectile_count = 3
+spread_deg = 30.0
+price = 228
+
+[resource]
+script = ExtResource("2_v3dlq")
+id = &"prisma"
+name_key = "WEAPON_PRISMA"
+kind = 2
+classes = Array[StringName]([&"gun"])
+texture = ExtResource("3_ofe4o")
+tiers = Array[ExtResource("4_gsi8o")]([SubResource("Resource_o52py"), SubResource("Resource_3nrmd"), SubResource("Resource_ecn73"), SubResource("Resource_p72m0")])
+projectile_texture = ExtResource("1_uy3jq")
+projectile_speed = 1600.0

@@ -121,7 +121,12 @@ func _roll_damage() -> DamageInfo:
 	var crit: bool = player.rng.randf() < CombatMath.crit_chance(t.crit_chance, s.get_stat(Stats.CRIT_CHANCE))
 	var amount: int = CombatMath.weapon_damage(
 		base, CombatMath.scaling_bonus(t.scalings, s), s.get_stat(Stats.DAMAGE_PCT), t.crit_multiplier if crit else 1.0)
-	return DamageInfo.create(amount, crit, t.knockback + s.get_stat(Stats.KNOCKBACK), self)
+	var info: DamageInfo = DamageInfo.create(amount, crit, t.knockback + s.get_stat(Stats.KNOCKBACK), self)
+	info.burn_damage = t.burn_damage
+	info.burn_ticks = t.burn_ticks
+	info.heal_on_hit_chance = t.heal_on_hit_chance
+	info.spark_on_kill_chance = t.spark_on_kill_chance
+	return info
 
 
 # --- Fernkampf ---
@@ -141,9 +146,19 @@ func _fire() -> void:
 			angle += lerpf(-spread * 0.5, spread * 0.5, float(i) / float(count - 1))
 		elif spread > 0.0:
 			angle += player.rng.randf_range(-spread * 0.5, spread * 0.5)
-		var projectile: Projectile = pool.acquire() as Projectile
-		projectile.launch(global_position + Vector2.from_angle(angle) * COMBAT.muzzle_offset, angle,
-			data.projectile_texture, data.projectile_speed, get_range(), _roll_damage(), piercing, bounces, player)
+		var spec: ProjectileSpec = ProjectileSpec.new()
+		spec.texture = data.projectile_texture
+		spec.speed = data.projectile_speed
+		spec.max_range = get_range()
+		spec.info = _roll_damage()
+		spec.piercing = piercing
+		spec.bounces = bounces
+		spec.chain_count = t.chain_count
+		spec.chain_range = t.chain_range
+		spec.explosion_radius = t.explosion_radius
+		spec.homing_turn_deg = t.homing_turn_deg
+		spec.player = player
+		(pool.acquire() as Projectile).launch(global_position + Vector2.from_angle(angle) * COMBAT.muzzle_offset, angle, spec)
 	_recoil()
 
 
@@ -188,8 +203,7 @@ func _process_melee_hits() -> void:
 			continue
 		_hit_ids[enemy.get_instance_id()] = true
 		_attack_info.knockback_dir = (enemy.global_position - player.global_position).normalized()
-		enemy.take_damage(_attack_info)
-		player.try_lifesteal()
+		Hits.apply_weapon_hit(enemy, _attack_info, player)
 
 
 func _end_melee() -> void:

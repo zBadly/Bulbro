@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="StructureData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/fx/projectile_spark.svg" id="1_ren26"]
+[ext_resource type="Script" path="res://scripts/data/structure_data.gd" id="2_ib23s"]
+[ext_resource type="Texture2D" path="res://art/world/lampenturm.svg" id="3_rh238"]
+
+[resource]
+script = ExtResource("2_ib23s")
+id = &"lampenturm"
+name_key = "STRUCTURE_LAMPENTURM"
+texture = ExtResource("3_rh238")
+base_damage = 5.0
+scalings = Dictionary[StringName, float]({
+&"engineering": 1.0
+})
+tier_cooldowns = Array[float]([1.0, 0.85, 0.72, 0.6])
+range = 400.0
+projectile_texture = ExtResource("1_ren26")
+projectile_speed = 1400.0

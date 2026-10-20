@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="SetBonusData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="1_q8xtn"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_s4mfb"]
+[ext_resource type="Script" path="res://scripts/data/set_bonus_data.gd" id="3_wh7om"]
+
+[sub_resource type="Resource" id="Resource_e2msv"]
+script = ExtResource("2_s4mfb")
+stat = &"melee_dmg"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_lmo46"]
+script = ExtResource("2_s4mfb")
+stat = &"lifesteal"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_l4tau"]
+script = ExtResource("1_q8xtn")
+modifiers = Array[ExtResource("2_s4mfb")]([SubResource("Resource_e2msv"), SubResource("Resource_lmo46")])
+
+[sub_resource type="Resource" id="Resource_4d5bf"]
+script = ExtResource("2_s4mfb")
+stat = &"melee_dmg"
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_vhjai"]
+script = ExtResource("2_s4mfb")
+stat = &"lifesteal"
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_ndapq"]
+script = ExtResource("1_q8xtn")
+modifiers = Array[ExtResource("2_s4mfb")]([SubResource("Resource_4d5bf"), SubResource("Resource_vhjai")])
+
+[sub_resource type="Resource" id="Resource_vu7fd"]
+script = ExtResource("2_s4mfb")
+stat = &"melee_dmg"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_rgnx8"]
+script = ExtResource("2_s4mfb")
+stat = &"lifesteal"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_bg0ke"]
+script = ExtResource("1_q8xtn")
+modifiers = Array[ExtResource("2_s4mfb")]([SubResource("Resource_vu7fd"), SubResource("Resource_rgnx8")])
+
+[sub_resource type="Resource" id="Resource_e8iqs"]
+script = ExtResource("2_s4mfb")
+stat = &"melee_dmg"
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_hx1kn"]
+script = ExtResource("2_s4mfb")
+stat = &"lifesteal"
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_uit6n"]
+script = ExtResource("1_q8xtn")
+modifiers = Array[ExtResource("2_s4mfb")]([SubResource("Resource_e8iqs"), SubResource("Resource_hx1kn")])
+
+[sub_resource type="Resource" id="Resource_oa46f"]
+script = ExtResource("2_s4mfb")
+stat = &"melee_dmg"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_5dqyp"]
+script = ExtResource("2_s4mfb")
+stat = &"lifesteal"
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_ccwht"]
+script = ExtResource("1_q8xtn")
+modifiers = Array[ExtResource("2_s4mfb")]([SubResource("Resource_oa46f"), SubResource("Resource_5dqyp")])
+
+[resource]
+script = ExtResource("3_wh7om")
+weapon_class = &"blade"
+levels = Array[ExtResource("1_q8xtn")]([SubResource("Resource_l4tau"), SubResource("Resource_ndapq"), SubResource("Resource_bg0ke"), SubResource("Resource_uit6n"), SubResource("Resource_ccwht")])

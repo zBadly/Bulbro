@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="SetBonusData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="1_u17d4"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_13i40"]
+[ext_resource type="Script" path="res://scripts/data/set_bonus_data.gd" id="3_f6qli"]
+
+[sub_resource type="Resource" id="Resource_hyhaj"]
+script = ExtResource("2_13i40")
+stat = &"dodge"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_6rfh3"]
+script = ExtResource("1_u17d4")
+modifiers = Array[ExtResource("2_13i40")]([SubResource("Resource_hyhaj")])
+
+[sub_resource type="Resource" id="Resource_6c3vh"]
+script = ExtResource("2_13i40")
+stat = &"dodge"
+value = 6.0
+
+[sub_resource type="Resource" id="Resource_sa0to"]
+script = ExtResource("1_u17d4")
+modifiers = Array[ExtResource("2_13i40")]([SubResource("Resource_6c3vh")])
+
+[sub_resource type="Resource" id="Resource_wrhui"]
+script = ExtResource("2_13i40")
+stat = &"dodge"
+value = 9.0
+
+[sub_resource type="Resource" id="Resource_3ymsm"]
+script = ExtResource("1_u17d4")
+modifiers = Array[ExtResource("2_13i40")]([SubResource("Resource_wrhui")])
+
+[sub_resource type="Resource" id="Resource_bg41d"]
+script = ExtResource("2_13i40")
+stat = &"dodge"
+value = 12.0
+
+[sub_resource type="Resource" id="Resource_7potv"]
+script = ExtResource("1_u17d4")
+modifiers = Array[ExtResource("2_13i40")]([SubResource("Resource_bg41d")])
+
+[sub_resource type="Resource" id="Resource_as1a1"]
+script = ExtResource("2_13i40")
+stat = &"dodge"
+value = 15.0
+
+[sub_resource type="Resource" id="Resource_afe7p"]
+script = ExtResource("1_u17d4")
+modifiers = Array[ExtResource("2_13i40")]([SubResource("Resource_as1a1")])
+
+[resource]
+script = ExtResource("3_f6qli")
+weapon_class = &"unarmed"
+levels = Array[ExtResource("1_u17d4")]([SubResource("Resource_6rfh3"), SubResource("Resource_sa0to"), SubResource("Resource_3ymsm"), SubResource("Resource_7potv"), SubResource("Resource_afe7p")])
