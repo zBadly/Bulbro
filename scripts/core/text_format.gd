@@ -38,13 +38,13 @@ static func colored(text: String, good: bool) -> String:
 
 ## Eine Zeile wie "+3 Max. HP" oder "-2 % Tempo", grün oder rot eingefärbt.
 static func modifier_line(mod: StatModifier) -> String:
-	var name: String = TranslationServer.translate(Stats.label_key(mod.stat))
+	var name: String = t(Stats.label_key(mod.stat))
 	var amount: String = signed_number(mod.value)
 	match mod.kind:
 		StatModifier.Kind.PERCENT:
 			amount += " %"
 		StatModifier.Kind.GAIN_PERCENT:
-			return TranslationServer.translate("MOD_GAIN") % [name, colored(amount + " %", mod.value > 0.0)]
+			return t("MOD_GAIN") % [name, colored(amount + " %", mod.value > 0.0)]
 		_:
 			if mod.stat in PERCENT_SUFFIX_STATS:
 				amount += " %"
@@ -59,4 +59,33 @@ static func describe_modifiers(mods: Array[StatModifier]) -> String:
 
 
 static func tier_name(tier: int) -> String:
-	return TranslationServer.translate("TIER_%d" % tier)
+	return t("TIER_%d" % tier)
+
+
+## Übersetzung als String (für den %-Operator auch außerhalb von Nodes).
+static func t(key: String) -> String:
+	return String(TranslationServer.translate(key))
+
+
+## Kurzbeschreibung einer Waffe in einem Tier (Schaden mit Skalierung, Tempo, Reichweite, Besonderheiten, Klassen).
+static func describe_weapon(weapon: WeaponData, tier: int) -> String:
+	var tier_stats: WeaponTierStats = weapon.get_tier(tier)
+	var scalings: PackedStringArray = []
+	for stat: StringName in tier_stats.scalings:
+		scalings.append("%d %% %s" % [roundi(tier_stats.scalings[stat] * 100.0), t(Stats.label_key(stat))])
+	var lines: PackedStringArray = []
+	lines.append(t("WEAPON_DAMAGE") % [number(tier_stats.base_damage), ", ".join(scalings)])
+	lines.append(t("WEAPON_COOLDOWN") % ("%.2f" % tier_stats.cooldown))
+	lines.append(t("WEAPON_RANGE") % number(tier_stats.range))
+	lines.append(t("WEAPON_CRIT") % [number(tier_stats.crit_chance * 100.0), number(tier_stats.crit_multiplier)])
+	if tier_stats.knockback > 0.0:
+		lines.append(t("WEAPON_KNOCKBACK") % number(tier_stats.knockback))
+	if tier_stats.piercing > 0:
+		lines.append(t("WEAPON_PIERCING") % tier_stats.piercing)
+	if tier_stats.bounces > 0:
+		lines.append(t("WEAPON_BOUNCES") % tier_stats.bounces)
+	var classes: PackedStringArray = []
+	for weapon_class: StringName in weapon.classes:
+		classes.append(t(WeaponClasses.label_key(weapon_class)))
+	lines.append(t("WEAPON_CLASSES") % ", ".join(classes))
+	return "\n".join(lines)

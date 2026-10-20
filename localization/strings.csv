@@ -106,3 +106,25 @@ ITEM_WUERFELLAMPE,Würfellampe,Dice Lamp
 ITEM_HOCHSPANNUNGSSCHILD,Hochspannungsschild,High Voltage Shield
 ITEM_UEBERSPANNUNG,Überspannung,Overvoltage
 ITEM_KERNREAKTOR,Kernreaktor,Core Reactor
+SHOP_TITLE_WAVE,Shop – nach Welle %d,Shop – after wave %d
+BUY,Kaufen,Buy
+LOCK,Sperren,Lock
+UNLOCK,Entsperren,Unlock
+SOLD,Verkauft,Sold
+REROLL_FREE,Neu würfeln (gratis),Reroll (free)
+SHOP_WEAPONS,Waffen (%d/%d),Weapons (%d/%d)
+SHOP_ITEMS,Items,Items
+COMBINE,Kombinieren,Combine
+STATS_TITLE,Werte,Stats
+PREVIEW_TITLE,Vorschau: %s,Upcoming: %s
+PREVIEW_BOSS,Welle %d Boss,Wave %d boss
+PREVIEW_ELITE,Welle %d Elite,Wave %d elite
+PREVIEW_NONE,keine Sonderwellen,no special waves
+WEAPON_DAMAGE,Schaden: %s (%s),Damage: %s (%s)
+WEAPON_COOLDOWN,Abklingzeit: %s s,Cooldown: %s s
+WEAPON_RANGE,Reichweite: %s,Range: %s
+WEAPON_CRIT,Krit: %s %% x%s,Crit: %s %% x%s
+WEAPON_KNOCKBACK,Rückstoß: %s,Knockback: %s
+WEAPON_PIERCING,Durchschlag: %d,Piercing: %d
+WEAPON_BOUNCES,Abprall: %d,Bounces: %d
+WEAPON_CLASSES,Klassen: %s,Classes: %s

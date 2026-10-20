@@ -29,6 +29,8 @@ var phase: Phase = Phase.WAVE
 var items: Array[ItemData] = []
 ## Tags, die der aktuelle Charakter bevorzugt (Shop-Gewichtung).
 var preferred_tags: Array[StringName] = []
+## Shop-Zustand über die Wellen hinweg (gesperrte Angebote).
+var shop: Shop
 
 
 ## Startet einen neuen Run. Ohne Seed wird ein zufälliger gewählt.
@@ -50,6 +52,7 @@ func start_run(seed_value: int = 0) -> void:
 	total_sparks_collected = 0
 	items.clear()
 	preferred_tags.clear()
+	shop = Shop.create_from_registry()
 	phase = Phase.WAVE
 	is_run_active = true
 	Events.run_started.emit(run_seed)

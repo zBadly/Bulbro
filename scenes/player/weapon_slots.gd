@@ -46,9 +46,48 @@ func remove_weapon(weapon: Weapon) -> void:
 	if not _weapons.has(weapon):
 		return
 	_weapons.erase(weapon)
+	remove_child(weapon)
 	weapon.queue_free()
 	_layout()
 	weapons_changed.emit()
+
+
+## Partner zum Kombinieren: gleiche Waffe, gleiches Tier, noch nicht Tier IV.
+func find_combine_partner(data: WeaponData, tier: int, exclude: Weapon = null) -> Weapon:
+	if tier >= WeaponData.MAX_TIER:
+		return null
+	for weapon: Weapon in _weapons:
+		if weapon != exclude and weapon.data.id == data.id and weapon.tier == tier:
+			return weapon
+	return null
+
+
+## Kann diese Waffe gekauft werden (freier Slot oder automatisches Kombinieren)?
+func can_accept(data: WeaponData, tier: int) -> bool:
+	return not is_full() or find_combine_partner(data, tier) != null
+
+
+## Kauf: freier Slot -> hinzufügen; Slots voll -> automatisch mit gleicher Waffe gleichen Tiers kombinieren.
+func add_or_combine(data: WeaponData, tier: int) -> Weapon:
+	if not is_full():
+		return add_weapon(data, tier)
+	var partner: Weapon = find_combine_partner(data, tier)
+	if partner == null:
+		return null
+	remove_weapon(partner)
+	return add_weapon(data, tier + 1)
+
+
+## Kombiniert eine Waffe mit einer gleichen gleichen Tiers zur nächsthöheren Stufe.
+func combine(weapon: Weapon) -> Weapon:
+	var partner: Weapon = find_combine_partner(weapon.data, weapon.tier, weapon)
+	if partner == null:
+		return null
+	var data: WeaponData = weapon.data
+	var tier: int = weapon.tier + 1
+	remove_weapon(weapon)
+	remove_weapon(partner)
+	return add_weapon(data, tier)
 
 
 func _layout() -> void:

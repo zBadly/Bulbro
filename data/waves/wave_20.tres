@@ -41,5 +41,6 @@ start_time = 6.0
 [resource]
 script = ExtResource("6_tiey4")
 wave_number = 20
+is_boss = true
 duration = 90.0
 groups = Array[ExtResource("1_6xune")]([SubResource("Resource_uu1fi"), SubResource("Resource_6wnr3"), SubResource("Resource_fbrtk"), SubResource("Resource_tr3uf")])
