@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="1_sioo2"]
+[ext_resource type="Texture2D" path="res://art/weapons/ast.svg" id="2_fgkfa"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="3_ahxpe"]
+
+[sub_resource type="Resource" id="Resource_uga64"]
+script = ExtResource("3_ahxpe")
+base_damage = 10.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 1.2
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 15
+
+[sub_resource type="Resource" id="Resource_71g1w"]
+script = ExtResource("3_ahxpe")
+base_damage = 15.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 1.1
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 30
+
+[sub_resource type="Resource" id="Resource_1wwo3"]
+script = ExtResource("3_ahxpe")
+base_damage = 22.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 1.02
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 54
+
+[sub_resource type="Resource" id="Resource_prrk6"]
+script = ExtResource("3_ahxpe")
+base_damage = 32.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 0.9400000000000001
+range = 175.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+price = 98
+
+[resource]
+script = ExtResource("1_sioo2")
+id = &"ast"
+name_key = "WEAPON_AST"
+classes = Array[StringName]([&"primitive"])
+texture = ExtResource("2_fgkfa")
+sprite_rotation_deg = 50.0
+tiers = Array[ExtResource("3_ahxpe")]([SubResource("Resource_uga64"), SubResource("Resource_71g1w"), SubResource("Resource_1wwo3"), SubResource("Resource_prrk6")])
+damage_per_same_weapon = 1.0

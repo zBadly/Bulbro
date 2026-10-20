@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="72" viewBox="0 0 56 72">
+  <defs>
+    <ellipse id="sack" cx="28" cy="30" rx="20" ry="22"/>
+    <clipPath id="sack-clip"><use href="#sack"/></clipPath>
+  </defs>
+
+  <!-- Pfahl und Fuß -->
+  <rect x="24" y="44" width="8" height="20" rx="2" fill="#9C6B3F" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <rect x="12" y="62" width="32" height="7" rx="3.5" fill="#734B28" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Strohsack -->
+  <use href="#sack" fill="#B8925A"/>
+  <ellipse cx="25" cy="27" rx="20" ry="22" fill="#E0C08A" clip-path="url(#sack-clip)"/>
+  <ellipse cx="18" cy="16" rx="5" ry="3" fill="#F2DDB0" transform="rotate(-35 18 16)"/>
+  <g stroke="#B8925A" stroke-width="2" stroke-linecap="round">
+    <path d="M14,40 L18,44 M38,40 L35,44 M28,8 L28,4"/>
+  </g>
+  <use href="#sack" fill="none" stroke="#2A1E2E" stroke-width="4"/>
+
+  <!-- Zielscheibe -->
+  <circle cx="28" cy="31" r="10" fill="#F4F0EA" stroke="#2A1E2E" stroke-width="3"/>
+  <circle cx="28" cy="31" r="6" fill="#E74C3C"/>
+  <circle cx="28" cy="31" r="2.5" fill="#F4F0EA"/>
+</svg>

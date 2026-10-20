@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="1_ewyun"]
+[ext_resource type="Texture2D" path="res://art/weapons/funkenfaust.svg" id="2_pjwjq"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="3_p67ls"]
+
+[sub_resource type="Resource" id="Resource_fy24f"]
+script = ExtResource("3_p67ls")
+base_damage = 8.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 0.78
+range = 150.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+knockback = 15.0
+price = 15
+
+[sub_resource type="Resource" id="Resource_331dg"]
+script = ExtResource("3_p67ls")
+base_damage = 12.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 0.72
+range = 150.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+knockback = 15.0
+price = 30
+
+[sub_resource type="Resource" id="Resource_1cp4e"]
+script = ExtResource("3_p67ls")
+base_damage = 18.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 0.66
+range = 150.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+knockback = 15.0
+price = 54
+
+[sub_resource type="Resource" id="Resource_cnacq"]
+script = ExtResource("3_p67ls")
+base_damage = 26.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 1.0
+})
+cooldown = 0.61
+range = 150.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+knockback = 15.0
+price = 98
+
+[resource]
+script = ExtResource("1_ewyun")
+id = &"funkenfaust"
+name_key = "WEAPON_FUNKENFAUST"
+classes = Array[StringName]([&"unarmed"])
+texture = ExtResource("2_pjwjq")
+tiers = Array[ExtResource("3_p67ls")]([SubResource("Resource_fy24f"), SubResource("Resource_331dg"), SubResource("Resource_1cp4e"), SubResource("Resource_cnacq")])

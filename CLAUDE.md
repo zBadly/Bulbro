@@ -25,6 +25,11 @@ Alle Namen, Grafiken (SVG), Texte und Sounds sind eigene Kreationen; das Spiel i
 - Systeme kommunizieren über den Signalbus `Events` statt über direkte Referenzen.
 - Tests liegen unter `tests/` (Dateien `test_*.gd`, Basisklasse `GutTest`).
 
+## Debug-Tasten
+
+- **F3**: Debug-Overlay mit allen Stats
+- **F4**: nächste Waffe aus `data/weapons` hinzufügen (nur Debug-Builds)
+
 ## Godot aufrufen
 
 Godot 4.7.2 liegt unter `D:\Game\Tools\Godot\`. Für die Kommandozeile die Konsolen-Exe verwenden, nur sie gibt Fehler im Terminal aus.
@@ -43,5 +48,7 @@ GODOT="/d/Game/Tools/Godot/Godot_v4.7.2-stable_win64_console.exe"
 ```
 
 Der Headless-Modus kompiliert keine Shader. Nach Shader-Änderungen die betroffene Szene einmal mit echtem Renderer starten (ohne `--headless`) und die Ausgabe auf Fehler prüfen.
+
+Hilfsskripte, die mit `-s` laufen (`extends SceneTree`), werden kompiliert, bevor Autoloads existieren: Sie dürfen keine Klassen per Typ referenzieren, die Autoloads nutzen (z. B. `Arena`, `Player`). Stattdessen `Node` und `call()` verwenden.
 
 Der Check gilt als bestanden, wenn keine Zeilen mit `ERROR`, `SCRIPT ERROR` oder `WARNING` ausgegeben werden und GUT „All tests passed!“ meldet.

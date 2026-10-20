@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="CombatConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/combat_config.gd" id="1_04d3q"]
+
+[resource]
+script = ExtResource("1_04d3q")
+knockback_to_speed = 40.0
+knockback_friction = 2400.0
+target_refresh_interval = 0.1
+melee_hitbox_radius = 26.0
+melee_attack_time_base = 0.1
+melee_attack_time_per_range = 0.0005
+melee_max_cooldown_share = 0.8
+swing_arc_deg = 110.0
+muzzle_offset = 22.0
+recoil_distance = 6.0
+recoil_time = 0.1
+projectile_pool_size = 300
+damage_number_pool_size = 100
+damage_number_crit_color = Color(1, 0.83137256, 0.23137255, 1)
+damage_number_outline_color = Color(0.16470589, 0.11764706, 0.18039216, 1)
+damage_number_font_size = 26
+damage_number_crit_font_size = 38
+damage_number_outline_size = 8
+damage_number_rise = 60.0
+damage_number_time = 0.7
+damage_number_jitter = 12.0
+damage_number_z_index = 50
+dummy_return_speed = 120.0
+dummy_dps_window = 3.0

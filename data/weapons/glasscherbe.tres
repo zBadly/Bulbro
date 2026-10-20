@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="1_cbfs6"]
+[ext_resource type="Texture2D" path="res://art/weapons/glasscherbe.svg" id="2_pmkfg"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="3_ah8b0"]
+
+[sub_resource type="Resource" id="Resource_hfiq4"]
+script = ExtResource("3_ah8b0")
+base_damage = 6.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 0.8
+})
+cooldown = 0.8
+range = 150.0
+crit_chance = 0.2
+crit_multiplier = 2.5
+price = 20
+
+[sub_resource type="Resource" id="Resource_d81ln"]
+script = ExtResource("3_ah8b0")
+base_damage = 9.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 0.8
+})
+cooldown = 0.74
+range = 150.0
+crit_chance = 0.2
+crit_multiplier = 2.5
+price = 40
+
+[sub_resource type="Resource" id="Resource_81qax"]
+script = ExtResource("3_ah8b0")
+base_damage = 13.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 0.8
+})
+cooldown = 0.68
+range = 150.0
+crit_chance = 0.2
+crit_multiplier = 2.5
+price = 72
+
+[sub_resource type="Resource" id="Resource_wowof"]
+script = ExtResource("3_ah8b0")
+base_damage = 19.0
+scalings = Dictionary[StringName, float]({
+&"melee_dmg": 0.8
+})
+cooldown = 0.62
+range = 150.0
+crit_chance = 0.2
+crit_multiplier = 2.5
+price = 130
+
+[resource]
+script = ExtResource("1_cbfs6")
+id = &"glasscherbe"
+name_key = "WEAPON_GLASSCHERBE"
+classes = Array[StringName]([&"blade", &"precise"])
+texture = ExtResource("2_pmkfg")
+sprite_rotation_deg = 45.0
+tiers = Array[ExtResource("3_ah8b0")]([SubResource("Resource_hfiq4"), SubResource("Resource_d81ln"), SubResource("Resource_81qax"), SubResource("Resource_wowof")])

@@ -28,6 +28,7 @@ var _known_max_hp: float = 0.0
 @onready var _visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
 @onready var _light: PointLight2D = $Light
+@onready var weapon_slots: WeaponSlots = $WeaponSlots
 
 
 func _ready() -> void:
@@ -41,6 +42,9 @@ func _ready() -> void:
 	_light.color = config.light_color
 	_light.energy = config.light_energy
 	_light.texture_scale = config.light_texture_scale
+	weapon_slots.player = self
+	weapon_slots.max_slots = config.weapon_slots
+	weapon_slots.orbit_radius = config.weapon_orbit_radius
 	Juice.idle_bob(_visual)
 	hp_changed.emit(current_hp, _known_max_hp)
 

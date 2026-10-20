@@ -95,3 +95,17 @@ static func resolve_incoming_damage(raw_damage: float, armor: float, dodge: floa
 	if roll < dodge_chance(dodge, dodge_cap):
 		return 0
 	return damage_after_armor(raw_damage, armor)
+
+
+## Summe aus Skalierung x Stat, z. B. {melee_dmg: 0.8} mit Nah 10 -> 8.
+static func scaling_bonus(scalings: Dictionary[StringName, float], stats: StatSystem) -> float:
+	var bonus: float = 0.0
+	for stat: StringName in scalings:
+		bonus += scalings[stat] * stats.get_stat(stat)
+	return bonus
+
+
+## Waffenschaden (GDD 8): (Basis + Skalierung) x (1 + damage_pct/100) x Krit-Multiplikator, gerundet, mindestens 1.
+static func weapon_damage(base_damage: float, scaling: float, damage_pct: float, crit_multiplier: float) -> int:
+	var damage: float = (base_damage + scaling) * maxf(0.0, 1.0 + damage_pct / PERCENT) * crit_multiplier
+	return maxi(MIN_DAMAGE, roundi(damage))

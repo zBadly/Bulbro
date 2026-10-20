@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="18" viewBox="0 0 32 18">
+  <defs>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#FFD43B" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#FFD43B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="16" cy="9" rx="16" ry="9" fill="url(#glow)"/>
+  <!-- Blitzbolzen, zeigt nach rechts -->
+  <path d="M4,9 L13,5 L13,7.5 L27,9 L13,10.5 L13,13 Z" fill="#FFD43B" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M13,7.5 L24,9 L13,9 Z" fill="#FFF4B8"/>
+</svg>

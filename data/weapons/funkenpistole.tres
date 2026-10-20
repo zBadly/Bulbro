@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/fx/projectile_spark.svg" id="1_0v317"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="2_hjgs6"]
+[ext_resource type="Texture2D" path="res://art/weapons/funkenpistole.svg" id="3_ix4da"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="4_k0pko"]
+
+[sub_resource type="Resource" id="Resource_twbwv"]
+script = ExtResource("4_k0pko")
+base_damage = 12.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 1.0
+})
+cooldown = 1.2
+range = 400.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 1
+price = 25
+
+[sub_resource type="Resource" id="Resource_kswk6"]
+script = ExtResource("4_k0pko")
+base_damage = 18.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 1.0
+})
+cooldown = 1.1
+range = 400.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 1
+price = 50
+
+[sub_resource type="Resource" id="Resource_y80rc"]
+script = ExtResource("4_k0pko")
+base_damage = 26.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 1.0
+})
+cooldown = 1.02
+range = 400.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 1
+price = 90
+
+[sub_resource type="Resource" id="Resource_v7ae0"]
+script = ExtResource("4_k0pko")
+base_damage = 38.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 1.0
+})
+cooldown = 0.9400000000000001
+range = 400.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 1
+price = 163
+
+[resource]
+script = ExtResource("2_hjgs6")
+id = &"funkenpistole"
+name_key = "WEAPON_FUNKENPISTOLE"
+kind = 2
+classes = Array[StringName]([&"gun"])
+texture = ExtResource("3_ix4da")
+tiers = Array[ExtResource("4_k0pko")]([SubResource("Resource_twbwv"), SubResource("Resource_kswk6"), SubResource("Resource_y80rc"), SubResource("Resource_v7ae0")])
+projectile_texture = ExtResource("1_0v317")
+projectile_speed = 1600.0

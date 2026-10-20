@@ -44,3 +44,21 @@ DEBUG_ARMOR_REDUCTION,Schadensreduktion,Damage reduction
 DEBUG_MOVE_SPEED,Tempo px/s,Speed px/s
 DEBUG_PRIMARY,Primär,Primary
 DEBUG_SECONDARY,Sekundär,Secondary
+DEBUG_DPS,%d DPS,%d DPS
+WEAPON_FUNKENPISTOLE,Funkenpistole,Spark Pistol
+WEAPON_GLASSCHERBE,Glasscherbe,Glass Shard
+WEAPON_AST,Ast,Branch
+WEAPON_FUNKENFAUST,Funkenfaust,Spark Fist
+CLASS_BLADE,Klinge,Blade
+CLASS_BLUNT,Stumpf,Blunt
+CLASS_PRECISE,Präzise,Precise
+CLASS_HEAVY,Schwer,Heavy
+CLASS_PRIMITIVE,Primitiv,Primitive
+CLASS_UNARMED,Unbewaffnet,Unarmed
+CLASS_ELEMENTAL,Elementar,Elemental
+CLASS_TOOL,Werkzeug,Tool
+CLASS_EXPLOSIVE,Explosiv,Explosive
+CLASS_GUN,Schusswaffe,Gun
+CLASS_MEDICAL,Medizinisch,Medical
+CLASS_ETHEREAL,Ätherisch,Ethereal
+CLASS_SUPPORT,Support,Support

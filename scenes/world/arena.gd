@@ -4,6 +4,8 @@ extends Node2D
 
 const LIGHTING_SECTION: String = "options"
 const LIGHTING_KEY: String = "lighting"
+const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
+const WEAPON_CATEGORY: String = "weapons"
 
 @export var config: ArenaConfig
 
@@ -11,10 +13,16 @@ const LIGHTING_KEY: String = "lighting"
 @onready var _darkness: CanvasModulate = $Darkness
 @onready var _camera: Camera2D = $Camera
 @onready var player: Player = $Entities/Player
+@onready var _projectile_pool: ObjectPool = $Pools/PlayerProjectiles
+@onready var _damage_number_pool: ObjectPool = $Pools/DamageNumbers
+
+var _debug_weapon_index: int = 0
 
 
 func _ready() -> void:
 	GameState.start_run()
+	_projectile_pool.prewarm(COMBAT.projectile_pool_size)
+	_damage_number_pool.prewarm(COMBAT.damage_number_pool_size)
 	var rect: Rect2 = config.get_rect()
 	_floor.region_rect = Rect2(Vector2.ZERO, config.size)
 	_floor.position = rect.get_center()
@@ -37,6 +45,23 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_camera.global_position = player.global_position
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if OS.is_debug_build() and event.is_action_pressed(&"debug_add_weapon"):
+		_debug_add_weapon()
+		get_viewport().set_input_as_handled()
+
+
+## Debug (F4): fügt reihum die nächste Waffe aus res://data/weapons hinzu.
+func _debug_add_weapon() -> void:
+	var weapons: Array[Resource] = DataRegistry.get_all(WEAPON_CATEGORY)
+	if weapons.is_empty():
+		return
+	weapons.sort_custom(func(a: Resource, b: Resource) -> bool: return String((a as WeaponData).id) < String((b as WeaponData).id))
+	var data: WeaponData = weapons[_debug_weapon_index % weapons.size()] as WeaponData
+	_debug_weapon_index += 1
+	player.weapon_slots.add_weapon(data)
 
 
 func _draw() -> void:
