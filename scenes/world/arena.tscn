@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scenes/world/arena.gd" id="1_arena"]
 [ext_resource type="Resource" path="res://data/config/arena_config.tres" id="2_config"]
@@ -14,6 +14,9 @@
 [ext_resource type="Script" path="res://scenes/ui/hud.gd" id="12_hud"]
 [ext_resource type="Script" path="res://scenes/ui/game_over.gd" id="13_game_over"]
 [ext_resource type="Script" path="res://scenes/ui/pause_menu.gd" id="14_pause"]
+[ext_resource type="Script" path="res://scenes/world/drop_manager.gd" id="15_drops"]
+[ext_resource type="Script" path="res://scenes/world/neutral_spawner.gd" id="16_neutral"]
+[ext_resource type="PackedScene" path="res://scenes/pickups/pickup.tscn" id="17_pickup"]
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_arena")
@@ -35,7 +38,18 @@ y_sort_enabled = true
 [node name="WaveManager" type="Node" parent="."]
 script = ExtResource("6_waves")
 
+[node name="DropManager" type="Node" parent="."]
+script = ExtResource("15_drops")
+
+[node name="NeutralSpawner" type="Node" parent="."]
+script = ExtResource("16_neutral")
+
 [node name="Pools" type="Node" parent="."]
+
+[node name="Pickups" type="Node" parent="Pools"]
+script = ExtResource("7_pool")
+scene = ExtResource("17_pickup")
+group_name = &"pool_pickups"
 
 [node name="PlayerProjectiles" type="Node" parent="Pools"]
 script = ExtResource("7_pool")

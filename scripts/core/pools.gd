@@ -6,6 +6,7 @@ const PLAYER_PROJECTILES: StringName = &"pool_player_projectiles"
 const DAMAGE_NUMBERS: StringName = &"pool_damage_numbers"
 const ENEMY_PROJECTILES: StringName = &"pool_enemy_projectiles"
 const SPAWN_MARKERS: StringName = &"pool_spawn_markers"
+const PICKUPS: StringName = &"pool_pickups"
 
 
 static func get_pool(tree: SceneTree, group: StringName) -> ObjectPool:

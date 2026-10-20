@@ -29,6 +29,8 @@ Alle Namen, Grafiken (SVG), Texte und Sounds sind eigene Kreationen; das Spiel i
 
 - **F3**: Debug-Overlay mit allen Stats
 - **F4**: nächste Waffe aus `data/weapons` hinzufügen (nur Debug-Builds)
+- **F6**: Arena bis zum Gegnerlimit (100) füllen, Performance-Test (nur Debug-Builds)
+- **Esc**: Pause
 
 ## Godot aufrufen
 

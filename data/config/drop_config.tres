@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="DropConfig" format=3]
+
+[ext_resource type="Texture2D" path="res://art/pickups/battery.svg" id="1_junjd"]
+[ext_resource type="Texture2D" path="res://art/pickups/crate.svg" id="2_2ump7"]
+[ext_resource type="Script" path="res://scripts/data/drop_config.gd" id="3_k802a"]
+[ext_resource type="Texture2D" path="res://art/pickups/spark.svg" id="4_kqgko"]
+[ext_resource type="Resource" path="res://data/enemies/funkendieb.tres" id="5_30act"]
+
+[resource]
+script = ExtResource("3_k802a")
+consumable_base_chance = 0.02
+crate_base_chance = 0.35
+battery_heal = 3.0
+crate_heal = 3.0
+spark_texture = ExtResource("4_kqgko")
+battery_texture = ExtResource("1_junjd")
+crate_texture = ExtResource("2_2ump7")
+consumable_pickup_radius = 40.0
+collect_distance = 16.0
+magnet_start_speed = 200.0
+magnet_acceleration = 2500.0
+magnet_max_speed = 1400.0
+scatter_radius = 30.0
+scatter_time = 0.25
+pickup_pool_size = 300
+crystal_first_spawn = 10.0
+crystal_spawn_interval = 10.0
+crystal_spawn_chance = 0.25
+crystal_max_count = 4
+crystal_base_hp = 10.0
+crystal_hp_per_wave = 5.0
+crystal_max_hits = 8
+crystal_sparks = 3
+crystal_crate_share = 0.2
+thief = ExtResource("5_30act")
+thief_first_wave = 3
+thief_first_check = 25.0
+thief_check_interval = 15.0
+thief_chance = 0.1

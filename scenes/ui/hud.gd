@@ -9,6 +9,10 @@ const WAVE_TEXT_SIZE: int = 40
 const TIMER_TEXT_SIZE: int = 56
 const BANNER_TEXT_SIZE: int = 64
 const ROW_GAP: int = 8
+const SPARK_ICON: Texture2D = preload("res://art/pickups/spark.svg")
+const SPARK_TEXT_SIZE: int = 30
+const BAG_TEXT_SIZE: int = 20
+const BAG_COLOR: Color = Color("#FFD43B")
 
 var _hp_bar: ProgressBar
 var _hp_label: Label
@@ -17,6 +21,8 @@ var _xp_label: Label
 var _wave_label: Label
 var _timer_label: Label
 var _banner: Label
+var _spark_label: Label
+var _bag_label: Label
 var _wave_manager: WaveManager
 
 
@@ -31,6 +37,18 @@ func _ready() -> void:
 	_xp_bar = UiStyle.make_bar(UiStyle.XP_COLOR, BAR_SIZE)
 	_xp_label = _bar_label(_xp_bar)
 	left.add_child(_xp_bar)
+	var spark_row: HBoxContainer = HBoxContainer.new()
+	spark_row.add_theme_constant_override("separation", ROW_GAP)
+	left.add_child(spark_row)
+	var icon: TextureRect = TextureRect.new()
+	icon.texture = SPARK_ICON
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	spark_row.add_child(icon)
+	_spark_label = UiStyle.make_label(SPARK_TEXT_SIZE)
+	spark_row.add_child(_spark_label)
+	_bag_label = UiStyle.make_label(BAG_TEXT_SIZE, BAG_COLOR)
+	_bag_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	spark_row.add_child(_bag_label)
 
 	var top: VBoxContainer = VBoxContainer.new()
 	top.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
@@ -53,7 +71,10 @@ func _ready() -> void:
 	_banner.hide()
 	add_child(_banner)
 
-	set_xp(0.0, 1.0, 0)
+	Events.sparks_changed.connect(_on_sparks_changed)
+	Events.xp_changed.connect(set_xp)
+	_on_sparks_changed(GameState.sparks, GameState.bag)
+	set_xp(GameState.xp, GameState.xp_needed(), GameState.level)
 
 
 func bind(player: Player, wave_manager: WaveManager) -> void:
@@ -67,7 +88,10 @@ func bind(player: Player, wave_manager: WaveManager) -> void:
 func set_xp(current: float, needed: float, level: int) -> void:
 	_xp_bar.max_value = needed
 	_xp_bar.value = current
-	_xp_label.text = tr("HUD_LEVEL") % level
+	if GameState.pending_level_ups > 0:
+		_xp_label.text = tr("HUD_LEVEL_PENDING") % [level, GameState.pending_level_ups]
+	else:
+		_xp_label.text = tr("HUD_LEVEL") % level
 
 
 func _process(_delta: float) -> void:
@@ -82,6 +106,11 @@ func _bar_label(bar: ProgressBar) -> Label:
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	bar.add_child(label)
 	return label
+
+
+func _on_sparks_changed(sparks: int, bag: int) -> void:
+	_spark_label.text = str(sparks)
+	_bag_label.text = tr("HUD_BAG") % bag if bag > 0 else ""
 
 
 func _on_hp_changed(current: float, maximum: float) -> void:

@@ -29,6 +29,7 @@ var _known_max_hp: float = 0.0
 @onready var _sprite: Sprite2D = $Visual/Sprite
 @onready var _light: PointLight2D = $Light
 @onready var weapon_slots: WeaponSlots = $WeaponSlots
+@onready var _collision: CollisionShape2D = $CollisionShape
 
 
 func _ready() -> void:
@@ -46,6 +47,7 @@ func _ready() -> void:
 	weapon_slots.max_slots = config.weapon_slots
 	weapon_slots.orbit_radius = config.weapon_orbit_radius
 	Juice.idle_bob(_visual)
+	Events.level_up.connect(_on_level_up)
 	hp_changed.emit(current_hp, _known_max_hp)
 
 
@@ -69,6 +71,15 @@ func get_max_hp() -> float:
 
 func get_move_speed() -> float:
 	return CombatMath.move_speed(config.base_move_speed, stats.get_stat(Stats.SPEED))
+
+
+func get_pickup_radius() -> float:
+	return Economy.pickup_radius(config.pickup_radius, stats.get_stat(Stats.PICKUP_RANGE_PCT))
+
+
+## Körpermitte in Weltkoordinaten (Ziel für Pickups).
+func get_center() -> Vector2:
+	return _collision.global_position
 
 
 func is_invulnerable() -> bool:
@@ -132,6 +143,11 @@ func _die() -> void:
 	Events.player_died.emit()
 	weapon_slots.hide()
 	Juice.squash_pop(_visual)
+
+
+## Jedes Level-up gibt sofort Max HP; die Upgrade-Auswahl folgt am Wellenende.
+func _on_level_up(_new_level: int) -> void:
+	stats.add_modifier(StatModifier.create(Stats.MAX_HP, config.max_hp_per_level))
 
 
 ## Steigt Max HP, steigen die aktuellen HP um denselben Betrag; sinkt es, werden sie nur gekappt.

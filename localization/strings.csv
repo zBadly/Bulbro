@@ -77,3 +77,6 @@ ENEMY_SCHATTENLING,Schattenling,Shadeling
 ENEMY_MOTTE,Mottenschwarm,Moth Swarm
 ENEMY_RAMMKAEFER,Rammkäfer,Ram Beetle
 ENEMY_RUSSSPUCKER,Rußspucker,Soot Spitter
+HUD_LEVEL_PENDING,Lv %d  (+%d),Lv %d  (+%d)
+HUD_BAG,Beutel %d,Bag %d
+ENEMY_FUNKENDIEB,Funkendieb,Spark Thief

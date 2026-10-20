@@ -8,6 +8,7 @@ const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const WEAPON_CATEGORY: String = "weapons"
 const ENEMY_CATEGORY: String = "enemies"
+const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 
 @export var config: ArenaConfig
 
@@ -17,6 +18,8 @@ const ENEMY_CATEGORY: String = "enemies"
 @onready var _entities: Node2D = $Entities
 @onready var player: Player = $Entities/Player
 @onready var wave_manager: WaveManager = $WaveManager
+@onready var _drop_manager: DropManager = $DropManager
+@onready var _neutral_spawner: NeutralSpawner = $NeutralSpawner
 @onready var _hud: Hud = $Hud
 @onready var _game_over: GameOverScreen = $GameOver
 @onready var _pause_menu: PauseMenu = $PauseMenu
@@ -24,6 +27,7 @@ const ENEMY_CATEGORY: String = "enemies"
 @onready var _damage_number_pool: ObjectPool = $Pools/DamageNumbers
 @onready var _enemy_projectile_pool: ObjectPool = $Pools/EnemyProjectiles
 @onready var _spawn_marker_pool: ObjectPool = $Pools/SpawnMarkers
+@onready var _pickup_pool: ObjectPool = $Pools/Pickups
 
 var _debug_weapon_index: int = 0
 
@@ -34,6 +38,7 @@ func _ready() -> void:
 	_damage_number_pool.prewarm(COMBAT.damage_number_pool_size)
 	_enemy_projectile_pool.prewarm(WAVES.enemy_projectile_pool_size)
 	_spawn_marker_pool.prewarm(WAVES.spawn_marker_pool_size)
+	_pickup_pool.prewarm(DROPS.pickup_pool_size)
 
 	var rect: Rect2 = config.get_rect()
 	_floor.region_rect = Rect2(Vector2.ZERO, config.size)
@@ -51,6 +56,10 @@ func _ready() -> void:
 	_hud.bind(player, wave_manager)
 	player.died.connect(_on_player_died)
 	wave_manager.run_won.connect(_on_run_won)
+	_drop_manager.player = player
+	_neutral_spawner.wave_manager = wave_manager
+	_neutral_spawner.player = player
+	_neutral_spawner.container = _entities
 	wave_manager.start(player, rect, _entities)
 
 

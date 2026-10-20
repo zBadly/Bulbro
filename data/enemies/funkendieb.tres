@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/behaviors/flee_data.gd" id="1_kmacv"]
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="2_vasd3"]
+[ext_resource type="Texture2D" path="res://art/enemies/funkendieb.svg" id="3_gnu1y"]
+
+[sub_resource type="Resource" id="Resource_3vxvg"]
+script = ExtResource("1_kmacv")
+calm_distance = 450.0
+calm_speed_factor = 0.5
+
+[resource]
+script = ExtResource("2_vasd3")
+id = &"funkendieb"
+name_key = "ENEMY_FUNKENDIEB"
+texture = ExtResource("3_gnu1y")
+collision_radius = 22.0
+base_hp = 5.0
+hp_per_wave = 30.0
+base_damage = 1.0
+damage_per_wave = 0.85
+speed_min = 300.0
+speed_max = 400.0
+behavior = SubResource("Resource_3vxvg")
+sparks = 8
+guaranteed_crate = true
+despawnable = false

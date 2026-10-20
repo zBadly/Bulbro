@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <path id="body" d="M28,14 C40,14 48,23 48,36 C48,47 40,53 28,53 C16,53 8,47 8,36 C8,23 16,14 28,14 Z"/>
+    <clipPath id="body-clip"><use href="#body"/></clipPath>
+    <path id="sack" d="M46,20 C55,22 58,32 55,40 C52,47 42,47 39,40 C36,32 38,22 46,20 Z"/>
+    <clipPath id="sack-clip"><use href="#sack"/></clipPath>
+  </defs>
+
+  <!-- Beutesack auf dem Rücken (Akzent Gold = Beute) -->
+  <use href="#sack" fill="#E0A800"/>
+  <ellipse cx="45" cy="31" rx="9" ry="10" fill="#FFD43B" clip-path="url(#sack-clip)"/>
+  <path d="M47,27 L49,32 L47,37 L45,32 Z" fill="#FFF4B8" stroke="#2A1E2E" stroke-width="1.5" stroke-linejoin="round"/>
+  <use href="#sack" fill="none" stroke="#2A1E2E" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M42,20 Q45,15 49,19" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Körper -->
+  <use href="#body" fill="#3A2A5C"/>
+  <ellipse cx="25" cy="32" rx="22" ry="20" fill="#5B3F8C" clip-path="url(#body-clip)"/>
+  <ellipse cx="17" cy="23" rx="5" ry="3" fill="#8A6BC0" transform="rotate(-35 17 23)"/>
+  <use href="#body" fill="none" stroke="#2A1E2E" stroke-width="4"/>
+
+  <!-- Banditenmaske mit Augen -->
+  <path d="M9,30 Q28,24 47,30 L46,38 Q28,33 10,38 Z" fill="#2A1E2E"/>
+  <ellipse cx="21" cy="33" rx="4.5" ry="4" fill="#F7F0FF"/>
+  <ellipse cx="35" cy="33" rx="4.5" ry="4" fill="#F7F0FF"/>
+  <circle cx="22" cy="33.5" r="2" fill="#2A1E2E"/>
+  <circle cx="36" cy="33.5" r="2" fill="#2A1E2E"/>
+  <path d="M24,45 Q28,48 32,45" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+</svg>
