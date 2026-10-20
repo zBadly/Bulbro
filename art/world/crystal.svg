@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="72" viewBox="0 0 56 72">
+  <defs>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#8FE3FF" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#8FE3FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="28" cy="36" rx="28" ry="34" fill="url(#glow)"/>
+
+  <g stroke-linejoin="round">
+    <!-- Seitenkristalle -->
+    <path d="M15,30 L21,40 L21,58 L11,58 L9,40 Z" fill="#8FE3FF"/>
+    <path d="M15,30 L21,40 L21,58 L17,58 L16,40 Z" fill="#4FB3E0"/>
+    <path d="M15,30 L21,40 L21,58 L11,58 L9,40 Z" fill="none" stroke="#2A1E2E" stroke-width="3.5"/>
+
+    <path d="M42,34 L48,43 L47,58 L38,58 L37,43 Z" fill="#8FE3FF"/>
+    <path d="M42,34 L48,43 L47,58 L43,58 L43,43 Z" fill="#4FB3E0"/>
+    <path d="M42,34 L48,43 L47,58 L38,58 L37,43 Z" fill="none" stroke="#2A1E2E" stroke-width="3.5"/>
+
+    <!-- Hauptkristall -->
+    <path d="M28,5 L38,21 L36,56 L20,56 L18,21 Z" fill="#8FE3FF"/>
+    <path d="M28,5 L38,21 L36,56 L30,56 L31,23 Z" fill="#4FB3E0"/>
+    <path d="M28,5 L18,21 L25,22 Z" fill="#E6FAFF"/>
+    <path d="M22,28 L24,48" stroke="#E6FAFF" stroke-width="3" stroke-linecap="round"/>
+    <path d="M28,5 L38,21 L36,56 L20,56 L18,21 Z" fill="none" stroke="#2A1E2E" stroke-width="4"/>
+
+    <!-- Felssockel -->
+    <path d="M6,60 Q7,52 18,53 L40,53 Q50,52 51,60 Q50,67 28,67 Q6,67 6,60 Z" fill="#41444F"/>
+    <path d="M7,58 Q9,52 18,53 L40,53 Q48,52 49,57 Q40,62 26,62 Q12,62 7,58 Z" fill="#5A5F70"/>
+    <ellipse cx="15" cy="56" rx="4" ry="1.6" fill="#767C90"/>
+    <path d="M6,60 Q7,52 18,53 L40,53 Q50,52 51,60 Q50,67 28,67 Q6,67 6,60 Z" fill="none" stroke="#2A1E2E" stroke-width="4"/>
+  </g>
+</svg>

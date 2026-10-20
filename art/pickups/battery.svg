@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">
+  <defs>
+    <rect id="cell" x="5" y="8" width="18" height="25" rx="5"/>
+    <clipPath id="cell-clip"><use href="#cell"/></clipPath>
+  </defs>
+
+  <!-- Pluspol -->
+  <rect x="10" y="3" width="8" height="7" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Zelle: oben gelb, unten grün -->
+  <g clip-path="url(#cell-clip)">
+    <rect x="5" y="8" width="18" height="25" fill="#4E9E33"/>
+    <rect x="5" y="8" width="15" height="25" fill="#6CCB4A"/>
+    <rect x="5" y="8" width="18" height="10" fill="#E8E04A"/>
+    <rect x="8" y="12" width="3" height="18" rx="1.5" fill="#C9F2A8"/>
+  </g>
+  <path d="M5,18 L23,18" stroke="#2A1E2E" stroke-width="2.5"/>
+  <use href="#cell" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Blitz-Symbol -->
+  <path d="M15,20 L11,26 L14,26 L13,30 L17,24 L14,24 Z" fill="#FFFFFF" stroke="#2A1E2E" stroke-width="1.5" stroke-linejoin="round"/>
+</svg>

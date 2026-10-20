@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <g id="wings">
+      <path d="M21,22 C12,7 2,11 4,23 C5,31 13,33 21,28 Z" fill="#6B4FA3" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M21,28 C13,33 8,41 13,44 C18,46 21,39 22,33 Z" fill="#6B4FA3" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="11" cy="20" r="3.2" fill="#A98BDB"/>
+      <circle cx="15" cy="39" r="2" fill="#A98BDB"/>
+    </g>
+    <ellipse id="body" cx="24" cy="29" rx="7.5" ry="11"/>
+    <clipPath id="body-clip"><use href="#body"/></clipPath>
+  </defs>
+
+  <!-- Fühler -->
+  <g fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linecap="round">
+    <path d="M22,19 Q19,11 15,8"/>
+    <path d="M26,19 Q29,11 33,8"/>
+    <path d="M17,10 L14,12 M18,13 L15,15"/>
+    <path d="M31,10 L34,12 M30,13 L33,15"/>
+  </g>
+
+  <!-- Flügel -->
+  <use href="#wings"/>
+  <use href="#wings" transform="translate(48,0) scale(-1,1)"/>
+
+  <!-- Körper -->
+  <use href="#body" fill="#3A2A5C"/>
+  <ellipse cx="22.5" cy="27" rx="7.5" ry="11" fill="#5B3F8C" clip-path="url(#body-clip)"/>
+  <ellipse cx="21" cy="21" rx="2.2" ry="1.4" fill="#8A6BC0" transform="rotate(-30 21 21)"/>
+  <g stroke="#3A2A5C" stroke-width="2" stroke-linecap="round">
+    <path d="M19,33 Q24,35 29,33"/>
+    <path d="M20,37 Q24,39 28,37"/>
+  </g>
+  <use href="#body" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+
+  <!-- Augen -->
+  <circle cx="21" cy="25" r="3" fill="#F7F0FF"/>
+  <circle cx="27" cy="25" r="3" fill="#F7F0FF"/>
+  <circle cx="21.5" cy="25.8" r="1.5" fill="#2A1E2E"/>
+  <circle cx="26.5" cy="25.8" r="1.5" fill="#2A1E2E"/>
+</svg>

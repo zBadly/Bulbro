@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="44" height="40" viewBox="0 0 44 40">
+  <defs>
+    <rect id="box" x="5" y="14" width="34" height="22" rx="3"/>
+    <clipPath id="box-clip"><use href="#box"/></clipPath>
+  </defs>
+
+  <!-- Kasten -->
+  <use href="#box" fill="#9E6C3A"/>
+  <rect x="5" y="14" width="27" height="22" fill="#C8925A" clip-path="url(#box-clip)"/>
+  <use href="#box" fill="none" stroke="#2A1E2E" stroke-width="3.5" stroke-linejoin="round"/>
+
+  <!-- Deckel mit Klebeband -->
+  <rect x="3" y="7" width="38" height="10" rx="3" fill="#E3B884"/>
+  <rect x="18" y="7" width="8" height="10" fill="#EBD9B0"/>
+  <rect x="6" y="9" width="9" height="2.5" rx="1.25" fill="#F2D3A8"/>
+  <rect x="3" y="7" width="38" height="10" rx="3" fill="none" stroke="#2A1E2E" stroke-width="3.5" stroke-linejoin="round"/>
+
+  <!-- Glühbirnen-Symbol -->
+  <rect x="19.5" y="28" width="5" height="4" rx="1" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="2"/>
+  <circle cx="22" cy="24" r="5" fill="#FFE066" stroke="#2A1E2E" stroke-width="2"/>
+</svg>

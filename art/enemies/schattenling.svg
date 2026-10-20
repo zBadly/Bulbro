@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
+  <defs>
+    <path id="body" d="M28,12 C40,12 49,21 49,36 L49,46 Q45,52 40,47 Q35,52 28,47 Q21,52 16,47 Q11,52 7,46 L7,36 C7,21 16,12 28,12 Z"/>
+    <clipPath id="body-clip"><use href="#body"/></clipPath>
+  </defs>
+
+  <!-- Fühler -->
+  <g fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round">
+    <path d="M21,15 Q18,9 14,7"/>
+    <path d="M35,15 Q38,9 42,7"/>
+  </g>
+  <circle cx="13" cy="6" r="3.5" fill="#8A6BC0" stroke="#2A1E2E" stroke-width="3"/>
+  <circle cx="43" cy="6" r="3.5" fill="#8A6BC0" stroke="#2A1E2E" stroke-width="3"/>
+
+  <!-- Körper -->
+  <use href="#body" fill="#3A2A5C"/>
+  <ellipse cx="25" cy="30" rx="22" ry="20" fill="#5B3F8C" clip-path="url(#body-clip)"/>
+  <ellipse cx="18" cy="21" rx="5" ry="3.5" fill="#8A6BC0" transform="rotate(-35 18 21)"/>
+  <use href="#body" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Gesicht -->
+  <ellipse cx="21" cy="31" rx="5" ry="6" fill="#F7F0FF"/>
+  <ellipse cx="35" cy="31" rx="5" ry="6" fill="#F7F0FF"/>
+  <circle cx="22" cy="33" r="2.6" fill="#2A1E2E"/>
+  <circle cx="34" cy="33" r="2.6" fill="#2A1E2E"/>
+  <path d="M24,41 Q28,38 32,41" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <rect id="body" x="6" y="16" width="26" height="13" rx="6"/>
+    <clipPath id="body-clip"><use href="#body"/></clipPath>
+  </defs>
+  <g stroke="#2A1E2E" stroke-linejoin="round">
+    <!-- Griff -->
+    <path d="M13,27 L22,27 L19,41 Q18,43 16,43 L12,43 Q10,43 10.5,41 Z" fill="#9C6B3F" stroke-width="4"/>
+    <!-- Finne -->
+    <rect x="12" y="11" width="9" height="7" rx="2.5" fill="#C9651C" stroke-width="3.5"/>
+    <!-- Lauf -->
+    <rect x="30" y="19" width="9" height="7" rx="2" fill="#9AA0A6" stroke-width="3.5"/>
+  </g>
+  <!-- Gehäuse -->
+  <use href="#body" fill="#C9651C"/>
+  <rect x="6" y="14" width="24" height="12" rx="6" fill="#F28C38" clip-path="url(#body-clip)"/>
+  <rect x="10" y="18" width="10" height="3" rx="1.5" fill="#FFB574"/>
+  <use href="#body" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <!-- Funkenspitze -->
+  <circle cx="42" cy="22.5" r="4" fill="#FFD43B" stroke="#2A1E2E" stroke-width="3"/>
+</svg>

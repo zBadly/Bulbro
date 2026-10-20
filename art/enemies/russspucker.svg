@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <ellipse id="body" cx="30" cy="33" rx="24" ry="21"/>
+    <clipPath id="body-clip"><use href="#body"/></clipPath>
+  </defs>
+
+  <!-- Rußschlot -->
+  <rect x="24" y="5" width="12" height="14" rx="3" fill="#3A2A5C" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <rect x="22" y="4" width="16" height="5" rx="2.5" fill="#5B3F8C" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Füße -->
+  <ellipse cx="19" cy="53" rx="6" ry="3.5" fill="#3A2A5C" stroke="#2A1E2E" stroke-width="3"/>
+  <ellipse cx="41" cy="53" rx="6" ry="3.5" fill="#3A2A5C" stroke="#2A1E2E" stroke-width="3"/>
+
+  <!-- Körper -->
+  <use href="#body" fill="#3A2A5C"/>
+  <ellipse cx="27" cy="30" rx="24" ry="21" fill="#5B3F8C" clip-path="url(#body-clip)"/>
+  <ellipse cx="16" cy="21" rx="6" ry="3.5" fill="#8A6BC0" transform="rotate(-35 16 21)"/>
+  <use href="#body" fill="none" stroke="#2A1E2E" stroke-width="4"/>
+
+  <!-- Augen mit grimmigen Brauen -->
+  <ellipse cx="21" cy="29" rx="5" ry="5.5" fill="#F7F0FF"/>
+  <ellipse cx="39" cy="29" rx="5" ry="5.5" fill="#F7F0FF"/>
+  <circle cx="22" cy="30.5" r="2.5" fill="#2A1E2E"/>
+  <circle cx="38" cy="30.5" r="2.5" fill="#2A1E2E"/>
+  <g stroke="#2A1E2E" stroke-width="3.5" stroke-linecap="round">
+    <path d="M15,22 L26,25"/>
+    <path d="M45,22 L34,25"/>
+  </g>
+
+  <!-- Spuckrohr -->
+  <ellipse cx="30" cy="43" rx="9" ry="7" fill="#3A2A5C" stroke="#2A1E2E" stroke-width="3.5"/>
+  <ellipse cx="30" cy="44" rx="5" ry="3.8" fill="#1A1220"/>
+</svg>

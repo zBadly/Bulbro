@@ -20,7 +20,8 @@ Alle Namen, Grafiken (SVG), Texte und Sounds sind eigene Kreationen; das Spiel i
 - GDScript mit statischen Typen überall (Variablen, Parameter, Rückgabewerte, Schleifenvariablen).
 - `snake_case` für Dateien, Funktionen und Variablen; `PascalCase` für `class_name`; `UPPER_SNAKE_CASE` für Konstanten.
 - Eine Klasse pro Datei; wiederverwendbare Klassen bekommen ein `class_name`.
-- Autoload-Skripte (`scripts/core/`) haben **kein** `class_name`, weil der Name sonst mit dem Autoload kollidiert.
+- Autoload-Skripte haben **kein** `class_name`, weil der Name sonst mit dem Autoload kollidiert. Statische Helfer wie `Juice` (`scripts/core/juice.gd`) dagegen schon.
+- Grafikregeln, Palette und SVG-Aufbau: [docs/ART_STYLE.md](docs/ART_STYLE.md).
 - Systeme kommunizieren über den Signalbus `Events` statt über direkte Referenzen.
 - Tests liegen unter `tests/` (Dateien `test_*.gd`, Basisklasse `GutTest`).
 
@@ -40,5 +41,7 @@ GODOT="/d/Game/Tools/Godot/Godot_v4.7.2-stable_win64_console.exe"
 # GUT-Testlauf (Konfiguration in .gutconfig.json)
 "$GODOT" --headless --path . -s addons/gut/gut_cmdln.gd
 ```
+
+Der Headless-Modus kompiliert keine Shader. Nach Shader-Änderungen die betroffene Szene einmal mit echtem Renderer starten (ohne `--headless`) und die Ausgabe auf Fehler prüfen.
 
 Der Check gilt als bestanden, wenn keine Zeilen mit `ERROR`, `SCRIPT ERROR` oder `WARNING` ausgegeben werden und GUT „All tests passed!“ meldet.
