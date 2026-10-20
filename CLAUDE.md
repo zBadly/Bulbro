@@ -22,6 +22,7 @@ Alle Namen, Grafiken (SVG), Texte und Sounds sind eigene Kreationen; das Spiel i
 - Eine Klasse pro Datei; wiederverwendbare Klassen bekommen ein `class_name`.
 - Autoload-Skripte haben **kein** `class_name`, weil der Name sonst mit dem Autoload kollidiert. Statische Helfer wie `Juice` (`scripts/core/juice.gd`) dagegen schon.
 - Grafikregeln, Palette und SVG-Aufbau: [docs/ART_STYLE.md](docs/ART_STYLE.md).
+- Entwicklungsstand, Startwerte und offene Punkte: [docs/ENTWICKLUNG.md](docs/ENTWICKLUNG.md) (bei Wertänderungen mitpflegen).
 - Systeme kommunizieren über den Signalbus `Events` statt über direkte Referenzen.
 - Tests liegen unter `tests/` (Dateien `test_*.gd`, Basisklasse `GutTest`).
 
