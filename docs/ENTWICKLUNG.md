@@ -137,10 +137,13 @@ Gemeinsame Werte in `data/config/status_config.tres`, effektspezifische Zahlen i
 |---|---|
 | `godot --headless --path . res://tools/balance_sim.tscn -- <Spannung>` | Balancing-Tabelle: Gegner-HP pro Welle gegen DPS von drei Builds (Fern, Nah, Strom) |
 | `… -- <Spannung> --apply` | Vorgeschlagene Intervall-Faktoren in die Wellen-`.tres` schreiben |
+| `… -- <Spannung> --characters [--runs 200] [--ablate]` | Run-Simulation je Charakter: Siegquote, Ø Welle, Scheiter-Welle, Schadensanteile, stärkster Effekt (Ablation) |
+| `… -- 0 --weapons` / `… -- 3 --items` | DPS aller Waffen gegen die eigene Klasse / Wirkung der Tier-III/IV-Items auf Siegquote |
+| `… -- <Spannung> --trace <charakter-id>` | Einen Run Welle für Welle ausgeben (Kalibrierung) |
 | `python tools/make_portraits.py` | Charakter-Porträts aus den Spielsprites erzeugen |
 | `godot --headless --path . --export-release "Windows Desktop" build/windows/Bulbro.exe` | Windows-Build (benötigt installierte Export-Vorlagen) |
 
-Annahmen des Simulators (Waffenzahl, Tier und Stat-Zuwachs pro Welle) stehen als Konstanten in `scripts/systems/balance_model.gd`.
+Annahmen des Simulators (Waffenzahl, Tier und Stat-Zuwachs pro Welle) stehen als Konstanten in `scripts/systems/balance_model.gd`. Die Charakter-Simulation (`scripts/systems/character_sim.gd`) nutzt echte Spieler-Objekte und liest Sondereffekte aus den Daten; ihre Vereinfachungen und Kalibrierung (Schnitt der 12 alten Charaktere ≈ 80 % Siegquote auf Spannung 0) stehen dort im Kopf. Die Siegquoten sind Vergleichswerte, keine echten Quoten.
 
 ## Offene Punkte
 
