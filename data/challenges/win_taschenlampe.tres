@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/taschenlampe.tres" id="1_6t6ih"]
+[ext_resource type="Resource" path="res://data/items/werkstattkoffer.tres" id="2_g7iou"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="3_djv8a"]
+
+[resource]
+script = ExtResource("3_djv8a")
+id = &"win_taschenlampe"
+condition = 7
+value = 0.0
+character = ExtResource("1_6t6ih")
+reward_item = ExtResource("2_g7iou")

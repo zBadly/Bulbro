@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/nachtlicht.tres" id="1_sp3gr"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="2_mh65l"]
+
+[resource]
+script = ExtResource("2_mh65l")
+id = &"unlock_nachtlicht"
+condition = 4
+value = 200.0
+reward_character = ExtResource("1_sp3gr")

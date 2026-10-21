@@ -2,14 +2,14 @@ class_name Arena
 extends Node2D
 ## Spielszene eines Runs: Arena mit Boden, Rand und Kamera, Spieler, Wellen, HUD und Endbildschirm.
 
-const LIGHTING_SECTION: String = "options"
-const LIGHTING_KEY: String = "lighting"
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const ENEMY_CATEGORY: String = "enemies"
 const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 const STRUCTURE_SCENE: PackedScene = preload("res://scenes/structures/structure.tscn")
 const SPLAT_POOL_SIZE: int = 60
+## Wie oft während einer Welle Freischaltbedingungen geprüft werden (Sekunden).
+const CHALLENGE_CHECK_INTERVAL: float = 1.0
 ## Screenshake (Trauma-Modell) und Hit-Stop: reine Effekt-Werte.
 const SHAKE_MAX_OFFSET: float = 14.0
 const SHAKE_DECAY: float = 1.8
@@ -50,9 +50,14 @@ var _hit_stop_ready_at: float = 0.0
 
 
 func _ready() -> void:
-	GameState.start_run()
+	var resume: Dictionary = GameState.resume_data
+	GameState.resume_data = {}
+	if resume.is_empty():
+		GameState.start_run()
+	else:
+		RunSave.restore_state(resume)
 	add_to_group(Fx.JUICE_HOST_GROUP)
-	_screenshake = SaveManager.get_value(SaveManager.OPTIONS_SECTION, SaveManager.SCREENSHAKE_KEY, true)
+	_screenshake = SaveManager.get_option(SaveManager.SCREENSHAKE_KEY, true)
 	_splat_pool.container = $Floor
 	_splat_pool.prewarm(SPLAT_POOL_SIZE)
 	AudioManager.play_music()
@@ -66,11 +71,14 @@ func _ready() -> void:
 	_floor.region_rect = Rect2(Vector2.ZERO, config.size)
 	_floor.position = rect.get_center()
 	player.arena_bounds = rect
-	player.apply_character(GameState.character)
-	if GameState.starting_weapon != null:
-		player.weapon_slots.add_weapon(GameState.starting_weapon)
+	if resume.is_empty():
+		player.apply_character(GameState.character)
+		if GameState.starting_weapon != null:
+			player.weapon_slots.add_weapon(GameState.starting_weapon)
+	else:
+		RunSave.apply_to_player(resume, player)
 
-	var lighting: bool = SaveManager.get_value(LIGHTING_SECTION, LIGHTING_KEY, true)
+	var lighting: bool = SaveManager.get_option(SaveManager.LIGHTING_KEY, true)
 	_darkness.color = config.darkness_color
 	_darkness.visible = lighting
 	_setup_camera(rect)
@@ -83,6 +91,7 @@ func _ready() -> void:
 	wave_manager.wave_ended.connect(_on_wave_ended)
 	wave_manager.wave_started.connect(_on_wave_started)
 	Events.run_phase_changed.connect(_on_phase_changed)
+	Events.options_changed.connect(_apply_options)
 	for screen: FlowScreen in [_crate_screen, _level_up_screen, _shop_screen]:
 		screen.player = player
 	_debug_menu.player = player
@@ -93,7 +102,31 @@ func _ready() -> void:
 	_neutral_spawner.wave_manager = wave_manager
 	_neutral_spawner.player = player
 	_neutral_spawner.container = _entities
-	wave_manager.start(player, rect, _entities)
+	add_child(UnlockToast.new())
+	var challenge_timer: Timer = Timer.new()
+	challenge_timer.wait_time = CHALLENGE_CHECK_INTERVAL
+	challenge_timer.autostart = true
+	challenge_timer.timeout.connect(_check_challenges)
+	add_child(challenge_timer)
+	if resume.is_empty():
+		wave_manager.start(player, rect, _entities)
+	else:
+		wave_manager.resume_at(player, rect, _entities, GameState.current_wave)
+		get_tree().paused = true
+		GameState.set_phase(GameState.Phase.SHOP)
+
+
+## Optionen aus dem Pausemenü sofort übernehmen (Licht, Bildschirmwackeln, manuelles Zielen).
+func _apply_options() -> void:
+	_darkness.visible = SaveManager.get_option(SaveManager.LIGHTING_KEY, true)
+	_screenshake = SaveManager.get_option(SaveManager.SCREENSHAKE_KEY, true)
+	player.manual_aim = SaveManager.get_option(SaveManager.MANUAL_AIM_KEY, false)
+
+
+## Freischaltungen während der Welle (z. B. 3 Lampentürme) sofort melden; Siege werden am Run-Ende geprüft.
+func _check_challenges() -> void:
+	if GameState.phase == GameState.Phase.WAVE and not player.is_dead:
+		Unlocks.check(false, false)
 
 
 func _process(delta: float) -> void:
@@ -196,6 +229,8 @@ func _on_phase_changed(phase: int) -> void:
 			_level_up_screen.open()
 		GameState.Phase.SHOP:
 			_shop_screen.open()
+			# Fortsetzen nach Spielabbruch: am Shop-Beginn speichern.
+			SaveManager.save_run(RunSave.capture(player))
 		GameState.Phase.WAVE:
 			get_tree().paused = false
 			wave_manager.start_next_wave()

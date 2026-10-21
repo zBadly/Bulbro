@@ -107,7 +107,7 @@ func _harvest() -> void:
 		GameState.add_xp(Economy.xp_gain(amount, player.stats.get_stat(Stats.XP_GAIN_PCT)))
 	var growth: int = Economy.harvesting_growth(harvesting)
 	if growth > 0:
-		player.stats.add_modifier(StatModifier.create(Stats.HARVESTING, growth))
+		player.add_run_modifier(StatModifier.create(Stats.HARVESTING, growth))
 
 
 func _luck() -> float:

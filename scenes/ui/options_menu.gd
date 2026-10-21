@@ -12,6 +12,11 @@ const GAP: int = 18
 const LOCALES: PackedStringArray = ["de", "en"]
 const LOCALE_KEYS: PackedStringArray = ["LANG_DE", "LANG_EN"]
 const VOLUME_STEP: float = 0.05
+## Barrierefreiheit: Gegnerwerte 25-100 % (wirkt ab dem nächsten Run).
+const ASSIST_KEYS: Dictionary[String, String] = {
+	SaveManager.ENEMY_HP_KEY: "OPT_ENEMY_HP", SaveManager.ENEMY_DAMAGE_KEY: "OPT_ENEMY_DAMAGE", SaveManager.ENEMY_SPEED_KEY: "OPT_ENEMY_SPEED",
+}
+const ASSIST_STEP: float = 5.0
 
 var _first_focus: Control
 
@@ -63,6 +68,11 @@ func open() -> void:
 	grid.add_child(_toggle(SaveManager.LIGHTING_KEY, true, func(_on: bool) -> void: pass))
 	_label(grid, "OPT_SCREENSHAKE")
 	grid.add_child(_toggle(SaveManager.SCREENSHAKE_KEY, true, func(_on: bool) -> void: pass))
+	_label(grid, "OPT_MANUAL_AIM")
+	grid.add_child(_toggle(SaveManager.MANUAL_AIM_KEY, false, func(_on: bool) -> void: pass))
+	for key: String in ASSIST_KEYS:
+		_label(grid, ASSIST_KEYS[key])
+		grid.add_child(_assist_slider(key))
 	_label(grid, "OPT_FULLSCREEN")
 	grid.add_child(_toggle(SaveManager.FULLSCREEN_KEY, false, func(_on: bool) -> void: SaveManager.apply_options()))
 	_label(grid, "OPT_LANGUAGE")
@@ -71,7 +81,7 @@ func open() -> void:
 	language.add_theme_font_size_override("font_size", TEXT_SIZE)
 	for key: String in LOCALE_KEYS:
 		language.add_item(tr(key))
-	language.selected = maxi(0, LOCALES.find(SaveManager.get_value(SaveManager.OPTIONS_SECTION, SaveManager.LOCALE_KEY, SaveManager.DEFAULT_LOCALE)))
+	language.selected = maxi(0, LOCALES.find(SaveManager.get_option(SaveManager.LOCALE_KEY, SaveManager.DEFAULT_LOCALE)))
 	language.item_selected.connect(_on_language_selected)
 	grid.add_child(language)
 
@@ -86,6 +96,7 @@ func open() -> void:
 func close() -> void:
 	SaveManager.save_game()
 	hide()
+	Events.options_changed.emit()
 	closed.emit()
 
 
@@ -101,16 +112,35 @@ func _label(parent: Control, key: String) -> void:
 	parent.add_child(label)
 
 
+## Regler 25-100 % mit Prozentanzeige.
+func _assist_slider(key: String) -> HBoxContainer:
+	var row: HBoxContainer = HBoxContainer.new()
+	var slider: HSlider = HSlider.new()
+	slider.custom_minimum_size = Vector2(SLIDER_WIDTH, TEXT_SIZE)
+	slider.min_value = SaveManager.ASSIST_MIN_PCT
+	slider.max_value = SaveManager.ASSIST_MAX_PCT
+	slider.step = ASSIST_STEP
+	slider.value = SaveManager.get_option(key, SaveManager.ASSIST_MAX_PCT)
+	var value_label: Label = UiStyle.make_label(TEXT_SIZE)
+	value_label.text = "%d %%" % roundi(slider.value)
+	slider.value_changed.connect(func(v: float) -> void:
+		SaveManager.set_option(key, v)
+		value_label.text = "%d %%" % roundi(v))
+	row.add_child(slider)
+	row.add_child(value_label)
+	return row
+
+
 func _toggle(key: String, default: bool, on_change: Callable) -> CheckButton:
 	var toggle: CheckButton = CheckButton.new()
-	toggle.button_pressed = SaveManager.get_value(SaveManager.OPTIONS_SECTION, key, default)
+	toggle.button_pressed = SaveManager.get_option(key, default)
 	toggle.toggled.connect(func(on: bool) -> void:
-		SaveManager.set_value(SaveManager.OPTIONS_SECTION, key, on)
+		SaveManager.set_option(key, on)
 		on_change.call(on))
 	return toggle
 
 
 func _on_language_selected(index: int) -> void:
-	SaveManager.set_value(SaveManager.OPTIONS_SECTION, SaveManager.LOCALE_KEY, LOCALES[index])
+	SaveManager.set_option(SaveManager.LOCALE_KEY, LOCALES[index])
 	SaveManager.apply_options()
 	open.call_deferred()

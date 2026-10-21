@@ -11,6 +11,7 @@ signal died
 const GROUP: StringName = &"player"
 ## Standardanzahl Waffenslots (Charaktere wie die Lichterkette weichen davon ab).
 const DEFAULT_WEAPON_SLOTS: int = 6
+const AIM_STICK_DEADZONE: float = 0.3
 
 @export var config: PlayerConfig
 
@@ -39,8 +40,14 @@ var class_bonuses: Array[ClassBonusEffect] = []
 var per_weapon_effects: Array[PerWeaponStatEffect] = []
 var standing_still_modifiers: Array[StatModifier] = []
 
+## Modifikatoren aus dem Run (Level-up-Wahl, Max HP pro Level, Aufladungs-Wachstum) – für Fortsetzen gespeichert.
+var run_modifiers: Array[StatModifier] = []
+## Manuelles Zielen: Waffen feuern in Richtung Maus/rechter Stick statt auf den nächsten Gegner.
+var manual_aim: bool = false
+
 var _set_modifiers: Array[StatModifier] = []
 var _still_active: bool = false
+var _aim_direction: Vector2 = Vector2.RIGHT
 
 @onready var _visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -67,7 +74,31 @@ func _ready() -> void:
 	weapon_slots.weapons_changed.connect(_track_run)
 	Juice.idle_bob(_visual)
 	Events.level_up.connect(_on_level_up)
+	manual_aim = SaveManager.get_option(SaveManager.MANUAL_AIM_KEY, false)
 	hp_changed.emit(current_hp, _known_max_hp)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"toggle_aim") and GameState.phase == GameState.Phase.WAVE:
+		manual_aim = not manual_aim
+		get_viewport().set_input_as_handled()
+
+
+## Zielrichtung beim manuellen Zielen: rechter Stick, sonst Maus.
+func get_aim_direction() -> Vector2:
+	var stick: Vector2 = Vector2(Input.get_joy_axis(0, JOY_AXIS_RIGHT_X), Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y))
+	if stick.length() > AIM_STICK_DEADZONE:
+		_aim_direction = stick.normalized()
+	elif is_inside_tree():
+		var to_mouse: Vector2 = get_global_mouse_position() - get_center()
+		if not to_mouse.is_zero_approx():
+			_aim_direction = to_mouse.normalized()
+	return _aim_direction
+
+
+func add_run_modifier(mod: StatModifier) -> void:
+	run_modifiers.append(mod)
+	stats.add_modifier(mod)
 
 
 func _physics_process(delta: float) -> void:
@@ -275,7 +306,7 @@ func _die() -> void:
 
 ## Jedes Level-up gibt sofort Max HP; die Upgrade-Auswahl folgt am Wellenende.
 func _on_level_up(_new_level: int) -> void:
-	stats.add_modifier(StatModifier.create(Stats.MAX_HP, config.max_hp_per_level))
+	add_run_modifier(StatModifier.create(Stats.MAX_HP, config.max_hp_per_level))
 
 
 ## Steigt Max HP, steigen die aktuellen HP um denselben Betrag; sinkt es, werden sie nur gekappt.

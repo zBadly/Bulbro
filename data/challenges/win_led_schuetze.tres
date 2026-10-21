@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/led_schuetze.tres" id="1_blwi8"]
+[ext_resource type="Resource" path="res://data/items/glasfaser.tres" id="2_qrs53"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="3_8pwev"]
+
+[resource]
+script = ExtResource("3_8pwev")
+id = &"win_led_schuetze"
+condition = 7
+value = 0.0
+character = ExtResource("1_blwi8")
+reward_item = ExtResource("2_qrs53")

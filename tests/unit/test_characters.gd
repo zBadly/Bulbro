@@ -41,7 +41,7 @@ func test_all_twelve_characters_are_valid() -> void:
 func test_five_start_characters() -> void:
 	var start: int = 0
 	for c: CharacterData in Unlocks.all_characters():
-		if c.unlock == CharacterData.Unlock.START:
+		if c.unlocked_by_default:
 			start += 1
 	assert_eq(start, 5)
 
@@ -114,16 +114,18 @@ func test_candle_doubles_primitive_and_bans_elemental() -> void:
 
 func test_unlock_conditions() -> void:
 	var run: RunStats = RunStats.new()
-	assert_false(Unlocks.is_met(_char("taschenlampe"), run, 2, 0, false))
-	assert_true(Unlocks.is_met(_char("taschenlampe"), run, 3, 0, false))
-	assert_true(Unlocks.is_met(_char("discokugel"), run, 0, 300, false))
+	var tower: ChallengeData = Unlocks.challenge_for(_char("taschenlampe"))
+	assert_false(tower.is_met(run, 2, 0, false, &""))
+	assert_true(tower.is_met(run, 3, 0, false, &""))
+	assert_true(Unlocks.challenge_for(_char("discokugel")).is_met(run, 0, 300, false, &""))
 	run.healed = 200.0
-	assert_true(Unlocks.is_met(_char("nachtlicht"), run, 0, 0, false))
+	assert_true(Unlocks.challenge_for(_char("nachtlicht")).is_met(run, 0, 0, false, &""))
+	var candle: ChallengeData = Unlocks.challenge_for(_char("kerze"))
 	run.primitive_only = true
-	assert_false(Unlocks.is_met(_char("kerze"), run, 0, 0, false), "nur bei Sieg")
-	assert_true(Unlocks.is_met(_char("kerze"), run, 0, 0, true))
+	assert_false(candle.is_met(run, 0, 0, false, &""), "nur bei Sieg")
+	assert_true(candle.is_met(run, 0, 0, true, &""))
 	run.primitive_only = false
-	assert_false(Unlocks.is_met(_char("kerze"), run, 0, 0, true))
+	assert_false(candle.is_met(run, 0, 0, true, &""))
 
 
 func test_difficulty_raises_enemy_hp() -> void:

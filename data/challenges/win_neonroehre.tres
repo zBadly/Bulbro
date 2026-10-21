@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/neonroehre.tres" id="1_y38e3"]
+[ext_resource type="Resource" path="res://data/items/prismenlinse.tres" id="2_6ie1l"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="3_rl6f6"]
+
+[resource]
+script = ExtResource("3_rl6f6")
+id = &"win_neonroehre"
+condition = 7
+value = 0.0
+character = ExtResource("1_y38e3")
+reward_item = ExtResource("2_6ie1l")

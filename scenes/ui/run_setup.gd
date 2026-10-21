@@ -153,12 +153,20 @@ func _select_character(character: CharacterData) -> void:
 		for weapon: WeaponData in character.starting_weapons:
 			weapons.append(tr(weapon.name_key))
 		text.text = "%s\n\n%s: %s\n%s" % [TextFormat.describe_character(character), tr("RUN_END_WEAPONS"),
-			", ".join(weapons), tr("WINS") % SaveManager.get_wins(character.id)]
+			", ".join(weapons), _wins_text(character)]
 	else:
 		text.text = Unlocks.condition_text(character)
 	_detail.add_child(text)
 	if _confirm != null:
 		_confirm.disabled = not unlocked
+
+
+## "Gewonnen auf Spannung: 0, 2" oder "Noch kein Sieg".
+func _wins_text(character: CharacterData) -> String:
+	var levels: Array[int] = SaveManager.get_won_difficulties(character.id)
+	if levels.is_empty():
+		return tr("WINS_NONE")
+	return tr("WINS_LEVELS") % ", ".join(levels.map(func(l: int) -> String: return str(l)))
 
 
 func _confirm_character() -> void:
@@ -220,6 +228,8 @@ func _build_difficulties() -> void:
 
 func _start_run(difficulty: DifficultyData) -> void:
 	GameState.set_run_setup(_character, _weapon, difficulty)
+	GameState.resume_data = {}
+	SaveManager.clear_run()
 	get_tree().change_scene_to_file(RUN_SCENE)
 
 

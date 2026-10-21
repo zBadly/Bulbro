@@ -16,7 +16,7 @@ var _last_boss_warning: float = -INF
 
 func _ready() -> void:
 	Events.enemy_killed.connect(_on_enemy_killed)
-	Events.spark_collected.connect(AudioManager.play_spark)
+	Events.spark_collected.connect(_on_spark_collected)
 	Events.level_up.connect(_on_level_up)
 	Events.boss_spawned.connect(_on_boss_spawned)
 	Events.wave_ended.connect(func(_n: int) -> void: AudioManager.play(&"wave_clear"))
@@ -29,6 +29,11 @@ func _on_enemy_killed(data: EnemyData, position: Vector2, _info: DamageInfo) -> 
 	var pool: ObjectPool = Pools.get_pool(get_tree(), SPLAT_GROUP)
 	if pool != null:
 		(pool.acquire() as Splat).show_at(position, radius, randf() * TAU)
+
+
+## Über eine eigene Methode verbunden, damit die Verbindung mit dieser Szene endet (sonst doppelt nach Neustart).
+func _on_spark_collected() -> void:
+	AudioManager.play_spark()
 
 
 func _on_level_up(_level: int) -> void:

@@ -36,6 +36,7 @@ func _roll_item() -> ItemData:
 	var items: Array[ItemData] = []
 	for res: Resource in DataRegistry.get_all(ITEM_CATEGORY):
 		items.append(res as ItemData)
+	items = Unlocks.unlocked_items(items)
 	var rng: RandomNumberGenerator = GameState.rng
 	var tier: int = Rarity.roll_tier(GameState.current_wave, player.stats.get_stat(Stats.LUCK), RARITY, rng.randf())
 	if GameState.pending_legendary_crates > 0:

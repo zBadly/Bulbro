@@ -18,6 +18,10 @@ signal player_died
 @warning_ignore("unused_signal")
 signal boss_spawned(enemy: Enemy)
 @warning_ignore("unused_signal")
+signal options_changed
+@warning_ignore("unused_signal")
+signal challenge_completed(challenge: ChallengeData)
+@warning_ignore("unused_signal")
 signal enemy_killed(data: EnemyData, position: Vector2, info: DamageInfo)
 @warning_ignore("unused_signal")
 signal sparks_changed(sparks: int, bag: int)

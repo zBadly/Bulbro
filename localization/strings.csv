@@ -206,14 +206,6 @@ CHAR_HALOGENSTRAHLER,Halogenstrahler,Halogen Floodlight
 CHAR_NACHTLICHT,Nachtlicht,Night Light
 CHAR_BLITZLICHT,Blitzlicht,Camera Flash
 CHAR_KERZE,Kerze,Candle
-UNLOCK_0,Von Beginn an verfügbar,Available from the start
-UNLOCK_1,%s Lampentürme gleichzeitig besitzen,Own %s lamp towers at once
-UNLOCK_2,Insgesamt %s Funken sammeln,Collect %s sparks in total
-UNLOCK_3,%s verschiedene Waffen gleichzeitig tragen,Carry %s different weapons at once
-UNLOCK_4,+%s %% Schaden in einem Run erreichen,Reach +%s %% damage in one run
-UNLOCK_5,%s HP in einem Run heilen,Heal %s HP in one run
-UNLOCK_6,+%s %% Tempo in einem Run erreichen,Reach +%s %% speed in one run
-UNLOCK_7,Einen Run nur mit Primitiv-Waffen gewinnen,Win a run with primitive weapons only
 EFFECT_CLASS_BONUS,%s %s mit %s-Waffen,%s %s with %s weapons
 EFFECT_PER_WEAPON,%s pro Waffe,%s per weapon
 EFFECT_CONVERSION,+%s %s pro %s %s,+%s %s per %s %s
@@ -246,7 +238,6 @@ LOCKED,Gesperrt,Locked
 BACK,Zurück,Back
 CONFIRM,Weiter,Continue
 START_RUN,Los geht's!,Let's go!
-WINS,Siege: %d,Wins: %d
 OPTIONS_TITLE,Optionen,Options
 OPT_MASTER,Gesamtlautstärke,Master volume
 OPT_MUSIC,Musik,Music
@@ -280,3 +271,20 @@ ENEMY_FINSTERNIS,Die Finsternis,The Darkness
 CRATE_LEGENDARY_TITLE,Legendärer Karton,Legendary Crate
 PREVIEW_HORDE,Welle %d Horde,Wave %d horde
 OPT_SCREENSHAKE,Bildschirmwackeln,Screen shake
+CHALLENGE_0,%s Lampentürme gleichzeitig besitzen,Own %s lamp towers at once
+CHALLENGE_1,Insgesamt %s Funken sammeln,Collect %s sparks in total
+CHALLENGE_2,%s verschiedene Waffen gleichzeitig tragen,Carry %s different weapons at once
+CHALLENGE_3,+%s %% Schaden in einem Run erreichen,Reach +%s %% damage in one run
+CHALLENGE_4,%s HP in einem Run heilen,Heal %s HP in one run
+CHALLENGE_5,+%s %% Tempo in einem Run erreichen,Reach +%s %% speed in one run
+CHALLENGE_6,Einen Run nur mit Primitiv-Waffen gewinnen,Win a run with primitive weapons only
+CHALLENGE_7,Einen Run mit %s gewinnen,Win a run with %s
+CHALLENGE_START,Von Beginn an verfügbar,Available from the start
+UNLOCKED_TOAST,Neu freigeschaltet!,Newly unlocked!
+WINS_NONE,Noch kein Sieg,No wins yet
+WINS_LEVELS,Gewonnen auf Spannung: %s,Won on tension: %s
+MENU_CONTINUE,"Fortsetzen (%s, Welle %d)","Continue (%s, wave %d)"
+OPT_MANUAL_AIM,Manuelles Zielen (Taste F),Manual aiming (key F)
+OPT_ENEMY_HP,Gegner-HP,Enemy HP
+OPT_ENEMY_DAMAGE,Gegner-Schaden,Enemy damage
+OPT_ENEMY_SPEED,Gegner-Tempo,Enemy speed

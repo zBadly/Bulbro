@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/gluehfaden_boxer.tres" id="1_yrbuq"]
+[ext_resource type="Resource" path="res://data/items/ewige_flamme.tres" id="2_ps1nc"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="3_ti2a3"]
+
+[resource]
+script = ExtResource("3_ti2a3")
+id = &"win_gluehfaden_boxer"
+condition = 7
+value = 0.0
+character = ExtResource("1_yrbuq")
+reward_item = ExtResource("2_ps1nc")

@@ -47,6 +47,19 @@ var _bosses: Array[Enemy] = []
 
 
 func start(p_player: Player, rect: Rect2, container: Node2D) -> void:
+	_setup(p_player, rect, container)
+	_roll_special_waves()
+	start_wave(1)
+
+
+## Fortgesetzter Run: steht nach Welle `wave_number` (Shop); die nächste Welle startet mit start_next_wave().
+func resume_at(p_player: Player, rect: Rect2, container: Node2D, wave_number: int) -> void:
+	_setup(p_player, rect, container)
+	_wave = _waves[clampi(wave_number, 1, _waves.size()) - 1]
+	state = State.INTERMISSION
+
+
+func _setup(p_player: Player, rect: Rect2, container: Node2D) -> void:
 	player = p_player
 	arena_rect = rect
 	enemy_container = container
@@ -54,8 +67,6 @@ func start(p_player: Player, rect: Rect2, container: Node2D) -> void:
 	for res: Resource in DataRegistry.get_all(WAVE_CATEGORY):
 		_waves.append(res as WaveData)
 	_waves.sort_custom(func(a: WaveData, b: WaveData) -> bool: return a.wave_number < b.wave_number)
-	_roll_special_waves()
-	start_wave(1)
 
 
 func get_wave_number() -> int:

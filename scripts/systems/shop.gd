@@ -13,12 +13,16 @@ var rerolls_done: int = 0
 var free_rerolls_left: int = 0
 ## Nach dem Kauf aller Angebote ist der nächste Reroll gratis.
 var reroll_is_free: bool = false
+## Nach dem Laden eines gespeicherten Runs: beim nächsten open_shop() nichts neu ziehen.
+var keep_offers_once: bool = false
 
 
 static func create_from_registry() -> Shop:
 	var shop: Shop = Shop.new()
+	var all_items: Array[ItemData] = []
 	for res: Resource in DataRegistry.get_all("items"):
-		shop.items.append(res as ItemData)
+		all_items.append(res as ItemData)
+	shop.items = Unlocks.unlocked_items(all_items)
 	for res: Resource in DataRegistry.get_all("weapons"):
 		shop.weapons.append(res as WeaponData)
 	return shop
@@ -26,10 +30,41 @@ static func create_from_registry() -> Shop:
 
 ## Neuer Shop nach einer Welle: Reroll-Preis zurücksetzen, gesperrte Angebote behalten, Rest neu ziehen.
 func open_shop(ctx: ShopContext) -> void:
+	if keep_offers_once:
+		keep_offers_once = false
+		return
 	rerolls_done = 0
 	free_rerolls_left = ctx.free_rerolls
 	reroll_is_free = false
 	_fill(ctx)
+
+
+## Speicherformat für "Run fortsetzen".
+func to_dict() -> Dictionary:
+	var list: Array = []
+	for offer: ShopOffer in offers:
+		list.append({"item": String(offer.item.id) if offer.item != null else "",
+			"weapon": String(offer.weapon.id) if offer.weapon != null else "",
+			"tier": offer.tier, "price": offer.price, "locked": offer.locked, "sold": offer.sold})
+	return {"offers": list, "rerolls_done": rerolls_done, "free_rerolls_left": free_rerolls_left, "reroll_is_free": reroll_is_free}
+
+
+## Stellt Angebote wieder her; der nächste open_shop() behält sie unverändert.
+func load_dict(data: Dictionary) -> void:
+	offers.clear()
+	for entry: Dictionary in data.get("offers", []):
+		var offer: ShopOffer = ShopOffer.new()
+		offer.item = RunSave.find("items", entry["item"]) as ItemData if entry["item"] != "" else null
+		offer.weapon = RunSave.find("weapons", entry["weapon"]) as WeaponData if entry["weapon"] != "" else null
+		offer.tier = int(entry["tier"])
+		offer.price = int(entry["price"])
+		offer.locked = bool(entry["locked"])
+		offer.sold = bool(entry["sold"])
+		offers.append(offer)
+	rerolls_done = int(data.get("rerolls_done", 0))
+	free_rerolls_left = int(data.get("free_rerolls_left", 0))
+	reroll_is_free = bool(data.get("reroll_is_free", false))
+	keep_offers_once = true
 
 
 func reroll_price(ctx: ShopContext) -> int:

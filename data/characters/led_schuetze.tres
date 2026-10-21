@@ -46,5 +46,4 @@ order = 3
 set_bonus_multiplier = Dictionary[StringName, float]({})
 banned_classes = Array[StringName]([])
 no_melee = true
-unlock = 0
-unlock_value = 0.0
+unlocked_by_default = true

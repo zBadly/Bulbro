@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/standardbirne.tres" id="1_mkla4"]
+[ext_resource type="Resource" path="res://data/items/sonnenkollektor.tres" id="2_ts04l"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="3_8e5bq"]
+
+[resource]
+script = ExtResource("3_8e5bq")
+id = &"win_standardbirne"
+condition = 7
+value = 0.0
+character = ExtResource("1_mkla4")
+reward_item = ExtResource("2_ts04l")

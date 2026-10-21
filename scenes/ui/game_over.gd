@@ -26,7 +26,7 @@ func _ready() -> void:
 
 
 func show_result(victory: bool, wave_number: int, player: Player) -> void:
-	var unlocked: Array[CharacterData] = Unlocks.evaluate_run_end(victory)
+	var unlocked: Array[ChallengeData] = Unlocks.evaluate_run_end(victory)
 	var dim: ColorRect = ColorRect.new()
 	dim.color = DIM_COLOR
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -82,8 +82,8 @@ func show_result(victory: bool, wave_number: int, player: Player) -> void:
 			count.size_flags_vertical = Control.SIZE_SHRINK_END
 		items.add_child(icon)
 
-	for character: CharacterData in unlocked:
-		_label(tr("RUN_END_UNLOCKED") % tr(character.name_key), TEXT_SIZE, UNLOCK_COLOR)
+	for challenge: ChallengeData in unlocked:
+		_label(tr("RUN_END_UNLOCKED") % challenge.reward_name(), TEXT_SIZE, UNLOCK_COLOR)
 
 	var buttons: HBoxContainer = HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER

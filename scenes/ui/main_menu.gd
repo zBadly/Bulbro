@@ -3,6 +3,7 @@ extends Control
 ## Hauptmenü: Start (zur Charakterauswahl), Optionen, Beenden.
 
 const RUN_SETUP_SCENE: String = "res://scenes/ui/run_setup.tscn"
+const RUN_SCENE: String = "res://scenes/world/main.tscn"
 const FLOOR_TEXTURE: Texture2D = preload("res://art/world/floor_tile.svg")
 const HERO_TEXTURE: Texture2D = preload("res://art/characters/standardbirne.svg")
 const HERO_SCALE: float = 2.5
@@ -67,10 +68,23 @@ func _build() -> void:
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(subtitle)
 
+	var first: Button = null
+	if SaveManager.has_run():
+		var run: Dictionary = SaveManager.load_run()
+		var character: CharacterData = RunSave.find(Unlocks.CHARACTER_CATEGORY, run.get("character", "")) as CharacterData
+		if character != null:
+			first = _button(box, tr("MENU_CONTINUE") % [tr(character.name_key), int(run.get("wave", 0))], _continue_run)
 	var start: Button = _button(box, tr("MENU_START"), func() -> void: get_tree().change_scene_to_file(RUN_SETUP_SCENE))
 	_button(box, tr("MENU_OPTIONS"), _options.open)
 	_button(box, tr("MENU_QUIT"), func() -> void: get_tree().quit())
-	start.call_deferred("grab_focus")
+	(first if first != null else start).call_deferred("grab_focus")
+
+
+func _continue_run() -> void:
+	var run: Dictionary = SaveManager.load_run()
+	RunSave.apply_setup(run)
+	GameState.resume_data = run
+	get_tree().change_scene_to_file(RUN_SCENE)
 
 
 func _button(parent: Control, text: String, callback: Callable) -> Button:

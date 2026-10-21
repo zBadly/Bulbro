@@ -1,17 +1,7 @@
 class_name CharacterData
 extends Resource
-## Spielbarer Charakter (GDD 10): Effekte, Startwaffen, Sonderregeln und Freischaltbedingung.
-
-enum Unlock {
-	START, ## von Beginn an verfügbar
-	STRUCTURES, ## gleichzeitig so viele Strukturen besitzen
-	TOTAL_SPARKS, ## über alle Runs so viele Funken gesammelt
-	DISTINCT_WEAPONS, ## so viele verschiedene Waffen gleichzeitig
-	DAMAGE_PCT, ## Schaden-% in einem Run erreicht
-	HEALED, ## so viele HP in einem Run geheilt
-	SPEED_PCT, ## Tempo-% in einem Run erreicht
-	WIN_PRIMITIVE_ONLY, ## Run nur mit Primitiv-Waffen gewinnen
-}
+## Spielbarer Charakter (GDD 10): Effekte, Startwaffen und Sonderregeln.
+## Gesperrte Charaktere werden über ChallengeData freigeschaltet (data/challenges).
 
 @export var id: StringName
 @export var name_key: String = ""
@@ -32,10 +22,8 @@ enum Unlock {
 @export var no_melee: bool = false
 
 @export_group("Freischaltung")
-@export var unlock: Unlock = Unlock.START
-@export var unlock_value: float = 0.0
-## Item, das ein Sieg mit diesem Charakter für den Shop freischaltet (optional).
-@export var win_unlocks_item: ItemData
+## Von Beginn an spielbar (sonst über eine Challenge).
+@export var unlocked_by_default: bool = false
 
 
 func can_use_weapon(weapon: WeaponData) -> bool:

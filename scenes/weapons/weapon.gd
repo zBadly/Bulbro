@@ -73,10 +73,15 @@ func _physics_process(delta: float) -> void:
 	if _retarget_left <= 0.0 or not _is_valid_target(_target):
 		_target = _find_target()
 		_retarget_left = COMBAT.target_refresh_interval
-	if _target == null:
+	if player.manual_aim:
+		_aim(player.get_aim_direction().angle())
+		if _target == null:
+			return
+	elif _target == null:
 		_aim(rest_position.angle())
 		return
-	_aim((_target.get_hit_position() - global_position).angle())
+	else:
+		_aim((_target.get_hit_position() - global_position).angle())
 	if _cooldown_left <= 0.0:
 		_cooldown_left = get_cooldown()
 		if data.kind == WeaponData.Kind.RANGED:
@@ -184,7 +189,7 @@ func _melee() -> void:
 	var duration: float = minf(
 		COMBAT.melee_attack_time_base + get_range() * COMBAT.melee_attack_time_per_range,
 		get_cooldown() * COMBAT.melee_max_cooldown_share)
-	var target_local: Vector2 = _target.get_hit_position() - get_parent().global_position
+	var target_local: Vector2 = _attack_point() - get_parent().global_position
 	var tween: Tween = create_tween()
 	if data.kind == WeaponData.Kind.SWING:
 		var radius: float = clampf(target_local.length(), rest_position.length(), get_range())
@@ -195,6 +200,14 @@ func _melee() -> void:
 		tween.tween_property(self, "position", target_local, duration * 0.4).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "position", rest_position, duration * 0.6).set_ease(Tween.EASE_IN_OUT)
 	tween.finished.connect(_end_melee)
+
+
+## Zielpunkt des Nahkampfangriffs: der Gegner, beim manuellen Zielen ein Punkt in Zielrichtung.
+func _attack_point() -> Vector2:
+	if not player.manual_aim:
+		return _target.get_hit_position()
+	var reach: float = minf(get_range(), global_position.distance_to(_target.get_hit_position()))
+	return global_position + Vector2.from_angle(_aim_angle) * reach
 
 
 func _swing_step(angle: float, radius: float) -> void:

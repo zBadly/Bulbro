@@ -31,6 +31,7 @@ Bosse testen: F4 → zu Welle 20 springen; bei Spannung 5 erscheinen beide Bosse
 | 9 | 12 Charaktere mit Sonderregeln und Freischaltungen; Hauptmenü, Auswahl, Optionen, Run-Ende |
 | 10 | Restliche Gegner, Phasensystem, 3 Elites, 2 Bosse, Elite-/Hordewellen, legendäre Kartons |
 | 11 | Partikel, Screenshake, Hit-Stop, Bodenflecken, synthetisierte Sounds, Musik-Loop, AudioManager |
+| 12 | Versionierter JSON-Spielstand, Challenges mit Popup, gesperrte Items, Barrierefreiheit, manuelles Zielen, Run fortsetzen |
 
 Leistung: 100 Gegner aller Typen mit Effektwaffen und Partikeln ≥ 98 FPS (Radeon RX 590, 1080p).
 
@@ -69,9 +70,13 @@ Alle Werte liegen als `.tres` unter `data/` und lassen sich ohne Code ändern.
 - Durchschlag und Abprall von Items laufen über die Stats `piercing` und `bounces` (kein eigener ProjectileModEffect).
 - Waffen-Grafiken (48 px) dienen auch als Icons; Items haben eigene 64-px-Icons.
 
-### Charaktere
+### Charaktere und Meta-Progression
 - Startwaffe „beliebig“ = Auswahl aus den 4 Standard-Startwaffen (Funkenpistole, Glasscherbe, Ast, Funkenfaust).
-- Item-Freischaltung durch Siege ist vorbereitet (`CharacterData.win_unlocks_item`), aber keinem Item zugeordnet, weil das GDD keine Zuordnung nennt.
+- Freischaltungen sind Challenges (`data/challenges`): 7 Charakter-Bedingungen aus dem GDD und 12x „Sieg mit Charakter X schaltet Item Y frei“.
+- Sieg-Items (anfangs gesperrt): Standardbirne → Sonnenkollektor, Glühfaden-Boxer → Ewige Flamme, Neonröhre → Prismenlinse, LED-Schütze → Glasfaser, Lavalampe → Blitzableiter, Taschenlampe → Werkstattkoffer, Discokugel → Discosplitter, Lichterkette → Verlängerungskabel, Halogenstrahler → Supernova, Nachtlicht → Ladestation, Blitzlicht → Schmierfett, Kerze → Recyclingschild. Kernreaktor und Laserzielfernrohr bleiben frei, damit legendäre Kartons immer Tier IV liefern.
+- Spielstand `user://save.json` (Version 2), Migration aus `save.cfg` und Version 1; Tests nutzen eigene Dateien (GUT-Pre-Run-Hook).
+- Run fortsetzen: Speichern am Shop-Beginn; die Shop-Angebote bleiben beim Laden unverändert.
+- Barrierefreiheit (Gegner-HP/-Schaden/-Tempo 25–100 %) wirkt ab dem nächsten Run.
 
 ### Juice und Audio
 - Hit-Stop 30 ms mit 0,15 s Abklingzeit, damit Krit-Serien nicht ruckeln.
@@ -80,7 +85,6 @@ Alle Werte liegen als `.tres` unter `data/` und lassen sich ohne Code ändern.
 ## Offene Punkte
 
 - Gegner überlappen sich (keine gegenseitige Abstoßung, bewusst für die Performance).
-- Die Licht-Option greift erst ab dem nächsten Run.
 - Upgrade-Karten haben keine Icons.
 - Musik ist ein synthetisierter Platzhalter; CC0-Tracks nach `audio/music` legen und in `data/config/audio_config.tres` eintragen.
 - Balancing aller Startwerte steht noch aus.

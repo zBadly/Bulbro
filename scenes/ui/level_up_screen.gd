@@ -67,5 +67,5 @@ func _on_reroll() -> void:
 
 func _on_choose(mod: StatModifier) -> void:
 	AudioManager.play(&"ui_click")
-	player.stats.add_modifier(mod)
+	player.add_run_modifier(mod)
 	GameState.finish_level_up.call_deferred()

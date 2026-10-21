@@ -37,6 +37,12 @@ var preferred_tags: Array[StringName] = []
 var shop: Shop
 ## Höchste Zahl gleichzeitiger Strukturen in diesem Run (Freischaltung Taschenlampe).
 var max_structures: int = 0
+## Barrierefreiheit (Optionen): Faktoren 0,25-1,0 auf Gegner-HP, -Schaden und -Tempo, je Run gelesen.
+var assist_hp: float = 1.0
+var assist_damage: float = 1.0
+var assist_speed: float = 1.0
+## Gesetzt vom Hauptmenü ("Fortsetzen"): gespeicherter Run, den die Arena wiederherstellt.
+var resume_data: Dictionary = {}
 var run_stats: RunStats = RunStats.new()
 
 ## Run-Einstellungen aus dem Menü (bleiben über start_run und Neustart erhalten).
@@ -73,6 +79,9 @@ func start_run(seed_value: int = 0) -> void:
 	shop = Shop.create_from_registry()
 	max_structures = 0
 	run_stats = RunStats.new()
+	assist_hp = SaveManager.get_assist_factor(SaveManager.ENEMY_HP_KEY)
+	assist_damage = SaveManager.get_assist_factor(SaveManager.ENEMY_DAMAGE_KEY)
+	assist_speed = SaveManager.get_assist_factor(SaveManager.ENEMY_SPEED_KEY)
 	_ensure_setup()
 	phase = Phase.WAVE
 	is_run_active = true
