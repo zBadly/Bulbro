@@ -78,7 +78,27 @@ func test_mechanics_explain_every_stat_once() -> void:
 			covered.append(stat)
 	for stat: StringName in Stats.all():
 		assert_true(stat in covered, "Stat ohne Erklärung: " + String(stat))
-		_assert_translated("STAT_INFO_" + String(stat).to_upper(), String(stat))
+		var upper: String = String(stat).to_upper()
+		_assert_translated("STAT_INFO_" + upper, String(stat))
+		for part: String in Lexicon.STAT_PARTS:
+			_assert_translated("STAT_%s_%s" % [part, upper], String(stat))
+
+
+## Jeder Stat: Wirkung, Formel, Beispiel, Grenze; alle Platzhalter gefüllt.
+func test_stat_texts_have_formula_example_and_limit() -> void:
+	for stat: StringName in Stats.all():
+		var text: String = Lexicon.stat_info(stat)
+		assert_false(text.contains("{"), "offener Platzhalter: %s: %s" % [stat, text])
+		var lines: PackedStringArray = text.split("\n")
+		assert_eq(lines.size(), 1 + Lexicon.STAT_PARTS.size(), "vier Teile: " + String(stat))
+		for index: int in Lexicon.STAT_PARTS.size():
+			assert_true(lines[index + 1].contains(TextFormat.t("LEX_STAT_" + Lexicon.STAT_PARTS[index])), "%s: %s" % [stat, Lexicon.STAT_PARTS[index]])
+	# Stichproben: Zahlen kommen aus den Formeln und Configs
+	var armor: String = Lexicon.stat_info(Stats.ARMOR)
+	assert_true(armor.contains("+ %s)" % TextFormat.number(CombatMath.ARMOR_CONSTANT)), "Rüstungsformel")
+	assert_true(armor.contains("%d %%" % roundi((1.0 - CombatMath.armor_multiplier(5.0)) * 100.0)), "5 Rüstung")
+	var dodge_cap: float = (load("res://data/config/player_config.tres") as PlayerConfig).dodge_cap
+	assert_true(Lexicon.stat_info(Stats.DODGE).contains("%s %%" % TextFormat.number(dodge_cap)), "Ausweichen-Obergrenze")
 
 
 func test_effect_texts_come_from_shop_functions() -> void:
@@ -193,3 +213,63 @@ func test_layout_does_not_jump() -> void:
 		(grid_area as ScrollContainer).scroll_vertical = 0
 		await wait_physics_frames(2)
 		assert_eq(cards[0].global_position, first_position, "erste Karte unverändert: " + Lexicon.tab_title(tab))
+
+
+func _locked_character_entry() -> LexiconEntry:
+	for entry: LexiconEntry in Lexicon.entries(Lexicon.Tab.CHARACTERS):
+		if entry.locked:
+			return entry
+	return null
+
+
+func test_hidden_entries_reveal_text_only_with_show_all() -> void:
+	SaveManager.reset()
+	var entry: LexiconEntry = _locked_character_entry()
+	assert_not_null(entry, "frischer Spielstand hat gesperrte Charaktere")
+	assert_true(entry.is_hidden(false))
+	assert_false(entry.is_hidden(true))
+	var word: String = Lexicon.strip_bbcode(entry.sections[0].text).strip_edges().split(" ", false)[0]
+	if not entry.title.to_lower().contains(word.to_lower()) and not entry.lock_text.to_lower().contains(word.to_lower()):
+		assert_false(entry.matches(word, false), "verborgen: nur Name und Bedingung durchsuchbar")
+	assert_true(entry.matches(word, true), "aufgedeckt: auch Stats durchsuchbar")
+
+
+func test_show_all_toggle_reveals_locked_entries_and_is_saved() -> void:
+	SaveManager.reset()
+	SaveManager.set_option(SaveManager.LEXICON_SHOW_ALL_KEY, false)
+	var screen: LexiconScreen = LEXICON_SCENE.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(2)
+	screen.show_tab(Lexicon.Tab.CHARACTERS)
+	var locked_card: EntryCard = null
+	for card: EntryCard in screen.get_cards():
+		if card.entry.locked:
+			locked_card = card
+			break
+	assert_not_null(locked_card)
+	locked_card.grab_focus()
+	await wait_physics_frames(2)
+	var detail: DetailPanel = screen.get_detail()
+	assert_null(detail.get_locked_box(), "ohne Alles anzeigen: nur Silhouette")
+	var id: StringName = locked_card.entry.id
+
+	screen.set_show_all(true)
+	await wait_physics_frames(2)
+	assert_true(SaveManager.get_option(SaveManager.LEXICON_SHOW_ALL_KEY, false), "Einstellung gespeichert")
+	var revealed: EntryCard = null
+	for card: EntryCard in screen.get_cards():
+		if card.entry.id == id:
+			revealed = card
+	assert_not_null(revealed, "Auswahl bleibt erhalten")
+	assert_true(revealed.is_lock_visible(), "Schloss-Abzeichen sichtbar")
+	revealed.grab_focus()
+	await wait_physics_frames(2)
+	assert_not_null(detail.get_locked_box(), "Kasten Noch gesperrt")
+
+	# Neuer Bildschirm übernimmt die gespeicherte Einstellung
+	var second: LexiconScreen = LEXICON_SCENE.instantiate()
+	add_child_autofree(second)
+	await wait_physics_frames(2)
+	assert_true(second.is_show_all())
+	second.set_show_all(false)
+	assert_false(SaveManager.get_option(SaveManager.LEXICON_SHOW_ALL_KEY, true))

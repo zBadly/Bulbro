@@ -21,6 +21,8 @@ const LIFESTEAL_INTERVAL: float = 0.1
 ## Reichweite: Minimum und Anteil des Reichweiten-Stats bei Nahkampfwaffen
 const MIN_RANGE: float = 25.0
 const MELEE_RANGE_FACTOR: float = 0.5
+## Brand-Ticks werden höchstens auf 10 % ihres Tempos gebremst
+const BURN_SPEED_MIN_FACTOR: float = 0.1
 
 
 ## Schadensfaktor durch Rüstung. Positiv: 15/(armor+15). Negativ: jeder Punkt +1/15 mehr Schaden.
@@ -92,6 +94,16 @@ static func lifesteal_ready(now: float, last_time: float, interval_factor: float
 ## Brandschaden pro Tick mit dem Brandschaden-Stat (Zündkerze +50 %).
 static func burn_damage(base: float, burn_dmg_pct: float) -> float:
 	return base * maxf(0.0, 1.0 + burn_dmg_pct / PERCENT)
+
+
+## Tempo der Brand-Ticks: (1 + burn_speed_pct/100), nie langsamer als BURN_SPEED_MIN_FACTOR.
+static func burn_speed_factor(burn_speed_pct: float) -> float:
+	return maxf(BURN_SPEED_MIN_FACTOR, 1.0 + burn_speed_pct / PERCENT)
+
+
+## Schaden mit einem Prozent-Stat (Durchschlag-, Boss-Schaden): x (1 + pct/100), gerundet, mindestens 1.
+static func percent_damage(amount: int, pct: float) -> int:
+	return maxi(MIN_DAMAGE, roundi(amount * maxf(0.0, 1.0 + pct / PERCENT)))
 
 
 ## Trefferablauf für den Spieler: Ausweichwurf -> Rüstung. 0 = ausgewichen.

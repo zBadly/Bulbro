@@ -17,6 +17,8 @@ const LIGHTING_KEY: String = "lighting"
 const FULLSCREEN_KEY: String = "fullscreen"
 const SCREENSHAKE_KEY: String = "screenshake"
 const MANUAL_AIM_KEY: String = "manual_aim"
+## Lexikon: gesperrte Einträge vollständig anzeigen.
+const LEXICON_SHOW_ALL_KEY: String = "lexicon_show_all"
 ## Barrierefreiheit: Bildschirmblitze stark abschwächen.
 const REDUCED_FX_KEY: String = "reduced_effects"
 ## Barrierefreiheit: Gegnerwerte in Prozent (25-100).

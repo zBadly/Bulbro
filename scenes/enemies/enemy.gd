@@ -258,7 +258,7 @@ func _update_burn(delta: float) -> void:
 	if _burn_ticks_left <= 0:
 		return
 	var speed_pct: float = _burn_source.stats.get_stat(Stats.BURN_SPEED_PCT) if is_instance_valid(_burn_source) else 0.0
-	_burn_timer += delta * maxf(0.1, 1.0 + speed_pct / CombatMath.PERCENT)
+	_burn_timer += delta * CombatMath.burn_speed_factor(speed_pct)
 	if _burn_timer < COMBAT.burn_interval:
 		return
 	_burn_timer -= COMBAT.burn_interval

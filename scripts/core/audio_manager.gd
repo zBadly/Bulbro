@@ -48,6 +48,9 @@ func has_sound(id: StringName) -> bool:
 
 ## Spielt einen Effekt (Dateiname ohne Endung aus CONFIG.sfx_folder).
 func play(id: StringName, pitch_scale: float = 1.0, vary_pitch: bool = true) -> void:
+	# Nach _exit_tree (Spielende) nichts mehr starten, sonst bleibt die Wiedergabe als Leak hängen
+	if not is_inside_tree():
+		return
 	var stream: AudioStream = _streams.get(id)
 	if stream == null or _count_playing(id) >= CONFIG.max_instances.get(id, CONFIG.default_max_instances):
 		return

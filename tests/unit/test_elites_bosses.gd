@@ -200,3 +200,24 @@ func test_elite_drops_legendary_crate_for_tier_four() -> void:
 	add_child_autofree(screen)
 	screen.open()
 	assert_eq((screen.get("_item") as ItemData).tier, 4)
+
+
+func test_boss_damage_stat_only_against_elites_and_bosses() -> void:
+	_player.add_run_modifier(StatModifier.create(Stats.BOSS_DMG_PCT, 50.0))
+	var boss: Enemy = _enemy("dimmer")
+	var normal: Enemy = _enemy("schattenling", Vector2(-500, 300), 100.0)
+	var info: DamageInfo = DamageInfo.create(100, false, 0.0, null)
+	var boss_hp: float = boss.hp
+	Hits.apply_weapon_hit(boss, info, _player, false)
+	assert_almost_eq(boss_hp - boss.hp, 150.0, 0.01, "+50 % gegen Bosse")
+	assert_eq(info.amount, 100, "Treffer bleibt für weitere Ziele unverändert")
+	var normal_hp: float = normal.hp
+	Hits.apply_weapon_hit(normal, info, _player, false)
+	assert_almost_eq(normal_hp - normal.hp, 100.0, 0.01, "normale Gegner ohne Bonus")
+
+
+func test_percent_damage_for_piercing_and_boss_stats() -> void:
+	assert_eq(CombatMath.percent_damage(20, 0.0), 20, "0 % ändert nichts")
+	assert_eq(CombatMath.percent_damage(20, -50.0), 10)
+	assert_eq(CombatMath.percent_damage(CombatMath.percent_damage(20, -50.0), -50.0), 5, "mehrere Durchschläge wirken mehrfach")
+	assert_eq(CombatMath.percent_damage(20, -200.0), CombatMath.MIN_DAMAGE, "mindestens 1")

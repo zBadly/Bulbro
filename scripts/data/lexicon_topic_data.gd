@@ -1,7 +1,7 @@
 class_name LexiconTopicData
 extends Resource
 ## Thema im Lexikon-Reiter "Spielmechaniken" (data/lexicon). Der Text wird mit Werten aus den Configs
-## gefüllt (Lexicon.topic_text); zugeordnete Stats werden einzeln mit STAT_INFO_<STAT> erklärt.
+## gefüllt (Lexicon.topic_text); zugeordnete Stats werden einzeln erklärt (Lexicon.stat_info: Wirkung, Formel, Beispiel, Grenze).
 
 ## Zusätzliche Tabelle unter dem Text, aus den Daten erzeugt.
 enum Table {

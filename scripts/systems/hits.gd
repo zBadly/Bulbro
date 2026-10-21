@@ -56,7 +56,7 @@ static func nearest_target(tree: SceneTree, origin: Vector2, max_range: float, e
 
 ## Ein Waffentreffer mit allen Zusatzwirkungen: Schaden, Brand, Lebensraub, Heilchance, Treffer-Effekte.
 static func apply_weapon_hit(target: Damageable, info: DamageInfo, player: Player, lifesteal: bool = true) -> void:
-	target.take_damage(info)
+	_damage(target, info, player)
 	if player == null:
 		if info.burn_damage > 0.0 and target is Enemy:
 			(target as Enemy).apply_burn(info.burn_damage, info.burn_ticks, null)
@@ -90,4 +90,16 @@ static func explode(tree: SceneTree, player: Player, origin: Vector2, radius: fl
 		var hit_pos: Vector2 = target.get_hit_position()
 		if origin.distance_to(hit_pos) <= size:
 			blast.knockback_dir = origin.direction_to(hit_pos)
-			target.take_damage(blast)
+			_damage(target, blast, player)
+
+
+## Schaden mit Boss-Schaden-Stat gegen Elites und Bosse. Der Treffer wird danach unverändert weiterverwendet.
+static func _damage(target: Damageable, info: DamageInfo, player: Player) -> void:
+	var enemy: Enemy = target as Enemy
+	if player == null or enemy == null or enemy.data == null or not (enemy.data.is_elite or enemy.data.is_boss):
+		target.take_damage(info)
+		return
+	var original: int = info.amount
+	info.amount = CombatMath.percent_damage(original, player.stats.get_stat(Stats.BOSS_DMG_PCT))
+	target.take_damage(info)
+	info.amount = original

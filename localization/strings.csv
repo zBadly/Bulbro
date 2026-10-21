@@ -719,43 +719,166 @@ LEX_TOPIC_ALLIES_TEXT,"Verbündete wie die Schattengeister des Irrlichts kämpfe
 Auch das Spiegelbild der Spiegelkugel hilft mit: Es feuert Kopien deiner Waffen, aber ohne Lebensraub. Drohnen und Lichtranken sind dagegen Strukturen und werden mit Technik stärker.","Allies such as the Will-o'-Wisp's shadow ghosts fight on your side. They are invulnerable, enemies ignore them, and they don't count toward the enemy limit. They deal contact damage every %s s; at most %d can be around at once.
 The Mirror Ball's mirror image helps too: it fires copies of your weapons, but without lifesteal. Drones and light vines, on the other hand, are structures and grow stronger with engineering."
 LORE_TOPIC_ALLIES,Zusammen leuchtet es sich besser.,Shining is better together.
-STAT_INFO_MAX_HP,"Dein Leben. Fällt es auf 0, ist der Run vorbei. Jedes Level-up gibt +%s Max HP, und mehr Max HP heilt dich sofort um denselben Betrag. Negative Werte wirken wie 1.","Your life. If it hits 0, the run is over. Every level-up grants +%s max HP, and gaining max HP heals you by the same amount. Negative values count as 1."
-STAT_INFO_HP_REGEN,"Heilt dich laufend. Der erste Punkt bringt %s HP pro Sekunde, jeder weitere %s mehr; mit 10 Punkten sind es etwa %s HP pro Sekunde. Werte von 0 oder weniger heilen nicht.","Heals you over time. The first point gives %s HP per second, each further point %s more; 10 points give about %s HP per second. Values of 0 or less don't heal."
-STAT_INFO_LIFESTEAL,"Jeder Treffer hat so viel Prozent Chance, dich um 1 HP zu heilen, höchstens %s HP pro Sekunde.","Every hit has this percent chance to heal you for 1 HP, at most %s HP per second."
-STAT_INFO_DAMAGE_PCT,Erhöht allen Schaden deiner Waffen um diesen Prozentsatz (Strukturen ausgenommen). Ein Treffer macht immer mindestens %s Schaden.,Increases all your weapon damage by this percentage (structures excluded). A hit always deals at least %s damage.
-STAT_INFO_MELEE_DMG,"Flacher Bonus für Waffen, die mit Nah skalieren: Bei 100 %% Skalierung bringt jeder Punkt +1 Schaden pro Treffer, bei 50 %% einen halben.","Flat bonus for weapons that scale with melee: at 100 %% scaling each point adds +1 damage per hit, at 50 %% half a point."
-STAT_INFO_RANGED_DMG,"Flacher Bonus für Waffen, die mit Fern skalieren: Bei 100 %% Skalierung bringt jeder Punkt +1 Schaden pro Treffer, bei 50 %% einen halben.","Flat bonus for weapons that scale with ranged: at 100 %% scaling each point adds +1 damage per hit, at 50 %% half a point."
-STAT_INFO_ELEMENTAL_DMG,"Flacher Bonus für alles, was mit Strom skaliert: Waffen, Brand, Blitze und Zauber. Bei 100 %% Skalierung bringt jeder Punkt +1 Schaden.","Flat bonus for everything that scales with elemental: weapons, burn, lightning and spells. At 100 %% scaling each point adds +1 damage."
-STAT_INFO_ATTACK_SPEED,"Waffen greifen schneller an: Die Abklingzeit wird durch (1 + Wert/100) geteilt, eine 1-Sekunden-Waffe braucht mit +50 %% nur noch %s s. Negative Werte bremsen nur %s %% so stark. Mehr als %s Angriffe pro Sekunde gehen nicht.","Weapons attack faster: the cooldown is divided by (1 + value/100), so a 1-second weapon needs only %s s at +50 %%. Negative values slow you only %s %% as much. More than %s attacks per second is impossible."
-STAT_INFO_CRIT_CHANCE,"Wird zur Krit-Chance jeder Waffe addiert (0 bis 100 %%). Ein kritischer Treffer multipliziert den Schaden mit dem Krit-Faktor der Waffe, meist x2.","Added to every weapon's crit chance (0 to 100 %%). A critical hit multiplies the damage by the weapon's crit factor, usually x2."
-STAT_INFO_ENGINEERING,"Macht Strukturen wie Lampentürme, Drohnen und Lichtranken stärker. Ihr Schaden skaliert mit Technik statt mit Schaden %%.","Makes structures such as lamp towers, drones and light vines stronger. Their damage scales with engineering instead of damage %%."
-STAT_INFO_RANGE,Addiert sich zur Reichweite jeder Waffe. Nahkampfwaffen bekommen nur %s %% davon. Eine Waffe reicht immer mindestens %s px weit.,Added to every weapon's range. Melee weapons only get %s %% of it. A weapon always reaches at least %s px.
-STAT_INFO_ARMOR,"Senkt den erlittenen Schaden: 5 Rüstung schlucken etwa %s %%, 15 Rüstung %s %%. Formel: Rüstung / (Rüstung + %s). Jeder Punkt wirkt wie gut 6 %% mehr Leben; negative Rüstung erhöht den Schaden.","Reduces damage taken: 5 armor absorbs about %s %%, 15 armor %s %%. Formula: armor / (armor + %s). Each point is worth roughly 6 %% more life; negative armor increases damage."
-STAT_INFO_DODGE,"Chance, einem Treffer komplett auszuweichen, höchstens %s %%. Negative Werte wirken wie 0.","Chance to avoid a hit completely, capped at %s %%. Negative values count as 0."
-STAT_INFO_SPEED,Bewegungstempo in Prozent. Das Grundtempo beträgt %s px/s; bei -100 %% stehst du still.,Movement speed in percent. Base speed is %s px/s; at -100 %% you stand still.
-STAT_INFO_LUCK,"Mehr Batterien und Kartons von Gegnern und bessere Seltenheit in Shop, Kartons und Level-ups. 100 Glück verdoppelt die Batterie-Chance, bei -100 Glück gibt es keine Batterien mehr.","More batteries and crates from enemies, better rarity in the shop, crates and level-ups. 100 luck doubles the battery chance, at -100 luck no batteries drop at all."
-STAT_INFO_HARVESTING,"Am Ende jeder Welle bekommst du so viele Funken und XP. Danach wächst der Wert um %s %% (aufgerundet), solange er positiv ist.",At the end of every wave you gain this many sparks and XP. Afterwards the value grows by %s %% (rounded up) as long as it's positive.
-STAT_INFO_XP_GAIN_PCT,"Mehr Erfahrung pro Funke, in Prozent.","More experience per spark, in percent."
-STAT_INFO_PICKUP_RANGE_PCT,"Vergrößert den Radius, in dem Funken zu dir fliegen (Grundwert %s px), in Prozent.","Increases the radius in which sparks fly to you (base %s px), in percent."
-STAT_INFO_ITEM_PRICE_PCT,Ändert alle Shop-Preise um diesen Prozentsatz; negative Werte machen alles billiger.,Changes all shop prices by this percentage; negative values make everything cheaper.
-STAT_INFO_EXPLOSION_DMG_PCT,"Mehr Schaden für alle Explosionen, in Prozent.","More damage for all explosions, in percent."
-STAT_INFO_EXPLOSION_SIZE_PCT,"Größere Explosionen, in Prozent.","Larger explosions, in percent."
-STAT_INFO_BOUNCES,Projektile prallen so oft zusätzlich zum nächsten Gegner ab.,Projectiles bounce on to the next enemy this many extra times.
-STAT_INFO_PIERCING,Projektile durchschlagen so viele zusätzliche Gegner.,Projectiles pierce this many additional enemies.
-STAT_INFO_PIERCING_DMG_PCT,"Ändert den Schaden von Projektilen, nachdem sie einen Gegner durchschlagen haben.",Changes projectile damage after they have pierced an enemy.
-STAT_INFO_BOSS_DMG_PCT,"Mehr Schaden gegen Elites und Bosse, in Prozent.","More damage against elites and bosses, in percent."
-STAT_INFO_STRUCTURE_ATTACK_SPEED_PCT,Strukturen feuern um diesen Prozentsatz schneller.,Structures fire faster by this percentage.
-STAT_INFO_BURN_SPEED_PCT,Brand-Ticks kommen um diesen Prozentsatz schneller.,Burn ticks come faster by this percentage.
-STAT_INFO_BURN_SPREAD,Bei jedem Brand-Tick springt das Feuer auf so viele Gegner in der Nähe über.,On every burn tick the fire jumps to this many nearby enemies.
-STAT_INFO_KNOCKBACK,Zusätzlicher Rückstoß bei jedem Treffer: Gegner werden weiter weggeschubst.,Extra knockback on every hit: enemies get pushed further away.
-STAT_INFO_DOUBLE_SPARK_CHANCE,"Chance in Prozent, dass ein aufgehobener Funke doppelt zählt.",Percent chance that a collected spark counts twice.
-STAT_INFO_FREE_REROLLS,So viele Rerolls sind in jedem Shop kostenlos.,This many rerolls are free in every shop.
-STAT_INFO_CRYSTALS,Leuchtkristalle erscheinen um diesen Prozentsatz häufiger.,Glow crystals appear more often by this percentage.
-STAT_INFO_ENEMIES_PCT,"Mehr Gegner pro Gruppe, in Prozent: gefährlicher, aber auch mehr Funken.","More enemies per group, in percent: more dangerous, but also more sparks."
-STAT_INFO_ENEMY_SPEED_PCT,Ändert das Tempo aller Gegner um diesen Prozentsatz; negative Werte machen sie langsamer.,Changes the speed of all enemies by this percentage; negative values slow them down.
-STAT_INFO_REROLL_PRICE_PCT,Ändert den Preis von Rerolls um diesen Prozentsatz.,Changes reroll prices by this percentage.
-STAT_INFO_CONSUMABLE_HEAL,Batterien und Kartons heilen so viele HP zusätzlich (Grundwert %s HP).,Batteries and crates heal this many extra HP (base %s HP).
-STAT_INFO_RECYCLE_PCT,Recyceln bringt so viel Prozent mehr Funken.,Recycling yields this many percent more sparks.
-STAT_INFO_BURN_DMG_PCT,"Mehr Schaden für jeden Brand-Tick, in Prozent.","More damage for every burn tick, in percent."
-STAT_INFO_KILL_SPARK_PCT,Gegner lassen um diesen Prozentsatz mehr Funken fallen.,Enemies drop more sparks by this percentage.
+STAT_INFO_MAX_HP,"Dein Leben. Fällt es auf 0, ist der Run vorbei. Mehr Max HP heilt dich sofort um denselben Betrag.","Your life. If it drops to 0, the run is over. More Max HP heals you instantly by the same amount."
+STAT_INFO_HP_REGEN,Heilt dich laufend während der Welle.,Heals you continuously during the wave.
+STAT_INFO_LIFESTEAL,Deine Waffentreffer können dich heilen.,Your weapon hits can heal you.
+STAT_INFO_DAMAGE_PCT,Erhöht den Schaden deiner Waffen prozentual. Strukturen nutzen stattdessen Technik.,Increases your weapons' damage by a percentage. Structures use Engineering instead.
+STAT_INFO_MELEE_DMG,"Flacher Bonus für Waffen, die mit Nah skalieren.",Flat bonus for weapons that scale with Melee.
+STAT_INFO_RANGED_DMG,"Flacher Bonus für Waffen, die mit Fern skalieren.",Flat bonus for weapons that scale with Ranged.
+STAT_INFO_ELEMENTAL_DMG,"Flacher Bonus für alles, was mit Strom skaliert: Waffen, Brand, Blitze und Zauber.","Flat bonus for everything that scales with Elemental: weapons, burn, lightning and spells."
+STAT_INFO_ATTACK_SPEED,Deine Waffen greifen schneller an.,Your weapons attack faster.
+STAT_INFO_CRIT_CHANCE,Chance auf kritische Treffer.,Chance to land critical hits.
+STAT_INFO_ENGINEERING,"Macht Strukturen wie Lampentürme, Drohnen und Lichtranken stärker.","Makes structures such as lamp towers, drones and light vines stronger."
+STAT_INFO_RANGE,Wie weit deine Waffen Gegner erreichen.,How far your weapons reach enemies.
+STAT_INFO_ARMOR,"Senkt den Schaden, den du durch Treffer erleidest.",Reduces the damage you take from hits.
+STAT_INFO_DODGE,"Chance, einem Treffer komplett auszuweichen.",Chance to avoid a hit completely.
+STAT_INFO_SPEED,Dein Bewegungstempo.,Your movement speed.
+STAT_INFO_LUCK,"Mehr Batterien und Kartons von Gegnern und bessere Seltenheit in Shop, Kartons und Level-ups.","More batteries and crates from enemies and better rarity in the shop, crates and level-ups."
+STAT_INFO_HARVESTING,Am Ende jeder Welle bekommst du so viele Funken und XP.,At the end of each wave you get this many sparks and XP.
+STAT_INFO_XP_GAIN_PCT,Mehr Erfahrung aus Funken und Aufladung.,More experience from sparks and Harvesting.
+STAT_INFO_PICKUP_RANGE_PCT,"Vergrößert den Radius, in dem Funken zu dir fliegen.",Increases the radius in which sparks fly to you.
+STAT_INFO_ITEM_PRICE_PCT,Ändert alle Preise im Shop.,Changes all shop prices.
+STAT_INFO_EXPLOSION_DMG_PCT,Mehr Schaden für alle Explosionen.,More damage for all explosions.
+STAT_INFO_EXPLOSION_SIZE_PCT,Größere Explosionen treffen mehr Gegner.,Bigger explosions hit more enemies.
+STAT_INFO_BOUNCES,Projektile springen nach einem Treffer zum nächsten Gegner weiter.,Projectiles jump to the next enemy after a hit.
+STAT_INFO_PIERCING,Projektile fliegen durch Gegner hindurch.,Projectiles pass through enemies.
+STAT_INFO_PIERCING_DMG_PCT,"Ändert den Schaden von Projektilen, nachdem sie einen Gegner durchschlagen haben.",Changes projectile damage after they pierce an enemy.
+STAT_INFO_BOSS_DMG_PCT,Mehr Schaden gegen Elites und Bosse.,More damage against elites and bosses.
+STAT_INFO_STRUCTURE_ATTACK_SPEED_PCT,Strukturen feuern schneller.,Structures fire faster.
+STAT_INFO_BURN_SPEED_PCT,Brand-Ticks kommen schneller: gleicher Schaden in kürzerer Zeit.,Burn ticks come faster: the same damage in less time.
+STAT_INFO_BURN_SPREAD,Brand springt auf Gegner in der Nähe über.,Burn jumps to nearby enemies.
+STAT_INFO_KNOCKBACK,Treffer schubsen Gegner weiter weg.,Hits push enemies further away.
+STAT_INFO_DOUBLE_SPARK_CHANCE,Funken von Gegnern und Kristallen können doppelt zählen.,Sparks from enemies and crystals can count double.
+STAT_INFO_FREE_REROLLS,Kostenlose Rerolls im Shop.,Free rerolls in the shop.
+STAT_INFO_CRYSTALS,Leuchtkristalle erscheinen häufiger.,Glow crystals appear more often.
+STAT_INFO_ENEMIES_PCT,"Mehr Gegner pro Gruppe: gefährlicher, aber auch mehr Funken und XP.","More enemies per group: more dangerous, but also more sparks and XP."
+STAT_INFO_ENEMY_SPEED_PCT,Ändert das Tempo aller Gegner.,Changes the speed of all enemies.
+STAT_INFO_REROLL_PRICE_PCT,Ändert den Preis von Rerolls im Shop und bei Level-ups.,Changes the price of rerolls in the shop and on level-ups.
+STAT_INFO_CONSUMABLE_HEAL,Batterien und Kartons heilen mehr.,Batteries and crates heal more.
+STAT_INFO_RECYCLE_PCT,Recyceln bringt mehr Funken.,Recycling gives more sparks.
+STAT_INFO_BURN_DMG_PCT,Mehr Schaden für jeden Brand-Tick.,More damage for every burn tick.
+STAT_INFO_KILL_SPARK_PCT,Gegner lassen mehr Funken fallen.,Enemies drop more sparks.
 LEX_DROP_VICTORY,Kein Drop – sein Sturz gewinnt den Run,No drop – its defeat wins the run
+STAT_FORMULA_MAX_HP,"Max HP aus Charakter, Items und Level-ups werden einfach addiert. Jedes Level-up gibt +{hp_per_level} Max HP.","Max HP from character, items and level-ups simply add up. Every level-up gives +{hp_per_level} Max HP."
+STAT_EXAMPLE_MAX_HP,Bei 20 Max HP bringt dich ein Item mit +6 Max HP auf 26 und heilt dich sofort um 6 HP.,"With 20 Max HP, an item with +6 Max HP takes you to 26 and heals you by 6 HP right away."
+STAT_LIMIT_MAX_HP,Keine Obergrenze. Werte unter {min_hp} wirken wie {min_hp}.,No cap. Values below {min_hp} count as {min_hp}.
+STAT_FORMULA_HP_REGEN,"Der erste Punkt bringt {regen_first} HP pro Sekunde, jeder weitere Punkt {regen_extra} HP pro Sekunde mehr.","The first point gives {regen_first} HP per second, every further point {regen_extra} HP per second more."
+STAT_EXAMPLE_HP_REGEN,"5 HP-Regen = {regen_5} HP pro Sekunde, also etwa 1 HP alle {regen_5_interval} s. 10 HP-Regen = {regen_10} HP pro Sekunde.","5 HP Regen = {regen_5} HP per second, about 1 HP every {regen_5_interval} s. 10 HP Regen = {regen_10} HP per second."
+STAT_LIMIT_HP_REGEN,Keine Obergrenze. Bei 0 oder weniger heilst du nicht; negative Werte schaden aber auch nicht.,"No cap. At 0 or below you don't heal, but negative values don't hurt you either."
+STAT_FORMULA_LIFESTEAL,"Jeder Treffer hat Lebensraub in Prozent Chance, dich um 1 HP zu heilen.",Each hit has a chance equal to your Life Steal percentage to heal you by 1 HP.
+STAT_EXAMPLE_LIFESTEAL,10 % Lebensraub bei 5 Treffern pro Sekunde = im Schnitt 0.5 HP pro Sekunde.,10% Life Steal at 5 hits per second = 0.5 HP per second on average.
+STAT_LIMIT_LIFESTEAL,Höchstens {lifesteal_cap} HP pro Sekunde; ab 100 % heilt jeder Treffer. Negative Werte wirken wie 0.,At most {lifesteal_cap} HP per second; from 100% every hit heals. Negative values count as 0.
+STAT_FORMULA_DAMAGE_PCT,"Schaden = (Grundschaden + Bonus aus Nah, Fern oder Strom) x (1 + Schaden %/100).","Damage = (base damage + bonus from Melee, Ranged or Elemental) x (1 + Damage %/100)."
+STAT_EXAMPLE_DAMAGE_PCT,Eine Waffe mit 10 Schaden macht mit +50 % Schaden {dmg_example} Schaden.,A weapon with 10 damage deals {dmg_example} damage with +50% Damage.
+STAT_LIMIT_DAMAGE_PCT,Keine Obergrenze. Ab -100 % fällt der Schaden aufs Minimum: Ein Treffer macht immer mindestens {min_damage} Schaden.,No cap. At -100% damage drops to the minimum: a hit always deals at least {min_damage} damage.
+STAT_FORMULA_MELEE_DMG,"Bonus = Nah x Nah-Skalierung der Waffe. Er wird zum Grundschaden addiert, bevor Schaden % wirkt.",Bonus = Melee x the weapon's Melee scaling. It is added to base damage before Damage % applies.
+STAT_EXAMPLE_MELEE_DMG,"Mit 10 Nah bringt eine Waffe mit 100 % Nah-Skalierung +10 Schaden, eine mit 50 % +5.","With 10 Melee, a weapon with 100% Melee scaling gains +10 damage, one with 50% gains +5."
+STAT_LIMIT_MELEE_DMG,"Keine Obergrenze. Negative Werte senken den Schaden, ein Treffer macht aber immer mindestens {min_damage}.","No cap. Negative values lower damage, but a hit always deals at least {min_damage}."
+STAT_FORMULA_RANGED_DMG,"Bonus = Fern x Fern-Skalierung der Waffe. Er wird zum Grundschaden addiert, bevor Schaden % wirkt.",Bonus = Ranged x the weapon's Ranged scaling. It is added to base damage before Damage % applies.
+STAT_EXAMPLE_RANGED_DMG,"Mit 10 Fern bringt eine Waffe mit 100 % Fern-Skalierung +10 Schaden, eine mit 50 % +5.","With 10 Ranged, a weapon with 100% Ranged scaling gains +10 damage, one with 50% gains +5."
+STAT_LIMIT_RANGED_DMG,"Keine Obergrenze. Negative Werte senken den Schaden, ein Treffer macht aber immer mindestens {min_damage}.","No cap. Negative values lower damage, but a hit always deals at least {min_damage}."
+STAT_FORMULA_ELEMENTAL_DMG,"Bonus = Strom x Strom-Skalierung. Er wird zum Grundschaden addiert, bevor Schaden % wirkt.",Bonus = Elemental x the Elemental scaling. It is added to base damage before Damage % applies.
+STAT_EXAMPLE_ELEMENTAL_DMG,"Mit 10 Strom bringt eine Waffe mit 100 % Strom-Skalierung +10 Schaden, eine mit 50 % +5.","With 10 Elemental, a weapon with 100% Elemental scaling gains +10 damage, one with 50% gains +5."
+STAT_LIMIT_ELEMENTAL_DMG,"Keine Obergrenze. Negative Werte senken den Schaden, ein Treffer macht aber immer mindestens {min_damage}.","No cap. Negative values lower damage, but a hit always deals at least {min_damage}."
+STAT_FORMULA_ATTACK_SPEED,Abklingzeit = Abklingzeit der Waffe / (1 + Angriffstempo/100). Negative Werte bremsen nur zu {as_neg_factor} %.,Cooldown = weapon cooldown / (1 + Attack Speed/100). Negative values only slow you at {as_neg_factor}% strength.
+STAT_EXAMPLE_ATTACK_SPEED,"Eine Waffe mit 1 s Abklingzeit braucht mit +50 % nur noch {as_50} s, mit -50 % {as_neg_50} s.","A weapon with a 1 s cooldown needs only {as_50} s with +50%, and {as_neg_50} s with -50%."
+STAT_LIMIT_ATTACK_SPEED,Höchstens {as_max} Angriffe pro Sekunde je Waffe (Abklingzeit mindestens {as_min_cd} s).,At most {as_max} attacks per second per weapon (cooldown at least {as_min_cd} s).
+STAT_FORMULA_CRIT_CHANCE,"Krit-Chance = Krit der Waffe + Krit-Stat in Prozentpunkten. Ein Krit multipliziert den Schaden mit dem Krit-Faktor der Waffe, meist x2.","Crit chance = weapon crit + Crit stat in percentage points. A crit multiplies damage by the weapon's crit factor, usually x2."
+STAT_EXAMPLE_CRIT_CHANCE,Eine Waffe mit 3 % Krit trifft mit +7 % Krit in 10 % der Fälle kritisch; bei x2 sind das im Schnitt 10 % mehr Schaden.,A weapon with 3% crit crits 10% of the time with +7% Crit; at x2 that is 10% more damage on average.
+STAT_LIMIT_CRIT_CHANCE,"Zwischen 0 und 100 %; was darüber liegt, bringt nichts.",Between 0 and 100%; anything above does nothing.
+STAT_FORMULA_ENGINEERING,Strukturschaden = Grundschaden + Technik x Technik-Skalierung. Schaden % wirkt auf Strukturen nicht.,Structure damage = base damage + Engineering x Engineering scaling. Damage % does not affect structures.
+STAT_EXAMPLE_ENGINEERING,"{tower} ({tower_base} Schaden, {tower_scale} % Technik) macht mit 10 Technik {tower_10} Schaden.","{tower} ({tower_base} damage, {tower_scale}% Engineering) deals {tower_10} damage with 10 Engineering."
+STAT_LIMIT_ENGINEERING,"Keine Obergrenze. Negative Technik senkt den Strukturschaden, mindestens aber {min_damage}.","No cap. Negative Engineering lowers structure damage, down to {min_damage}."
+STAT_FORMULA_RANGE,Reichweite = Reichweite der Waffe + Reichweite-Stat. Nahkampfwaffen bekommen nur {melee_share} % davon.,Range = weapon range + Range stat. Melee weapons only get {melee_share}% of it.
+STAT_EXAMPLE_RANGE,"Mit +50 Reichweite trifft eine Fernwaffe mit 400 auf {range_ranged} px, eine Nahkampfwaffe mit 150 auf {range_melee} px.","With +50 Range, a ranged weapon with 400 reaches {range_ranged} px, a melee weapon with 150 reaches {range_melee} px."
+STAT_LIMIT_RANGE,Keine Obergrenze. Eine Waffe reicht immer mindestens {min_range} px weit.,No cap. A weapon always reaches at least {min_range} px.
+STAT_FORMULA_ARMOR,Reduziert erlittenen Schaden um Rüstung / (Rüstung + {armor_k}). Negative Rüstung erhöht den Schaden um |Rüstung| / {armor_k}.,Reduces damage taken by Armor / (Armor + {armor_k}). Negative Armor increases damage by |Armor| / {armor_k}.
+STAT_EXAMPLE_ARMOR,"5 Rüstung = {armor_5} % weniger Schaden, 15 Rüstung = {armor_15} %. Ein Treffer mit 20 Schaden macht bei 5 Rüstung nur {armor_hit}. -5 Rüstung = {armor_neg5} % mehr Schaden.","5 Armor = {armor_5}% less damage, 15 Armor = {armor_15}%. A 20-damage hit deals only {armor_hit} with 5 Armor. -5 Armor = {armor_neg5}% more damage."
+STAT_LIMIT_ARMOR,"Erreicht nie 100 %, jeder weitere Punkt bringt etwas weniger. Ein Treffer macht immer mindestens {min_damage} Schaden.",Never reaches 100%; every extra point helps a little less. A hit always deals at least {min_damage} damage.
+STAT_FORMULA_DODGE,Bei jedem Treffer wird gewürfelt: Mit Ausweichen in Prozent Chance erleidest du keinen Schaden. Rüstung wirkt erst danach.,Every hit rolls: with a chance equal to your Dodge percentage you take no damage. Armor only applies afterwards.
+STAT_EXAMPLE_DODGE,20 % Ausweichen = im Schnitt geht jeder fünfte Treffer ins Leere.,20% Dodge = on average every fifth hit misses.
+STAT_LIMIT_DODGE,"Höchstens {dodge_cap} %, auch wenn dein Wert höher ist. Negative Werte wirken wie 0.","At most {dodge_cap}%, even if your value is higher. Negative values count as 0."
+STAT_FORMULA_SPEED,Tempo = {speed_base} px/s x (1 + Tempo/100).,Speed = {speed_base} px/s x (1 + Speed/100).
+STAT_EXAMPLE_SPEED,+20 % Tempo = {speed_20} px/s.,+20% Speed = {speed_20} px/s.
+STAT_LIMIT_SPEED,Keine Obergrenze. Bei -100 % oder weniger stehst du still.,No cap. At -100% or below you stand still.
+STAT_FORMULA_LUCK,Batterie-Chance pro Kill = {battery_base} % x (1 + Glück/100). Davon wird mit {crate_base} % x (1 + Glück/100) / (1 + Kartons dieser Welle) ein Karton. Die Chancen auf Tier II bis IV wachsen ebenfalls x (1 + Glück/100).,"Battery chance per kill = {battery_base}% x (1 + Luck/100). Of those, {crate_base}% x (1 + Luck/100) / (1 + crates this wave) become a crate. The chances for tiers II to IV also grow x (1 + Luck/100)."
+STAT_EXAMPLE_LUCK,"100 Glück = {battery_100} % Batterie-Chance statt {battery_base} %, und höhere Tiers erscheinen doppelt so oft.","100 Luck = {battery_100}% battery chance instead of {battery_base}%, and higher tiers appear twice as often."
+STAT_LIMIT_LUCK,Tier-Chancen höchstens {tier_caps} % (Tier II/III/IV). Bei -100 Glück oder weniger gibt es keine Batterien und Kartons mehr.,Tier chances at most {tier_caps}% (tier II/III/IV). At -100 Luck or below there are no batteries or crates.
+STAT_FORMULA_HARVESTING,"Danach wächst die Aufladung um {harvest_growth} % (aufgerundet), solange sie positiv ist. Im Endlos-Modus bringt sie nur {harvest_endless} % der Funken.",Afterwards Harvesting grows by {harvest_growth}% (rounded up) as long as it is positive. In endless mode it only gives {harvest_endless}% of the sparks.
+STAT_EXAMPLE_HARVESTING,"20 Aufladung = +20 Funken und XP nach der Welle, danach hast du {harvest_next} Aufladung.","20 Harvesting = +20 sparks and XP after the wave, then you have {harvest_next} Harvesting."
+STAT_LIMIT_HARVESTING,Keine Obergrenze. Negative Aufladung zieht dir am Wellenende Funken ab (nie unter 0) und wächst nicht.,No cap. Negative Harvesting takes sparks away at the end of a wave (never below 0) and doesn't grow.
+STAT_FORMULA_XP_GAIN_PCT,XP = Funkenwert x (1 + XP %/100).,XP = spark value x (1 + XP %/100).
+STAT_EXAMPLE_XP_GAIN_PCT,+50 % XP: Ein Funke bringt {xp_example} XP statt 1.,+50% XP: one spark gives {xp_example} XP instead of 1.
+STAT_LIMIT_XP_GAIN_PCT,Keine Obergrenze. Bei -100 % oder weniger bekommst du keine XP mehr.,No cap. At -100% or below you get no XP.
+STAT_FORMULA_PICKUP_RANGE_PCT,Radius = {pickup_base} px x (1 + Wert/100). Batterien und Kartons musst du weiterhin aus der Nähe holen.,Radius = {pickup_base} px x (1 + value/100). Batteries and crates still have to be picked up up close.
+STAT_EXAMPLE_PICKUP_RANGE_PCT,+50 % = {pickup_50} px statt {pickup_base} px.,+50% = {pickup_50} px instead of {pickup_base} px.
+STAT_LIMIT_PICKUP_RANGE_PCT,Keine Obergrenze. Bei -100 % oder weniger fliegen keine Funken mehr zu dir.,No cap. At -100% or below sparks no longer fly to you.
+STAT_FORMULA_ITEM_PRICE_PCT,Preis = (Grundpreis + Welle x ({inflation_share} % des Grundpreises + {inflation_flat})) x (1 + Wert/100).,Price = (base price + wave x ({inflation_share}% of base price + {inflation_flat})) x (1 + value/100).
+STAT_EXAMPLE_ITEM_PRICE_PCT,"Ein Item mit Grundpreis 50 kostet in Welle 10 {price_ex} Funken, mit -20 % nur {price_ex_m20}.","An item with base price 50 costs {price_ex} sparks in wave 10, only {price_ex_m20} with -20%."
+STAT_LIMIT_ITEM_PRICE_PCT,Keine Obergrenze. Ein Preis ist immer mindestens 1 Funke.,No cap. A price is always at least 1 spark.
+STAT_FORMULA_EXPLOSION_DMG_PCT,"Explosionsschaden = Schaden x (1 + Wert/100), zusätzlich zu Schaden %.","Explosion damage = damage x (1 + value/100), on top of Damage %."
+STAT_EXAMPLE_EXPLOSION_DMG_PCT,Eine Explosion mit 20 Schaden macht mit +50 % {expl_example} Schaden.,An explosion with 20 damage deals {expl_example} with +50%.
+STAT_LIMIT_EXPLOSION_DMG_PCT,Keine Obergrenze. Mindestens {min_damage} Schaden.,No cap. At least {min_damage} damage.
+STAT_FORMULA_EXPLOSION_SIZE_PCT,Radius = Radius der Explosion x (1 + Wert/100).,Radius = explosion radius x (1 + value/100).
+STAT_EXAMPLE_EXPLOSION_SIZE_PCT,Eine Explosion mit 80 px Radius erreicht mit +25 % {expl_size_example} px.,An explosion with an 80 px radius reaches {expl_size_example} px with +25%.
+STAT_LIMIT_EXPLOSION_SIZE_PCT,Keine Obergrenze. Bei -100 % oder weniger hat eine Explosion keinen Radius mehr.,No cap. At -100% or below an explosion has no radius.
+STAT_FORMULA_BOUNCES,"Abpraller = Abpraller der Waffe + Stat (gerundet). Ein Projektil prallt erst ab, wenn sein Durchschlag aufgebraucht ist, und fliegt danach wieder die volle Reichweite.","Bounces = weapon bounces + stat (rounded). A projectile only bounces once its piercing is used up, and then flies its full range again."
+STAT_EXAMPLE_BOUNCES,+1 Abprall: Ein Schuss trifft einen Gegner und fliegt dann zum nächsten Gegner in Reichweite.,+1 Bounce: a shot hits an enemy and then flies to the next enemy in range.
+STAT_LIMIT_BOUNCES,"Keine Obergrenze; jeder Gegner wird nur einmal getroffen, ohne Ziel in Reichweite endet das Projektil. Gilt nur für Projektile.","No cap; each enemy is hit only once, and without a target in range the projectile ends. Projectiles only."
+STAT_FORMULA_PIERCING,Durchschlag = Durchschlag der Waffe + Stat (gerundet); jeder Punkt ist ein zusätzlicher Gegner.,Piercing = weapon piercing + stat (rounded); each point is one more enemy.
+STAT_EXAMPLE_PIERCING,Eine Waffe mit Durchschlag 1 trifft mit +1 Durchschlag bis zu 3 Gegner in einer Linie.,A weapon with Piercing 1 hits up to 3 enemies in a line with +1 Piercing.
+STAT_LIMIT_PIERCING,Keine Obergrenze. Gilt nur für Projektile; den Schaden nach jedem Durchschlag ändert Durchschlag-Schaden.,No cap. Projectiles only; Piercing Damage changes the damage after each pierce.
+STAT_FORMULA_PIERCING_DMG_PCT,Nach jedem Durchschlag: Schaden x (1 + Wert/100). Bei mehreren Durchschlägen wirkt das mehrfach.,After each pierce: damage x (1 + value/100). With several pierces it stacks.
+STAT_EXAMPLE_PIERCING_DMG_PCT,"-50 %: Ein Projektil mit 20 Schaden trifft den ersten Gegner mit 20, den zweiten mit {pierce_2}, den dritten mit {pierce_3}.","-50%: a projectile with 20 damage hits the first enemy for 20, the second for {pierce_2}, the third for {pierce_3}."
+STAT_LIMIT_PIERCING_DMG_PCT,Keine Obergrenze. Ein Treffer macht immer mindestens {min_damage} Schaden.,No cap. A hit always deals at least {min_damage} damage.
+STAT_FORMULA_BOSS_DMG_PCT,"Schaden gegen Elites und Bosse = Schaden x (1 + Wert/100), bei Waffentreffern und Explosionen.","Damage against elites and bosses = damage x (1 + value/100), for weapon hits and explosions."
+STAT_EXAMPLE_BOSS_DMG_PCT,+25 %: Ein Treffer mit 40 Schaden macht am Boss {boss_example}.,+25%: a 40-damage hit deals {boss_example} to a boss.
+STAT_LIMIT_BOSS_DMG_PCT,Keine Obergrenze. Mindestens {min_damage} Schaden.,No cap. At least {min_damage} damage.
+STAT_FORMULA_STRUCTURE_ATTACK_SPEED_PCT,Wie Angriffstempo: Abklingzeit / (1 + Wert/100); negative Werte bremsen nur zu {as_neg_factor} %.,Like Attack Speed: cooldown / (1 + value/100); negative values only slow at {as_neg_factor}% strength.
+STAT_EXAMPLE_STRUCTURE_ATTACK_SPEED_PCT,Ein Turm mit 1 s Abklingzeit feuert mit +50 % alle {as_50} s.,A tower with a 1 s cooldown fires every {as_50} s with +50%.
+STAT_LIMIT_STRUCTURE_ATTACK_SPEED_PCT,Höchstens {as_max} Schüsse pro Sekunde je Struktur.,At most {as_max} shots per second per structure.
+STAT_FORMULA_BURN_SPEED_PCT,Abstand der Ticks = {burn_interval} s / (1 + Wert/100).,Time between ticks = {burn_interval} s / (1 + value/100).
+STAT_EXAMPLE_BURN_SPEED_PCT,+50 %: ein Tick alle {burn_50} s statt alle {burn_interval} s.,+50%: one tick every {burn_50} s instead of every {burn_interval} s.
+STAT_LIMIT_BURN_SPEED_PCT,Keine Obergrenze. Langsamer als {burn_min} % des normalen Tempos werden Brände nie.,No cap. Burns never get slower than {burn_min}% of their normal speed.
+STAT_FORMULA_BURN_SPREAD,"Bei jedem Brand-Tick fangen so viele nahe, noch nicht brennende Gegner im Umkreis von {burn_radius} px Feuer, mit gleichem Schaden.","On every burn tick, this many nearby enemies that aren't burning yet within {burn_radius} px catch fire with the same damage."
+STAT_EXAMPLE_BURN_SPREAD,Ausbreitung 1: Jeder brennende Gegner steckt pro Tick einen Nachbarn an.,Spread 1: every burning enemy sets one neighbour on fire per tick.
+STAT_LIMIT_BURN_SPREAD,"Keine Obergrenze, es springt aber nur auf Gegner, die noch nicht brennen. Werte unter 1 wirken nicht.","No cap, but it only jumps to enemies that aren't burning yet. Values below 1 do nothing."
+STAT_FORMULA_KNOCKBACK,"Rückstoß = Rückstoß der Waffe + Stat. Jeder Punkt gibt dem Gegner {kb_speed} px/s Schwung, der schnell abgebremst wird.","Knockback = weapon knockback + stat. Each point gives the enemy {kb_speed} px/s of momentum, which slows down quickly."
+STAT_EXAMPLE_KNOCKBACK,10 Rückstoß schiebt einen normalen Gegner etwa {kb_10} px zurück.,10 Knockback pushes a normal enemy back about {kb_10} px.
+STAT_LIMIT_KNOCKBACK,"Keine Obergrenze. Schwere Gegner widerstehen teilweise, Elites und Bosse ganz.","No cap. Heavy enemies partly resist it, elites and bosses fully."
+STAT_FORMULA_DOUBLE_SPARK_CHANCE,Jeder fallende Funke ist mit dieser Chance {double_value} Funken wert.,Each dropped spark is worth {double_value} sparks with this chance.
+STAT_EXAMPLE_DOUBLE_SPARK_CHANCE,"20 %: Von 100 Funken sind im Schnitt 20 doppelt, zusammen also 120.","20%: of 100 sparks, 20 are double on average, so 120 in total."
+STAT_LIMIT_DOUBLE_SPARK_CHANCE,"Höchstens 100 %, dann zählt jeder Funke doppelt. Gilt nicht für Aufladung.","At most 100%, then every spark counts double. Doesn't apply to Harvesting."
+STAT_FORMULA_FREE_REROLLS,"Bei jedem Shop-Besuch sind so viele Rerolls gratis, danach gilt der normale Reroll-Preis.","Every shop visit has this many free rerolls, after that the normal reroll price applies."
+STAT_EXAMPLE_FREE_REROLLS,2 freie Rerolls: Die ersten zwei Rerolls jedes Shops kosten nichts.,2 free rerolls: the first two rerolls of every shop cost nothing.
+STAT_LIMIT_FREE_REROLLS,Keine Obergrenze. Nicht genutzte freie Rerolls verfallen mit dem Shop.,No cap. Unused free rerolls expire with the shop.
+STAT_FORMULA_CRYSTALS,Alle {crystal_interval} s erscheint mit {crystal_chance} % x (1 + Wert/100) Chance ein Kristall.,Every {crystal_interval} s a crystal appears with a {crystal_chance}% x (1 + value/100) chance.
+STAT_EXAMPLE_CRYSTALS,+100 %: {crystal_100} % Chance statt {crystal_chance} %.,+100%: {crystal_100}% chance instead of {crystal_chance}%.
+STAT_LIMIT_CRYSTALS,Höchstens {crystal_max} Kristalle gleichzeitig; über 100 % Chance bringt mehr nichts.,At most {crystal_max} crystals at once; beyond a 100% chance more does nothing.
+STAT_FORMULA_ENEMIES_PCT,Gruppengröße x (1 + Wert/100); Nachkommastellen werden ausgewürfelt.,Group size x (1 + value/100); fractions are rolled.
+STAT_EXAMPLE_ENEMIES_PCT,+25 %: Eine Gruppe mit 4 Gegnern hat 5.,+25%: a group of 4 enemies has 5.
+STAT_LIMIT_ENEMIES_PCT,Insgesamt höchstens {enemy_limit} Gegner gleichzeitig. Bei -100 % oder weniger erscheinen keine Gruppen mehr.,At most {enemy_limit} enemies at once in total. At -100% or below no groups spawn.
+STAT_FORMULA_ENEMY_SPEED_PCT,Gegnertempo x (1 + Wert/100).,Enemy speed x (1 + value/100).
+STAT_EXAMPLE_ENEMY_SPEED_PCT,-20 %: Ein Gegner mit 200 px/s läuft nur noch 160 px/s.,-20%: an enemy with 200 px/s only moves at 160 px/s.
+STAT_LIMIT_ENEMY_SPEED_PCT,Keine Obergrenze. Bei -100 % oder weniger stehen Gegner still.,No cap. At -100% or below enemies stand still.
+STAT_FORMULA_REROLL_PRICE_PCT,"Reroll-Preis = (Welle + Zuschlag x Anzahl Rerolls) x (1 + Wert/100); Zuschlag = Welle x {reroll_factor}, mindestens 1.","Reroll price = (wave + increment x number of rerolls) x (1 + value/100); increment = wave x {reroll_factor}, at least 1."
+STAT_EXAMPLE_REROLL_PRICE_PCT,"Welle 10: Der erste Reroll kostet {reroll_ex} Funken, mit -50 % nur {reroll_ex_m50}.","Wave 10: the first reroll costs {reroll_ex} sparks, only {reroll_ex_m50} with -50%."
+STAT_LIMIT_REROLL_PRICE_PCT,Keine Obergrenze. Ein bezahlter Reroll kostet immer mindestens 1 Funke.,No cap. A paid reroll always costs at least 1 spark.
+STAT_FORMULA_CONSUMABLE_HEAL,"Heilung = Grundwert ({battery_heal} HP bei Batterien, {crate_heal} HP bei Kartons) + Wert.","Healing = base value ({battery_heal} HP for batteries, {crate_heal} HP for crates) + value."
+STAT_EXAMPLE_CONSUMABLE_HEAL,+2: Eine Batterie heilt {battery_plus2} HP.,+2: a battery heals {battery_plus2} HP.
+STAT_LIMIT_CONSUMABLE_HEAL,Keine Obergrenze. Die Heilung sinkt nie unter 0.,No cap. Healing never drops below 0.
+STAT_FORMULA_RECYCLE_PCT,"Recycling-Wert = Preis x {recycle_share} % x (1 + Wert/100), abgerundet.","Recycle value = price x {recycle_share}% x (1 + value/100), rounded down."
+STAT_EXAMPLE_RECYCLE_PCT,"Ein Item für 100 Funken bringt {recycle_ex} Funken, mit +50 % {recycle_50}.","An item worth 100 sparks gives {recycle_ex} sparks, {recycle_50} with +50%."
+STAT_LIMIT_RECYCLE_PCT,Keine Obergrenze. Immer mindestens 1 Funke.,No cap. Always at least 1 spark.
+STAT_FORMULA_BURN_DMG_PCT,Brandschaden pro Tick x (1 + Wert/100).,Burn damage per tick x (1 + value/100).
+STAT_EXAMPLE_BURN_DMG_PCT,+50 %: Ein Brand mit 4 Schaden pro Tick macht {burn_dmg_example}.,+50%: a burn with 4 damage per tick deals {burn_dmg_example}.
+STAT_LIMIT_BURN_DMG_PCT,Keine Obergrenze. Ein Tick macht immer mindestens {min_damage} Schaden.,No cap. A tick always deals at least {min_damage} damage.
+STAT_FORMULA_KILL_SPARK_PCT,Funken pro Kill x (1 + Wert/100); Nachkommastellen werden ausgewürfelt.,Sparks per kill x (1 + value/100); fractions are rolled.
+STAT_EXAMPLE_KILL_SPARK_PCT,+50 %: Ein Gegner mit 1 Funke lässt in der Hälfte der Fälle 2 fallen.,+50%: an enemy with 1 spark drops 2 half of the time.
+STAT_LIMIT_KILL_SPARK_PCT,Keine Obergrenze. Negative Werte wirken wie 0.,No cap. Negative values count as 0.
+LEX_STAT_FORMULA,Formel,Formula
+LEX_STAT_EXAMPLE,Beispiel,Example
+LEX_STAT_LIMIT,Grenze,Limit
+LEX_SHOW_ALL,Alles anzeigen,Show all
+LEX_STILL_LOCKED,Noch gesperrt,Still locked
+LEX_SHOW_ALL_HINT,F  ·  Y: Alles anzeigen an/aus,F  ·  Y: toggle show all

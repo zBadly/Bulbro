@@ -3,6 +3,7 @@ extends Control
 ## Lexikon (Hauptmenü): Reiter für Charaktere, Waffen, Items, Gegner, Waffenklassen und Spielmechaniken.
 ## Feste Bereiche wie in der Charakterauswahl: Raster links, Detailpanel rechts; nichts springt beim Auswählen.
 ## Reiter: Maus, Q/E bzw. LB/RB. Das Suchfeld filtert alle Reiter, die Trefferzahl steht im Reitertitel.
+## "Alles anzeigen" (F bzw. Y) deckt gesperrte Einträge vollständig auf; die Einstellung wird gespeichert.
 
 const MAIN_MENU_SCENE: String = "res://scenes/ui/main_menu.tscn"
 const FLOOR_TEXTURE: Texture2D = preload("res://art/world/floor_tile.svg")
@@ -17,6 +18,7 @@ const SEARCH_WIDTH: float = 560.0
 const TAB_WIDTH: float = 236.0
 const ROW_HEIGHT: float = 52.0
 const FILTER_WIDTH: float = 260.0
+const SHOW_ALL_WIDTH: float = 260.0
 ## Feste Bereiche (Basisauflösung 1920 x 1080; skaliert über stretch mode canvas_items).
 const GRID_COLUMNS: int = 6
 const GRID_GAP: int = 12
@@ -33,6 +35,8 @@ var _tab: int = Lexicon.Tab.CHARACTERS
 var _filters: Dictionary[int, int] = {}
 var _selected: Dictionary[int, StringName] = {}
 var _tab_buttons: Array[Button] = []
+var _show_all: bool = false
+var _show_all_button: Button
 var _search: LineEdit
 var _filter_row: HBoxContainer
 var _grid_scroll: ScrollContainer
@@ -46,6 +50,7 @@ var _tag_options: Array[StringName] = []
 
 func _ready() -> void:
 	get_tree().paused = false
+	_show_all = bool(SaveManager.get_option(SaveManager.LEXICON_SHOW_ALL_KEY, false))
 	for tab: int in Lexicon.tab_count():
 		var list: Array[LexiconEntry] = Lexicon.entries(tab)
 		_entries.append(list)
@@ -59,6 +64,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_show_tab(posmod(_tab - 1, Lexicon.tab_count()))
 	elif event.is_action_pressed(&"tab_next"):
 		_show_tab(posmod(_tab + 1, Lexicon.tab_count()))
+	elif event.is_action_pressed(&"lexicon_show_all"):
+		set_show_all(not _show_all)
 	elif event.is_action_pressed(&"ui_cancel"):
 		if _search.has_focus():
 			_focus_grid()
@@ -116,6 +123,15 @@ func _build() -> void:
 	_search.add_theme_stylebox_override("normal", _field_style(false))
 	_search.add_theme_stylebox_override("focus", _field_style(true))
 	_search.text_changed.connect(_on_search_changed)
+	_show_all_button = UiStyle.make_button(tr("LEX_SHOW_ALL"), TEXT_SIZE)
+	_show_all_button.toggle_mode = true
+	_show_all_button.focus_mode = Control.FOCUS_NONE
+	_show_all_button.custom_minimum_size = Vector2(SHOW_ALL_WIDTH, ROW_HEIGHT)
+	_show_all_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_style_pressed(_show_all_button)
+	_show_all_button.set_pressed_no_signal(_show_all)
+	_show_all_button.toggled.connect(set_show_all)
+	top.add_child(_show_all_button)
 	top.add_child(_search)
 
 	# Reiter
@@ -130,11 +146,7 @@ func _build() -> void:
 		button.focus_mode = Control.FOCUS_NONE
 		button.clip_text = true
 		button.custom_minimum_size = Vector2(TAB_WIDTH, ROW_HEIGHT)
-		var pressed: StyleBoxFlat = button.get_theme_stylebox("pressed").duplicate()
-		pressed.bg_color = UiStyle.BUTTON_FOCUS_COLOR
-		pressed.border_color = UiStyle.SPARK_COLOR
-		button.add_theme_stylebox_override("pressed", pressed)
-		button.add_theme_stylebox_override("hover_pressed", pressed)
+		_style_pressed(button)
 		button.pressed.connect(_show_tab.bind(tab))
 		tabs.add_child(button)
 		_tab_buttons.append(button)
@@ -176,6 +188,21 @@ func _build() -> void:
 	var back: Button = UiStyle.make_button(tr("BACK"), TEXT_SIZE)
 	back.pressed.connect(func() -> void: get_tree().change_scene_to_file(MAIN_MENU_SCENE))
 	bottom.add_child(back)
+	var show_all_hint: Label = UiStyle.make_label(HINT_SIZE, HINT_COLOR)
+	show_all_hint.text = tr("LEX_SHOW_ALL_HINT")
+	show_all_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	show_all_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	show_all_hint.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	bottom.add_child(show_all_hint)
+
+
+## Gedrückter Umschalter (Reiter, "Alles anzeigen"): Fokusfarbe mit Funken-Rahmen.
+func _style_pressed(button: Button) -> void:
+	var pressed: StyleBoxFlat = button.get_theme_stylebox("pressed").duplicate()
+	pressed.bg_color = UiStyle.BUTTON_FOCUS_COLOR
+	pressed.border_color = UiStyle.SPARK_COLOR
+	button.add_theme_stylebox_override("pressed", pressed)
+	button.add_theme_stylebox_override("hover_pressed", pressed)
 
 
 func _field_style(focused: bool) -> StyleBoxFlat:
@@ -277,7 +304,7 @@ func _add_filter(filter: Filter, label_text: String, options: PackedStringArray,
 func filtered_entries(tab: int) -> Array[LexiconEntry]:
 	var result: Array[LexiconEntry] = []
 	for entry: LexiconEntry in _entries[tab]:
-		if entry.matches(_search.text if _search != null else "") and _passes_filters(tab, entry):
+		if entry.matches(_search.text if _search != null else "", _show_all) and _passes_filters(tab, entry):
 			result.append(entry)
 	if tab == Lexicon.Tab.ITEMS:
 		result.sort_custom(Lexicon.sort_by_name if _filters.get(Filter.SORT, 0) == 1 else Lexicon.sort_by_tier)
@@ -327,7 +354,7 @@ func _refresh_grid() -> void:
 	var selected: LexiconEntry = null
 	for entry: LexiconEntry in _visible_entries:
 		var card: EntryCard = EntryCard.new()
-		card.configure(entry)
+		card.configure(entry, _show_all)
 		card.selected.connect(_select)
 		_grid.add_child(card)
 		if entry.id == _selected.get(_tab, &""):
@@ -340,7 +367,7 @@ func _refresh_grid() -> void:
 
 func _select(entry: LexiconEntry) -> void:
 	_selected[_tab] = entry.id
-	_detail.show_entry(entry)
+	_detail.show_entry(entry, _show_all)
 
 
 func _focus_grid() -> void:
@@ -371,6 +398,20 @@ func get_cards() -> Array[EntryCard]:
 func set_filter(filter: Filter, index: int) -> void:
 	_filters[filter] = index
 	_refresh_grid()
+
+
+## "Alles anzeigen" umschalten, speichern und Raster samt Detail neu aufbauen (Auswahl bleibt).
+func set_show_all(on: bool) -> void:
+	_show_all = on
+	_show_all_button.set_pressed_no_signal(on)
+	SaveManager.set_option(SaveManager.LEXICON_SHOW_ALL_KEY, on)
+	SaveManager.save_game()
+	_refresh_grid()
+	_focus_grid()
+
+
+func is_show_all() -> bool:
+	return _show_all
 
 
 func get_detail() -> DetailPanel:

@@ -28,6 +28,12 @@ var melee: bool = false
 var enemy_kind: int = 0
 
 var _search_text: String = ""
+var _search_text_full: String = ""
+
+
+## Gesperrt und nicht über "Alles anzeigen" aufgedeckt: nur Silhouette, Name und Freischaltbedingung.
+func is_hidden(show_all: bool) -> bool:
+	return locked and not show_all
 
 
 func add_text(section_title: String, bbcode: String) -> void:
@@ -39,16 +45,18 @@ func add_table(section_title: String, rows: Array[PackedStringArray]) -> void:
 
 
 ## Suche ohne Groß-/Kleinschreibung in Name, Einordnung, Abschnitten und Spruch.
-## Gesperrte Einträge verraten nur Name und Freischaltbedingung.
-func matches(query: String) -> bool:
+## Verborgene Einträge (gesperrt, ohne "Alles anzeigen") verraten nur Name und Freischaltbedingung.
+func matches(query: String, show_all: bool = false) -> bool:
 	var needle: String = query.strip_edges().to_lower()
 	if needle == "":
 		return true
-	if _search_text == "":
-		var parts: PackedStringArray = [title, subtitle, lock_text]
-		if not locked:
-			parts.append(lore)
-			for section: LexiconSection in sections:
-				parts.append(section.plain_text())
-		_search_text = Lexicon.strip_bbcode(" ".join(parts)).to_lower()
-	return _search_text.contains(needle)
+	if is_hidden(show_all):
+		if _search_text == "":
+			_search_text = Lexicon.strip_bbcode(" ".join([title, subtitle, lock_text])).to_lower()
+		return _search_text.contains(needle)
+	if _search_text_full == "":
+		var parts: PackedStringArray = [title, subtitle, lock_text, lore]
+		for section: LexiconSection in sections:
+			parts.append(section.plain_text())
+		_search_text_full = Lexicon.strip_bbcode(" ".join(parts)).to_lower()
+	return _search_text_full.contains(needle)

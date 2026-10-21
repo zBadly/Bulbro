@@ -88,6 +88,9 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	if _piercing_left > 0:
 		_piercing_left -= 1
+		# Durchschlag-Schaden: jeder weitere Gegner bekommt den Schaden x (1 + Stat/100)
+		if _spec.player != null:
+			info.amount = CombatMath.percent_damage(info.amount, _spec.player.stats.get_stat(Stats.PIERCING_DMG_PCT))
 		return
 	if _bounces_left > 0:
 		var next: Damageable = Hits.nearest_target(get_tree(), global_position, _spec.max_range, _hit_ids)

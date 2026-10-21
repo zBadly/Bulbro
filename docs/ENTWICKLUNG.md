@@ -41,6 +41,7 @@ Bosse testen: F4 → zu Welle 20 springen; bei Spannung 5 erscheinen beide Bosse
 | 6 (Lexikon) | Hauptmenüpunkt „Lexikon“ mit 6 Reitern (Charaktere, Waffen, Items, Gegner, Waffenklassen, Spielmechaniken), Suche über alle Reiter, Filter, Sprüche (`lore_text`) für alle Einträge |
 | 14c-1 | Systeme für 10 neue Charaktere: Fluch, Verlangsamen/Einfrieren/Festhalten, Verbündete (Schattengeister), Seelenglas, Zauberzyklus, Spiegelbild, Drohnen, Lichtranke, Brand-Erweiterungen, Vampirbirnen-Effekte |
 | 15-1 | Fix: Absturz am Run-Ende (Sieg und Niederlage). `Unlocks.make_context` wies nach `end_run()` ein ungetyptes `{}` an `Dictionary[String, int]` zu; Challenges, Speichern und `clear_run` fielen aus. Regressionstest `test_boss_victory.gd` (inkl. Arena-Bosssieg mit Spiegelkugel auf Spannung 5) |
+| 15-2 | Lexikon: Umschalter „Alles anzeigen“ (F / Y, im Spielstand gespeichert) deckt gesperrte Charaktere und Items vollständig auf; Schloss-Abzeichen auf der Karte, Kasten „Noch gesperrt“ mit Bedingung im Detail. Alle 39 Stats im Reiter Spielmechaniken mit Wirkung, Formel, Beispiel und Grenze; Beispielzahlen werden aus den Formeln und Configs berechnet (`Lexicon.stat_values`). Durchschlag-Schaden % und Boss-Schaden % wirken jetzt (vorher ohne Funktion). Fix: kein Sound-Leak mehr beim Beenden |
 
 Leistung (Radeon RX 590, 1080p, VSync 144 Hz): 100 Gegner aller Typen mit 6 Tier-IV-Fernwaffen min. 118 FPS; 100 Gegner + 300 Projektile konstant 144 FPS.
 100 Gegner + 8 Verbündete + Spiegelbild mit 6 Waffen (Welle 14): mit VSync Ø 143, min. 137 FPS; ohne VSync Ø 311, min. 214 FPS.
@@ -56,6 +57,9 @@ Alle Werte liegen als `.tres` unter `data/` und lassen sich ohne Code ändern.
 - „X-Modifikationen +Y %“ wirken nur auf Zuwächse (Items, Upgrades, Set-Boni), nicht auf Basiswerte. Startboni eines Charakters zählen zur Basis.
 - Mehr Max HP heilt um denselben Betrag.
 - Waffen ohne eigene Angabe: 3 % Krit-Chance, Krit x2.
+- Durchschlag-Schaden %: nach jedem Durchschlag Schaden x (1 + Wert/100), mehrfach bei mehreren Durchschlägen; ohne Stat kein Abzug.
+- Boss-Schaden %: Waffentreffer und Explosionen gegen Elites und Bosse x (1 + Wert/100). Noch kein Item gibt diese beiden Stats.
+- Brand-Ticks werden durch negatives Brand-Tempo höchstens auf 10 % gebremst (`CombatMath.BURN_SPEED_MIN_FACTOR`).
 
 ### Gegner und Wellen
 - Rammkäfer: GDD-Tempo 400 als Sprint-Klasse gelesen (verfolgt mit 220–260 px/s, sprintet mit 800 px/s).

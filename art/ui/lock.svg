@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <clipPath id="body-light">
+      <rect x="6.5" y="16.5" width="25" height="18" rx="4"/>
+    </clipPath>
+  </defs>
+  <!-- Bügel -->
+  <path d="M12 18 V12.5 a8 8 0 0 1 16 0 V18" fill="none" stroke="#2A1E2E" stroke-width="8" stroke-linecap="round"/>
+  <path d="M12 18 V12.5 a8 8 0 0 1 16 0 V18" fill="none" stroke="#9AA0A6" stroke-width="3" stroke-linecap="round"/>
+  <!-- Körper: Schatten, Grundton nach oben links versetzt, Glanz -->
+  <rect x="7" y="17" width="26" height="19" rx="4" fill="#6F757C"/>
+  <g clip-path="url(#body-light)">
+    <rect x="5" y="15" width="25" height="18" rx="4" fill="#9AA0A6"/>
+  </g>
+  <ellipse cx="12" cy="21" rx="3" ry="1.6" fill="#C9CED3"/>
+  <!-- Schlüsselloch -->
+  <circle cx="20" cy="25" r="2.6" fill="#2A1E2E"/>
+  <path d="M20 26 V30.5" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <rect x="7" y="17" width="26" height="19" rx="4" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+</svg>

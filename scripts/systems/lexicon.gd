@@ -24,6 +24,20 @@ const RARITY: RarityConfig = preload("res://data/config/rarity_config.tres")
 const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
+const TOWER: StructureData = preload("res://data/structures/lampenturm.tres")
+## Teile einer Stat-Erklärung nach der Wirkung (LEX_STAT_<TEIL> als Überschrift, STAT_<TEIL>_<STAT> als Text).
+const STAT_PARTS: PackedStringArray = ["FORMULA", "EXAMPLE", "LIMIT"]
+## Eingaben der Rechenbeispiele in den Stat-Texten (die Ergebnisse kommen aus den Formeln).
+const EXAMPLE_STAT: float = 10.0
+const EXAMPLE_DAMAGE: float = 10.0
+const EXAMPLE_PCT: float = 50.0
+const EXAMPLE_KNOCKBACK: float = 10.0
+const EXAMPLE_RANGED_RANGE: float = 400.0
+const EXAMPLE_MELEE_RANGE: float = 150.0
+const EXAMPLE_RANGE_BONUS: float = 50.0
+const EXAMPLE_PRICE: int = 50
+const EXAMPLE_PRICE_WAVE: int = 10
+const EXAMPLE_EXPLOSION_RADIUS: float = 80.0
 
 
 static func tab_count() -> int:
@@ -577,38 +591,100 @@ static func topic_text(key: String) -> String:
 	return t(key) % args
 
 
-## Alltagssprachliche Erklärung eines Stats mit den Zahlen aus den Formeln (CombatMath, Economy, Configs).
+## Erklärung eines Stats in vier Teilen: Wirkung, Formel, Beispiel, Grenze (Texte STAT_INFO/FORMULA/EXAMPLE/LIMIT_<STAT>).
+## Platzhalter wie {armor_k} füllt stat_values() mit den Zahlen aus CombatMath, Economy und den Configs.
 static func stat_info(stat: StringName) -> String:
-	var args: Array = []
-	match stat:
-		Stats.MAX_HP:
-			args = [TextFormat.number(PLAYER.max_hp_per_level)]
-		Stats.HP_REGEN:
-			args = [TextFormat.number(CombatMath.REGEN_FIRST_POINT), TextFormat.number(CombatMath.REGEN_PER_EXTRA_POINT),
-				"%.1f" % CombatMath.hp_regen_per_second(10.0)]
-		Stats.LIFESTEAL:
-			args = [TextFormat.number(1.0 / CombatMath.LIFESTEAL_INTERVAL)]
-		Stats.DAMAGE_PCT:
-			args = [CombatMath.MIN_DAMAGE]
-		Stats.ATTACK_SPEED:
-			args = ["%.2f" % CombatMath.attack_cooldown(1.0, 50.0), _percent(CombatMath.NEGATIVE_ATTACK_SPEED_FACTOR),
-				TextFormat.number(CombatMath.MAX_ATTACKS_PER_SECOND)]
-		Stats.RANGE:
-			args = [_percent(CombatMath.MELEE_RANGE_FACTOR), TextFormat.number(CombatMath.MIN_RANGE)]
-		Stats.ARMOR:
-			args = [roundi((1.0 - CombatMath.armor_multiplier(5.0)) * PERCENT), roundi((1.0 - CombatMath.armor_multiplier(15.0)) * PERCENT),
-				TextFormat.number(CombatMath.ARMOR_CONSTANT)]
-		Stats.DODGE:
-			args = [TextFormat.number(PLAYER.dodge_cap)]
-		Stats.SPEED:
-			args = [TextFormat.number(PLAYER.base_move_speed)]
-		Stats.HARVESTING:
-			args = [_percent(Economy.HARVESTING_GROWTH)]
-		Stats.PICKUP_RANGE_PCT:
-			args = [TextFormat.number(PLAYER.pickup_radius)]
-		Stats.CONSUMABLE_HEAL:
-			args = [TextFormat.number(DROPS.battery_heal)]
-	return t("STAT_INFO_" + String(stat).to_upper()) % args
+	var values: Dictionary = stat_values()
+	var upper: String = String(stat).to_upper()
+	var lines: PackedStringArray = [t("STAT_INFO_" + upper).format(values)]
+	for part: String in STAT_PARTS:
+		lines.append("[color=%s]%s:[/color] %s" % [HEADING_COLOR, t("LEX_STAT_" + part), t("STAT_%s_%s" % [part, upper]).format(values)])
+	return "\n".join(lines)
+
+
+## Beispielzahlen für die Stat-Texte, immer aus den echten Formeln berechnet.
+static func stat_values() -> Dictionary:
+	var regen_5: float = CombatMath.hp_regen_per_second(5.0)
+	var tower_damage: int = CombatMath.weapon_damage(TOWER.base_damage, TOWER.scalings.get(Stats.ENGINEERING, 0.0) * EXAMPLE_STAT, 0.0, 1.0)
+	var tier_caps: PackedStringArray = []
+	for index: int in range(1, RARITY.max_chance.size()):
+		tier_caps.append(_percent(RARITY.max_chance[index]))
+	var pierced: int = CombatMath.percent_damage(roundi(EXAMPLE_DAMAGE * 2.0), -EXAMPLE_PCT)
+	var knockback_speed: float = EXAMPLE_KNOCKBACK * COMBAT.knockback_to_speed
+	return {
+		"min_damage": CombatMath.MIN_DAMAGE,
+		"min_hp": TextFormat.number(CombatMath.MIN_MAX_HP),
+		"hp_per_level": TextFormat.number(PLAYER.max_hp_per_level),
+		"regen_first": TextFormat.number(CombatMath.REGEN_FIRST_POINT),
+		"regen_extra": "%.3f" % CombatMath.REGEN_PER_EXTRA_POINT,
+		"regen_5": "%.2f" % regen_5,
+		"regen_5_interval": "%.1f" % (1.0 / regen_5),
+		"regen_10": "%.1f" % CombatMath.hp_regen_per_second(EXAMPLE_STAT),
+		"lifesteal_cap": TextFormat.number(1.0 / CombatMath.LIFESTEAL_INTERVAL),
+		"dmg_example": CombatMath.weapon_damage(EXAMPLE_DAMAGE, 0.0, EXAMPLE_PCT, 1.0),
+		"as_50": "%.2f" % CombatMath.attack_cooldown(1.0, EXAMPLE_PCT),
+		"as_neg_50": "%.2f" % CombatMath.attack_cooldown(1.0, -EXAMPLE_PCT),
+		"as_neg_factor": _percent(CombatMath.NEGATIVE_ATTACK_SPEED_FACTOR),
+		"as_max": TextFormat.number(CombatMath.MAX_ATTACKS_PER_SECOND),
+		"as_min_cd": "%.2f" % (1.0 / CombatMath.MAX_ATTACKS_PER_SECOND),
+		"tower": t(TOWER.name_key),
+		"tower_base": TextFormat.number(TOWER.base_damage),
+		"tower_scale": _percent(TOWER.scalings.get(Stats.ENGINEERING, 0.0)),
+		"tower_10": tower_damage,
+		"melee_share": _percent(CombatMath.MELEE_RANGE_FACTOR),
+		"min_range": TextFormat.number(CombatMath.MIN_RANGE),
+		"range_ranged": TextFormat.number(CombatMath.effective_range(EXAMPLE_RANGED_RANGE, EXAMPLE_RANGE_BONUS, false)),
+		"range_melee": TextFormat.number(CombatMath.effective_range(EXAMPLE_MELEE_RANGE, EXAMPLE_RANGE_BONUS, true)),
+		"armor_k": TextFormat.number(CombatMath.ARMOR_CONSTANT),
+		"armor_5": roundi((1.0 - CombatMath.armor_multiplier(5.0)) * PERCENT),
+		"armor_15": roundi((1.0 - CombatMath.armor_multiplier(15.0)) * PERCENT),
+		"armor_neg5": roundi((CombatMath.armor_multiplier(-5.0) - 1.0) * PERCENT),
+		"armor_hit": CombatMath.damage_after_armor(EXAMPLE_DAMAGE * 2.0, 5.0),
+		"dodge_cap": TextFormat.number(PLAYER.dodge_cap),
+		"speed_base": TextFormat.number(PLAYER.base_move_speed),
+		"speed_20": TextFormat.number(CombatMath.move_speed(PLAYER.base_move_speed, 20.0)),
+		"battery_base": _percent(DROPS.consumable_base_chance),
+		"battery_100": _percent(Economy.battery_chance(DROPS.consumable_base_chance, PERCENT)),
+		"crate_base": _percent(DROPS.crate_base_chance),
+		"tier_caps": "/".join(tier_caps),
+		"harvest_growth": _percent(Economy.HARVESTING_GROWTH),
+		"harvest_endless": _percent(WAVES.endless_harvest_factor),
+		"harvest_next": roundi(EXAMPLE_DAMAGE * 2.0) + Economy.harvesting_growth(EXAMPLE_DAMAGE * 2.0),
+		"xp_example": TextFormat.number(Economy.xp_gain(1.0, EXAMPLE_PCT)),
+		"pickup_base": TextFormat.number(PLAYER.pickup_radius),
+		"pickup_50": TextFormat.number(Economy.pickup_radius(PLAYER.pickup_radius, EXAMPLE_PCT)),
+		"inflation_share": _percent(Economy.INFLATION_SHARE),
+		"inflation_flat": TextFormat.number(Economy.INFLATION_FLAT),
+		"price_ex": Economy.inflated_price(EXAMPLE_PRICE, EXAMPLE_PRICE_WAVE, 0.0),
+		"price_ex_m20": Economy.inflated_price(EXAMPLE_PRICE, EXAMPLE_PRICE_WAVE, -20.0),
+		"expl_example": CombatMath.percent_damage(roundi(EXAMPLE_DAMAGE * 2.0), EXAMPLE_PCT),
+		"expl_size_example": TextFormat.number(EXAMPLE_EXPLOSION_RADIUS * (1.0 + 25.0 / PERCENT)),
+		"pierce_2": pierced,
+		"pierce_3": CombatMath.percent_damage(pierced, -EXAMPLE_PCT),
+		"boss_example": CombatMath.percent_damage(roundi(EXAMPLE_DAMAGE * 4.0), 25.0),
+		"burn_interval": TextFormat.number(COMBAT.burn_interval),
+		"burn_50": "%.2f" % (COMBAT.burn_interval / CombatMath.burn_speed_factor(EXAMPLE_PCT)),
+		"burn_min": _percent(CombatMath.BURN_SPEED_MIN_FACTOR),
+		"burn_radius": TextFormat.number(COMBAT.burn_spread_radius),
+		"burn_dmg_example": TextFormat.number(CombatMath.burn_damage(4.0, EXAMPLE_PCT)),
+		"kb_speed": TextFormat.number(COMBAT.knockback_to_speed),
+		"kb_10": roundi(knockback_speed * knockback_speed / (2.0 * COMBAT.knockback_friction)),
+		"double_value": DropManager.DOUBLE_SPARK_VALUE,
+		"crystal_interval": TextFormat.number(DROPS.crystal_spawn_interval),
+		"crystal_chance": _percent(DROPS.crystal_spawn_chance),
+		"crystal_100": _percent(minf(1.0, DROPS.crystal_spawn_chance * 2.0)),
+		"crystal_max": DROPS.crystal_max_count,
+		"enemy_limit": WAVES.max_enemies,
+		"reroll_factor": TextFormat.number(SHOP.reroll_increment_factor),
+		"reroll_ex": Economy.reroll_price(EXAMPLE_PRICE_WAVE, 0, SHOP.reroll_increment_factor, 0.0),
+		"reroll_ex_m50": Economy.reroll_price(EXAMPLE_PRICE_WAVE, 0, SHOP.reroll_increment_factor, -EXAMPLE_PCT),
+		"battery_heal": TextFormat.number(DROPS.battery_heal),
+		"crate_heal": TextFormat.number(DROPS.crate_heal),
+		"battery_plus2": TextFormat.number(Economy.consumable_heal(DROPS.battery_heal, 2.0)),
+		"recycle_share": _percent(SHOP.recycle_share),
+		"recycle_ex": Economy.recycle_value(EXAMPLE_PRICE * 2, SHOP.recycle_share),
+		"recycle_50": Economy.recycle_value(EXAMPLE_PRICE * 2, SHOP.recycle_share, EXAMPLE_PCT),
+	}
 
 
 # --- Gemeinsam ---

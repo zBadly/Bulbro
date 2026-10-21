@@ -1,7 +1,8 @@
 class_name DetailPanel
 extends PanelContainer
 ## Detailpanel mit fester Größe: Kopf (Icon, Name, Einordnung) bleibt stehen, der Rest scrollt nur im Panel.
-## Zeigt einen LexiconEntry; gesperrte Einträge nur als Silhouette mit Name und Freischaltbedingung.
+## Zeigt einen LexiconEntry; gesperrte Einträge nur als Silhouette mit Name und Freischaltbedingung,
+## mit "Alles anzeigen" vollständig plus Kasten "Noch gesperrt".
 
 const ICON_SIZE: Vector2 = Vector2(120, 120)
 const TITLE_SIZE: int = 36
@@ -13,6 +14,11 @@ const SECTION_GAP: int = 4
 const LOCKED_COLOR: Color = Color("#000000")
 const HEADING_COLOR: Color = Color("#FFD43B")
 const SUBTITLE_COLOR: Color = Color("#C9C3D6")
+const LOCK_TEXTURE: Texture2D = preload("res://art/ui/lock.svg")
+const LOCK_ICON_SIZE: Vector2 = Vector2(40, 40)
+const LOCKED_BORDER_COLOR: Color = Color("#8A8A8A")
+const LOCKED_BORDER_WIDTH: int = 2
+const LOCKED_BOX_NAME: StringName = &"LockedBox"
 ## Pixel pro Sekunde beim Scrollen mit Stick oder Tasten.
 const SCROLL_SPEED: float = 900.0
 ## Schräglage der Kursivschrift (die runde Schrift hat keinen eigenen Kursivschnitt).
@@ -69,17 +75,21 @@ func _init() -> void:
 	_scroll.add_child(_body)
 
 
-func show_entry(entry: LexiconEntry) -> void:
+## show_all: gesperrte Einträge vollständig, mit dem Kasten "Noch gesperrt" und der Bedingung ganz oben.
+func show_entry(entry: LexiconEntry, show_all: bool = false) -> void:
 	_clear()
+	var masked: bool = entry.is_hidden(show_all)
 	_icon.texture = entry.icon
-	_icon.modulate = LOCKED_COLOR if entry.locked else Color.WHITE
+	_icon.modulate = LOCKED_COLOR if masked else Color.WHITE
 	_title.text = entry.title
-	_title.add_theme_color_override("font_color", entry.color if not entry.locked else UiStyle.TEXT_COLOR)
-	if entry.locked:
+	_title.add_theme_color_override("font_color", UiStyle.TEXT_COLOR if masked else entry.color)
+	if masked:
 		_subtitle.text = TextFormat.t("LOCKED")
 		add_section(TextFormat.t("LEX_UNLOCK"), entry.lock_text)
 		return
 	_subtitle.text = entry.subtitle
+	if entry.locked:
+		_add_locked_box(entry.lock_text)
 	if entry.lore != "":
 		add_text(Lexicon.lore_bbcode(entry.lore))
 	for section: LexiconSection in entry.sections:
@@ -113,6 +123,41 @@ func add_table(heading: String, rows: Array[PackedStringArray]) -> void:
 
 func add_text(bbcode: String) -> void:
 	_body.add_child(_text(bbcode))
+
+
+## Dezenter Hinweis bei aufgedeckten, noch gesperrten Einträgen: Schloss, "Noch gesperrt" und Freischaltbedingung.
+func _add_locked_box(lock_text: String) -> void:
+	var panel: PanelContainer = PanelContainer.new()
+	var style: StyleBoxFlat = UiStyle.panel_style()
+	style.bg_color = UiStyle.BAR_BG_COLOR
+	style.border_color = LOCKED_BORDER_COLOR
+	style.set_border_width_all(LOCKED_BORDER_WIDTH)
+	panel.add_theme_stylebox_override("panel", style)
+	panel.name = LOCKED_BOX_NAME
+	_body.add_child(panel)
+	var row: HBoxContainer = HBoxContainer.new()
+	row.add_theme_constant_override("separation", GAP)
+	panel.add_child(row)
+	var icon: TextureRect = TextureRect.new()
+	icon.texture = LOCK_TEXTURE
+	icon.custom_minimum_size = LOCK_ICON_SIZE
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	row.add_child(icon)
+	var texts: VBoxContainer = VBoxContainer.new()
+	texts.add_theme_constant_override("separation", SECTION_GAP)
+	texts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(texts)
+	var label: Label = UiStyle.make_label(HEADING_SIZE, SUBTITLE_COLOR)
+	label.text = TextFormat.t("LEX_STILL_LOCKED")
+	texts.add_child(label)
+	texts.add_child(_text(lock_text))
+
+
+## Für Tests: Kasten "Noch gesperrt" im aktuellen Eintrag (oder null).
+func get_locked_box() -> Control:
+	return _body.get_node_or_null(NodePath(LOCKED_BOX_NAME)) as Control
 
 
 func scroll_by(pixels: float) -> void:

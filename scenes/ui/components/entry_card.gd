@@ -1,7 +1,7 @@
 class_name EntryCard
 extends Button
 ## Karte im Lexikon-Raster: Icon und Name mit Rahmen in der Farbe des Eintrags (z. B. Tier-Farbe).
-## Feste Größe, Name höchstens zwei Zeilen; gesperrte Einträge zeigen das Icon als Silhouette.
+## Feste Größe, Name höchstens zwei Zeilen; gesperrte Einträge zeigen ein Schloss und (ohne "Alles anzeigen") das Icon als Silhouette.
 ## Meldet `selected`, sobald die Karte den Fokus bekommt (Maus, Tastatur, Gamepad).
 
 signal selected(entry: LexiconEntry)
@@ -18,11 +18,15 @@ const GAP: int = 6
 const PADDING: int = 8
 const LOCKED_COLOR: Color = Color("#000000")
 const LOCKED_TEXT_COLOR: Color = Color("#8A8A8A")
+const LOCK_TEXTURE: Texture2D = preload("res://art/ui/lock.svg")
+const LOCK_SIZE: Vector2 = Vector2(30, 30)
 
 var entry: LexiconEntry
 
 var _icon: TextureRect
 var _name: Label
+## Schloss-Abzeichen oben rechts für gesperrte Einträge.
+var _lock: TextureRect
 
 
 func _init() -> void:
@@ -54,17 +58,29 @@ func _init() -> void:
 	_name.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_name.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_child(_name)
+	_lock = TextureRect.new()
+	_lock.texture = LOCK_TEXTURE
+	_lock.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_lock.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_lock.size = LOCK_SIZE
+	_lock.position = Vector2(CARD_SIZE.x - LOCK_SIZE.x - PADDING, PADDING)
+	_lock.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_lock.visible = false
+	add_child(_lock)
 	focus_entered.connect(func() -> void: selected.emit(entry))
 
 
-func configure(lexicon_entry: LexiconEntry) -> void:
+## show_all: gesperrte Einträge in voller Farbe; das Schloss-Abzeichen bleibt.
+func configure(lexicon_entry: LexiconEntry, show_all: bool = false) -> void:
 	entry = lexicon_entry
+	var masked: bool = entry.is_hidden(show_all)
 	_icon.texture = entry.icon
-	_icon.modulate = LOCKED_COLOR if entry.locked else Color.WHITE
+	_icon.modulate = LOCKED_COLOR if masked else Color.WHITE
+	_lock.visible = entry.locked
 	_name.text = entry.title
 	_fit_name()
-	_name.add_theme_color_override("font_color", LOCKED_TEXT_COLOR if entry.locked else entry.color)
-	var border: Color = LOCKED_TEXT_COLOR if entry.locked else entry.color
+	_name.add_theme_color_override("font_color", LOCKED_TEXT_COLOR if masked else entry.color)
+	var border: Color = LOCKED_TEXT_COLOR if masked else entry.color
 	for state: String in ["normal", "hover", "pressed", "focus", "disabled"]:
 		var style: StyleBoxFlat = UiStyle.panel_style()
 		var active: bool = state in ["hover", "focus", "pressed"]
@@ -72,6 +88,11 @@ func configure(lexicon_entry: LexiconEntry) -> void:
 		style.border_color = UiStyle.TEXT_COLOR if state == "focus" else border
 		style.set_border_width_all(FOCUS_BORDER_WIDTH if state == "focus" else BORDER_WIDTH)
 		add_theme_stylebox_override(state, style)
+
+
+## Für Tests: Schloss-Abzeichen sichtbar?
+func is_lock_visible() -> bool:
+	return _lock.visible
 
 
 ## Verkleinert die Schrift, bis jedes Wort (auch Teile mit Bindestrich) in eine Zeile passt.
