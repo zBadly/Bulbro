@@ -36,6 +36,7 @@ Bosse testen: F4 → zu Welle 20 springen; bei Spannung 5 erscheinen beide Bosse
 | 14a | Feste Angebotskarten (Kopf/Mitte/Fuß, gleiche Höhe, Schrift schrumpft statt Karte), Charakterauswahl mit festen Bereichen (Raster 4 Reihen, Infopanel scrollt intern) |
 | 14c-3 | 10 neue Charaktere, Freischaltungen mit Fortschritt (Bestwert/Summe), 10 Sieg-Items, Debug: alle Charaktere freischalten |
 | 14c-2 | 5 neue Startwaffen: Seelenlaterne, Feuerzeugwerfer, Kristallstab, Voodoo-Nadel, Dornenranke (auch im Shop) |
+| 14c-5 | Charakter-Simulator; Balancing der neuen Charaktere und Waffen (Feuerzeugwerfer, Voodoo-Nadel, Seelenlaterne, Blitzwerfer, Drohnenleuchte, Vampirbirne, Stroboskop, Smartbulb, Blitzwürfel, Geisterkerze) |
 | 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
 | 14c-1 | Systeme für 10 neue Charaktere: Fluch, Verlangsamen/Einfrieren/Festhalten, Verbündete (Schattengeister), Seelenglas, Zauberzyklus, Spiegelbild, Drohnen, Lichtranke, Brand-Erweiterungen, Vampirbirnen-Effekte |
 
@@ -126,6 +127,14 @@ Gemeinsame Werte in `data/config/status_config.tres`, effektspezifische Zahlen i
 - Feuerball fliegt mit 1100 px/s und explodiert erst beim Ankommen (`ExplosionAction.travel_speed`); Frostnova als Eisring mit Zacken und Splittern; Kettenblitz unregelmäßig gezackt mit Funken an jedem Ziel.
 - Stroboskop-Blitz: Bildschirm 32 % weiß für 0,16 s, mit „Blitzeffekte reduzieren“ 30 % davon; die Figur leuchtet kurz auf.
 
+### Balancing der neuen Charaktere (Paket 5)
+Grundlage: `--characters`, `--weapons`, `--items` (200 Runs, Vergleichswerte).
+- Feuerzeugwerfer 80 % → 40 % Strom (er griff 5-mal pro Sekunde mit voller Skalierung an); Voodoo-Nadel Abklingzeit 0,50 → 0,65 s (Tiers 0,60/0,55/0,51); Seelenlaterne Grundschaden 8 → 11 (17/24/35); Blitzwerfer Abklingzeit 0,60 → 0,70 s (0,64/0,60/0,55).
+- Drohnenleuchte 5 statt 4 Waffenslots, Drohnen 6 statt 4 Grundschaden (auch Wartungsdrohne); Vampirbirne +12 % Lebensraub, HP-Verlust 1 pro 4 s; Stroboskop-Blitz alle 10 s; Smartbulb -15 % Schaden.
+- Blitzwürfel ohne Nachteil; Geisterkerze 25 % Chance, -1 Rüstung.
+- Bewusst nicht geändert: Zündkerze-Brandschaden, Fluch-Verstärkung, Kronleuchter-Zauberzyklus, Spawn-Intervalle auf Spannung 0 (Einsteigerstufe darf leicht sein).
+- Siegquote im Schnitt aller Charaktere je Spannung 0–5 laut Simulator: 82 / 74 / 63 / 52 / 43 / 31 %.
+
 ### Endlos-Modus
 - Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.
 - Pro Endloswelle (Zinseszins): Gegner-HP +15 %, Schaden +10 %, Tempo +3 % (höchstens +60 %). Aufladung zahlt nur 50 % aus.
@@ -150,5 +159,5 @@ Annahmen des Simulators (Waffenzahl, Tier und Stat-Zuwachs pro Welle) stehen als
 - Gegner überlappen sich (keine gegenseitige Abstoßung, bewusst für die Performance).
 - Upgrade-Karten haben keine Icons.
 - Musik ist ein synthetisierter Platzhalter; CC0-Tracks nach `audio/music` legen und in `data/config/audio_config.tres` eintragen.
-- Balancing: Simulator-Vorschläge noch nicht übernommen (Spannung 0 laut Modell in 14 von 19 Wellen zu leicht; Strom-Build rund 1,5x stärker als Fern/Nah, vor allem durch den Ketten-Blitz).
+- Balancing: Spannung 0 ist laut Wellenmodell in 14 von 19 Wellen leicht (gewollt). Zündkerze, Schwarzlicht und Kronleuchter liegen laut Charakter-Simulator weiter über dem Schnitt; Kerze, Taschenlampe, Discokugel und Nachtlicht darunter (Vorschläge offen). Strom-Waffen (Blitzwerfer, Feuerzeugwerfer) bleiben die stärkste Klasse.
 - Windows-Build läuft (Export-Vorlagen 4.7.2 installiert); Ergebnis `build/windows/Bulbro.exe` (nicht im Git).

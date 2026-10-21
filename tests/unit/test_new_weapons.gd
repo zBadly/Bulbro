@@ -67,7 +67,7 @@ func test_new_weapons_load_with_complete_tiers() -> void:
 
 func test_start_values_match_plan() -> void:
 	var lantern: WeaponTierStats = _weapon("seelenlaterne").tiers[0]
-	assert_eq([lantern.base_damage, lantern.cooldown, lantern.range, lantern.price], [8.0, 1.1, 350.0, 30])
+	assert_eq([lantern.base_damage, lantern.cooldown, lantern.range, lantern.price], [11.0, 1.1, 350.0, 30])
 	assert_gt(lantern.homing_turn_deg, 0.0, "zielsuchend")
 	var lighter: WeaponTierStats = _weapon("feuerzeugwerfer").tiers[0]
 	assert_eq([lighter.base_damage, lighter.cooldown, lighter.range, lighter.price], [2.0, 0.2, 200.0, 35])
@@ -76,7 +76,7 @@ func test_start_values_match_plan() -> void:
 	var staff: WeaponTierStats = _weapon("kristallstab").tiers[0]
 	assert_eq([staff.base_damage, staff.cooldown, staff.range, staff.price, staff.split_count], [10.0, 1.0, 400.0, 30, 3])
 	var needle: WeaponTierStats = _weapon("voodoo_nadel").tiers[0]
-	assert_eq([needle.base_damage, needle.cooldown, needle.range, needle.price, needle.piercing], [5.0, 0.5, 380.0, 25, 2])
+	assert_eq([needle.base_damage, needle.cooldown, needle.range, needle.price, needle.piercing], [5.0, 0.65, 380.0, 25, 2])
 	var vine: WeaponData = _weapon("dornenranke")
 	assert_eq(vine.kind, WeaponData.Kind.SWING)
 	assert_eq(vine.tiers[0].scalings, {Stats.MELEE_DMG: 1.0, Stats.ELEMENTAL_DMG: 0.5})

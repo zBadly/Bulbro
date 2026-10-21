@@ -18,13 +18,13 @@ scalings = Dictionary[StringName, float]({
 
 [sub_resource type="Resource" id="Resource_ad1xw"]
 script = ExtResource("3_3acg2")
-chance = 0.15
+chance = 0.25
 action = SubResource("Resource_xwq0e")
 
 [sub_resource type="Resource" id="Resource_3acg2"]
 script = ExtResource("4_7mkfr")
 stat = &"armor"
-value = -2.0
+value = -1.0
 
 [sub_resource type="Resource" id="Resource_7mkfr"]
 script = ExtResource("5_gk2ts")

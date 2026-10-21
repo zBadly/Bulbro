@@ -9,7 +9,7 @@ script = ExtResource("1_struct")
 id = &"drohne"
 name_key = "STRUCTURE_DROHNE"
 texture = ExtResource("2_tex")
-base_damage = 4.0
+base_damage = 6.0
 scalings = Dictionary[StringName, float]({
 &"engineering": 1.0
 })

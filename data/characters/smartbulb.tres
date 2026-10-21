@@ -30,7 +30,7 @@ value = 1.0
 [sub_resource type="Resource" id="Resource_u1rgi"]
 script = ExtResource("2_ykdht")
 stat = &"damage_pct"
-value = -25.0
+value = -15.0
 
 [sub_resource type="Resource" id="Resource_8p6xm"]
 script = ExtResource("2_ykdht")

@@ -9,7 +9,7 @@
 script = ExtResource("4_2c2fl")
 base_damage = 2.0
 scalings = Dictionary[StringName, float]({
-&"elemental_dmg": 0.8
+&"elemental_dmg": 0.4
 })
 cooldown = 0.2
 range = 200.0
@@ -26,7 +26,7 @@ burn_chance = 0.2
 script = ExtResource("4_2c2fl")
 base_damage = 3.0
 scalings = Dictionary[StringName, float]({
-&"elemental_dmg": 0.8
+&"elemental_dmg": 0.4
 })
 cooldown = 0.18
 range = 200.0
@@ -43,7 +43,7 @@ burn_chance = 0.2
 script = ExtResource("4_2c2fl")
 base_damage = 4.0
 scalings = Dictionary[StringName, float]({
-&"elemental_dmg": 0.8
+&"elemental_dmg": 0.4
 })
 cooldown = 0.17
 range = 200.0
@@ -60,7 +60,7 @@ burn_chance = 0.2
 script = ExtResource("4_2c2fl")
 base_damage = 6.0
 scalings = Dictionary[StringName, float]({
-&"elemental_dmg": 0.8
+&"elemental_dmg": 0.4
 })
 cooldown = 0.16
 range = 200.0

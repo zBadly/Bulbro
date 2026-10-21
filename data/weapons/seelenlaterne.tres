@@ -7,7 +7,7 @@
 
 [sub_resource type="Resource" id="Resource_j1smi"]
 script = ExtResource("4_0mdi4")
-base_damage = 8.0
+base_damage = 11.0
 scalings = Dictionary[StringName, float]({
 &"elemental_dmg": 1.0
 })
@@ -21,7 +21,7 @@ extra_souls = 1
 
 [sub_resource type="Resource" id="Resource_mahw3"]
 script = ExtResource("4_0mdi4")
-base_damage = 12.0
+base_damage = 17.0
 scalings = Dictionary[StringName, float]({
 &"elemental_dmg": 1.0
 })
@@ -35,7 +35,7 @@ extra_souls = 1
 
 [sub_resource type="Resource" id="Resource_v1ywe"]
 script = ExtResource("4_0mdi4")
-base_damage = 18.0
+base_damage = 24.0
 scalings = Dictionary[StringName, float]({
 &"elemental_dmg": 1.0
 })
@@ -49,7 +49,7 @@ extra_souls = 1
 
 [sub_resource type="Resource" id="Resource_u45fd"]
 script = ExtResource("4_0mdi4")
-base_damage = 26.0
+base_damage = 35.0
 scalings = Dictionary[StringName, float]({
 &"elemental_dmg": 1.0
 })

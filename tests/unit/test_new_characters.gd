@@ -59,12 +59,12 @@ func test_new_characters_are_complete_and_locked() -> void:
 
 
 func test_character_specials_are_applied() -> void:
-	assert_eq(_player("drohnenleuchte").weapon_slots.max_slots, 4)
+	assert_eq(_player("drohnenleuchte").weapon_slots.max_slots, 5)
 	assert_true(_player("schwarzlicht").has_rule(Player.Rule.NO_CRIT))
 	var vampire: Player = _player("vampirbirne")
 	assert_true(vampire.has_rule(Player.Rule.NO_REGEN))
 	assert_almost_eq(vampire.lifesteal_interval_factor, 0.5, 0.001)
-	assert_eq(vampire.stats.get_stat(Stats.LIFESTEAL), 10.0)
+	assert_eq(vampire.stats.get_stat(Stats.LIFESTEAL), 12.0)
 	var spark_plug: Player = _player("zuendkerze")
 	assert_eq(spark_plug.stats.get_stat(Stats.BURN_SPREAD), 2.0)
 	assert_false(spark_plug.can_use_weapon(load("res://data/weapons/heilstrahl.tres")), "keine Medizinisch-Waffen")

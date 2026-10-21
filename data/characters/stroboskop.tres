@@ -17,7 +17,7 @@ duration = 1.0
 
 [sub_resource type="Resource" id="Resource_blnhp"]
 script = ExtResource("3_53mwl")
-interval = 8.0
+interval = 10.0
 action = SubResource("Resource_u5lbw")
 
 [sub_resource type="Resource" id="Resource_35fia"]

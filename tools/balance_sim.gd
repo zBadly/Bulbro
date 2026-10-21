@@ -8,6 +8,7 @@ extends Node
 ##   ... -- 0 --characters [--runs 200] [--ablate]  -> Siegquote, Scheiter-Welle und stärkster Effekt je Charakter
 ##   ... -- 0 --weapons                            -> DPS aller Waffen (Tier I und IV) im Vergleich zur eigenen Klasse
 ##   ... -- 3 --items [--runs 200]                 -> Wirkung der Tier-III/IV-Items auf Siegquote und Wellen
+##   ... -- 0 --try kerze max_hp:4 armor:2       -> Buff-Varianten (stat:delta[:f|p|g]) auf Spannung 0 und 3 testen
 ##   ... -- 0 --trace <charakter-id>               -> ein Run Welle für Welle (Schaden, Treffer, Heilung, HP)
 
 const WAVE_DIR: String = "res://data/waves"
@@ -19,7 +20,13 @@ const WEAPONS_FLAG: String = "--weapons"
 const ITEMS_FLAG: String = "--items"
 const ABLATE_FLAG: String = "--ablate"
 const RUNS_FLAG: String = "--runs"
+const TRY_FLAG: String = "--try"
+## Spannungsstufen, auf denen --try Varianten vergleicht.
+const TRY_LEVELS: Array[int] = [0, 3]
+const KIND_CODES: Dictionary[String, StatModifier.Kind] = {"f": StatModifier.Kind.FLAT, "p": StatModifier.Kind.PERCENT, "g": StatModifier.Kind.GAIN_PERCENT}
 const DEFAULT_RUNS: int = 200
+## Charaktere ab dieser Reihenfolge-Nummer gehören zur Ausbaustufe 14c (für die Schnitte alt/neu).
+const NEW_CHARACTER_ORDER: int = 12
 const ABLATION_RUNS: int = 80
 const SEED: int = 4242
 ## Items werden in dieser Welle gekauft (Vergleich der Items untereinander).
@@ -47,6 +54,8 @@ func _ready() -> void:
 		var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 		rng.seed = SEED
 		print(sim.simulate_run(character, difficulty, rng, {"trace": true}))
+	elif TRY_FLAG in args:
+		await _try_variant(args.slice(args.find(TRY_FLAG) + 1), runs)
 	elif CHARACTERS_FLAG in args:
 		await _characters(difficulty, runs, ABLATE_FLAG in args)
 	elif WEAPONS_FLAG in args:
@@ -65,14 +74,20 @@ func _characters(difficulty: DifficultyData, runs: int, ablate: bool) -> void:
 	print("BULBRO Charakter-Simulation – Spannung %d, %d Runs je Charakter" % [difficulty.level, runs])
 	print("| Charakter | Siegquote | Ø Welle | scheitert meist | Schadensanteile | stärkster Effekt |")
 	print("|---|---|---|---|---|---|")
+	var sums: Dictionary[String, Vector3] = {}
 	for character: CharacterData in Unlocks.all_characters():
 		var result: Dictionary = sim.run_many(character, difficulty, runs, SEED)
+		for group: String in ["alle", "alte 12" if character.order < NEW_CHARACTER_ORDER else "neue 10"]:
+			sums[group] = sums.get(group, Vector3.ZERO) + Vector3(result["win_rate"], result["avg_wave"], 1.0)
 		await get_tree().process_frame
 		var strongest: String = "-"
 		if ablate:
 			strongest = await _strongest_effect(sim, character, difficulty, result)
 		print("| %s | %d %% | %.1f | %s | %s | %s |" % [tr(character.name_key), roundi(result["win_rate"] * 100.0), result["avg_wave"],
 			str(result["fail_wave"]) if result["fail_wave"] > 0 else "-", _shares_text(result["shares"]), strongest])
+	for group: String in sums:
+		var sum: Vector3 = sums[group]
+		print("Schnitt %s: Siegquote %d %%, Ø Welle %.1f" % [group, roundi(sum.x / sum.z * 100.0), sum.y / sum.z])
 
 
 func _shares_text(shares: Dictionary) -> String:
@@ -117,6 +132,32 @@ func _strongest_effect(sim: CharacterSim, character: CharacterData, difficulty: 
 				best_drop = drop
 				best_label = variant[0]
 	return "%s (%+.1f)" % [best_label.left(70), -best_drop] if best_drop > -INF else "-"
+
+
+## Buff-Varianten testen, ohne Daten zu ändern: --try <charakter-id> <stat:delta[:f|p|g]>[,...] [weitere Varianten]
+## Jede Variante ergänzt den Charakter um einen Stat-Effekt mit diesen Änderungen (delta = neu - alt).
+func _try_variant(spec: PackedStringArray, runs: int) -> void:
+	var sim: CharacterSim = CharacterSim.new(self)
+	var character: CharacterData = load("res://data/characters/%s.tres" % spec[0])
+	var variants: Array = [["unverändert", character.effects]]
+	for text: String in spec.slice(1):
+		if text.begins_with("--"):
+			break
+		var extra: StatEffect = StatEffect.new()
+		for part: String in text.split(","):
+			var bits: PackedStringArray = part.split(":")
+			extra.modifiers.append(StatModifier.create(StringName(bits[0]), float(bits[1]), KIND_CODES.get(bits[2] if bits.size() > 2 else "f", StatModifier.Kind.FLAT)))
+		var effects: Array[ItemEffect] = character.effects.duplicate()
+		effects.append(extra)
+		variants.append([text, effects])
+	print("| Variante (%s) | %s |" % [tr(character.name_key), " | ".join(TRY_LEVELS.map(func(l: int) -> String: return "Spannung %d" % l))])
+	for variant: Array in variants:
+		var cells: PackedStringArray = []
+		for level: int in TRY_LEVELS:
+			var result: Dictionary = sim.run_many(character, load(DIFFICULTY_PATH % level), runs, SEED, {"effects": variant[1]})
+			await get_tree().process_frame
+			cells.append("%d %%, Ø %.1f, meist %s" % [roundi(result["win_rate"] * 100.0), result["avg_wave"], str(result["fail_wave"]) if result["fail_wave"] > 0 else "-"])
+		print("| %s | %s |" % [variant[0], " | ".join(cells)])
 
 
 func _score(result: Dictionary) -> float:
