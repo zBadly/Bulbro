@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_00ip1"]
+[ext_resource type="Script" path="res://scripts/data/effects/burn_on_hit_effect.gd" id="2_3jadm"]
+[ext_resource type="Script" path="res://scripts/data/effects/explosion_action.gd" id="3_qdfns"]
+[ext_resource type="Script" path="res://scripts/data/effects/on_kill_effect.gd" id="4_32lrp"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="5_6lndk"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="6_oqy8e"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="7_wl084"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="8_x7dti"]
+[ext_resource type="Resource" path="res://data/weapons/feuerzeugwerfer.tres" id="9_hedey"]
+[ext_resource type="Texture2D" path="res://art/characters/zuendkerze.svg" id="10_rflb1"]
+
+[sub_resource type="Resource" id="Resource_1hve0"]
+script = ExtResource("2_3jadm")
+chance = 0.25
+base_damage = 3.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.5
+})
+ticks = 3
+
+[sub_resource type="Resource" id="Resource_6244w"]
+script = ExtResource("3_qdfns")
+radius = 50.0
+base_damage = 3.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.5
+})
+
+[sub_resource type="Resource" id="Resource_ms8f1"]
+script = ExtResource("4_32lrp")
+chance = 1.0
+action = SubResource("Resource_6244w")
+only_burning = true
+
+[sub_resource type="Resource" id="Resource_7miki"]
+script = ExtResource("5_6lndk")
+stat = &"burn_spread"
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_ooqrc"]
+script = ExtResource("5_6lndk")
+stat = &"burn_dmg_pct"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_3wxa5"]
+script = ExtResource("6_oqy8e")
+modifiers = Array[ExtResource("5_6lndk")]([SubResource("Resource_7miki"), SubResource("Resource_ooqrc")])
+
+[sub_resource type="Resource" id="Resource_sxwk8"]
+script = ExtResource("5_6lndk")
+stat = &"ranged_dmg"
+kind = 2
+value = -50.0
+
+[sub_resource type="Resource" id="Resource_wih35"]
+script = ExtResource("6_oqy8e")
+modifiers = Array[ExtResource("5_6lndk")]([SubResource("Resource_sxwk8")])
+
+[resource]
+script = ExtResource("7_wl084")
+id = &"zuendkerze"
+name_key = "CHAR_ZUENDKERZE"
+texture = ExtResource("10_rflb1")
+effects = Array[ExtResource("1_00ip1")]([SubResource("Resource_1hve0"), SubResource("Resource_ms8f1"), SubResource("Resource_3wxa5"), SubResource("Resource_wih35")])
+starting_weapons = Array[ExtResource("8_x7dti")]([ExtResource("9_hedey")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"elemental"])
+order = 13
+banned_classes = Array[StringName]([&"medical"])

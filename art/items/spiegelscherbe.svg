@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Spiegelscherbe: silberne Scherbe mit Spiegelung -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#DDE3EA" stop-opacity="0.75"/><stop offset="1" stop-color="#DDE3EA" stop-opacity="0"/></radialGradient></defs><circle cx="32" cy="32" r="30" fill="url(#glow)"/>
+  <path d="M18,10 L46,14 L52,40 L30,56 L12,36 Z" fill="#C9CED3" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M22,18 L40,20 L44,36 L30,46 L18,34 Z" fill="#EEF2F6"/>
+  <path d="M24,26 L34,20 M26,34 L40,26" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+</svg>

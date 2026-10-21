@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_f5t2x"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_06snv"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_s04xj"]
+[ext_resource type="Script" path="res://scripts/data/effects/overheal_damage_effect.gd" id="4_xb6a8"]
+[ext_resource type="Texture2D" path="res://art/items/blutrote_fassung.svg" id="5_3x1ya"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="6_t41wp"]
+
+[sub_resource type="Resource" id="Resource_f5t2x"]
+script = ExtResource("2_06snv")
+stat = &"lifesteal"
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_06snv"]
+script = ExtResource("2_06snv")
+stat = &"hp_regen"
+value = -2.0
+
+[sub_resource type="Resource" id="Resource_s04xj"]
+script = ExtResource("3_s04xj")
+modifiers = Array[ExtResource("2_06snv")]([SubResource("Resource_f5t2x"), SubResource("Resource_06snv")])
+
+[sub_resource type="Resource" id="Resource_xb6a8"]
+script = ExtResource("4_xb6a8")
+
+[resource]
+script = ExtResource("6_t41wp")
+id = &"blutrote_fassung"
+name_key = "ITEM_BLUTROTE_FASSUNG"
+tier = 3
+icon = ExtResource("5_3x1ya")
+price = 70
+limit = 1
+tags = Array[StringName]([&"hp"])
+effects = Array[ExtResource("1_f5t2x")]([SubResource("Resource_s04xj"), SubResource("Resource_xb6a8")])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/smartbulb.tres" id="1_xdnc3"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="2_to2bu"]
+
+[resource]
+script = ExtResource("2_to2bu")
+id = &"unlock_smartbulb"
+condition = 1
+value = 5000.0
+reward_character = ExtResource("1_xdnc3")

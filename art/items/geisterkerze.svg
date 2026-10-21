@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Geisterkerze: Kerze mit blauer Geisterflamme -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#7FC8FF" stop-opacity="0.75"/><stop offset="1" stop-color="#7FC8FF" stop-opacity="0"/></radialGradient></defs><circle cx="32" cy="32" r="30" fill="url(#glow)"/>
+  <rect x="22" y="30" width="20" height="28" rx="4" fill="#E6F6FF" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M26,30 C26,36 30,36 30,42" fill="none" stroke="#BFD9EA" stroke-width="3" stroke-linecap="round"/>
+  <path d="M32,6 C22,16 26,26 32,28 C38,26 42,16 32,6 Z" fill="#7FC8FF" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="29" cy="19" rx="1.8" ry="2.6" fill="#2A1E2E"/>
+  <ellipse cx="35" cy="19" rx="1.8" ry="2.6" fill="#2A1E2E"/>
+</svg>

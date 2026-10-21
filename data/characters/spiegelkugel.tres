@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_56jmh"]
+[ext_resource type="Script" path="res://scripts/data/effects/mirror_clone_effect.gd" id="2_3hxj5"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="3_4hbbm"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="4_slmwj"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="5_4kqrf"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="6_avyyo"]
+[ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="7_0vydt"]
+[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="8_2tl6d"]
+[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="9_rxmt2"]
+[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="10_fdts5"]
+[ext_resource type="Texture2D" path="res://art/characters/spiegelkugel.svg" id="11_rsku1"]
+
+[sub_resource type="Resource" id="Resource_uarna"]
+script = ExtResource("2_3hxj5")
+damage_factor = 0.4
+
+[sub_resource type="Resource" id="Resource_jpgvm"]
+script = ExtResource("3_4hbbm")
+stat = &"max_hp"
+kind = 1
+value = -20.0
+
+[sub_resource type="Resource" id="Resource_ojloj"]
+script = ExtResource("4_slmwj")
+modifiers = Array[ExtResource("3_4hbbm")]([SubResource("Resource_jpgvm")])
+
+[resource]
+script = ExtResource("5_4kqrf")
+id = &"spiegelkugel"
+name_key = "CHAR_SPIEGELKUGEL"
+texture = ExtResource("11_rsku1")
+effects = Array[ExtResource("1_56jmh")]([SubResource("Resource_uarna"), SubResource("Resource_ojloj")])
+starting_weapons = Array[ExtResource("6_avyyo")]([ExtResource("7_0vydt"), ExtResource("8_2tl6d"), ExtResource("9_rxmt2"), ExtResource("10_fdts5")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"damage"])
+order = 21

@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_1cme1"]
+[ext_resource type="Script" path="res://scripts/data/effects/curse_on_hit_effect.gd" id="2_xmywn"]
+[ext_resource type="Script" path="res://scripts/data/effects/player_rule_effect.gd" id="3_ri84q"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_ap3it"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_fxtoj"]
+[ext_resource type="Resource" path="res://data/weapons/voodoo_nadel.tres" id="6_u6ig4"]
+[ext_resource type="Texture2D" path="res://art/characters/schwarzlicht.svg" id="7_q3p68"]
+
+[sub_resource type="Resource" id="Resource_ghnhi"]
+script = ExtResource("2_xmywn")
+duration = 4.0
+damage_per_second = 3.0
+damage_taken_pct = 15.0
+max_stacks = 3
+
+[sub_resource type="Resource" id="Resource_76kjj"]
+script = ExtResource("3_ri84q")
+rule = 1
+
+[resource]
+script = ExtResource("4_ap3it")
+id = &"schwarzlicht"
+name_key = "CHAR_SCHWARZLICHT"
+texture = ExtResource("7_q3p68")
+effects = Array[ExtResource("1_1cme1")]([SubResource("Resource_ghnhi"), SubResource("Resource_76kjj")])
+starting_weapons = Array[ExtResource("5_fxtoj")]([ExtResource("6_u6ig4")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"elemental"])
+order = 15

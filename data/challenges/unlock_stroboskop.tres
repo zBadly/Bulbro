@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/stroboskop.tres" id="1_oh77s"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="2_3igcn"]
+
+[resource]
+script = ExtResource("2_3igcn")
+id = &"unlock_stroboskop"
+condition = 14
+value = 15.0
+reward_character = ExtResource("1_oh77s")

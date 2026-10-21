@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_a2rug"]
+[ext_resource type="Script" path="res://scripts/data/effects/freeze_enemies_action.gd" id="2_l6bv2"]
+[ext_resource type="Script" path="res://scripts/data/effects/timed_spawn_effect.gd" id="3_53mwl"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="4_njhqx"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="5_nt877"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="6_sghux"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="7_1rfk2"]
+[ext_resource type="Resource" path="res://data/weapons/laserpointer.tres" id="8_hdnn5"]
+[ext_resource type="Texture2D" path="res://art/characters/stroboskop.svg" id="9_orehe"]
+
+[sub_resource type="Resource" id="Resource_u5lbw"]
+script = ExtResource("2_l6bv2")
+duration = 1.0
+
+[sub_resource type="Resource" id="Resource_blnhp"]
+script = ExtResource("3_53mwl")
+interval = 8.0
+action = SubResource("Resource_u5lbw")
+
+[sub_resource type="Resource" id="Resource_35fia"]
+script = ExtResource("4_njhqx")
+stat = &"range"
+value = -30.0
+
+[sub_resource type="Resource" id="Resource_61gcm"]
+script = ExtResource("4_njhqx")
+stat = &"armor"
+value = -2.0
+
+[sub_resource type="Resource" id="Resource_dxai3"]
+script = ExtResource("5_nt877")
+modifiers = Array[ExtResource("4_njhqx")]([SubResource("Resource_35fia"), SubResource("Resource_61gcm")])
+
+[resource]
+script = ExtResource("6_sghux")
+id = &"stroboskop"
+name_key = "CHAR_STROBOSKOP"
+texture = ExtResource("9_orehe")
+effects = Array[ExtResource("1_a2rug")]([SubResource("Resource_blnhp"), SubResource("Resource_dxai3")])
+starting_weapons = Array[ExtResource("7_1rfk2")]([ExtResource("8_hdnn5")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"speed"])
+order = 19

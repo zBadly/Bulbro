@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/gewaechshauslampe.tres" id="1_qmo2i"]
+[ext_resource type="Resource" path="res://data/items/pflanzenlicht.tres" id="2_4ixm1"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="3_jix7y"]
+
+[resource]
+script = ExtResource("3_jix7y")
+id = &"win_gewaechshauslampe"
+condition = 7
+character = ExtResource("1_qmo2i")
+reward_item = ExtResource("2_4ixm1")

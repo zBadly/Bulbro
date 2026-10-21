@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_pndok"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_o2gqf"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_fh2s5"]
+[ext_resource type="Texture2D" path="res://art/items/smart_steckdose.svg" id="4_4ql5n"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_677n1"]
+
+[sub_resource type="Resource" id="Resource_pndok"]
+script = ExtResource("2_o2gqf")
+stat = &"kill_spark_pct"
+value = 15.0
+
+[sub_resource type="Resource" id="Resource_o2gqf"]
+script = ExtResource("2_o2gqf")
+stat = &"free_rerolls"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_fh2s5"]
+script = ExtResource("2_o2gqf")
+stat = &"damage_pct"
+value = -5.0
+
+[sub_resource type="Resource" id="Resource_4ql5n"]
+script = ExtResource("3_fh2s5")
+modifiers = Array[ExtResource("2_o2gqf")]([SubResource("Resource_pndok"), SubResource("Resource_o2gqf"), SubResource("Resource_fh2s5")])
+
+[resource]
+script = ExtResource("5_677n1")
+id = &"smart_steckdose"
+name_key = "ITEM_SMART_STECKDOSE"
+tier = 3
+icon = ExtResource("4_4ql5n")
+price = 75
+limit = 1
+tags = Array[StringName]([&"economy"])
+effects = Array[ExtResource("1_pndok")]([SubResource("Resource_4ql5n")])

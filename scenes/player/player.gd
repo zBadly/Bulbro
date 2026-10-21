@@ -86,6 +86,7 @@ func _ready() -> void:
 	weapon_slots.weapons_changed.connect(_track_run)
 	Juice.idle_bob(_visual)
 	Events.level_up.connect(_on_level_up)
+	Events.wave_ended.connect(_on_wave_ended)
 	manual_aim = SaveManager.get_option(SaveManager.MANUAL_AIM_KEY, false)
 	hp_changed.emit(current_hp, _known_max_hp)
 
@@ -316,6 +317,7 @@ func _track_run() -> void:
 	var run: RunStats = GameState.run_stats
 	run.max_damage_pct = maxf(run.max_damage_pct, stats.get_stat(Stats.DAMAGE_PCT))
 	run.max_speed_pct = maxf(run.max_speed_pct, stats.get_stat(Stats.SPEED))
+	run.max_elemental = maxf(run.max_elemental, stats.get_stat(Stats.ELEMENTAL_DMG))
 	var ids: Dictionary[StringName, bool] = {}
 	for weapon: Weapon in weapon_slots.get_weapons():
 		ids[weapon.data.id] = true
@@ -337,6 +339,17 @@ func _die() -> void:
 	Events.player_died.emit()
 	weapon_slots.hide()
 	Juice.squash_pop(_visual)
+
+
+## Spiegelkugel-Freischaltung: höchste Zahl gleicher Waffen beim Ende einer Welle.
+func _on_wave_ended(_wave_number: int) -> void:
+	if is_dead:
+		return
+	var counts: Dictionary[StringName, int] = {}
+	for weapon: Weapon in weapon_slots.get_weapons():
+		counts[weapon.data.id] = counts.get(weapon.data.id, 0) + 1
+	var run: RunStats = GameState.run_stats
+	run.max_same_weapons = maxi(run.max_same_weapons, counts.values().max() if not counts.is_empty() else 0)
 
 
 ## Jedes Level-up gibt sofort Max HP; die Upgrade-Auswahl folgt am Wellenende.

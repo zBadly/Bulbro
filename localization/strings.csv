@@ -319,3 +319,34 @@ WEAPON_FEUERZEUGWERFER,Feuerzeugwerfer,Lighter Thrower
 WEAPON_KRISTALLSTAB,Kristallstab,Crystal Staff
 WEAPON_VOODOO_NADEL,Voodoo-Nadel,Voodoo Needle
 WEAPON_DORNENRANKE,Dornenranke,Thorn Vine
+CHALLENGE_8,%s Kills in einem Run,%s kills in one run
+CHALLENGE_9,Insgesamt %s Gegner durch Brand töten,Kill %s enemies with burn in total
+CHALLENGE_10,"Einen Run gewinnen, in dem Strom %s erreicht",Win a run reaching %s elemental
+CHALLENGE_11,Insgesamt %s Kills mit %s,Get %s kills with %s in total
+CHALLENGE_12,Insgesamt %s Leuchtkristalle zerstören,Destroy %s glow crystals in total
+CHALLENGE_13,Einen Run mit %s stehenden Lampentürmen beenden,End a run with %s lamp towers standing
+CHALLENGE_14,"Welle %s erreichen, ohne ein Ausweichen-Item zu nehmen",Reach wave %s without taking a dodge item
+CHALLENGE_15,%s HP in einem Run durch Lebensraub heilen,Heal %s HP through lifesteal in one run
+CHALLENGE_16,Eine Welle mit %s gleichen Waffen beenden,Finish a wave with %s identical weapons
+CHALLENGE_PROGRESS,Fortschritt: %s,Progress: %s
+DEBUG_UNLOCK_CHARACTERS,Alle Charaktere freischalten,Unlock all characters
+CHAR_IRRLICHT,Irrlicht,Will-o'-Wisp
+CHAR_ZUENDKERZE,Zündkerze,Spark Plug
+CHAR_KRONLEUCHTER,Kronleuchter,Chandelier
+CHAR_SCHWARZLICHT,Schwarzlicht,Black Light
+CHAR_GEWAECHSHAUSLAMPE,Gewächshauslampe,Grow Lamp
+CHAR_SMARTBULB,Smartbulb,Smart Bulb
+CHAR_DROHNENLEUCHTE,Drohnenleuchte,Drone Light
+CHAR_STROBOSKOP,Stroboskop,Strobe
+CHAR_VAMPIRBIRNE,Vampirbirne,Vampire Bulb
+CHAR_SPIEGELKUGEL,Spiegelkugel,Mirror Ball
+ITEM_GEISTERKERZE,Geisterkerze,Ghost Candle
+ITEM_ZUENDSPULE,Zündspule,Ignition Coil
+ITEM_KRISTALLPRISMA,Kristallprisma,Crystal Prism
+ITEM_UV_ROEHRE,UV-Röhre,UV Tube
+ITEM_PFLANZENLICHT,Pflanzenlicht,Plant Light
+ITEM_SMART_STECKDOSE,Smart-Steckdose,Smart Plug
+ITEM_WARTUNGSDROHNE,Wartungsdrohne,Maintenance Drone
+ITEM_BLITZWUERFEL,Blitzwürfel,Flash Cube
+ITEM_BLUTROTE_FASSUNG,Blutrote Fassung,Blood-Red Socket
+ITEM_SPIEGELSCHERBE,Spiegelscherbe,Mirror Shard

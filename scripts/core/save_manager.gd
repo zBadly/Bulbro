@@ -32,6 +32,10 @@ const STAT_TOTAL_SPARKS: String = "total_sparks"
 const STAT_KILLS: String = "kills"
 const STAT_RUNS: String = "runs"
 const STAT_WINS: String = "wins"
+const STAT_BURN_KILLS: String = "burn_kills"
+const STAT_CRYSTALS: String = "crystals"
+## Kills pro Waffe: "kills_<waffen-id>".
+const WEAPON_KILLS_PREFIX: String = "kills_"
 
 ## Pfad der Spielstanddatei (Tests setzen über use_path einen eigenen).
 var save_path: String = SAVE_PATH
@@ -92,7 +96,7 @@ func _defaults() -> Dictionary:
 	return {
 		"version": SAVE_VERSION,
 		"options": {},
-		"progress": {"characters": [], "items": [], "challenges": [], "won_difficulties": {}},
+		"progress": {"characters": [], "items": [], "challenges": [], "won_difficulties": {}, "challenge_best": {}},
 		"stats": {STAT_TOTAL_SPARKS: 0, STAT_KILLS: 0, STAT_RUNS: 0, STAT_WINS: 0},
 		"run": {},
 	}
@@ -207,6 +211,16 @@ func complete_challenge(challenge_id: StringName) -> void:
 	_add_unique(_data["progress"]["challenges"], String(challenge_id))
 
 
+## Bestwert einer Run-Bedingung (Fortschrittsanzeige, z. B. "312/500 Kills").
+func get_challenge_best(challenge_id: StringName) -> float:
+	return float(_data["progress"]["challenge_best"].get(String(challenge_id), 0.0))
+
+
+func record_challenge_best(challenge_id: StringName, value: float) -> void:
+	if value > get_challenge_best(challenge_id):
+		_data["progress"]["challenge_best"][String(challenge_id)] = value
+
+
 ## Merkt sich, auf welcher Spannungsstufe mit einem Charakter gewonnen wurde.
 func record_win(character_id: StringName, difficulty: int) -> void:
 	var won: Dictionary = _data["progress"]["won_difficulties"]
@@ -241,6 +255,10 @@ func add_stat(key: String, amount: int) -> void:
 
 func get_total_sparks() -> int:
 	return get_stat(STAT_TOTAL_SPARKS)
+
+
+static func weapon_kills_key(weapon_id: StringName) -> String:
+	return WEAPON_KILLS_PREFIX + String(weapon_id)
 
 
 # --- Unterbrochener Run ---

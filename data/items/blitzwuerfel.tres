@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_mhbgt"]
+[ext_resource type="Script" path="res://scripts/data/effects/freeze_enemies_action.gd" id="2_fmaav"]
+[ext_resource type="Script" path="res://scripts/data/effects/timed_spawn_effect.gd" id="3_km0ry"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="4_0fwlq"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="5_odi0k"]
+[ext_resource type="Texture2D" path="res://art/items/blitzwuerfel.svg" id="6_7akst"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="7_66dwr"]
+
+[sub_resource type="Resource" id="Resource_mhbgt"]
+script = ExtResource("2_fmaav")
+duration = 0.5
+
+[sub_resource type="Resource" id="Resource_fmaav"]
+script = ExtResource("3_km0ry")
+interval = 15.0
+action = SubResource("Resource_mhbgt")
+
+[sub_resource type="Resource" id="Resource_km0ry"]
+script = ExtResource("4_0fwlq")
+stat = &"attack_speed"
+value = -5.0
+
+[sub_resource type="Resource" id="Resource_0fwlq"]
+script = ExtResource("5_odi0k")
+modifiers = Array[ExtResource("4_0fwlq")]([SubResource("Resource_km0ry")])
+
+[resource]
+script = ExtResource("7_66dwr")
+id = &"blitzwuerfel"
+name_key = "ITEM_BLITZWUERFEL"
+tier = 3
+icon = ExtResource("6_7akst")
+price = 75
+limit = 1
+tags = Array[StringName]([&"speed"])
+effects = Array[ExtResource("1_mhbgt")]([SubResource("Resource_fmaav"), SubResource("Resource_0fwlq")])

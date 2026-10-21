@@ -177,7 +177,8 @@ func _select_character(character: CharacterData) -> void:
 		text.text = "%s\n\n%s: %s\n%s" % [TextFormat.describe_character(character), tr("RUN_END_WEAPONS"),
 			", ".join(weapons), _wins_text(character)]
 	else:
-		text.text = Unlocks.condition_text(character)
+		var progress: String = Unlocks.progress_text(character)
+		text.text = Unlocks.condition_text(character) + ("\n" + tr("CHALLENGE_PROGRESS") % progress if progress != "" else "")
 	_detail.add_child(text)
 	if _confirm != null:
 		_confirm.disabled = not unlocked

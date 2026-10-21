@@ -48,8 +48,8 @@ var endless: bool = false
 var endless_start_wave: int = 0
 ## Bereits in die Gesamtstatistik übernommen (Endlos-Modus wertet den Run zweimal aus).
 var run_reported: bool = false
-var reported_sparks: int = 0
-var reported_kills: int = 0
+## Bereits in die Gesamtstatistik übernommene Werte dieses Runs (Statistik-Schlüssel -> Wert).
+var reported_totals: Dictionary[String, int] = {}
 var run_stats: RunStats = RunStats.new()
 ## Seelenglas des Irrlichts (wird beim Fortsetzen gespeichert).
 var souls: SoulCounter = SoulCounter.new()
@@ -62,12 +62,31 @@ var difficulty: DifficultyData
 
 func _ready() -> void:
 	Events.enemy_killed.connect(_on_enemy_killed)
+	Events.crystal_destroyed.connect(func(_position: Vector2) -> void: run_stats.crystals_destroyed += 1)
 
 
 func _on_enemy_killed(_data: EnemyData, _position: Vector2, info: DamageInfo) -> void:
 	run_stats.enemies_killed += 1
-	if info != null and info.is_burn:
+	if info == null:
+		return
+	if info.is_burn:
 		run_stats.burn_kills += 1
+	var weapon: Weapon = info.source as Weapon if is_instance_valid(info.source) else null
+	if weapon != null and weapon.data != null:
+		run_stats.weapon_kills[weapon.data.id] = run_stats.weapon_kills.get(weapon.data.id, 0) + 1
+
+
+## Werte dieses Runs, die in die Gesamtstatistik einfließen (Statistik-Schlüssel -> Wert).
+func run_totals() -> Dictionary[String, int]:
+	var totals: Dictionary[String, int] = {
+		SaveManager.STAT_TOTAL_SPARKS: total_sparks_collected,
+		SaveManager.STAT_KILLS: run_stats.enemies_killed,
+		SaveManager.STAT_BURN_KILLS: run_stats.burn_kills,
+		SaveManager.STAT_CRYSTALS: run_stats.crystals_destroyed,
+	}
+	for weapon_id: StringName in run_stats.weapon_kills:
+		totals[SaveManager.weapon_kills_key(weapon_id)] = run_stats.weapon_kills[weapon_id]
+	return totals
 
 
 ## Startet einen neuen Run. Ohne Seed wird ein zufälliger gewählt.
@@ -98,8 +117,7 @@ func start_run(seed_value: int = 0) -> void:
 	endless = false
 	endless_start_wave = 0
 	run_reported = false
-	reported_sparks = 0
-	reported_kills = 0
+	reported_totals.clear()
 	assist_hp = SaveManager.get_assist_factor(SaveManager.ENEMY_HP_KEY)
 	assist_damage = SaveManager.get_assist_factor(SaveManager.ENEMY_DAMAGE_KEY)
 	assist_speed = SaveManager.get_assist_factor(SaveManager.ENEMY_SPEED_KEY)
@@ -194,6 +212,9 @@ func item_counts() -> Dictionary[StringName, int]:
 
 func add_item(item: ItemData) -> void:
 	items.append(item)
+	for mod: StatModifier in item.get_modifiers():
+		if mod.stat == Stats.DODGE and mod.value > 0.0:
+			run_stats.dodge_item_taken = true
 	Events.item_added.emit(item)
 
 

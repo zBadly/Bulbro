@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_n88yd"]
+[ext_resource type="Script" path="res://scripts/data/effects/build_structure_action.gd" id="2_mtffj"]
+[ext_resource type="Resource" path="res://data/structures/lichtranke.tres" id="3_iwt2y"]
+[ext_resource type="Script" path="res://scripts/data/effects/timed_spawn_effect.gd" id="4_3ui34"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="5_anirj"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="6_4ebw0"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="7_wfv0v"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="8_jowux"]
+[ext_resource type="Resource" path="res://data/weapons/dornenranke.tres" id="9_n3o4t"]
+[ext_resource type="Texture2D" path="res://art/characters/gewaechshauslampe.svg" id="10_go43i"]
+
+[sub_resource type="Resource" id="Resource_1x3h6"]
+script = ExtResource("2_mtffj")
+structure = ExtResource("3_iwt2y")
+distance = 150.0
+
+[sub_resource type="Resource" id="Resource_3n168"]
+script = ExtResource("4_3ui34")
+interval = 12.0
+action = SubResource("Resource_1x3h6")
+
+[sub_resource type="Resource" id="Resource_oj2v2"]
+script = ExtResource("5_anirj")
+stat = &"crystals"
+value = 100.0
+
+[sub_resource type="Resource" id="Resource_wuu0q"]
+script = ExtResource("5_anirj")
+stat = &"consumable_heal"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_d4h5y"]
+script = ExtResource("5_anirj")
+stat = &"attack_speed"
+value = -15.0
+
+[sub_resource type="Resource" id="Resource_w5onn"]
+script = ExtResource("6_4ebw0")
+modifiers = Array[ExtResource("5_anirj")]([SubResource("Resource_oj2v2"), SubResource("Resource_wuu0q"), SubResource("Resource_d4h5y")])
+
+[resource]
+script = ExtResource("7_wfv0v")
+id = &"gewaechshauslampe"
+name_key = "CHAR_GEWAECHSHAUSLAMPE"
+texture = ExtResource("10_go43i")
+effects = Array[ExtResource("1_n88yd")]([SubResource("Resource_3n168"), SubResource("Resource_w5onn")])
+starting_weapons = Array[ExtResource("8_jowux")]([ExtResource("9_n3o4t")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"hp"])
+order = 16

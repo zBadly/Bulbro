@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Blitzwürfel: Würfel aus Blitzlichtern -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.75"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient></defs><circle cx="32" cy="32" r="30" fill="url(#glow)"/>
+  <path d="M14,22 L32,12 L50,22 L50,44 L32,54 L14,44 Z" fill="#D9DDE2" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M14,22 L32,32 L50,22 M32,32 L32,54" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <circle cx="23" cy="34" r="4" fill="#FFFFFF" stroke="#2A1E2E" stroke-width="2"/>
+  <circle cx="41" cy="34" r="4" fill="#FFFFFF" stroke="#2A1E2E" stroke-width="2"/>
+  <circle cx="32" cy="21" r="4" fill="#FFE066" stroke="#2A1E2E" stroke-width="2"/>
+</svg>

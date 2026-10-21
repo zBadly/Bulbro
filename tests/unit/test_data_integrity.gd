@@ -3,7 +3,7 @@ extends GutTest
 
 const DATA_ROOT: String = "res://data"
 const EXPECTED_WEAPONS: int = 22
-const EXPECTED_ITEMS: int = 34
+const EXPECTED_ITEMS: int = 44
 
 
 func _all_resource_paths(dir_path: String) -> PackedStringArray:

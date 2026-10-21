@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_5kurn"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_i2rh7"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_2s4s0"]
+[ext_resource type="Script" path="res://scripts/data/effects/lifesteal_cap_effect.gd" id="4_wjyen"]
+[ext_resource type="Script" path="res://scripts/data/effects/overheal_damage_effect.gd" id="5_m6ons"]
+[ext_resource type="Script" path="res://scripts/data/effects/hp_drain_effect.gd" id="6_nqkk3"]
+[ext_resource type="Script" path="res://scripts/data/effects/player_rule_effect.gd" id="7_d4s8e"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="8_03pbt"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="9_qy6x3"]
+[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="10_0mbp1"]
+[ext_resource type="Texture2D" path="res://art/characters/vampirbirne.svg" id="11_76rpx"]
+
+[sub_resource type="Resource" id="Resource_wmhv6"]
+script = ExtResource("2_i2rh7")
+stat = &"lifesteal"
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_pia5b"]
+script = ExtResource("3_2s4s0")
+modifiers = Array[ExtResource("2_i2rh7")]([SubResource("Resource_wmhv6")])
+
+[sub_resource type="Resource" id="Resource_7dqnh"]
+script = ExtResource("4_wjyen")
+interval_factor = 0.5
+
+[sub_resource type="Resource" id="Resource_1snqy"]
+script = ExtResource("5_m6ons")
+
+[sub_resource type="Resource" id="Resource_xbjms"]
+script = ExtResource("6_nqkk3")
+amount = 1.0
+interval = 2.0
+
+[sub_resource type="Resource" id="Resource_syvjv"]
+script = ExtResource("7_d4s8e")
+
+[resource]
+script = ExtResource("8_03pbt")
+id = &"vampirbirne"
+name_key = "CHAR_VAMPIRBIRNE"
+texture = ExtResource("11_76rpx")
+effects = Array[ExtResource("1_5kurn")]([SubResource("Resource_pia5b"), SubResource("Resource_7dqnh"), SubResource("Resource_1snqy"), SubResource("Resource_xbjms"), SubResource("Resource_syvjv")])
+starting_weapons = Array[ExtResource("9_qy6x3")]([ExtResource("10_0mbp1")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"hp"])
+order = 20

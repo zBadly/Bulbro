@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_wxxki"]
+[ext_resource type="Script" path="res://scripts/data/effects/curse_on_hit_effect.gd" id="2_t6xuh"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="3_553y0"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="4_u2xnc"]
+[ext_resource type="Texture2D" path="res://art/items/uv_roehre.svg" id="5_mj1ql"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="6_mdutj"]
+
+[sub_resource type="Resource" id="Resource_wxxki"]
+script = ExtResource("2_t6xuh")
+duration = 3.0
+damage_per_second = 2.0
+damage_taken_pct = 10.0
+
+[sub_resource type="Resource" id="Resource_t6xuh"]
+script = ExtResource("3_553y0")
+stat = &"damage_pct"
+value = -5.0
+
+[sub_resource type="Resource" id="Resource_553y0"]
+script = ExtResource("4_u2xnc")
+modifiers = Array[ExtResource("3_553y0")]([SubResource("Resource_t6xuh")])
+
+[resource]
+script = ExtResource("6_mdutj")
+id = &"uv_roehre"
+name_key = "ITEM_UV_ROEHRE"
+tier = 3
+icon = ExtResource("5_mj1ql")
+price = 75
+limit = 1
+tags = Array[StringName]([&"elemental"])
+effects = Array[ExtResource("1_wxxki")]([SubResource("Resource_wxxki"), SubResource("Resource_553y0")])

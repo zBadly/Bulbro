@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/smartbulb.tres" id="1_2hju5"]
+[ext_resource type="Resource" path="res://data/items/smart_steckdose.tres" id="2_5qrgo"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="3_wmaof"]
+
+[resource]
+script = ExtResource("3_wmaof")
+id = &"win_smartbulb"
+condition = 7
+character = ExtResource("1_2hju5")
+reward_item = ExtResource("2_5qrgo")

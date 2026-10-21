@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_h3ily"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_ykdht"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_uutvh"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_ihrol"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_46gpl"]
+[ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="6_v0ltx"]
+[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="7_1fwb2"]
+[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="8_qjid3"]
+[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="9_8i72f"]
+[ext_resource type="Texture2D" path="res://art/characters/smartbulb.svg" id="10_6wyax"]
+
+[sub_resource type="Resource" id="Resource_0ehql"]
+script = ExtResource("2_ykdht")
+stat = &"kill_spark_pct"
+value = 30.0
+
+[sub_resource type="Resource" id="Resource_rs3hx"]
+script = ExtResource("2_ykdht")
+stat = &"item_price_pct"
+value = -15.0
+
+[sub_resource type="Resource" id="Resource_qw3q7"]
+script = ExtResource("2_ykdht")
+stat = &"free_rerolls"
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_u1rgi"]
+script = ExtResource("2_ykdht")
+stat = &"damage_pct"
+value = -25.0
+
+[sub_resource type="Resource" id="Resource_8p6xm"]
+script = ExtResource("2_ykdht")
+stat = &"xp_gain_pct"
+value = -20.0
+
+[sub_resource type="Resource" id="Resource_vldw5"]
+script = ExtResource("3_uutvh")
+modifiers = Array[ExtResource("2_ykdht")]([SubResource("Resource_0ehql"), SubResource("Resource_rs3hx"), SubResource("Resource_qw3q7"), SubResource("Resource_u1rgi"), SubResource("Resource_8p6xm")])
+
+[resource]
+script = ExtResource("4_ihrol")
+id = &"smartbulb"
+name_key = "CHAR_SMARTBULB"
+texture = ExtResource("10_6wyax")
+effects = Array[ExtResource("1_h3ily")]([SubResource("Resource_vldw5")])
+starting_weapons = Array[ExtResource("5_46gpl")]([ExtResource("6_v0ltx"), ExtResource("7_1fwb2"), ExtResource("8_qjid3"), ExtResource("9_8i72f")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"economy"])
+order = 17

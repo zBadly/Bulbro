@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/irrlicht.tres" id="1_3suf0"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="2_w1q4s"]
+
+[resource]
+script = ExtResource("2_w1q4s")
+id = &"unlock_irrlicht"
+condition = 8
+value = 500.0
+reward_character = ExtResource("1_3suf0")

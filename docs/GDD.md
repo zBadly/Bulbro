@@ -118,6 +118,11 @@ Waffenliste (Tier-I-Werte, alle Startwerte):
 | Taschenlampenstrahl | Fern | Elementar, Präzise | 8 (100 % Strom) | 1,00 s | 500 | unbegrenzter Durchschlag | 45 |
 | Heilstrahl | Fern | Medizinisch | 8 (80 % Fern) | 1,00 s | 400 | 10 % Chance +1 HP pro Treffer | 30 |
 | Glühwürmchen-Stab | Fern | Ätherisch | 12 (100 % Strom) | 1,20 s | 350 | zielsuchend | 30 |
+| Seelenlaterne | Fern | Elementar, Ätherisch | 8 (100 % Strom) | 1,10 s | 350 | zielsuchende Seelenkugel; Kills geben +1 Seele (Seelenglas) | 30 |
+| Feuerzeugwerfer | Fern | Elementar | 2 (80 % Strom) | 0,20 s | 200 | Flammenkegel, unbegrenzter Durchschlag, 20 % Brandchance pro Treffer | 35 |
+| Kristallstab | Fern | Elementar, Präzise | 10 (100 % Strom) | 1,00 s | 400 | zersplittert beim Treffer in 3 Splitter (je 30 % Schaden) | 30 |
+| Voodoo-Nadel | Fern | Ätherisch | 5 (70 % Strom) | 0,50 s | 380 | Durchschlag 2 | 25 |
+| Dornenranke | Nah, Schwung | Primitiv, Medizinisch | 12 (100 % Nah + 50 % Strom) | 1,30 s | 200 | 25 % Chance, Gegner 0,5 s festzuhalten | 25 |
 
 Lampenturm (Struktur): schießt alle 1,0 s für 5 (100 % Technik), Reichweite 400; Tier erhöht Feuerrate.
 
@@ -157,6 +162,17 @@ Fast jedes Item hat einen Vorteil und einen Nachteil. Format: Name | Tier | Effe
 - Laserzielfernrohr | IV | +15 % Krit, +50 Reichweite, -3 Max HP, -2 Rüstung | 110
 - Ewige Flamme | IV | +1 Durchschlag, +10 % Schaden | 130 | Limit 1
 - Supernova | IV | Gegner explodieren beim Tod mit 20 % Chance für 10 (+50 % Nah) | 120 | Limit 1
+Sieg-Items der Charaktere 13–22 (werden durch einen Sieg mit dem Charakter im Shop freigeschaltet):
+- Geisterkerze | III | 15 % Chance bei Gegnertod: Blitz auf 2 Gegner für 6 (+60 % Strom), -2 Rüstung | 70 (Sieg mit Irrlicht)
+- Zündspule | III | +2 Brandausbreitung, +25 % Brandschaden, -5 % Angriffstempo | 70 (Zündkerze)
+- Kristallprisma | III | jeder 8. Angriff jeder Waffe wirkt eine Frostnova (8 +50 % Strom, 40 % langsamer für 2 s) | 75 | Limit 1 (Kronleuchter)
+- UV-Röhre | III | Treffer verfluchen Gegner 3 s (2 Schaden/s, +10 % erlittener Schaden, 1 Stapel), -5 % Schaden | 75 | Limit 1 (Schwarzlicht)
+- Pflanzenlicht | III | +50 % Leuchtkristalle, +3 HP-Regen, -10 Reichweite | 65 (Gewächshauslampe)
+- Smart-Steckdose | III | +15 % Funken aus Kills, +1 Gratis-Reroll pro Shop, -5 % Schaden | 75 | Limit 1 (Smartbulb)
+- Wartungsdrohne | III | eine kreisende Licht-Drohne (4 +100 % Technik), -3 % Tempo | 80 | Limit 1 (Drohnenleuchte)
+- Blitzwürfel | III | alle 15 s friert ein Lichtblitz alle Gegner auf dem Bildschirm 0,5 s ein, -5 % Angriffstempo | 75 | Limit 1 (Stroboskop)
+- Blutrote Fassung | III | +4 % Lebensraub, Heilung über Max HP wird zu Schaden am nächsten Gegner, -2 HP-Regen | 70 | Limit 1 (Vampirbirne)
+- Spiegelscherbe | III | +2 % Schaden pro getragener Waffe, -10 Reichweite | 70 (Spiegelkugel)
 Jedes Item hat Tags (z. B. hp, luck, economy, structure, elemental), damit der Shop Charakter-Vorlieben gewichten kann.
 
 ## 10. Charaktere
@@ -173,7 +189,21 @@ Format: Name | Stats und Eigenschaften | Startwaffe(n) | Freischaltung.
 10. Nachtlicht | +5 HP-Regen, HP-Regen-Modifikationen +50 %, -25 % Schaden | Heilstrahl | 200 HP in einem Run geheilt
 11. Blitzlicht | +30 % Tempo, +1 Nah pro 2 % Tempo, -3 Rüstung, -100 Rüstung beim Stillstehen | beliebig | +50 % Tempo in einem Run
 12. Kerze | +8 Max HP, Primitiv-Set-Bonus doppelt, kann keine Elementar-Waffen tragen | Ast | Run nur mit Primitiv-Waffen gewinnen
+13. Irrlicht (Nekromant) | Kills füllen ein Seelenglas (max. 100, Seelen werden nicht verbraucht). Alle 3 s ab 5 Seelen kehrt der zuletzt getötete Gegnertyp 10 s als Schattengeist zurück (blaue Kontur, unverwundbar, Kontaktschaden 5 +100 % Strom, max. 8 gleichzeitig), +1 Geisterschaden pro 20 Seelen; Max-HP-Modifikationen -25 %, -3 Rüstung | Seelenlaterne | 500 Kills in einem Run
+14. Zündkerze (Pyromane) | 25 % Chance pro Treffer auf Brand (3 +50 % Strom, 3 Ticks), +2 Brandausbreitung, +50 % Brandschaden, brennend sterbende Gegner explodieren klein (3 +50 % Strom, Radius 50); Fern-Modifikationen -50 %, keine Medizinisch-Waffen | Feuerzeugwerfer | 300 Gegner durch Brand getötet (gesamt)
+15. Kronleuchter (Erzmagier) | Jeder 4. Angriff jeder Waffe wirkt im Wechsel: Feuerball (8 +100 % Strom, Radius 70), Frostnova (4 +50 % Strom, 40 % langsamer für 2 s), Kettenblitz (6 +80 % Strom, 3 Sprünge); Nah-Modifikationen -100 % | Kristallstab | Run gewinnen, in dem Strom 30 erreicht
+16. Schwarzlicht (Fluchwirker) | Treffer verfluchen Gegner 4 s: 3 Schaden/s pro Stapel, +15 % erlittener Schaden pro Stapel, bis 3 Stapel; kann nicht kritisch treffen | Voodoo-Nadel | 300 Kills mit der Voodoo-Nadel (gesamt)
+17. Gewächshauslampe (Druide) | Alle 12 s wächst eine Lichtranke, die Gegner 1,5 s festhält (max. 5); Leuchtkristalle doppelt so häufig; Batterien heilen doppelt (+3); -15 % Angriffstempo | Dornenranke | 50 Leuchtkristalle zerstört (gesamt)
+18. Smartbulb (Händler) | +30 % Funken aus Kills, -15 % Shoppreise, +1 Gratis-Reroll pro Shop; -25 % Schaden, -20 % XP | beliebig | 5.000 Funken gesammelt (gesamt)
+19. Drohnenleuchte (Drohnenpilot) | 2 kreisende Licht-Drohnen (4 +100 % Technik), +1 Drohne auf Level 5, 10 und 15; nur 4 Waffenslots | Schraubenzieher | Run mit 5 stehenden Lampentürmen beenden (Sieg oder Niederlage)
+20. Stroboskop (Zeitmagier) | Alle 8 s friert ein Lichtblitz alle Gegner auf dem Bildschirm 1 s ein (Elites/Bosse 0,5 s); -30 Reichweite, -2 Rüstung | Laserpointer | Welle 15 erreichen, ohne ein Item mit Ausweichen zu nehmen
+21. Vampirbirne (Blutsauger) | +10 % Lebensraub, Lebensraub-Limit verdoppelt, Heilung über Max HP wird zu Schaden am nächsten Gegner; verliert 1 HP pro 2 s (nie unter 1), HP-Regen wirkungslos | Glasscherbe | 200 HP durch Lebensraub in einem Run geheilt
+22. Spiegelkugel (Doppelgänger) | Ein Spiegelbild folgt mit Abstand und feuert Kopien aller Waffen mit 40 % Schaden (kein Lebensraub); -20 % Max HP | beliebig | Eine Welle mit 6 gleichen Waffen (beliebiges Tier) beenden
 Sieg mit einem Charakter schaltet ein neues Item für den Shop frei.
+
+Freischaltungen (ChallengeData unter data/challenges): Run-Bedingungen speichern den Bestwert, Gesamt-Bedingungen die Summe über alle Runs; gesperrte Charaktere zeigen den Fortschritt (z. B. "312/500"). Siegbedingungen und "Run beenden" werden nur am Run-Ende geprüft, alle anderen laufend während der Welle.
+
+Status-Effekte: Brand (Schaden pro Tick, breitet sich mit Brandausbreitung aus), Fluch (stapelbar, Schaden über Zeit und mehr erlittener Schaden), Verlangsamen/Einfrieren/Festhalten (eingefrorene Gegner laufen, schießen und treffen nicht; Elites/Bosse halten Status nur halb so lange; nach dem Festhalten kurze Schutzzeit), Verbündete (Schattengeister: unverwundbar, von Gegnern ignoriert, zählen nicht zum Gegnerlimit).
 
 ## 11. Gegner
 Format: Name | Verhalten | HP (+pro Welle) | Tempo | Schaden (+pro Welle) | Funken | ab Welle.

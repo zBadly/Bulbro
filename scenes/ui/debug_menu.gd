@@ -71,6 +71,7 @@ func _build() -> void:
 
 	_button(box, tr("DEBUG_ADD_SPARKS") % DEBUG_SPARKS, func() -> void: GameState.add_sparks(DEBUG_SPARKS))
 	_button(box, tr("DEBUG_LEVEL_UP"), func() -> void: GameState.add_xp(GameState.xp_needed() - GameState.xp))
+	_button(box, tr("DEBUG_UNLOCK_CHARACTERS"), Unlocks.unlock_all_characters)
 	_button(box, tr("DEBUG_CLOSE"), _toggle)
 
 

@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_6hfg2"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_86h4v"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_kf28s"]
+[ext_resource type="Texture2D" path="res://art/items/zuendspule.svg" id="4_vdoyt"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_0qa84"]
+
+[sub_resource type="Resource" id="Resource_6hfg2"]
+script = ExtResource("2_86h4v")
+stat = &"burn_spread"
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_86h4v"]
+script = ExtResource("2_86h4v")
+stat = &"burn_dmg_pct"
+value = 25.0
+
+[sub_resource type="Resource" id="Resource_kf28s"]
+script = ExtResource("2_86h4v")
+stat = &"attack_speed"
+value = -5.0
+
+[sub_resource type="Resource" id="Resource_vdoyt"]
+script = ExtResource("3_kf28s")
+modifiers = Array[ExtResource("2_86h4v")]([SubResource("Resource_6hfg2"), SubResource("Resource_86h4v"), SubResource("Resource_kf28s")])
+
+[resource]
+script = ExtResource("5_0qa84")
+id = &"zuendspule"
+name_key = "ITEM_ZUENDSPULE"
+tier = 3
+icon = ExtResource("4_vdoyt")
+price = 70
+tags = Array[StringName]([&"elemental"])
+effects = Array[ExtResource("1_6hfg2")]([SubResource("Resource_vdoyt")])

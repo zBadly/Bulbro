@@ -59,31 +59,71 @@ static func unlocked_items(items: Array[ItemData]) -> Array[ItemData]:
 	return result
 
 
-## Prüft alle offenen Challenges. Siegbedingungen nur am Run-Ende. Gibt neu geschaffte zurück
-## und meldet jede über Events.challenge_completed.
+## Kontext für die Prüfung. Gesamtwerte: gespeichert plus noch nicht gemeldete Zuwächse dieses Runs.
+static func make_context(at_run_end: bool, victory: bool) -> ChallengeContext:
+	var ctx: ChallengeContext = ChallengeContext.new()
+	ctx.run = GameState.run_stats
+	ctx.max_structures = GameState.max_structures
+	ctx.current_wave = GameState.current_wave
+	ctx.victory = victory
+	ctx.at_run_end = at_run_end
+	ctx.character_id = GameState.character.id if GameState.character != null else &""
+	var run_totals: Dictionary[String, int] = GameState.run_totals() if GameState.is_run_active else {}
+	for challenge: ChallengeData in all_challenges():
+		if challenge.is_total():
+			var key: String = challenge.total_key()
+			ctx.totals[key] = SaveManager.get_stat(key) + run_totals.get(key, 0) - GameState.reported_totals.get(key, 0)
+	return ctx
+
+
+## Prüft alle offenen Challenges und merkt sich Bestwerte. Siegbedingungen nur am Run-Ende.
+## Gibt neu geschaffte zurück und meldet jede über Events.challenge_completed.
 static func check(at_run_end: bool, victory: bool) -> Array[ChallengeData]:
 	var completed: Array[ChallengeData] = []
-	var unreported: int = GameState.total_sparks_collected - GameState.reported_sparks
-	var total_sparks: int = SaveManager.get_total_sparks() + (0 if at_run_end else unreported)
-	var character_id: StringName = GameState.character.id if GameState.character != null else &""
+	var ctx: ChallengeContext = make_context(at_run_end, victory)
 	for challenge: ChallengeData in all_challenges():
-		if SaveManager.is_challenge_completed(challenge.id) or (challenge.needs_victory() and not at_run_end):
+		if SaveManager.is_challenge_completed(challenge.id):
 			continue
-		if challenge.is_met(GameState.run_stats, GameState.max_structures, total_sparks, victory, character_id):
+		if challenge.has_progress() and not challenge.is_total() and (at_run_end or not challenge.needs_run_end()):
+			SaveManager.record_challenge_best(challenge.id, challenge.current_value(ctx))
+		if challenge.is_met(ctx):
 			_complete(challenge)
 			completed.append(challenge)
-	if not completed.is_empty():
+	if at_run_end or not completed.is_empty():
 		SaveManager.save_game()
 	return completed
+
+
+## Fortschritt außerhalb eines Runs: Summe bei Gesamt-Bedingungen, sonst Bestwert.
+static func progress(challenge: ChallengeData) -> float:
+	if SaveManager.is_challenge_completed(challenge.id):
+		return challenge.value
+	if challenge.is_total():
+		return SaveManager.get_stat(challenge.total_key())
+	return SaveManager.get_challenge_best(challenge.id)
+
+
+## "312/500" für einen gesperrten Charakter (leer, wenn es keinen Zahlenfortschritt gibt).
+static func progress_text(character: CharacterData) -> String:
+	var challenge: ChallengeData = challenge_for(character)
+	return challenge.progress_text(progress(challenge)) if challenge != null else ""
+
+
+## Debug: alle Charaktere freischalten (Challenges bleiben offen).
+static func unlock_all_characters() -> void:
+	for challenge: ChallengeData in all_challenges():
+		if challenge.reward_character != null:
+			SaveManager.unlock_character(challenge.reward_character.id)
+	SaveManager.save_game()
 
 
 ## Am Run-Ende: Statistiken und Sieg speichern, Challenges prüfen, unterbrochenen Run löschen.
 static func evaluate_run_end(victory: bool) -> Array[ChallengeData]:
 	# Im Endlos-Modus wird ein Run zweimal ausgewertet (Sieg, später Tod): nur Zuwächse zählen.
-	SaveManager.add_stat(SaveManager.STAT_TOTAL_SPARKS, GameState.total_sparks_collected - GameState.reported_sparks)
-	SaveManager.add_stat(SaveManager.STAT_KILLS, GameState.run_stats.enemies_killed - GameState.reported_kills)
-	GameState.reported_sparks = GameState.total_sparks_collected
-	GameState.reported_kills = GameState.run_stats.enemies_killed
+	var run_totals: Dictionary[String, int] = GameState.run_totals()
+	for key: String in run_totals:
+		SaveManager.add_stat(key, run_totals[key] - GameState.reported_totals.get(key, 0))
+		GameState.reported_totals[key] = run_totals[key]
 	if not GameState.run_reported:
 		SaveManager.add_stat(SaveManager.STAT_RUNS, 1)
 	GameState.run_reported = true

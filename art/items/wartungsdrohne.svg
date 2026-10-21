@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Wartungsdrohne: Drohne mit Schraubenschlüssel -->
+  <path d="M6,18 L24,18 M40,18 L58,18" stroke="#2A1E2E" stroke-width="6" stroke-linecap="round"/>
+  <path d="M6,18 L24,18 M40,18 L58,18" stroke="#9AA0A6" stroke-width="3" stroke-linecap="round"/>
+  <rect x="22" y="14" width="20" height="10" rx="3" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="32" cy="36" r="13" fill="#FFE066" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="28" cy="36" rx="2.5" ry="3.5" fill="#2A1E2E"/>
+  <ellipse cx="36" cy="36" rx="2.5" ry="3.5" fill="#2A1E2E"/>
+  <path d="M42,48 L52,58 M50,46 A5,5 0 1 0 56,52" fill="none" stroke="#5A5F66" stroke-width="4" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_qveeu"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_dt07k"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_jbgfy"]
+[ext_resource type="Texture2D" path="res://art/items/pflanzenlicht.svg" id="4_uhrqo"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_betn2"]
+
+[sub_resource type="Resource" id="Resource_qveeu"]
+script = ExtResource("2_dt07k")
+stat = &"crystals"
+value = 50.0
+
+[sub_resource type="Resource" id="Resource_dt07k"]
+script = ExtResource("2_dt07k")
+stat = &"hp_regen"
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_jbgfy"]
+script = ExtResource("2_dt07k")
+stat = &"range"
+value = -10.0
+
+[sub_resource type="Resource" id="Resource_uhrqo"]
+script = ExtResource("3_jbgfy")
+modifiers = Array[ExtResource("2_dt07k")]([SubResource("Resource_qveeu"), SubResource("Resource_dt07k"), SubResource("Resource_jbgfy")])
+
+[resource]
+script = ExtResource("5_betn2")
+id = &"pflanzenlicht"
+name_key = "ITEM_PFLANZENLICHT"
+tier = 3
+icon = ExtResource("4_uhrqo")
+price = 65
+tags = Array[StringName]([&"hp"])
+effects = Array[ExtResource("1_qveeu")]([SubResource("Resource_uhrqo")])

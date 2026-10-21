@@ -42,14 +42,13 @@ static func capture(player: Player) -> Dictionary:
 		"weapons": weapons,
 		"run_modifiers": modifiers,
 		"hp": player.current_hp,
-		"run_stats": {"healed": run.healed, "max_damage_pct": run.max_damage_pct, "max_speed_pct": run.max_speed_pct,
-			"max_distinct_weapons": run.max_distinct_weapons, "primitive_only": run.primitive_only, "kills": run.enemies_killed,
-			"burn_kills": run.burn_kills, "max_cursed": run.max_cursed, "lifesteal_healed": run.lifesteal_healed},
+		"run_stats": run.to_dict(),
 		"souls": GameState.souls.souls,
 		"shop": GameState.shop.to_dict(),
 		"endless": GameState.endless,
 		"endless_start_wave": GameState.endless_start_wave,
-		"reported": [GameState.run_reported, GameState.reported_sparks, GameState.reported_kills],
+		"reported": GameState.run_reported,
+		"reported_totals": GameState.reported_totals.duplicate(),
 	}
 
 
@@ -74,25 +73,23 @@ static func restore_state(data: Dictionary) -> void:
 	GameState.special_waves.clear()
 	for key: String in data["special_waves"]:
 		GameState.special_waves[int(key)] = data["special_waves"][key]
-	var stats: Dictionary = data["run_stats"]
-	var run: RunStats = GameState.run_stats
-	run.healed = float(stats["healed"])
-	run.max_damage_pct = float(stats["max_damage_pct"])
-	run.max_speed_pct = float(stats["max_speed_pct"])
-	run.max_distinct_weapons = int(stats["max_distinct_weapons"])
-	run.primitive_only = bool(stats["primitive_only"])
-	run.enemies_killed = int(stats["kills"])
-	run.burn_kills = int(stats.get("burn_kills", 0))
-	run.max_cursed = int(stats.get("max_cursed", 0))
-	run.lifesteal_healed = float(stats.get("lifesteal_healed", 0.0))
+	GameState.run_stats = RunStats.from_dict(data["run_stats"])
 	GameState.souls.souls = int(data.get("souls", 0))
 	GameState.shop.load_dict(data["shop"])
 	GameState.endless = bool(data.get("endless", false))
 	GameState.endless_start_wave = int(data.get("endless_start_wave", 0))
-	var reported: Array = data.get("reported", [false, 0, 0])
-	GameState.run_reported = bool(reported[0])
-	GameState.reported_sparks = int(reported[1])
-	GameState.reported_kills = int(reported[2])
+	GameState.reported_totals.clear()
+	var reported: Variant = data.get("reported", false)
+	if reported is Array:
+		# Format bis Paket 14c-3: [gemeldet, Funken, Kills]
+		GameState.run_reported = bool(reported[0])
+		GameState.reported_totals[SaveManager.STAT_TOTAL_SPARKS] = int(reported[1])
+		GameState.reported_totals[SaveManager.STAT_KILLS] = int(reported[2])
+	else:
+		GameState.run_reported = bool(reported)
+		var totals: Dictionary = data.get("reported_totals", {})
+		for key: String in totals:
+			GameState.reported_totals[key] = int(totals[key])
 
 
 ## Baut den Spieler nach: Charakter, Waffen, Items (inkl. Trigger), Run-Modifikatoren, HP.

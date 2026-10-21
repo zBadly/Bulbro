@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/vampirbirne.tres" id="1_hpeut"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="2_o0yuo"]
+
+[resource]
+script = ExtResource("2_o0yuo")
+id = &"unlock_vampirbirne"
+condition = 15
+value = 200.0
+reward_character = ExtResource("1_hpeut")

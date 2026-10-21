@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_l1od5"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_4lfmh"]
+[ext_resource type="Resource" path="res://data/structures/drohne.tres" id="2_o3wy0"]
+[ext_resource type="Script" path="res://scripts/data/effects/orbiting_drone_effect.gd" id="3_ib6du"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_o3wy0"]
+[ext_resource type="Texture2D" path="res://art/items/wartungsdrohne.svg" id="4_ib6du"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_2clbr"]
+
+[sub_resource type="Resource" id="Resource_2clbr"]
+script = ExtResource("3_ib6du")
+drone = ExtResource("2_o3wy0")
+base_count = 1
+
+[sub_resource type="Resource" id="Resource_qywx5"]
+script = ExtResource("2_4lfmh")
+stat = &"speed"
+value = -3.0
+
+[sub_resource type="Resource" id="Resource_02cj4"]
+script = ExtResource("3_o3wy0")
+modifiers = Array[ExtResource("2_4lfmh")]([SubResource("Resource_qywx5")])
+
+[resource]
+script = ExtResource("5_2clbr")
+id = &"wartungsdrohne"
+name_key = "ITEM_WARTUNGSDROHNE"
+tier = 3
+icon = ExtResource("4_ib6du")
+price = 80
+limit = 1
+tags = Array[StringName]([&"structure"])
+effects = Array[ExtResource("1_l1od5")]([SubResource("Resource_2clbr"), SubResource("Resource_02cj4")])

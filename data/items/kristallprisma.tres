@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_m6lps"]
+[ext_resource type="Script" path="res://scripts/data/effects/spell_cycle_effect.gd" id="2_ojmm5"]
+[ext_resource type="Script" path="res://scripts/data/effects/effect_action.gd" id="3_oofhf"]
+[ext_resource type="Script" path="res://scripts/data/effects/frost_nova_action.gd" id="4_g8ifp"]
+[ext_resource type="Texture2D" path="res://art/items/kristallprisma.svg" id="5_ekyj5"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="6_8m54f"]
+
+[sub_resource type="Resource" id="Resource_m6lps"]
+script = ExtResource("4_g8ifp")
+radius = 110.0
+base_damage = 8.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.5
+})
+slow_pct = 40.0
+duration = 2.0
+
+[sub_resource type="Resource" id="Resource_ojmm5"]
+script = ExtResource("2_ojmm5")
+every_nth = 8
+spells = Array[ExtResource("3_oofhf")]([SubResource("Resource_m6lps")])
+
+[resource]
+script = ExtResource("6_8m54f")
+id = &"kristallprisma"
+name_key = "ITEM_KRISTALLPRISMA"
+tier = 3
+icon = ExtResource("5_ekyj5")
+price = 75
+limit = 1
+tags = Array[StringName]([&"elemental"])
+effects = Array[ExtResource("1_m6lps")]([SubResource("Resource_ojmm5")])

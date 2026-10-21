@@ -197,6 +197,7 @@ func _setup_camera(rect: Rect2) -> void:
 ## Zu Beginn jeder Welle baut jede Waffe mit Struktur (Schraubenzieher) einen Lampenturm in der Nähe.
 func _on_wave_started(_wave_number: int) -> void:
 	_clear_structures()
+	GameState.run_stats.current_turrets = 0
 	var rng: RandomNumberGenerator = GameState.rng
 	for weapon: Weapon in player.weapon_slots.get_weapons():
 		if weapon.data.structure == null:
@@ -222,6 +223,7 @@ func _build_structure(data: StructureData, tier: int, at: Vector2) -> void:
 	_structures.append(structure)
 	var turrets: int = _structures.filter(func(s: Structure) -> bool: return s.data.kind == StructureData.Kind.TURRET).size()
 	GameState.max_structures = maxi(GameState.max_structures, turrets)
+	GameState.run_stats.current_turrets = turrets
 
 
 func _clear_structures() -> void:

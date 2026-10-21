@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_43umi"]
+[ext_resource type="Script" path="res://scripts/data/effects/spell_cycle_effect.gd" id="2_v118d"]
+[ext_resource type="Script" path="res://scripts/data/effects/effect_action.gd" id="3_uu5wa"]
+[ext_resource type="Script" path="res://scripts/data/effects/explosion_action.gd" id="4_01bev"]
+[ext_resource type="Script" path="res://scripts/data/effects/frost_nova_action.gd" id="5_atpy1"]
+[ext_resource type="Script" path="res://scripts/data/effects/chain_lightning_action.gd" id="6_2n2i0"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="7_73yns"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="8_4iwop"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="9_nkxu1"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="10_6a6i0"]
+[ext_resource type="Resource" path="res://data/weapons/kristallstab.tres" id="11_5qj4c"]
+[ext_resource type="Texture2D" path="res://art/characters/kronleuchter.svg" id="12_rq1yl"]
+
+[sub_resource type="Resource" id="Resource_hv55o"]
+script = ExtResource("4_01bev")
+radius = 70.0
+base_damage = 8.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 1.0
+})
+
+[sub_resource type="Resource" id="Resource_dvu5g"]
+script = ExtResource("5_atpy1")
+radius = 110.0
+base_damage = 4.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.5
+})
+slow_pct = 40.0
+duration = 2.0
+
+[sub_resource type="Resource" id="Resource_4b1la"]
+script = ExtResource("6_2n2i0")
+jumps = 3
+jump_range = 220.0
+base_damage = 6.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.8
+})
+
+[sub_resource type="Resource" id="Resource_swq3a"]
+script = ExtResource("2_v118d")
+every_nth = 4
+spells = Array[ExtResource("3_uu5wa")]([SubResource("Resource_hv55o"), SubResource("Resource_dvu5g"), SubResource("Resource_4b1la")])
+
+[sub_resource type="Resource" id="Resource_075ob"]
+script = ExtResource("7_73yns")
+stat = &"melee_dmg"
+kind = 2
+value = -100.0
+
+[sub_resource type="Resource" id="Resource_6b5xt"]
+script = ExtResource("8_4iwop")
+modifiers = Array[ExtResource("7_73yns")]([SubResource("Resource_075ob")])
+
+[resource]
+script = ExtResource("9_nkxu1")
+id = &"kronleuchter"
+name_key = "CHAR_KRONLEUCHTER"
+texture = ExtResource("12_rq1yl")
+effects = Array[ExtResource("1_43umi")]([SubResource("Resource_swq3a"), SubResource("Resource_6b5xt")])
+starting_weapons = Array[ExtResource("10_6a6i0")]([ExtResource("11_5qj4c")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"elemental"])
+order = 14

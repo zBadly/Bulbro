@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/drohnenleuchte.tres" id="1_q3p5s"]
+[ext_resource type="Resource" path="res://data/items/wartungsdrohne.tres" id="2_nqpr7"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="3_cmtyx"]
+
+[resource]
+script = ExtResource("3_cmtyx")
+id = &"win_drohnenleuchte"
+condition = 7
+character = ExtResource("1_q3p5s")
+reward_item = ExtResource("2_nqpr7")

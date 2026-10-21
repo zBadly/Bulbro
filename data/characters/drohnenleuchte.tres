@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_hg7bf"]
+[ext_resource type="Resource" path="res://data/structures/drohne.tres" id="2_kqksg"]
+[ext_resource type="Script" path="res://scripts/data/effects/orbiting_drone_effect.gd" id="3_d1r03"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_ng1u5"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_mgc70"]
+[ext_resource type="Resource" path="res://data/weapons/schraubenzieher.tres" id="6_upkci"]
+[ext_resource type="Texture2D" path="res://art/characters/drohnenleuchte.svg" id="7_osfog"]
+
+[sub_resource type="Resource" id="Resource_7uaf6"]
+script = ExtResource("3_d1r03")
+drone = ExtResource("2_kqksg")
+base_count = 2
+extra_at_levels = Array[int]([5, 10, 15])
+
+[resource]
+script = ExtResource("4_ng1u5")
+id = &"drohnenleuchte"
+name_key = "CHAR_DROHNENLEUCHTE"
+texture = ExtResource("7_osfog")
+effects = Array[ExtResource("1_hg7bf")]([SubResource("Resource_7uaf6")])
+starting_weapons = Array[ExtResource("5_mgc70")]([ExtResource("6_upkci")])
+weapon_slots = 4
+preferred_tags = Array[StringName]([&"structure"])
+order = 18

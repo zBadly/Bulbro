@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_3hk3f"]
+[ext_resource type="Script" path="res://scripts/data/effects/reanimate_effect.gd" id="2_67054"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="3_adbdm"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="4_4j1h4"]
+[ext_resource type="Script" path="res://scripts/data/character_data.gd" id="5_14vd0"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="6_a04ml"]
+[ext_resource type="Resource" path="res://data/weapons/seelenlaterne.tres" id="7_s2rmh"]
+[ext_resource type="Texture2D" path="res://art/characters/irrlicht.svg" id="8_58en7"]
+
+[sub_resource type="Resource" id="Resource_v3ti3"]
+script = ExtResource("2_67054")
+interval = 3.0
+min_souls = 5
+max_souls = 100
+lifetime = 10.0
+max_allies = 8
+base_damage = 5.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 1.0
+})
+souls_per_step = 20
+bonus_per_step = 1.0
+
+[sub_resource type="Resource" id="Resource_b4lhx"]
+script = ExtResource("3_adbdm")
+stat = &"armor"
+value = -3.0
+
+[sub_resource type="Resource" id="Resource_an3be"]
+script = ExtResource("4_4j1h4")
+modifiers = Array[ExtResource("3_adbdm")]([SubResource("Resource_b4lhx")])
+
+[sub_resource type="Resource" id="Resource_b33m7"]
+script = ExtResource("3_adbdm")
+stat = &"max_hp"
+kind = 2
+value = -25.0
+
+[sub_resource type="Resource" id="Resource_f5rrs"]
+script = ExtResource("4_4j1h4")
+modifiers = Array[ExtResource("3_adbdm")]([SubResource("Resource_b33m7")])
+
+[resource]
+script = ExtResource("5_14vd0")
+id = &"irrlicht"
+name_key = "CHAR_IRRLICHT"
+texture = ExtResource("8_58en7")
+effects = Array[ExtResource("1_3hk3f")]([SubResource("Resource_v3ti3"), SubResource("Resource_an3be"), SubResource("Resource_f5rrs")])
+starting_weapons = Array[ExtResource("6_a04ml")]([ExtResource("7_s2rmh")])
+weapon_slots = 6
+preferred_tags = Array[StringName]([&"elemental"])
+order = 12

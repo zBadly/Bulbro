@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/irrlicht.tres" id="1_tspvn"]
+[ext_resource type="Resource" path="res://data/items/geisterkerze.tres" id="2_rpmeg"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="3_er0sx"]
+
+[resource]
+script = ExtResource("3_er0sx")
+id = &"win_irrlicht"
+condition = 7
+character = ExtResource("1_tspvn")
+reward_item = ExtResource("2_rpmeg")

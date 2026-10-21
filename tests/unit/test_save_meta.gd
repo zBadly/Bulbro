@@ -98,7 +98,7 @@ func test_every_locked_character_has_a_challenge() -> void:
 	for character: CharacterData in Unlocks.all_characters():
 		if not character.unlocked_by_default:
 			assert_not_null(Unlocks.challenge_for(character), String(character.id))
-	assert_eq(Unlocks.all_challenges().size(), 19)
+	assert_eq(Unlocks.all_challenges().size(), 39)
 
 
 func test_live_challenge_unlocks_and_emits() -> void:

@@ -24,9 +24,9 @@ func _player(id: String) -> Player:
 	return player
 
 
-func test_all_twelve_characters_are_valid() -> void:
+func test_all_characters_are_valid() -> void:
 	var characters: Array[CharacterData] = Unlocks.all_characters()
-	assert_eq(characters.size(), 12)
+	assert_eq(characters.size(), 22)
 	for c: CharacterData in characters:
 		assert_not_null(c.texture, String(c.id))
 		assert_ne(tr(c.name_key), c.name_key, "Name: " + c.name_key)
@@ -113,19 +113,25 @@ func test_candle_doubles_primitive_and_bans_elemental() -> void:
 
 
 func test_unlock_conditions() -> void:
-	var run: RunStats = RunStats.new()
+	var ctx: ChallengeContext = ChallengeContext.new()
 	var tower: ChallengeData = Unlocks.challenge_for(_char("taschenlampe"))
-	assert_false(tower.is_met(run, 2, 0, false, &""))
-	assert_true(tower.is_met(run, 3, 0, false, &""))
-	assert_true(Unlocks.challenge_for(_char("discokugel")).is_met(run, 0, 300, false, &""))
-	run.healed = 200.0
-	assert_true(Unlocks.challenge_for(_char("nachtlicht")).is_met(run, 0, 0, false, &""))
+	ctx.max_structures = 2
+	assert_false(tower.is_met(ctx))
+	ctx.max_structures = 3
+	assert_true(tower.is_met(ctx))
+	ctx.totals[SaveManager.STAT_TOTAL_SPARKS] = 300
+	assert_true(Unlocks.challenge_for(_char("discokugel")).is_met(ctx))
+	ctx.run.healed = 200.0
+	assert_true(Unlocks.challenge_for(_char("nachtlicht")).is_met(ctx))
 	var candle: ChallengeData = Unlocks.challenge_for(_char("kerze"))
-	run.primitive_only = true
-	assert_false(candle.is_met(run, 0, 0, false, &""), "nur bei Sieg")
-	assert_true(candle.is_met(run, 0, 0, true, &""))
-	run.primitive_only = false
-	assert_false(candle.is_met(run, 0, 0, true, &""))
+	ctx.run.primitive_only = true
+	assert_false(candle.is_met(ctx), "nur am Run-Ende")
+	ctx.at_run_end = true
+	assert_false(candle.is_met(ctx), "nur bei Sieg")
+	ctx.victory = true
+	assert_true(candle.is_met(ctx))
+	ctx.run.primitive_only = false
+	assert_false(candle.is_met(ctx))
 
 
 func test_difficulty_raises_enemy_hp() -> void:

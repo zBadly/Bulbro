@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChallengeData" format=3]
+
+[ext_resource type="Resource" path="res://data/characters/gewaechshauslampe.tres" id="1_w6ll6"]
+[ext_resource type="Script" path="res://scripts/data/challenge_data.gd" id="2_ep28r"]
+
+[resource]
+script = ExtResource("2_ep28r")
+id = &"unlock_gewaechshauslampe"
+condition = 12
+value = 50.0
+reward_character = ExtResource("1_w6ll6")
