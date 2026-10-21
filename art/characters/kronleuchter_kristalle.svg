@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="96" viewBox="0 0 72 96">
+  <!-- Kronleuchter-Kristalle: schwingen beim Laufen (Pivot oben, siehe CharacterData.swing_pivot) -->
+  <path d="M10,43 L10,46" stroke="#2A1E2E" stroke-width="2" stroke-linecap="round"/>
+  <path d="M10,46 L14.5,50.8 L10,58 L5.5,50.8 Z" fill="#7FC8E8"/>
+  <path d="M10,46 L5.5,50.8 L10,58 Z" fill="#BFEFFF"/>
+  <path d="M8.5,49.0 L7.5,51.4" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M10,46 L14.5,50.8 L10,58 L5.5,50.8 Z" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M62,43 L62,46" stroke="#2A1E2E" stroke-width="2" stroke-linecap="round"/>
+  <path d="M62,46 L66.5,50.8 L62,58 L57.5,50.8 Z" fill="#7FC8E8"/>
+  <path d="M62,46 L57.5,50.8 L62,58 Z" fill="#BFEFFF"/>
+  <path d="M60.5,49.0 L59.5,51.4" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M62,46 L66.5,50.8 L62,58 L57.5,50.8 Z" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M24,63 L24,66" stroke="#2A1E2E" stroke-width="2" stroke-linecap="round"/>
+  <path d="M24,66 L28.5,70.8 L24,78 L19.5,70.8 Z" fill="#7FC8E8"/>
+  <path d="M24,66 L19.5,70.8 L24,78 Z" fill="#BFEFFF"/>
+  <path d="M22.5,69.0 L21.5,71.4" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M24,66 L28.5,70.8 L24,78 L19.5,70.8 Z" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M48,63 L48,66" stroke="#2A1E2E" stroke-width="2" stroke-linecap="round"/>
+  <path d="M48,66 L52.5,70.8 L48,78 L43.5,70.8 Z" fill="#7FC8E8"/>
+  <path d="M48,66 L43.5,70.8 L48,78 Z" fill="#BFEFFF"/>
+  <path d="M46.5,69.0 L45.5,71.4" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M48,66 L52.5,70.8 L48,78 L43.5,70.8 Z" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M36,78 L36,81" stroke="#2A1E2E" stroke-width="2" stroke-linecap="round"/>
+  <path d="M36,81 L40.5,86.2 L36,94 L31.5,86.2 Z" fill="#7FC8E8"/>
+  <path d="M36,81 L31.5,86.2 L36,94 Z" fill="#BFEFFF"/>
+  <path d="M34.5,84.25 L33.5,86.85" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M36,81 L40.5,86.2 L36,94 L31.5,86.2 Z" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>

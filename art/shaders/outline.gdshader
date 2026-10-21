@@ -7,6 +7,8 @@ uniform vec4 outline_color : source_color = vec4(0.906, 0.298, 0.235, 1.0);
 uniform float outline_width : hint_range(0.0, 16.0) = 3.0;
 uniform vec4 flash_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform float flash_amount : hint_range(0.0, 1.0) = 0.0;
+// Status-Farbton (Frost, Brand, Fluch): Alpha = Stärke. Dunkle Konturen bleiben dunkel.
+uniform vec4 tint_color : source_color = vec4(1.0, 1.0, 1.0, 0.0);
 
 const int SAMPLES = 12;
 
@@ -14,6 +16,11 @@ const int SAMPLES = 12;
 float inside(vec2 uv) {
 	vec2 s = step(vec2(0.0), uv) * step(uv, vec2(1.0));
 	return s.x * s.y;
+}
+
+vec3 apply_tint(vec3 rgb) {
+	float lum = dot(rgb, vec3(0.299, 0.587, 0.114));
+	return mix(rgb, tint_color.rgb, tint_color.a * smoothstep(0.12, 0.26, lum));
 }
 
 void vertex() {
@@ -24,7 +31,7 @@ void fragment() {
 	vec2 tex_size = 1.0 / TEXTURE_PIXEL_SIZE;
 	vec2 uv = (UV - 0.5) * (tex_size + 2.0 * outline_width) / tex_size + 0.5;
 	vec4 base = texture(TEXTURE, uv) * inside(uv) * COLOR;
-	base.rgb = mix(base.rgb, flash_color.rgb, flash_amount);
+	base.rgb = mix(apply_tint(base.rgb), flash_color.rgb, flash_amount);
 
 	float edge = 0.0;
 	for (int i = 0; i < SAMPLES; i++) {

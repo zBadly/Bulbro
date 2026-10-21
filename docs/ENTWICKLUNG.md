@@ -36,10 +36,12 @@ Bosse testen: F4 → zu Welle 20 springen; bei Spannung 5 erscheinen beide Bosse
 | 14a | Feste Angebotskarten (Kopf/Mitte/Fuß, gleiche Höhe, Schrift schrumpft statt Karte), Charakterauswahl mit festen Bereichen (Raster 4 Reihen, Infopanel scrollt intern) |
 | 14c-3 | 10 neue Charaktere, Freischaltungen mit Fortschritt (Bestwert/Summe), 10 Sieg-Items, Debug: alle Charaktere freischalten |
 | 14c-2 | 5 neue Startwaffen: Seelenlaterne, Feuerzeugwerfer, Kristallstab, Voodoo-Nadel, Dornenranke (auch im Shop) |
+| 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
 | 14c-1 | Systeme für 10 neue Charaktere: Fluch, Verlangsamen/Einfrieren/Festhalten, Verbündete (Schattengeister), Seelenglas, Zauberzyklus, Spiegelbild, Drohnen, Lichtranke, Brand-Erweiterungen, Vampirbirnen-Effekte |
 
 Leistung (Radeon RX 590, 1080p, VSync 144 Hz): 100 Gegner aller Typen mit 6 Tier-IV-Fernwaffen min. 118 FPS; 100 Gegner + 300 Projektile konstant 144 FPS.
 100 Gegner + 8 Verbündete + Spiegelbild mit 6 Waffen (Welle 14): mit VSync Ø 143, min. 137 FPS; ohne VSync Ø 311, min. 214 FPS.
+Paket 4 (neue Partikel und Status-Grafiken, Welle 14, 100 Gegner, VSync): Kronleuchter mit 6 Kristallstäben T4 Ø 138, min. 122 FPS; Spiegelkugel mit 6 Fernwaffen T4 Ø 140, min. 123 FPS.
 
 ## Entscheidungen und Startwerte
 
@@ -93,7 +95,7 @@ Gemeinsame Werte in `data/config/status_config.tres`, effektspezifische Zahlen i
 - Neue Trigger-Haken im `ItemEffect`: Waffenangriff, Waffentreffer, brennender Tod, Überheilung, Wellenende. Zustand pro Exemplar in `TriggerEntry.state`.
 - **Fluch** (`CurseStatus`): +1 Stapel pro Treffer (max. aus dem Effekt), Dauer wird zurückgesetzt, Schaden pro Sekunde x Stapel, erlittener Schaden +x % pro Stapel (wirkt auf jeden Schaden, auch Brand und Fluch-Ticks).
 - **Verlangsamen/Einfrieren/Festhalten** (`SlowStatus`): stärkere Verlangsamung gewinnt; Faktor 0 stoppt Bewegung, Verhalten (auch Schießen) und Kontaktschaden. Elites/Bosse halten Status nur 50 % der Dauer. Nach dem Festhalten 1,5 s Schutz.
-- Farbton nach Priorität: Frost vor Brand vor Fluch. Fluch-Symbol mit Stapelzahl ist noch ein gezeichneter Platzhalter.
+- Farbton nach Priorität: Frost vor Brand vor Fluch, als Shader-Parameter `tint_color` (Alpha = Stärke; dunkle Konturen bleiben dunkel). Festgehaltene Gegner bekommen keinen Frostton, sondern Ranken.
 - **Verbündete** (`Ally`, Ebene „allies“): unverwundbar, Gegner ignorieren sie, nicht in der Gegnergruppe (Waffen zielen nicht darauf, kein Gegnerlimit). Kontaktschaden alle 0,5 s, Mindesttempo 260. Globales Limit 16, Pool 8.
 - **Seelenglas** (`SoulCounter` in `GameState.souls`, beim Fortsetzen gespeichert): Seelen werden beim Beschwören nicht verbraucht, max. aus dem Effekt (100).
 - **Spiegelbild**: Kopien aller Waffen mit eigenem Schadensfaktor, kein Lebensraub, keine Angriffs-Effekte; folgt mit 90 px Abstand. Wird zu Wellenbeginn mit den aktuellen Waffen gebaut.
@@ -110,11 +112,19 @@ Gemeinsame Werte in `data/config/status_config.tres`, effektspezifische Zahlen i
 - Seelenlaterne: Bonus-Seele wirkt nur, wenn ein Seelenglas-Effekt aktiv ist (Irrlicht).
 
 ### Charaktere 13–22 und Freischaltungen (Paket 14c-3)
-- Werte stehen im GDD Abschnitt 10; Grafiken sind bis Paket 4 umgefärbte Standardbirnen.
+- Werte stehen im GDD Abschnitt 10.
 - Abweichung vom ursprünglichen Plan: Schwarzlicht wird über 300 Kills mit der Voodoo-Nadel freigeschaltet (50 gleichzeitig Verfluchte wären ohne Schwarzlicht nicht erreichbar). Vampirbirne: 200 statt 300 geheilte HP.
 - Zündkerze: Brandchance-Schaden 3 (+50 % Strom) über 3 Ticks, Explosion beim brennenden Tod 3 (+50 % Strom), Radius 50. Kronleuchter: Feuerball 8 (+100 % Strom, Radius 70), Frostnova 4 (+50 % Strom, Radius 110), Kettenblitz 6 (+80 % Strom, 3 Sprünge, 220 px).
 - Fortschritt: `progress.challenge_best` im Spielstand (Bestwert bei Run-Bedingungen), Gesamtwerte als Statistik (`burn_kills`, `crystals`, `kills_<waffe>`). Zuwächse eines Runs zählen nur einmal (`GameState.reported_totals`).
 - „Run beenden“ (Drohnenleuchte) zählt die Lampentürme, die beim Run-Ende stehen; der Zähler bleibt nach dem Wellenende (Sieg in Welle 20) stehen, bis die nächste Welle neu baut.
+
+### Grafiken und Effekte (Paket 4)
+- Porträts (128 x 128) erzeugt `python tools/make_portraits.py` aus den Spielsprites (Lichthof in der Lichtfarbe der Figur); nach Sprite-Änderungen neu ausführen. Charakterauswahl und Run-Ende zeigen Porträts.
+- `CharacterData`: `portrait`, `light_color` (Farbe des Spielerlichts), `idle_style` (Hüpfen oder Schweben mit Flackern), `swing_texture`/`swing_pivot` (Kronleuchter-Kristalle pendeln per `Juice.swing`).
+- Status auf Gegnern: Flammen (flackern), Eiskristalle beim Einfrieren (mit Eis-Pop), Eiskristall-Partikel beim Verlangsamen (alle 0,45 s), Ranken beim Festhalten, Fluch-Symbol mit Stapelzahl (1,25-fach). Größen in `status_config.tres`.
+- Schattengeister: helle Cyan-Tönung, Kontur 4 px, 78 % Deckkraft, Flackern und aufsteigende Partikelschleppe. Spiegelbild: bläulich, 60 % Deckkraft, wandernder Glanz (`mirror_sheen.gdshader`).
+- Feuerball fliegt mit 1100 px/s und explodiert erst beim Ankommen (`ExplosionAction.travel_speed`); Frostnova als Eisring mit Zacken und Splittern; Kettenblitz unregelmäßig gezackt mit Funken an jedem Ziel.
+- Stroboskop-Blitz: Bildschirm 32 % weiß für 0,16 s, mit „Blitzeffekte reduzieren“ 30 % davon; die Figur leuchtet kurz auf.
 
 ### Endlos-Modus
 - Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.
@@ -127,6 +137,7 @@ Gemeinsame Werte in `data/config/status_config.tres`, effektspezifische Zahlen i
 |---|---|
 | `godot --headless --path . res://tools/balance_sim.tscn -- <Spannung>` | Balancing-Tabelle: Gegner-HP pro Welle gegen DPS von drei Builds (Fern, Nah, Strom) |
 | `… -- <Spannung> --apply` | Vorgeschlagene Intervall-Faktoren in die Wellen-`.tres` schreiben |
+| `python tools/make_portraits.py` | Charakter-Porträts aus den Spielsprites erzeugen |
 | `godot --headless --path . --export-release "Windows Desktop" build/windows/Bulbro.exe` | Windows-Build (benötigt installierte Export-Vorlagen) |
 
 Annahmen des Simulators (Waffenzahl, Tier und Stat-Zuwachs pro Welle) stehen als Konstanten in `scripts/systems/balance_model.gd`.

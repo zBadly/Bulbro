@@ -9,6 +9,13 @@ const OUTLINE_SHADER: Shader = preload("res://art/shaders/outline.gdshader")
 const OUTLINE_PARAM: StringName = &"outline_color"
 ## Gruppe aller gerade aktiven Verbündeten (globales Limit).
 const ACTIVE_GROUP: StringName = &"active_allies"
+const TRAIL_TEXTURE: Texture2D = preload("res://art/fx/particle_dot.svg")
+## Partikelschleppe: Anzahl, Lebensdauer, Streuradius, Auftrieb, Größe.
+const TRAIL_AMOUNT: int = 12
+const TRAIL_LIFETIME: float = 0.55
+const TRAIL_RADIUS: float = 12.0
+const TRAIL_RISE: float = -40.0
+const TRAIL_SCALE: Vector2 = Vector2(0.5, 0.9)
 
 var pool: ObjectPool
 var data: EnemyData
@@ -22,6 +29,7 @@ var _target: Damageable
 var _retarget_left: float = 0.0
 var _contact_cooldown: float = 0.0
 var _material: ShaderMaterial
+var _trail: GPUParticles2D
 
 @onready var visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -36,7 +44,12 @@ func _ready() -> void:
 	_material = ShaderMaterial.new()
 	_material.shader = OUTLINE_SHADER
 	_material.set_shader_parameter(OUTLINE_PARAM, STATUS.ally_outline_color)
+	_material.set_shader_parameter(&"outline_width", STATUS.ally_outline_width)
+	_material.set_shader_parameter(Enemy.TINT_PARAM, STATUS.ally_tint)
 	_sprite.material = _material
+	_trail = _make_trail()
+	add_child(_trail)
+	move_child(_trail, 0)
 
 
 func is_active() -> bool:
@@ -55,6 +68,9 @@ func summon(p_data: EnemyData, spawn_position: Vector2, p_damage: int, lifetime:
 	_shape.position = Vector2(0.0, -half_height)
 	(_shape.shape as CircleShape2D).radius = data.collision_radius
 	_sprite.modulate = Color(1.0, 1.0, 1.0, STATUS.ally_alpha)
+	_trail.position = Vector2(0.0, -half_height)
+	_trail.emitting = true
+	Juice.flicker(_sprite)
 	_sprite.flip_h = false
 	_speed = maxf(data.speed_max, STATUS.ally_min_speed)
 	_life_left = lifetime
@@ -117,8 +133,35 @@ func _nearest_enemy() -> Damageable:
 
 func _deactivate() -> void:
 	_active = false
+	_trail.emitting = false
 	if is_in_group(ACTIVE_GROUP):
 		remove_from_group(ACTIVE_GROUP)
+
+
+## Bläuliche Partikel, die hinter dem Geist zurückbleiben und aufsteigen.
+func _make_trail() -> GPUParticles2D:
+	var trail: GPUParticles2D = GPUParticles2D.new()
+	trail.amount = TRAIL_AMOUNT
+	trail.lifetime = TRAIL_LIFETIME
+	trail.local_coords = false
+	trail.emitting = false
+	trail.texture = TRAIL_TEXTURE
+	var material: ParticleProcessMaterial = ParticleProcessMaterial.new()
+	material.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	material.emission_sphere_radius = TRAIL_RADIUS
+	material.gravity = Vector3(0.0, TRAIL_RISE, 0.0)
+	material.spread = 180.0
+	material.initial_velocity_max = -TRAIL_RISE * 0.5
+	material.scale_min = TRAIL_SCALE.x
+	material.scale_max = TRAIL_SCALE.y
+	var ramp: Gradient = Gradient.new()
+	ramp.set_color(0, STATUS.ally_trail_color)
+	ramp.set_color(1, Color(STATUS.ally_trail_color, 0.0))
+	var ramp_texture: GradientTexture1D = GradientTexture1D.new()
+	ramp_texture.gradient = ramp
+	material.color_ramp = ramp_texture
+	trail.process_material = material
+	return trail
 
 
 func _on_spawned() -> void:

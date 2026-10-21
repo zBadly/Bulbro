@@ -10,12 +10,18 @@ signal summon_requested(data: EnemyData, count: int, position: Vector2)
 const OUTLINE_SHADER: Shader = preload("res://art/shaders/outline.gdshader")
 const BUFF_OUTLINE_PARAM: StringName = &"outline_color"
 const BUFF_COLOR: Color = Color("#E74C3C")
+## Status-Farbton im Shader (Alpha = Stärke); NO_TINT = kein Status.
+const TINT_PARAM: StringName = &"tint_color"
+const NO_TINT: Color = Color(1.0, 1.0, 1.0, 0.0)
 
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
 ## Gruppe der gerade verfluchten Gegner (Zähler für die Schwarzlicht-Freischaltung).
 const CURSED_GROUP: StringName = &"cursed_enemies"
+const BURN_TEXTURE: Texture2D = preload("res://art/fx/burn_flames.svg")
+const ICE_TEXTURE: Texture2D = preload("res://art/fx/ice_crystals.svg")
+const ROOT_TEXTURE: Texture2D = preload("res://art/fx/root_vines.svg")
 
 var data: EnemyData
 var pool: ObjectPool
@@ -48,6 +54,12 @@ var _flash_material: ShaderMaterial
 var _buff_material: ShaderMaterial
 var _root_immune_left: float = 0.0
 var _curse_marker: CurseMarker
+## Flammen auf brennenden Gegnern und Eis/Ranken an den Füßen (eingefroren/festgehalten).
+var _burn_fx: Sprite2D
+var _hold_fx: Sprite2D
+var _burn_fx_scale: Vector2 = Vector2.ONE
+var _rooted: bool = false
+var _frost_particle_left: float = 0.0
 
 @onready var visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -70,9 +82,23 @@ func setup(p_data: EnemyData) -> void:
 	_curse_marker = CurseMarker.new()
 	_curse_marker.position = Vector2(0.0, -data.texture.get_height() - STATUS.curse_marker_gap)
 	visual.add_child(_curse_marker)
+	var body_width: float = data.collision_radius * 2.0 * STATUS.status_overlay_scale
+	_hold_fx = _make_overlay(visual, Vector2(0.0, -ICE_TEXTURE.get_height() * 0.35 * body_width / ICE_TEXTURE.get_width()), body_width / ICE_TEXTURE.get_width())
+	_burn_fx = _make_overlay(visual, Vector2(0.0, -half_height * 0.9), body_width * 0.8 / BURN_TEXTURE.get_width())
+	_burn_fx.texture = BURN_TEXTURE
+	_burn_fx_scale = _burn_fx.scale
 	_behavior = data.behavior.create_behavior()
 	_behavior.enemy = self
 	add_child(_behavior)
+
+
+func _make_overlay(parent: Node2D, at: Vector2, factor: float) -> Sprite2D:
+	var overlay: Sprite2D = Sprite2D.new()
+	overlay.position = at
+	overlay.scale = Vector2.ONE * factor
+	overlay.visible = false
+	parent.add_child(overlay)
+	return overlay
 
 
 ## Beim Holen aus dem Pool: setzt Werte für die Welle und spielt das Pop-in.
@@ -288,7 +314,13 @@ func apply_slow(factor: float, duration: float) -> void:
 		return
 	if data.is_boss or data.is_elite:
 		duration *= STATUS.boss_status_factor
+	var was_stopped: bool = slow.is_stopped()
+	if not slow.is_active():
+		_frost_particle_left = randf() * STATUS.frost_particle_interval
 	slow.apply(factor, duration)
+	if slow.is_stopped() and not was_stopped and not _rooted:
+		Fx.particles(get_tree(), ParticleFx.Kind.ICE_POP, get_hit_position())
+		_pop_overlay(_hold_fx)
 	_update_tint()
 
 
@@ -300,9 +332,17 @@ func freeze(duration: float) -> void:
 func root(duration: float) -> bool:
 	if not _alive or _root_immune_left > 0.0:
 		return false
+	var was_stopped: bool = slow.is_stopped()
+	_rooted = not was_stopped
 	apply_slow(0.0, duration)
 	_root_immune_left = duration + STATUS.root_immunity_time
+	if _rooted:
+		_pop_overlay(_hold_fx)
 	return true
+
+
+func is_rooted() -> bool:
+	return _rooted and slow.is_stopped()
 
 
 ## Eingefroren oder festgehalten: kein Laufen, kein Angriff, kein Kontaktschaden.
@@ -316,7 +356,13 @@ func _update_statuses(delta: float) -> void:
 	if slow.is_active():
 		slow.tick(delta)
 		if not slow.is_active():
+			_rooted = false
 			_update_tint()
+		elif not _rooted:
+			_frost_particle_left -= delta
+			if _frost_particle_left <= 0.0:
+				_frost_particle_left = STATUS.frost_particle_interval
+				Fx.particles(get_tree(), ParticleFx.Kind.FROST, get_hit_position())
 	if curse.is_active():
 		var damage: int = curse.tick(delta)
 		if not curse.is_active():
@@ -335,23 +381,31 @@ func _on_curse_ended() -> void:
 func _clear_statuses() -> void:
 	curse.clear()
 	slow.clear()
+	_burn_ticks_left = 0
+	_rooted = false
 	_root_immune_left = 0.0
 	if _curse_marker != null:
 		_on_curse_ended()
 	else:
-		_sprite.modulate = Color.WHITE
+		_update_tint()
 
 
-## Farbton nach Priorität: Frost vor Brand vor Fluch.
+## Farbton nach Priorität: Frost vor Brand vor Fluch. Dazu Flammen, Eis oder Ranken als eigene Grafik.
 func _update_tint() -> void:
-	if slow.is_active():
-		_sprite.modulate = STATUS.frost_tint
+	if _burn_fx != null:
+		_burn_fx.visible = is_burning()
+		_hold_fx.visible = slow.is_stopped()
+		_hold_fx.texture = ROOT_TEXTURE if _rooted else ICE_TEXTURE
+	var tint: Color = NO_TINT
+	if slow.is_active() and not _rooted:
+		tint = STATUS.frost_tint
 	elif is_burning():
-		_sprite.modulate = COMBAT.burn_tint
+		tint = COMBAT.burn_tint
 	elif curse.is_active():
-		_sprite.modulate = STATUS.curse_tint
-	else:
-		_sprite.modulate = Color.WHITE
+		tint = STATUS.curse_tint
+	for mat: ShaderMaterial in [_flash_material, _buff_material]:
+		if mat != null:
+			mat.set_shader_parameter(TINT_PARAM, tint)
 
 
 func _physics_process(delta: float) -> void:
@@ -361,6 +415,9 @@ func _physics_process(delta: float) -> void:
 	_update_statuses(delta)
 	if not _alive:
 		return
+	if _burn_fx.visible:
+		var wave_t: float = Time.get_ticks_msec() * 0.001 * STATUS.burn_flicker_speed + get_instance_id() % 7
+		_burn_fx.scale = _burn_fx_scale * Vector2(1.0 - STATUS.burn_flicker_amount * 0.5 * sin(wave_t), 1.0 + STATUS.burn_flicker_amount * sin(wave_t))
 	if slow.is_stopped():
 		_move_knockback_only(delta)
 		return
@@ -385,6 +442,11 @@ func _move_knockback_only(delta: float) -> void:
 	if arena_bounds.has_area():
 		var margin: Vector2 = Vector2.ONE * data.collision_radius
 		global_position = global_position.clamp(arena_bounds.position + margin, arena_bounds.end - margin)
+
+
+func _pop_overlay(overlay: Sprite2D) -> void:
+	if overlay != null and overlay.is_inside_tree():
+		Juice.spawn_pop(overlay)
 
 
 func _on_spawned() -> void:

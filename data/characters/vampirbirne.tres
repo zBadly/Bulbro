@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="9_qy6x3"]
 [ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="10_0mbp1"]
 [ext_resource type="Texture2D" path="res://art/characters/vampirbirne.svg" id="11_76rpx"]
+[ext_resource type="Texture2D" path="res://art/portraits/vampirbirne.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_wmhv6"]
 script = ExtResource("2_i2rh7")
@@ -46,3 +47,5 @@ starting_weapons = Array[ExtResource("9_qy6x3")]([ExtResource("10_0mbp1")])
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"hp"])
 order = 20
+portrait = ExtResource("p_portrait")
+light_color = Color(1, 0.361, 0.416, 1)

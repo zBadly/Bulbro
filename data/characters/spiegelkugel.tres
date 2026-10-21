@@ -11,6 +11,7 @@
 [ext_resource type="Resource" path="res://data/weapons/ast.tres" id="9_rxmt2"]
 [ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="10_fdts5"]
 [ext_resource type="Texture2D" path="res://art/characters/spiegelkugel.svg" id="11_rsku1"]
+[ext_resource type="Texture2D" path="res://art/portraits/spiegelkugel.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_uarna"]
 script = ExtResource("2_3hxj5")
@@ -36,3 +37,5 @@ starting_weapons = Array[ExtResource("6_avyyo")]([ExtResource("7_0vydt"), ExtRes
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"damage"])
 order = 21
+portrait = ExtResource("p_portrait")
+light_color = Color(0.902, 0.98, 1, 1)

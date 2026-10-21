@@ -3,7 +3,7 @@ extends Node2D
 ## Vorbereitete GPUParticles2D-Emitter pro Effekttyp, reihum wiederverwendet (kein Erzeugen zur Laufzeit).
 ## Aufruf über Fx.particles(tree, typ, position, richtung).
 
-enum Kind { DEATH, MUZZLE, HIT, LEVEL_UP, EXPLOSION, HEAL }
+enum Kind { DEATH, MUZZLE, HIT, LEVEL_UP, EXPLOSION, HEAL, ICE_POP, FROST, ICE_BURST, ZAP }
 
 const GROUP: StringName = &"particle_fx"
 const EMITTERS_PER_KIND: int = 10
@@ -24,6 +24,18 @@ const PRESETS: Dictionary = {
 		"texture": "dot", "colors": [Color("#FFD43B"), Color("#FF8C4200")], "damping": 700.0},
 	Kind.HEAL: {"amount": 14, "lifetime": 0.6, "speed": Vector2(40, 120), "spread": 180.0, "scale": Vector2(0.5, 1.0),
 		"texture": "dot", "colors": [Color("#7ED957"), Color("#7ED95700")], "damping": 60.0, "gravity": -160.0},
+	# Eis-Pop beim Einfrieren
+	Kind.ICE_POP: {"amount": 9, "lifetime": 0.4, "speed": Vector2(90, 220), "spread": 180.0, "scale": Vector2(0.6, 1.1),
+		"texture": "shard", "colors": [Color("#E6FAFF"), Color("#8FE3FF00")], "damping": 420.0, "gravity": 240.0},
+	# Eiskristalle, die verlangsamte Gegner verlieren (viele gleichzeitig möglich)
+	Kind.FROST: {"amount": 4, "lifetime": 0.6, "speed": Vector2(15, 50), "spread": 180.0, "scale": Vector2(0.7, 1.1),
+		"texture": "shard", "colors": [Color("#E6FAFF"), Color("#8FE3FF00")], "damping": 20.0, "gravity": 70.0, "emitters": 40},
+	# Splitter der Frostnova
+	Kind.ICE_BURST: {"amount": 22, "lifetime": 0.45, "speed": Vector2(220, 480), "spread": 180.0, "scale": Vector2(0.6, 1.2),
+		"texture": "shard", "colors": [Color("#FFFFFF"), Color("#8FE3FF00")], "damping": 650.0},
+	# Funken an Kettenblitz-Zielen
+	Kind.ZAP: {"amount": 7, "lifetime": 0.2, "speed": Vector2(140, 320), "spread": 180.0, "scale": Vector2(0.4, 0.8),
+		"texture": "shard", "colors": [Color("#FFFFFF"), Color("#8FE3FF00")], "damping": 900.0, "emitters": 16},
 }
 
 var _emitters: Dictionary[int, Array] = {}
@@ -35,7 +47,7 @@ func _ready() -> void:
 	for kind: int in PRESETS:
 		var material: ParticleProcessMaterial = _make_material(PRESETS[kind])
 		var list: Array[GPUParticles2D] = []
-		for i in EMITTERS_PER_KIND:
+		for i in int(PRESETS[kind].get("emitters", EMITTERS_PER_KIND)):
 			list.append(_make_emitter(PRESETS[kind], material))
 		_emitters[kind] = list
 		_next[kind] = 0

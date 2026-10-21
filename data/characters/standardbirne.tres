@@ -10,6 +10,7 @@
 [ext_resource type="Resource" path="res://data/weapons/ast.tres" id="8_6ll5f"]
 [ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="9_h533c"]
 [ext_resource type="Texture2D" path="res://art/characters/standardbirne.svg" id="10_olhf7"]
+[ext_resource type="Texture2D" path="res://art/portraits/standardbirne.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_c8ekg"]
 script = ExtResource("2_6ughp")
@@ -44,3 +45,4 @@ set_bonus_multiplier = Dictionary[StringName, float]({})
 banned_classes = Array[StringName]([])
 no_melee = false
 unlocked_by_default = true
+portrait = ExtResource("p_portrait")

@@ -1,12 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="40" viewBox="0 0 48 40">
-  <!-- Licht-Drohne (Platzhalter): kleine Birne mit zwei Rotoren -->
-  <path d="M4,10 L18,10 M30,10 L44,10" stroke="#2A1E2E" stroke-width="5" stroke-linecap="round"/>
-  <path d="M4,10 L18,10 M30,10 L44,10" stroke="#9AA0A6" stroke-width="2.5" stroke-linecap="round"/>
-  <rect x="18" y="8" width="12" height="8" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3"/>
-  <circle cx="24" cy="26" r="11" fill="#F2B83A"/>
-  <circle cx="22.5" cy="24.5" r="10" fill="#FFE066"/>
-  <ellipse cx="19" cy="21" rx="3" ry="2" fill="#FFFFFF" transform="rotate(-35 19 21)"/>
-  <circle cx="24" cy="26" r="11" fill="none" stroke="#2A1E2E" stroke-width="3.5"/>
-  <ellipse cx="21" cy="26" rx="2" ry="3" fill="#2A1E2E"/>
-  <ellipse cx="27" cy="26" rx="2" ry="3" fill="#2A1E2E"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="44" viewBox="0 0 52 44">
+  <!-- Licht-Drohne (Drohnenleuchte, Wartungsdrohne): Lampe mit zwei Rotoren -->
+  <defs><radialGradient id="dglow"><stop offset="0" stop-color="#FFE066" stop-opacity="0.65"/><stop offset="1" stop-color="#FFE066" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="26" cy="30" r="14" fill="url(#dglow)"/>
+  <path d="M8,14 L20,18 M44,14 L32,18" stroke="#2A1E2E" stroke-width="6" stroke-linecap="round"/>
+  <path d="M8,14 L20,18 M44,14 L32,18" stroke="#9AA0A6" stroke-width="2.5" stroke-linecap="round"/>
+  <ellipse cx="8" cy="11" rx="7.5" ry="2.6" fill="#E6EAEE" fill-opacity="0.85" stroke="#2A1E2E" stroke-width="2.5"/>
+  <ellipse cx="44" cy="11" rx="7.5" ry="2.6" fill="#E6EAEE" fill-opacity="0.85" stroke="#2A1E2E" stroke-width="2.5"/>
+  <circle cx="8" cy="11" r="1.6" fill="#2A1E2E"/><circle cx="44" cy="11" r="1.6" fill="#2A1E2E"/>
+  <path d="M26,12 L29,4" stroke="#2A1E2E" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="29.5" cy="3.5" r="2.2" fill="#E74C3C" stroke="#2A1E2E" stroke-width="1.8"/>
+  <defs><path id="dbody" d="M14,22 C14,15 19,12 26,12 C33,12 38,15 38,22 L38,24 L14,24 Z"/><clipPath id="dbody-clip"><use href="#dbody"/></clipPath></defs>
+  <use href="#dbody" fill="#6F757C"/>
+  <rect x="11" y="9" width="25" height="13" rx="6" fill="#9AA0A6" clip-path="url(#dbody-clip)"/>
+  <use href="#dbody" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="26" cy="30" r="10" fill="#F2B83A"/>
+  <circle cx="24.5" cy="28.5" r="9" fill="#FFE066"/>
+  <ellipse cx="21.5" cy="25.5" rx="3" ry="1.8" fill="#FFFFFF" transform="rotate(-35 21.5 25.5)"/>
+  <circle cx="26" cy="30" r="10" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <path d="M13,24 L39,24" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="22.5" cy="30" rx="1.8" ry="2.6" fill="#2A1E2E"/><ellipse cx="29.5" cy="30" rx="1.8" ry="2.6" fill="#2A1E2E"/>
 </svg>

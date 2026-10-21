@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Porträt halogenstrahler (erzeugt von tools/make_portraits.py, nicht von Hand ändern) -->
+  <defs><radialGradient id="p-glow"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.55"/><stop offset="0.7" stop-color="#FFFFFF" stop-opacity="0.12"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="#1B1B24"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="url(#p-glow)"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-opacity="0.8"/>
+  <circle cx="64.0" cy="64.0" r="62.0" fill="none" stroke="#2A1E2E" stroke-width="2"/>
+  <g transform="translate(19.0,6.0) scale(1.25)">
+  <!-- Halogenstrahler: kastenförmiger Strahler auf Bügel -->
+  <defs><radialGradient id="s-glow"><stop offset="0" stop-color="#FFF4B8" stop-opacity="0.6"/><stop offset="1" stop-color="#FFF4B8" stop-opacity="0"/></radialGradient></defs><circle cx="36" cy="40" r="40" fill="url(#s-glow)"/>
+  <path d="M10,46 L4,86 M62,46 L68,86" stroke="#2A1E2E" stroke-width="7" stroke-linecap="round"/>
+  <path d="M10,46 L4,86 M62,46 L68,86" stroke="#5A5F66" stroke-width="3" stroke-linecap="round"/>
+  <rect x="2" y="84" width="68" height="8" rx="3" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="8" y="16" width="56" height="48" rx="6" fill="#2E2E3D" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="14" y="22" width="44" height="36" rx="3" fill="#FFF4B8" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M18,28 L54,28 M18,36 L54,36 M18,44 L54,44 M18,52 L54,52" stroke="#FFD43B" stroke-width="2"/>
+  <ellipse cx="27" cy="38" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="45" cy="38" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="29" cy="34" r="2.2" fill="#FFFFFF"/>
+  <circle cx="47" cy="34" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,49 Q36,54 41,49" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -12,11 +12,14 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="10_6a6i0"]
 [ext_resource type="Resource" path="res://data/weapons/kristallstab.tres" id="11_5qj4c"]
 [ext_resource type="Texture2D" path="res://art/characters/kronleuchter.svg" id="12_rq1yl"]
+[ext_resource type="Texture2D" path="res://art/portraits/kronleuchter.svg" id="p_portrait"]
+[ext_resource type="Texture2D" path="res://art/characters/kronleuchter_kristalle.svg" id="p_swing"]
 
 [sub_resource type="Resource" id="Resource_hv55o"]
 script = ExtResource("4_01bev")
 radius = 70.0
 base_damage = 8.0
+travel_speed = 1100.0
 scalings = Dictionary[StringName, float]({
 &"elemental_dmg": 1.0
 })
@@ -65,3 +68,7 @@ starting_weapons = Array[ExtResource("10_6a6i0")]([ExtResource("11_5qj4c")])
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"elemental"])
 order = 14
+portrait = ExtResource("p_portrait")
+swing_texture = ExtResource("p_swing")
+swing_pivot = Vector2(36, 40)
+light_color = Color(1, 0.824, 0.478, 1)

@@ -26,6 +26,7 @@ extends Resource
 @export var burn_interval: float = 0.0
 ## Radius, in dem sich Brand auf andere Gegner ausbreitet (Stat burn_spread = Anzahl).
 @export var burn_spread_radius: float = 0.0
+## Farbton brennender Gegner (Alpha = Stärke der Tönung).
 @export var burn_tint: Color = Color.WHITE
 @export var homing_retarget_interval: float = 0.0
 ## Splitter (Kristallstab): Fächerbreite in Grad und Flugweite in px.

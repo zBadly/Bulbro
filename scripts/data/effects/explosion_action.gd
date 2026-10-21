@@ -5,11 +5,21 @@ extends EffectAction
 @export var radius: float = 0.0
 @export var base_damage: float = 0.0
 @export var scalings: Dictionary[StringName, float] = {}
+## Feuerball: fliegt mit diesem Tempo (px/s) vom Spieler zum Ort und explodiert erst dort. 0 = sofort.
+@export var travel_speed: float = 0.0
 
 
 func execute(ctx: EffectContext, origin: Vector2) -> void:
 	var amount: int = ctx.effect_damage(base_damage, scalings)
-	Hits.explode(ctx.tree, ctx.player, origin, radius, DamageInfo.create(amount, false, 0.0, null))
+	var player: Player = ctx.player
+	var tree: SceneTree = ctx.tree
+	var explode: Callable = func() -> void:
+		if is_instance_valid(player) and not player.is_dead:
+			Hits.explode(tree, player, origin, radius, DamageInfo.create(amount, false, 0.0, null))
+	if travel_speed > 0.0 and is_instance_valid(player):
+		Fx.fireball(tree, player.get_center(), origin, travel_speed, explode)
+	else:
+		explode.call()
 
 
 func describe() -> String:

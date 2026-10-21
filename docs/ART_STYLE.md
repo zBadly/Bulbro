@@ -53,6 +53,8 @@ Technik: Form mit Schattenton füllen, Grundton als nach oben links verschobene 
 | Bosse | 200+ | `art/enemies/boss_*.svg` |
 | Waffen | 48 × 48 | `art/weapons/*.svg` |
 | Item-Icons | 64 × 64 | `art/items/*.svg` |
+| Charakter-Porträts | 128 × 128 (erzeugt) | `art/portraits/*.svg` |
+| Status-Grafiken | 26–64 | `art/fx/curse_mark.svg`, `ice_crystals.svg`, `root_vines.svg`, `burn_flames.svg` |
 | Pickups | 28–44 | `art/pickups/*.svg` |
 | Neutrale Objekte | ca. 56 × 72 | `art/world/*.svg` |
 | Spawn-Marker | 48 × 48 | `art/fx/spawn_marker.svg` |
@@ -92,6 +94,13 @@ Ankerpunkt: Figuren werden in Godot mit `offset.y = -Höhe/2` platziert, damit S
 | Tod | Squash, Pop auf 0, danach Partikel und Fleck (spätere Phase) |
 | Spawn | Rotes X pulsiert 1 s, dann Pop-in mit Überschwingen |
 | Buff | `outline.gdshader` mit roter Kontur |
+| Schweben (Irrlicht) | `Juice.hover` statt Hüpfen, dazu `Juice.flicker` |
+| Nachschwingen | `Juice.swing` für angehängte Teile (Kronleuchter-Kristalle) |
+| Status-Farbton | Shader-Parameter `tint_color` (Alpha = Stärke), Konturen bleiben dunkel |
+
+## Charaktere als Lichtquellen
+
+Jede Figur ist ein eigenes Leuchtmittel mit eigener Silhouette, nicht nur eine umgefärbte Birne. Sie bekommt eine passende Lichtfarbe (`CharacterData.light_color`), einen `radialGradient`-Glow im Sprite und den Bulbro-Gesichtsstil (große ovale Augen mit Glanzpunkt, kleiner Mund, Wangen). Porträts entstehen automatisch aus dem Sprite (`tools/make_portraits.py`).
 
 ## Gegner unterscheidbar machen
 

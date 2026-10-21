@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_fxtoj"]
 [ext_resource type="Resource" path="res://data/weapons/voodoo_nadel.tres" id="6_u6ig4"]
 [ext_resource type="Texture2D" path="res://art/characters/schwarzlicht.svg" id="7_q3p68"]
+[ext_resource type="Texture2D" path="res://art/portraits/schwarzlicht.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_ghnhi"]
 script = ExtResource("2_xmywn")
@@ -29,3 +30,5 @@ starting_weapons = Array[ExtResource("5_fxtoj")]([ExtResource("6_u6ig4")])
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"elemental"])
 order = 15
+portrait = ExtResource("p_portrait")
+light_color = Color(0.69, 0.486, 1, 1)

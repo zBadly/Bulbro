@@ -1,38 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="72" height="96" viewBox="0 0 72 96">
-  <!-- Platzhalter (Paket 3): umgefärbte Standardbirne, echte Grafik folgt in Paket 4 -->
-  <defs>
-    <path id="glass" d="M24,66 C24,58 8,51 8,34 A28,28 0 0 1 64,34 C64,51 48,58 48,66 Z"/>
-    <clipPath id="glass-clip"><use href="#glass"/></clipPath>
-    <rect id="base" x="22" y="63" width="28" height="22" rx="5"/>
-    <clipPath id="base-clip"><use href="#base"/></clipPath>
-  </defs>
-
-  <!-- Kontaktspitze -->
+  <!-- Drohnenleuchte: Birne mit Pilotenbrille und kleinem Propeller -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#FFD27A" stop-opacity="0.5"/><stop offset="1" stop-color="#FFD27A" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="36" cy="40" r="34" fill="url(#glow)"/>
+  <path d="M36,12 L36,4" stroke="#2A1E2E" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="25" cy="4" rx="11" ry="2.5" fill="#C9CED3" stroke="#2A1E2E" stroke-width="2.5"/>
+  <ellipse cx="47" cy="4" rx="11" ry="2.5" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="2.5"/>
+  <circle cx="36" cy="4.5" r="3" fill="#E74C3C" stroke="#2A1E2E" stroke-width="2.5"/>
+  <g transform="translate(2.2,5.8) scale(0.94)">
   <rect x="29" y="82" width="14" height="9" rx="4" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
-
-  <!-- Schraubsockel -->
-  <use href="#base" fill="#6F757C"/>
-  <rect x="18" y="59" width="28" height="22" rx="5" fill="#9AA0A6" clip-path="url(#base-clip)"/>
+  <defs><rect id="bbase" x="22" y="63" width="28" height="22" rx="5"/><clipPath id="bbase-clip"><use href="#bbase"/></clipPath></defs>
+  <use href="#bbase" fill="#6F757C"/>
+  <rect x="18" y="59" width="28" height="22" rx="5" fill="#9AA0A6" clip-path="url(#bbase-clip)"/>
   <rect x="25" y="66" width="5" height="16" rx="2.5" fill="#C9CED3"/>
-  <g stroke="#2A1E2E" stroke-width="3" stroke-linecap="round" fill="none">
-    <path d="M23,71 Q36,74 49,71"/>
-    <path d="M23,78 Q36,81 49,78"/>
-  </g>
-  <use href="#base" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
-
-  <!-- Glaskolben -->
-  <use href="#glass" fill="#E8A64A"/>
-  <ellipse cx="32" cy="31" rx="29" ry="30" fill="#FFD08A" clip-path="url(#glass-clip)"/>
+  <g stroke="#2A1E2E" stroke-width="3" stroke-linecap="round" fill="none"><path d="M23,71 Q36,74 49,71"/><path d="M23,78 Q36,81 49,78"/></g>
+  <use href="#bbase" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <defs><path id="glass" d="M24,66 C24,58 8,51 8,34 A28,28 0 0 1 64,34 C64,51 48,58 48,66 Z"/><clipPath id="glass-clip"><use href="#glass"/></clipPath></defs>
+  <use href="#glass" fill="#F2A33A"/>
+  <ellipse cx="32" cy="31" rx="29" ry="30" fill="#FFD27A" clip-path="url(#glass-clip)"/>
   <ellipse cx="20" cy="18" rx="7" ry="4.5" fill="#FFFFFF" transform="rotate(-40 20 18)"/>
   <circle cx="14" cy="29" r="2.5" fill="#FFFFFF"/>
   <use href="#glass" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
-
-  <!-- Gesicht -->
-  <ellipse cx="18" cy="45" rx="5" ry="3" fill="#FF9E7A" opacity="0.6"/>
-  <ellipse cx="54" cy="45" rx="5" ry="3" fill="#FF9E7A" opacity="0.6"/>
-  <ellipse cx="27" cy="35" rx="6" ry="8.5" fill="#2A1E2E"/>
-  <ellipse cx="45" cy="35" rx="6" ry="8.5" fill="#2A1E2E"/>
-  <circle cx="29" cy="31" r="2.4" fill="#FFFFFF"/>
-  <circle cx="47" cy="31" r="2.4" fill="#FFFFFF"/>
-  <path d="M31,47 Q36,52 41,47" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <path d="M9,27 Q36,15 63,27" fill="none" stroke="#2A1E2E" stroke-width="8" stroke-linecap="round"/>
+  <path d="M9,27 Q36,15 63,27" fill="none" stroke="#8A5A33" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="26" cy="22" r="7.5" fill="#8FE3FF" stroke="#C9952A" stroke-width="3"/>
+  <circle cx="46" cy="22" r="7.5" fill="#8FE3FF" stroke="#C9952A" stroke-width="3"/>
+  <circle cx="26" cy="22" r="9.5" fill="none" stroke="#2A1E2E" stroke-width="2"/><circle cx="46" cy="22" r="9.5" fill="none" stroke="#2A1E2E" stroke-width="2"/>
+  <path d="M23,19 L25,17 M43,19 L45,17" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="18" cy="48" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="54" cy="48" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="27" cy="40" rx="5.5" ry="7.5" fill="#2A1E2E"/>
+  <ellipse cx="45" cy="40" rx="5.5" ry="7.5" fill="#2A1E2E"/>
+  <circle cx="29" cy="36" r="2.2" fill="#FFFFFF"/>
+  <circle cx="47" cy="36" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,51 Q36,56 41,51" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  </g>
 </svg>

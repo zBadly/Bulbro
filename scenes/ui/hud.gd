@@ -154,7 +154,9 @@ func _on_sparks_changed(sparks: int, bag: int) -> void:
 func _on_hp_changed(current: float, maximum: float) -> void:
 	_hp_bar.max_value = maximum
 	_hp_bar.value = current
-	_hp_label.text = "%d / %d" % [ceili(current), roundi(maximum)]
+	# Krumme Max-HP (z. B. -25 % Max-HP-Modifikationen) nie als "13 / 12" anzeigen
+	var shown_max: int = roundi(maximum)
+	_hp_label.text = "%d / %d" % [mini(ceili(current), shown_max), shown_max]
 
 
 func _on_wave_started(number: int) -> void:

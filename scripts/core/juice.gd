@@ -22,11 +22,29 @@ const MARKER_PULSE_SCALE: float = 1.2
 const MARKER_PULSE_ALPHA: float = 0.55
 const TELEGRAPH_SQUASH: Vector2 = Vector2(1.2, 0.8)
 const TELEGRAPH_RELEASE_TIME: float = 0.08
+## Schweben (Irrlicht): Höhe und Dauer eines Auf-und-ab-Zyklus.
+const HOVER_HEIGHT: float = 7.0
+const HOVER_PERIOD: float = 1.4
+const HOVER_STRETCH: Vector2 = Vector2(0.97, 1.04)
+## Flackern: Helligkeits-/Alpha-Stufen mit ihren Dauern (unregelmäßig, wirkt wie eine Flamme).
+const FLICKER_STEPS: Array[Vector2] = [Vector2(0.78, 0.07), Vector2(1.0, 0.11), Vector2(0.9, 0.05), Vector2(1.0, 0.23),
+	Vector2(0.84, 0.06), Vector2(1.0, 0.16)]
+## Nachschwingen (Kronleuchter-Kristalle): Feder mit Dämpfung.
+const SWING_MAX_DEG: float = 14.0
+const SWING_SPEED_REF: float = 450.0
+const SWING_STIFFNESS: float = 90.0
+const SWING_DAMPING: float = 7.0
+const SWING_WOBBLE_DEG: float = 6.0
+const SWING_WOBBLE_FREQ: float = 9.0
+## Kurzes Aufleuchten bei einem Effekt (Stroboskop-Blitz).
+const EFFECT_FLASH_TIME: float = 0.18
 
 const META_BASE_SCALE: StringName = &"juice_base_scale"
 const META_BOB: StringName = &"juice_bob_tween"
 const META_TILT: StringName = &"juice_tilt_tween"
 const META_TILT_TARGET: StringName = &"juice_tilt_target"
+const META_FLICKER: StringName = &"juice_flicker_tween"
+const META_SWING_VELOCITY: StringName = &"juice_swing_velocity"
 const FLASH_PARAM: StringName = &"flash_amount"
 
 
@@ -113,6 +131,54 @@ static func telegraph(node: Node2D, hold_time: float) -> Tween:
 	tween.tween_property(node, "scale", base, TELEGRAPH_RELEASE_TIME)
 	tween.finished.connect(func() -> void: idle_bob(node), CONNECT_ONE_SHOT)
 	node.set_meta(META_BOB, tween)
+	return tween
+
+
+## Schweben statt Hüpfen: sanftes Auf und Ab mit leichtem Strecken. Ersetzt idle_bob (gleicher Schlüssel),
+## damit walk_tilt es beim Laufen beschleunigt und squash_pop es abbricht.
+static func hover(node: Node2D) -> Tween:
+	_kill(node, META_BOB)
+	var base: Vector2 = _base_scale(node)
+	var rest: float = node.position.y
+	var tween: Tween = node.create_tween().set_loops()
+	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(node, "position:y", rest - HOVER_HEIGHT, HOVER_PERIOD * 0.5)
+	tween.parallel().tween_property(node, "scale", base * HOVER_STRETCH, HOVER_PERIOD * 0.5)
+	tween.tween_property(node, "position:y", rest, HOVER_PERIOD * 0.5)
+	tween.parallel().tween_property(node, "scale", base, HOVER_PERIOD * 0.5)
+	node.set_meta(META_BOB, tween)
+	return tween
+
+
+## Unregelmäßiges Flackern über self_modulate (Flamme). Läuft endlos.
+static func flicker(item: CanvasItem) -> Tween:
+	_kill(item, META_FLICKER)
+	var tween: Tween = item.create_tween().set_loops()
+	for step: Vector2 in FLICKER_STEPS:
+		tween.tween_property(item, "self_modulate", Color(step.x, step.x, step.x, lerpf(1.0, step.x, 0.5)), step.y)
+	item.set_meta(META_FLICKER, tween)
+	return tween
+
+
+## Jeden Frame aufrufen: lässt ein angehängtes Teil (Kristalle) gegen die Laufrichtung pendeln
+## und beim Laufen leicht wackeln. Der Drehpunkt ist die Position des Nodes.
+static func swing(node: Node2D, velocity: Vector2, delta: float) -> void:
+	var angular: float = node.get_meta(META_SWING_VELOCITY, 0.0)
+	var target: float = clampf(-velocity.x / SWING_SPEED_REF, -1.0, 1.0) * deg_to_rad(SWING_MAX_DEG)
+	if velocity.length() > WALK_MIN_SPEED:
+		target += sin(Time.get_ticks_msec() * 0.001 * SWING_WOBBLE_FREQ) * deg_to_rad(SWING_WOBBLE_DEG)
+	angular += ((target - node.rotation) * SWING_STIFFNESS - angular * SWING_DAMPING) * delta
+	node.rotation += angular * delta
+	node.set_meta(META_SWING_VELOCITY, angular)
+
+
+## Kurzes Aufleuchten bei einem Effekt: weißer Flash, etwas länger als ein Treffer.
+static func effect_flash(item: CanvasItem) -> Tween:
+	var mat: ShaderMaterial = item.material as ShaderMaterial
+	if mat == null:
+		return null
+	var tween: Tween = item.create_tween()
+	tween.tween_method(func(value: float) -> void: mat.set_shader_parameter(FLASH_PARAM, value), 1.0, 0.0, EFFECT_FLASH_TIME)
 	return tween
 
 

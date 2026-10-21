@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="7_1rfk2"]
 [ext_resource type="Resource" path="res://data/weapons/laserpointer.tres" id="8_hdnn5"]
 [ext_resource type="Texture2D" path="res://art/characters/stroboskop.svg" id="9_orehe"]
+[ext_resource type="Texture2D" path="res://art/portraits/stroboskop.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_u5lbw"]
 script = ExtResource("2_l6bv2")
@@ -43,3 +44,5 @@ starting_weapons = Array[ExtResource("7_1rfk2")]([ExtResource("8_hdnn5")])
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"speed"])
 order = 19
+portrait = ExtResource("p_portrait")
+light_color = Color(1, 0.957, 0.722, 1)

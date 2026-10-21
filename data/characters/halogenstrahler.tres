@@ -10,6 +10,7 @@
 [ext_resource type="Resource" path="res://data/weapons/ast.tres" id="8_iegwx"]
 [ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="9_eu72p"]
 [ext_resource type="Texture2D" path="res://art/characters/halogenstrahler.svg" id="10_tsyof"]
+[ext_resource type="Texture2D" path="res://art/portraits/halogenstrahler.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_7w353"]
 script = ExtResource("2_j8esa")
@@ -43,3 +44,4 @@ order = 8
 set_bonus_multiplier = Dictionary[StringName, float]({})
 banned_classes = Array[StringName]([])
 no_melee = false
+portrait = ExtResource("p_portrait")

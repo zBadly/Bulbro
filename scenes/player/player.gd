@@ -21,6 +21,8 @@ const GROUP: StringName = &"player"
 ## Standardanzahl Waffenslots (Charaktere wie die Lichterkette weichen davon ab).
 const DEFAULT_WEAPON_SLOTS: int = 6
 const AIM_STICK_DEADZONE: float = 0.3
+## Effekt-Blitz (Stroboskop): Lichtstärke kurz mal diesem Faktor.
+const EFFECT_LIGHT_BOOST: float = 2.5
 
 @export var config: PlayerConfig
 
@@ -60,6 +62,8 @@ var rules: Dictionary[Rule, bool] = {}
 var _set_modifiers: Array[StatModifier] = []
 var _still_active: bool = false
 var _aim_direction: Vector2 = Vector2.RIGHT
+## Nachschwingendes Zusatzteil des Charakters (Kronleuchter-Kristalle), sonst null.
+var _swing: Sprite2D
 
 @onready var _visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -125,6 +129,8 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_clamp_to_arena()
 	Juice.walk_tilt(_visual, velocity)
+	if _swing != null:
+		Juice.swing(_swing, velocity, delta)
 	_update_standing_still()
 	_regenerate(delta)
 
@@ -183,6 +189,7 @@ func apply_character(data: CharacterData) -> void:
 	character = data
 	_sprite.texture = data.texture
 	_sprite.offset = Vector2(0.0, -data.texture.get_height() * 0.5)
+	_apply_character_visuals(data)
 	if data.weapon_slots > 0:
 		weapon_slots.max_slots = data.weapon_slots
 	set_bonus_multiplier = data.set_bonus_multiplier.duplicate()
@@ -190,6 +197,32 @@ func apply_character(data: CharacterData) -> void:
 		_apply_character_effect(effect)
 	GameState.preferred_tags = data.preferred_tags.duplicate()
 	update_weapon_modifiers()
+
+
+## Lichtfarbe, Animationsstil und nachschwingende Teile des Charakters.
+func _apply_character_visuals(data: CharacterData) -> void:
+	if data.light_color.a > 0.0:
+		_light.color = data.light_color
+	if data.idle_style == CharacterData.IdleStyle.HOVER_FLICKER:
+		Juice.hover(_visual)
+		Juice.flicker(_sprite)
+	if data.swing_texture != null:
+		var size: Vector2 = data.texture.get_size()
+		_swing = Sprite2D.new()
+		_swing.texture = data.swing_texture
+		_swing.centered = false
+		_swing.material = _sprite.material
+		_swing.position = Vector2(data.swing_pivot.x - size.x * 0.5, data.swing_pivot.y - size.y)
+		_swing.offset = -data.swing_pivot
+		_visual.add_child(_swing)
+
+
+## Kurzes Aufleuchten von Figur und Licht, wenn ein Effekt auslöst (Stroboskop-Blitz).
+func effect_flash() -> void:
+	Juice.effect_flash(_sprite)
+	var tween: Tween = _light.create_tween()
+	tween.tween_property(_light, "energy", config.light_energy * EFFECT_LIGHT_BOOST, Juice.EFFECT_FLASH_TIME * 0.3)
+	tween.tween_property(_light, "energy", config.light_energy, Juice.EFFECT_FLASH_TIME * 0.7)
 
 
 ## Flache Stat-Boni des Charakters gehen in die Basis: "X-Modifikationen" wirken nur auf spätere Zuwächse.

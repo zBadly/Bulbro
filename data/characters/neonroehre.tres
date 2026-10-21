@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="6_rft8l"]
 [ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="7_6yh84"]
 [ext_resource type="Texture2D" path="res://art/characters/neonroehre.svg" id="8_u47bu"]
+[ext_resource type="Texture2D" path="res://art/portraits/neonroehre.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_3kgnn"]
 script = ExtResource("2_a4hcf")
@@ -53,3 +54,4 @@ set_bonus_multiplier = Dictionary[StringName, float]({})
 banned_classes = Array[StringName]([])
 no_melee = false
 unlocked_by_default = true
+portrait = ExtResource("p_portrait")

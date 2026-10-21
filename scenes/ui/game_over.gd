@@ -48,7 +48,7 @@ func show_result(victory: bool, wave_number: int, player: Player) -> void:
 	header.add_theme_constant_override("separation", GAP)
 	_box.add_child(header)
 	var portrait: TextureRect = TextureRect.new()
-	portrait.texture = GameState.character.texture
+	portrait.texture = GameState.character.get_portrait()
 	portrait.custom_minimum_size = PORTRAIT_SIZE
 	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED

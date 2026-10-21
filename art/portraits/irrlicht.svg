@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Porträt irrlicht (erzeugt von tools/make_portraits.py, nicht von Hand ändern) -->
+  <defs><radialGradient id="p-glow"><stop offset="0" stop-color="#6FD3FF" stop-opacity="0.55"/><stop offset="0.7" stop-color="#6FD3FF" stop-opacity="0.12"/><stop offset="1" stop-color="#6FD3FF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="#1B1B24"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="url(#p-glow)"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="none" stroke="#6FD3FF" stroke-width="3" stroke-opacity="0.8"/>
+  <circle cx="64.0" cy="64.0" r="62.0" fill="none" stroke="#2A1E2E" stroke-width="2"/>
+  <g transform="translate(19.0,6.0) scale(1.25)">
+  <!-- Irrlicht: schwebende blaue Flamme mit Augen, ohne Sockel -->
+  <defs><radialGradient id="s-glow"><stop offset="0" stop-color="#6FD3FF" stop-opacity="0.7"/><stop offset="1" stop-color="#6FD3FF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="36" cy="54" r="36" fill="url(#s-glow)"/>
+  <path d="M12,26 C9,23 9,19 12,15 C15,19 15,23 12,26 Z" fill="#9FE3FF" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M62,12 C60,10 60,7 62,4 C64,7 64,10 62,12 Z" fill="#9FE3FF" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <defs><path id="s-flame" d="M36,90 C19,90 9,78 9,62 C9,50 15,43 20,33 C22,40 26,42 28,38 C27,27 31,16 40,5 C41,16 47,21 50,29 C53,26 55,22 55,16 C63,28 63,43 63,58 C63,78 53,90 36,90 Z"/><clipPath id="s-flame-clip"><use href="#s-flame"/></clipPath></defs>
+  <use href="#s-flame" fill="#3A8EE0"/>
+  <ellipse cx="31" cy="48" rx="30" ry="44" fill="#6FD3FF" clip-path="url(#s-flame-clip)"/>
+  <path d="M36,84 C26,84 20,77 20,67 C20,58 25,52 29,46 C31,51 34,52 35,49 C37,56 43,58 46,53 C50,59 52,63 52,69 C52,78 46,84 36,84 Z" fill="#C6F2FF"/>
+  <ellipse cx="18" cy="54" rx="3.5" ry="7" fill="#E6FAFF" transform="rotate(20 18 54)"/>
+  <circle cx="40" cy="20" r="2" fill="#E6FAFF"/>
+  <use href="#s-flame" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <ellipse cx="20" cy="72" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="52" cy="72" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="27.5" cy="63" rx="5.5" ry="7.5" fill="#2A1E2E"/>
+  <ellipse cx="44.5" cy="63" rx="5.5" ry="7.5" fill="#2A1E2E"/>
+  <circle cx="29.5" cy="59" r="2.2" fill="#FFFFFF"/>
+  <circle cx="46.5" cy="59" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,74 Q36,79 41,74" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_yq7on"]
 [ext_resource type="Resource" path="res://data/weapons/heilstrahl.tres" id="6_innj5"]
 [ext_resource type="Texture2D" path="res://art/characters/nachtlicht.svg" id="7_s71no"]
+[ext_resource type="Texture2D" path="res://art/portraits/nachtlicht.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_5gt3u"]
 script = ExtResource("2_fkp22")
@@ -45,3 +46,4 @@ order = 9
 set_bonus_multiplier = Dictionary[StringName, float]({})
 banned_classes = Array[StringName]([])
 no_melee = false
+portrait = ExtResource("p_portrait")

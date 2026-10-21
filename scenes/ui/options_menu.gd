@@ -68,6 +68,8 @@ func open() -> void:
 	grid.add_child(_toggle(SaveManager.LIGHTING_KEY, true, func(_on: bool) -> void: pass))
 	_label(grid, "OPT_SCREENSHAKE")
 	grid.add_child(_toggle(SaveManager.SCREENSHAKE_KEY, true, func(_on: bool) -> void: pass))
+	_label(grid, "OPT_REDUCED_FX")
+	grid.add_child(_toggle(SaveManager.REDUCED_FX_KEY, false, func(_on: bool) -> void: pass))
 	_label(grid, "OPT_MANUAL_AIM")
 	grid.add_child(_toggle(SaveManager.MANUAL_AIM_KEY, false, func(_on: bool) -> void: pass))
 	for key: String in ASSIST_KEYS:

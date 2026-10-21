@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Porträt blitzlicht (erzeugt von tools/make_portraits.py, nicht von Hand ändern) -->
+  <defs><radialGradient id="p-glow"><stop offset="0" stop-color="#FFD43B" stop-opacity="0.55"/><stop offset="0.7" stop-color="#FFD43B" stop-opacity="0.12"/><stop offset="1" stop-color="#FFD43B" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="#1B1B24"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="url(#p-glow)"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="none" stroke="#FFD43B" stroke-width="3" stroke-opacity="0.8"/>
+  <circle cx="64.0" cy="64.0" r="62.0" fill="none" stroke="#2A1E2E" stroke-width="2"/>
+  <g transform="translate(19.0,6.0) scale(1.25)">
+  <!-- Blitzlicht: Blitzgerät mit gelbem Blitzfenster -->
+  <path d="M46,4 L38,16 L44,16 L36,28" fill="none" stroke="#2A1E2E" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M46,4 L38,16 L44,16 L36,28" fill="none" stroke="#FFD43B" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="24" y="64" width="24" height="28" rx="4" fill="#2E2E3D" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="8" y="22" width="56" height="46" rx="8" fill="#F4F0EA" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="14" y="28" width="44" height="14" rx="4" fill="#FFE066" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M18,32 L54,32" stroke="#FFF4B8" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="27" cy="52" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="45" cy="52" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="29" cy="48" r="2.2" fill="#FFFFFF"/>
+  <circle cx="47" cy="48" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,61 Q36,66 41,61" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

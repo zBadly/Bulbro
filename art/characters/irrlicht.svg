@@ -1,38 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="72" height="96" viewBox="0 0 72 96">
-  <!-- Platzhalter (Paket 3): umgefärbte Standardbirne, echte Grafik folgt in Paket 4 -->
-  <defs>
-    <path id="glass" d="M24,66 C24,58 8,51 8,34 A28,28 0 0 1 64,34 C64,51 48,58 48,66 Z"/>
-    <clipPath id="glass-clip"><use href="#glass"/></clipPath>
-    <rect id="base" x="22" y="63" width="28" height="22" rx="5"/>
-    <clipPath id="base-clip"><use href="#base"/></clipPath>
-  </defs>
-
-  <!-- Kontaktspitze -->
-  <rect x="29" y="82" width="14" height="9" rx="4" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
-
-  <!-- Schraubsockel -->
-  <use href="#base" fill="#6F757C"/>
-  <rect x="18" y="59" width="28" height="22" rx="5" fill="#9AA0A6" clip-path="url(#base-clip)"/>
-  <rect x="25" y="66" width="5" height="16" rx="2.5" fill="#C9CED3"/>
-  <g stroke="#2A1E2E" stroke-width="3" stroke-linecap="round" fill="none">
-    <path d="M23,71 Q36,74 49,71"/>
-    <path d="M23,78 Q36,81 49,78"/>
-  </g>
-  <use href="#base" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
-
-  <!-- Glaskolben -->
-  <use href="#glass" fill="#4A90E2"/>
-  <ellipse cx="32" cy="31" rx="29" ry="30" fill="#9FD8FF" clip-path="url(#glass-clip)"/>
-  <ellipse cx="20" cy="18" rx="7" ry="4.5" fill="#FFFFFF" transform="rotate(-40 20 18)"/>
-  <circle cx="14" cy="29" r="2.5" fill="#FFFFFF"/>
-  <use href="#glass" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
-
-  <!-- Gesicht -->
-  <ellipse cx="18" cy="45" rx="5" ry="3" fill="#FF9E7A" opacity="0.6"/>
-  <ellipse cx="54" cy="45" rx="5" ry="3" fill="#FF9E7A" opacity="0.6"/>
-  <ellipse cx="27" cy="35" rx="6" ry="8.5" fill="#2A1E2E"/>
-  <ellipse cx="45" cy="35" rx="6" ry="8.5" fill="#2A1E2E"/>
-  <circle cx="29" cy="31" r="2.4" fill="#FFFFFF"/>
-  <circle cx="47" cy="31" r="2.4" fill="#FFFFFF"/>
-  <path d="M31,47 Q36,52 41,47" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <!-- Irrlicht: schwebende blaue Flamme mit Augen, ohne Sockel -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#6FD3FF" stop-opacity="0.7"/><stop offset="1" stop-color="#6FD3FF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="36" cy="54" r="36" fill="url(#glow)"/>
+  <path d="M12,26 C9,23 9,19 12,15 C15,19 15,23 12,26 Z" fill="#9FE3FF" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M62,12 C60,10 60,7 62,4 C64,7 64,10 62,12 Z" fill="#9FE3FF" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <defs><path id="flame" d="M36,90 C19,90 9,78 9,62 C9,50 15,43 20,33 C22,40 26,42 28,38 C27,27 31,16 40,5 C41,16 47,21 50,29 C53,26 55,22 55,16 C63,28 63,43 63,58 C63,78 53,90 36,90 Z"/><clipPath id="flame-clip"><use href="#flame"/></clipPath></defs>
+  <use href="#flame" fill="#3A8EE0"/>
+  <ellipse cx="31" cy="48" rx="30" ry="44" fill="#6FD3FF" clip-path="url(#flame-clip)"/>
+  <path d="M36,84 C26,84 20,77 20,67 C20,58 25,52 29,46 C31,51 34,52 35,49 C37,56 43,58 46,53 C50,59 52,63 52,69 C52,78 46,84 36,84 Z" fill="#C6F2FF"/>
+  <ellipse cx="18" cy="54" rx="3.5" ry="7" fill="#E6FAFF" transform="rotate(20 18 54)"/>
+  <circle cx="40" cy="20" r="2" fill="#E6FAFF"/>
+  <use href="#flame" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <ellipse cx="20" cy="72" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="52" cy="72" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="27.5" cy="63" rx="5.5" ry="7.5" fill="#2A1E2E"/>
+  <ellipse cx="44.5" cy="63" rx="5.5" ry="7.5" fill="#2A1E2E"/>
+  <circle cx="29.5" cy="59" r="2.2" fill="#FFFFFF"/>
+  <circle cx="46.5" cy="59" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,74 Q36,79 41,74" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
 </svg>

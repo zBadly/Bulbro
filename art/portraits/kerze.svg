@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Porträt kerze (erzeugt von tools/make_portraits.py, nicht von Hand ändern) -->
+  <defs><radialGradient id="p-glow"><stop offset="0" stop-color="#FF8C42" stop-opacity="0.55"/><stop offset="0.7" stop-color="#FF8C42" stop-opacity="0.12"/><stop offset="1" stop-color="#FF8C42" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="#1B1B24"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="url(#p-glow)"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="none" stroke="#FF8C42" stroke-width="3" stroke-opacity="0.8"/>
+  <circle cx="64.0" cy="64.0" r="62.0" fill="none" stroke="#2A1E2E" stroke-width="2"/>
+  <g transform="translate(19.0,6.0) scale(1.25)">
+  <!-- Kerze mit Flamme und Wachstropfen -->
+  <defs><radialGradient id="s-glow"><stop offset="0" stop-color="#FF8C42" stop-opacity="0.6"/><stop offset="1" stop-color="#FF8C42" stop-opacity="0"/></radialGradient></defs><circle cx="36" cy="14" r="22" fill="url(#s-glow)"/>
+  <path d="M36,2 C44,12 44,20 36,26 C28,20 28,12 36,2 Z" fill="#FF8C42" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M36,10 C39,15 39,19 36,22 C33,19 33,15 36,10 Z" fill="#FFD43B"/>
+  <path d="M36,26 L36,32" stroke="#2A1E2E" stroke-width="3"/>
+  <path d="M16,34 L56,34 L56,88 Q36,94 16,88 Z" fill="#F4F0EA" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M16,34 L56,34 L56,42 Q50,48 46,42 Q40,52 34,42 Q26,48 22,42 Q18,46 16,42 Z" fill="#FFFFFF" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="20" y="48" width="5" height="34" rx="2.5" fill="#FFFFFF"/>
+  <ellipse cx="19" cy="68" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="53" cy="68" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="28" cy="58" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="44" cy="58" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="30" cy="54" r="2.2" fill="#FFFFFF"/>
+  <circle cx="46" cy="54" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,69 Q36,74 41,69" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

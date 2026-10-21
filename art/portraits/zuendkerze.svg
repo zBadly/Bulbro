@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Porträt zuendkerze (erzeugt von tools/make_portraits.py, nicht von Hand ändern) -->
+  <defs><radialGradient id="p-glow"><stop offset="0" stop-color="#FFB347" stop-opacity="0.55"/><stop offset="0.7" stop-color="#FFB347" stop-opacity="0.12"/><stop offset="1" stop-color="#FFB347" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="#1B1B24"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="url(#p-glow)"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="none" stroke="#FFB347" stroke-width="3" stroke-opacity="0.8"/>
+  <circle cx="64.0" cy="64.0" r="62.0" fill="none" stroke="#2A1E2E" stroke-width="2"/>
+  <g transform="translate(19.0,6.0) scale(1.25)">
+  <!-- Zuendkerze: Keramikkoerper mit Sechskantmutter und Funkenhaar -->
+  <defs><radialGradient id="s-glow"><stop offset="0" stop-color="#FFD43B" stop-opacity="0.55"/><stop offset="1" stop-color="#FFD43B" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="36" cy="12" r="18" fill="url(#s-glow)"/>
+  <path d="M36,16 L30,10 L33,8 L26,2 M36,16 L37,9 L34,7 L37,2 M36,16 L42,10 L40,7 L47,3" fill="none" stroke="#2A1E2E" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M36,16 L30,10 L33,8 L26,2 M36,16 L37,9 L34,7 L37,2 M36,16 L42,10 L40,7 L47,3" fill="none" stroke="#FFD43B" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="22" cy="10" r="1.8" fill="#FFF4B8"/><circle cx="51" cy="8" r="1.8" fill="#FFF4B8"/><circle cx="31" cy="1.8" r="1.2" fill="#FFF4B8"/>
+  <path d="M29,24 L29,17 L41,17" fill="none" stroke="#2A1E2E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M29,24 L29,17 L41,17" fill="none" stroke="#C9CED3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="25" y="22" width="22" height="10" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M27,26 L45,25 M27,29 L45,28" stroke="#6F757C" stroke-width="2" stroke-linecap="round"/>
+  <defs><path id="s-nut" d="M18,31 L54,31 L58,36 L54,42 L18,42 L14,36 Z"/><clipPath id="s-nut-clip"><use href="#s-nut"/></clipPath></defs>
+  <use href="#s-nut" fill="#6F757C"/>
+  <rect x="12" y="29" width="44" height="10" fill="#9AA0A6" clip-path="url(#s-nut-clip)"/>
+  <path d="M27,31 L27,42 M45,31 L45,42" stroke="#6F757C" stroke-width="2.5"/>
+  <rect x="18" y="33" width="7" height="3" rx="1.5" fill="#C9CED3"/>
+  <use href="#s-nut" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <defs><path id="s-ceramic" d="M22,42 L50,42 C54,42 56,45 56,49 L56,74 C56,80 52,84 46,84 L26,84 C20,84 16,80 16,74 L16,49 C16,45 18,42 22,42 Z"/><clipPath id="s-ceramic-clip"><use href="#s-ceramic"/></clipPath></defs>
+  <use href="#s-ceramic" fill="#D8CFC2"/>
+  <rect x="13" y="40" width="40" height="42" rx="9" fill="#F4F0EA" clip-path="url(#s-ceramic-clip)"/>
+  <rect x="20" y="47" width="4" height="26" rx="2" fill="#FFFFFF"/>
+  <use href="#s-ceramic" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M20,79 Q36,82 52,79" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <rect x="28" y="84" width="16" height="8" rx="3" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <ellipse cx="22" cy="68" rx="4.5" ry="2.8" fill="#FF8C42" opacity="0.6"/>
+  <ellipse cx="50" cy="68" rx="4.5" ry="2.8" fill="#FF8C42" opacity="0.6"/>
+  <ellipse cx="27.5" cy="59" rx="5" ry="7.5" fill="#2A1E2E"/>
+  <ellipse cx="44.5" cy="59" rx="5" ry="7.5" fill="#2A1E2E"/>
+  <circle cx="29.5" cy="55" r="2.2" fill="#FFFFFF"/>
+  <circle cx="46.5" cy="55" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,70 Q36,75 41,70" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

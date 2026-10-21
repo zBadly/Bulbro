@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Porträt spiegelkugel (erzeugt von tools/make_portraits.py, nicht von Hand ändern) -->
+  <defs><radialGradient id="p-glow"><stop offset="0" stop-color="#E6FAFF" stop-opacity="0.55"/><stop offset="0.7" stop-color="#E6FAFF" stop-opacity="0.12"/><stop offset="1" stop-color="#E6FAFF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="#1B1B24"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="url(#p-glow)"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="none" stroke="#E6FAFF" stroke-width="3" stroke-opacity="0.8"/>
+  <circle cx="64.0" cy="64.0" r="62.0" fill="none" stroke="#2A1E2E" stroke-width="2"/>
+  <g transform="translate(19.0,6.0) scale(1.25)">
+  <!-- Spiegelkugel: silberne Kugel mit Facetten auf einem Standfuss -->
+  <defs><radialGradient id="s-glow"><stop offset="0" stop-color="#E6FAFF" stop-opacity="0.6"/><stop offset="1" stop-color="#E6FAFF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="36" cy="42" r="36" fill="url(#s-glow)"/>
+  <path d="M24,82 L48,82 L54,91 L18,91 Z" fill="#6F757C" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <rect x="31" y="70" width="10" height="13" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <defs><path id="s-sphere" d="M36,10 A32,32 0 1 1 35.99,10 Z"/><clipPath id="s-sphere-clip"><use href="#s-sphere"/></clipPath></defs>
+  <use href="#s-sphere" fill="#9AA8B5"/>
+  <circle cx="33" cy="39" r="31" fill="#D9E2EA" clip-path="url(#s-sphere-clip)"/>
+  <g clip-path="url(#s-sphere-clip)">
+    <path d="M14,24 L36,13 L26,32 Z" fill="#F7FBFE"/>
+    <path d="M58,24 L46,32 L66,43 Z" fill="#BFE6FF"/>
+    <path d="M6,43 L26,32 L22,56 Z" fill="#E4DBFF"/>
+    <path d="M50,56 L58,62 L66,43 Z" fill="#8FA6C9"/>
+    <path d="M22,56 L36,73 L14,62 Z" fill="#C3D1DE"/>
+    <path d="M14,24 L36,13 L58,24 L66,43 L58,62 L36,73 L14,62 L6,43 Z M14,24 L26,32 L36,13 L46,32 L58,24 M26,32 L46,32 M6,43 L26,32 M66,43 L46,32 M6,43 L22,56 L14,62 M66,43 L50,56 L58,62 M22,56 L36,73 L50,56 M22,56 L50,56" fill="none" stroke="#8E9AA8" stroke-width="1.6" stroke-linejoin="round"/>
+  </g>
+  <path d="M18,22 L24,19 L22,25 Z" fill="#FFFFFF"/>
+  <use href="#s-sphere" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <ellipse cx="19" cy="54" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="53" cy="54" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="27" cy="44" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="45" cy="44" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="29" cy="40" r="2.2" fill="#FFFFFF"/>
+  <circle cx="47" cy="40" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,55 Q36,60 41,55" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

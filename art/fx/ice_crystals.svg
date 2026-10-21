@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="38" viewBox="0 0 64 38">
+  <!-- Eiskristalle um die Fuesse eingefrorener Gegner -->
+  <path d="M10,34 L6,16 L16,30 Z" fill="#8FE3FF"/>
+  <path d="M18,34 L16,8 L26,32 Z" fill="#8FE3FF"/>
+  <path d="M28,34 L32,2 L38,34 Z" fill="#8FE3FF"/>
+  <path d="M40,34 L48,10 L48,34 Z" fill="#8FE3FF"/>
+  <path d="M50,34 L58,18 L56,34 Z" fill="#8FE3FF"/>
+  <path d="M18,34 L16,8 L21,32 Z M28,34 L32,2 L32,34 Z M40,34 L48,10 L44,34 Z" fill="#E6FAFF"/>
+  <path d="M10,34 L6,16 L12,32 Z M50,34 L58,18 L53,34 Z" fill="#BFEFFF"/>
+  <path d="M10,34 L6,16 L16,30 Z" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M18,34 L16,8 L26,32 Z" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M28,34 L32,2 L38,34 Z" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M40,34 L48,10 L48,34 Z" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M50,34 L58,18 L56,34 Z" fill="none" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M4,34 L60,34" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <path d="M31,8 L31,13 M28.5,10.5 L33.5,10.5" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+</svg>

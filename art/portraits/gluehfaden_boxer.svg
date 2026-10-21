@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Porträt gluehfaden_boxer (erzeugt von tools/make_portraits.py, nicht von Hand ändern) -->
+  <defs><radialGradient id="p-glow"><stop offset="0" stop-color="#FFB347" stop-opacity="0.55"/><stop offset="0.7" stop-color="#FFB347" stop-opacity="0.12"/><stop offset="1" stop-color="#FFB347" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="#1B1B24"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="url(#p-glow)"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="none" stroke="#FFB347" stroke-width="3" stroke-opacity="0.8"/>
+  <circle cx="64.0" cy="64.0" r="62.0" fill="none" stroke="#2A1E2E" stroke-width="2"/>
+  <g transform="translate(19.0,6.0) scale(1.25)">
+  <!-- Glühfaden-Boxer: orange Birne mit sichtbarem Glühfaden und rotem Stirnband -->
+  <rect x="29" y="82" width="14" height="9" rx="4" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="22" y="63" width="28" height="22" rx="5" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M23,71 Q36,74 49,71 M23,78 Q36,81 49,78" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <path d="M24,66 C24,58 8,51 8,34 A28,28 0 0 1 64,34 C64,51 48,58 48,66 Z" fill="#FFB347"/>
+  <ellipse cx="32" cy="30" rx="27" ry="28" fill="#FFD27A" clip-path="none" opacity="0.6"/>
+  <path d="M28,64 L28,52 Q36,44 44,52 L44,64" fill="none" stroke="#C9651C" stroke-width="3"/>
+  <ellipse cx="20" cy="17" rx="6" ry="4" fill="#FFFFFF" transform="rotate(-40 20 17)"/>
+  <path d="M24,66 C24,58 8,51 8,34 A28,28 0 0 1 64,34 C64,51 48,58 48,66 Z" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M9,24 Q36,12 63,24 L62,31 Q36,20 10,31 Z" fill="#E74C3C" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M62,27 L70,22 L68,32 Z" fill="#E74C3C" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <ellipse cx="18" cy="50" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="54" cy="50" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="27" cy="40" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="45" cy="40" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="29" cy="36" r="2.2" fill="#FFFFFF"/>
+  <circle cx="47" cy="36" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,51 Q36,56 41,51" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

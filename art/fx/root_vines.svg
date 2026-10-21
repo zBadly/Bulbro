@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="44" viewBox="0 0 64 44">
+  <!-- Ranken um festgehaltene Gegner (Lichtranke, Dornenranke) -->
+  <path d="M4,30 C14,40 50,40 60,30 M8,22 C20,32 44,32 56,22 M10,32 C16,18 26,14 30,26 M54,32 C48,18 38,14 34,26" fill="none" stroke="#2A1E2E" stroke-width="7" stroke-linecap="round"/>
+  <path d="M4,30 C14,40 50,40 60,30 M8,22 C20,32 44,32 56,22 M10,32 C16,18 26,14 30,26 M54,32 C48,18 38,14 34,26" fill="none" stroke="#5FBF5A" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M14,34 q-8,-2 -8,-8 q7,0 8,8 Z M50,34 q8,-2 8,-8 q-7,0 -8,8 Z M30,36 q-3,6 -9,5 q2,-6 9,-5 Z" fill="#7ED957" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="30" cy="25" r="4" fill="#FFE066" stroke="#2A1E2E" stroke-width="2.5"/>
+  <circle cx="35" cy="25" r="3" fill="#FFE066" stroke="#2A1E2E" stroke-width="2.5"/>
+</svg>

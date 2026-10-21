@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+  <!-- Fluch-Symbol ueber verfluchten Gegnern (Schwarzlicht) -->
+  <defs><path id="gem" d="M13,2 L24,13 L13,24 L2,13 Z"/><clipPath id="gem-clip"><use href="#gem"/></clipPath></defs>
+  <use href="#gem" fill="#B57BE0"/>
+  <path d="M11,0 L22,11 L11,22 L0,11 Z" fill="#EBC8FF" clip-path="url(#gem-clip)"/>
+  <use href="#gem" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M6,13 Q13,6.5 20,13 Q13,19.5 6,13 Z" fill="#F7F0FF" stroke="#2A1E2E" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="13" cy="13" r="2.8" fill="#2A1E2E"/>
+  <circle cx="14" cy="12" r="0.9" fill="#FFFFFF"/>
+</svg>

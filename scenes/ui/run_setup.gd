@@ -124,7 +124,7 @@ func _build_characters() -> void:
 	var selected_button: Button = null
 	for character: CharacterData in _characters:
 		var button: Button = UiStyle.make_button("", TEXT_SIZE)
-		button.icon = character.texture
+		button.icon = character.get_portrait()
 		button.expand_icon = true
 		button.custom_minimum_size = PORTRAIT_BUTTON
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -153,7 +153,7 @@ func _select_character(character: CharacterData) -> void:
 	_detail_scroll.scroll_vertical = 0
 	var unlocked: bool = Unlocks.is_unlocked(character)
 	var portrait: TextureRect = TextureRect.new()
-	portrait.texture = character.texture
+	portrait.texture = character.get_portrait()
 	portrait.custom_minimum_size = PORTRAIT_LARGE
 	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED

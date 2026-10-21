@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="44" height="28" viewBox="0 0 44 28">
+  <!-- Feuerball des Kronleuchters (zeigt nach rechts) -->
+  <defs><radialGradient id="fglow"><stop offset="0" stop-color="#FF8C42" stop-opacity="0.6"/><stop offset="1" stop-color="#FF8C42" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="30" cy="14" r="14" fill="url(#fglow)"/>
+  <path d="M2,14 C10,6 18,4 28,5 C36,5 41,9 41,14 C41,19 36,23 28,23 C18,24 10,22 2,14 Z M8,8 L16,10 M8,20 L16,18" fill="#FF8C42" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M14,14 C20,10 26,9 30,9 C35,9 37,11 37,14 C37,17 35,19 30,19 C26,19 20,18 14,14 Z" fill="#FFD43B"/>
+  <ellipse cx="31" cy="12" rx="3.5" ry="2" fill="#FFF4B8"/>
+</svg>

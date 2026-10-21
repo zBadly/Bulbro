@@ -2,8 +2,6 @@ class_name FrostNovaAction
 extends EffectAction
 ## Frostnova: Schaden im Radius und Verlangsamung um `slow_pct` % für `duration` Sekunden.
 
-const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
-
 @export var radius: float = 0.0
 @export var base_damage: float = 0.0
 @export var scalings: Dictionary[StringName, float] = {}
@@ -12,7 +10,7 @@ const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
 
 
 func execute(ctx: EffectContext, origin: Vector2) -> void:
-	Fx.pulse(ctx.tree, origin, radius, STATUS.frost_tint)
+	Fx.frost_nova(ctx.tree, origin, radius)
 	var amount: int = ctx.effect_damage(base_damage, scalings) if base_damage > 0.0 or not scalings.is_empty() else 0
 	for target: Damageable in Hits.alive_targets(ctx.tree):
 		if origin.distance_to(target.get_hit_position()) > radius:

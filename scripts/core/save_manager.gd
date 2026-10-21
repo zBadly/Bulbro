@@ -17,6 +17,8 @@ const LIGHTING_KEY: String = "lighting"
 const FULLSCREEN_KEY: String = "fullscreen"
 const SCREENSHAKE_KEY: String = "screenshake"
 const MANUAL_AIM_KEY: String = "manual_aim"
+## Barrierefreiheit: Bildschirmblitze stark abschwächen.
+const REDUCED_FX_KEY: String = "reduced_effects"
 ## Barrierefreiheit: Gegnerwerte in Prozent (25-100).
 const ENEMY_HP_KEY: String = "enemy_hp_pct"
 const ENEMY_DAMAGE_KEY: String = "enemy_damage_pct"

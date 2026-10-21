@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Porträt led_schuetze (erzeugt von tools/make_portraits.py, nicht von Hand ändern) -->
+  <defs><radialGradient id="p-glow"><stop offset="0" stop-color="#8FE3FF" stop-opacity="0.55"/><stop offset="0.7" stop-color="#8FE3FF" stop-opacity="0.12"/><stop offset="1" stop-color="#8FE3FF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="#1B1B24"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="url(#p-glow)"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="none" stroke="#8FE3FF" stroke-width="3" stroke-opacity="0.8"/>
+  <circle cx="64.0" cy="64.0" r="62.0" fill="none" stroke="#2A1E2E" stroke-width="2"/>
+  <g transform="translate(19.0,6.0) scale(1.25)">
+  <!-- LED-Schütze: rote LED-Kuppel mit zwei Beinchen -->
+  <path d="M28,72 L28,92 M44,72 L44,92" stroke="#2A1E2E" stroke-width="7" stroke-linecap="round"/>
+  <path d="M28,72 L28,92 M44,72 L44,92" stroke="#C9CED3" stroke-width="3" stroke-linecap="round"/>
+  <rect x="12" y="62" width="48" height="12" rx="4" fill="#C0392B" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M14,64 L14,36 A22,22 0 0 1 58,36 L58,64 Z" fill="#FF5A5A" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M20,36 A16,16 0 0 1 32,20" fill="none" stroke="#FFB4AA" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="19" cy="54" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="53" cy="54" rx="4.5" ry="2.8" fill="#FF9E7A" opacity="0.6"/>
+  <ellipse cx="28" cy="44" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <ellipse cx="44" cy="44" rx="5.5" ry="8" fill="#2A1E2E"/>
+  <circle cx="30" cy="40" r="2.2" fill="#FFFFFF"/>
+  <circle cx="46" cy="40" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,55 Q36,60 41,55" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

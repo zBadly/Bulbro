@@ -12,6 +12,7 @@
 [ext_resource type="Resource" path="res://data/weapons/ast.tres" id="10_2okta"]
 [ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="11_uyfu3"]
 [ext_resource type="Texture2D" path="res://art/characters/discokugel.svg" id="12_3353g"]
+[ext_resource type="Texture2D" path="res://art/portraits/discokugel.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_lu578"]
 script = ExtResource("2_4kun0")
@@ -68,3 +69,4 @@ order = 6
 set_bonus_multiplier = Dictionary[StringName, float]({})
 banned_classes = Array[StringName]([])
 no_melee = false
+portrait = ExtResource("p_portrait")

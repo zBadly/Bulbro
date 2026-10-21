@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Porträt schwarzlicht (erzeugt von tools/make_portraits.py, nicht von Hand ändern) -->
+  <defs><radialGradient id="p-glow"><stop offset="0" stop-color="#B07CFF" stop-opacity="0.55"/><stop offset="0.7" stop-color="#B07CFF" stop-opacity="0.12"/><stop offset="1" stop-color="#B07CFF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="#1B1B24"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="url(#p-glow)"/>
+  <circle cx="64.0" cy="64.0" r="60.0" fill="none" stroke="#B07CFF" stroke-width="3" stroke-opacity="0.8"/>
+  <circle cx="64.0" cy="64.0" r="62.0" fill="none" stroke="#2A1E2E" stroke-width="2"/>
+  <g transform="translate(19.0,6.0) scale(1.25)">
+  <!-- Schwarzlicht: violette UV-Leuchtroehre vor dunkler Halterung -->
+  <defs><radialGradient id="s-glow"><stop offset="0" stop-color="#B07CFF" stop-opacity="0.75"/><stop offset="1" stop-color="#B07CFF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="36" cy="48" r="36" fill="url(#s-glow)"/>
+  <circle cx="5" cy="22" r="1.6" fill="#EBD9FF"/>
+  <circle cx="67" cy="30" r="1.8" fill="#EBD9FF"/>
+  <circle cx="4" cy="70" r="1.4" fill="#EBD9FF"/>
+  <circle cx="68" cy="76" r="1.6" fill="#EBD9FF"/>
+  <circle cx="8" cy="50" r="1.2" fill="#EBD9FF"/>
+  <defs><path id="s-housing" d="M18,12 L54,12 C59,12 62,15 62,20 L62,76 C62,81 59,84 54,84 L18,84 C13,84 10,81 10,76 L10,20 C10,15 13,12 18,12 Z"/><clipPath id="s-housing-clip"><use href="#s-housing"/></clipPath></defs>
+  <use href="#s-housing" fill="#22232C"/>
+  <rect x="8" y="10" width="50" height="72" rx="8" fill="#3B3F4A" clip-path="url(#s-housing-clip)"/>
+  <rect x="13" y="18" width="3" height="58" rx="1.5" fill="#5A5F70"/>
+  <use href="#s-housing" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <defs><path id="s-tube" d="M22,24 C22,16 50,16 50,24 L50,72 C50,80 22,80 22,72 Z"/><clipPath id="s-tube-clip"><use href="#s-tube"/></clipPath></defs>
+  <use href="#s-tube" fill="#6A3FC8"/>
+  <rect x="19" y="14" width="29" height="64" rx="13" fill="#9B6BFF" clip-path="url(#s-tube-clip)"/>
+  <rect x="25" y="23" width="5" height="46" rx="2.5" fill="#D9C2FF"/>
+  <use href="#s-tube" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <rect x="20" y="4" width="32" height="12" rx="3" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <rect x="20" y="80" width="32" height="12" rx="3" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M26,8 L26,12 M46,8 L46,12 M26,84 L26,88 M46,84 L46,88" stroke="#9AA0A6" stroke-width="2.5" stroke-linecap="round"/>
+  <ellipse cx="29" cy="44" rx="4.8" ry="7" fill="#2A1E2E"/>
+  <ellipse cx="43" cy="44" rx="4.8" ry="7" fill="#2A1E2E"/>
+  <circle cx="31" cy="40" r="2.2" fill="#FFFFFF"/>
+  <circle cx="45" cy="40" r="2.2" fill="#FFFFFF"/>
+  <path d="M31,55 Q36,60 41,55" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="27.5" cy="56" rx="3" ry="2" fill="#FF9EDA" opacity="0.7"/><ellipse cx="44.5" cy="56" rx="3" ry="2" fill="#FF9EDA" opacity="0.7"/>
+  </g>
+</svg>

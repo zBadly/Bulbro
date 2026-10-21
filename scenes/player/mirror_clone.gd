@@ -4,6 +4,7 @@ extends Node2D
 ## Die Kopien machen weniger Schaden, haben keinen Lebensraub und lösen keine Angriffs-Effekte aus.
 
 const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
+const SHEEN_SHADER: Shader = preload("res://art/shaders/mirror_sheen.gdshader")
 
 var player: Player
 var weapon_slots: WeaponSlots
@@ -21,6 +22,11 @@ func setup(p_player: Player, damage_factor: float) -> void:
 	_sprite.texture = player.get_body_texture()
 	_sprite.offset = Vector2(0.0, -_sprite.texture.get_height() * 0.5)
 	_sprite.modulate = STATUS.mirror_tint
+	var sheen: ShaderMaterial = ShaderMaterial.new()
+	sheen.shader = SHEEN_SHADER
+	sheen.set_shader_parameter(&"sheen_period", STATUS.mirror_sheen_period)
+	sheen.set_shader_parameter(&"sheen_strength", STATUS.mirror_sheen_strength)
+	_sprite.material = sheen
 	_visual.add_child(_sprite)
 	weapon_slots = WeaponSlots.new()
 	weapon_slots.player = player
