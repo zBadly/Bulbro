@@ -111,8 +111,16 @@ static func describe_weapon(weapon: WeaponData, tier: int) -> String:
 		lines.append(t("WEAPON_BOUNCES") % tier_stats.bounces)
 	if tier_stats.projectile_count > 1:
 		lines.append(t("WEAPON_PROJECTILES") % tier_stats.projectile_count)
-	if tier_stats.burn_ticks > 0:
+	if tier_stats.burn_ticks > 0 and tier_stats.burn_chance < 1.0:
+		lines.append(t("WEAPON_BURN_CHANCE") % [roundi(tier_stats.burn_chance * 100.0), number(tier_stats.burn_damage), tier_stats.burn_ticks])
+	elif tier_stats.burn_ticks > 0:
 		lines.append(t("WEAPON_BURN") % [number(tier_stats.burn_damage), tier_stats.burn_ticks])
+	if tier_stats.split_count > 0:
+		lines.append(t("WEAPON_SPLIT") % [tier_stats.split_count, roundi(tier_stats.split_damage_pct)])
+	if tier_stats.root_chance > 0.0:
+		lines.append(t("WEAPON_ROOT") % [roundi(tier_stats.root_chance * 100.0), number(tier_stats.root_duration)])
+	if tier_stats.extra_souls > 0:
+		lines.append(t("WEAPON_SOULS") % tier_stats.extra_souls)
 	if tier_stats.chain_count > 0:
 		lines.append(t("WEAPON_CHAIN") % tier_stats.chain_count)
 	if tier_stats.explosion_radius > 0.0:

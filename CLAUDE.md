@@ -13,6 +13,7 @@ Alle Namen, Grafiken (SVG), Texte und Sounds sind eigene Kreationen; das Spiel i
 - Datengetrieben: Alle Spielwerte liegen als Resources (`.tres`) unter `res://data`. Keine Magic Numbers im Code.
 - Kleine Schritte: erst Plan, dann Umsetzung, dann Prüfung.
 - Nach jeder Phase: Headless-Check ohne Fehler, GUT-Tests grün, `git commit` mit aussagekräftiger Nachricht.
+- Nach jedem Commit eines Pakets bzw. einer Phase automatisch pushen (`git push`, Remote `origin` = github.com/zBadly/Bulbro).
 - Spieltexte auf Deutsch, immer über die Übersetzungstabelle (`tr()`), nie hart codiert.
 
 ## Code-Stil

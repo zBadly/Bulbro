@@ -138,6 +138,10 @@ func _roll_damage() -> DamageInfo:
 	var info: DamageInfo = DamageInfo.create(amount, crit, t.knockback + s.get_stat(Stats.KNOCKBACK), self)
 	info.burn_damage = t.burn_damage
 	info.burn_ticks = t.burn_ticks
+	info.burn_chance = t.burn_chance
+	info.root_chance = t.root_chance
+	info.root_duration = t.root_duration
+	info.extra_souls = t.extra_souls
 	info.heal_on_hit_chance = t.heal_on_hit_chance
 	info.spark_on_kill_chance = t.spark_on_kill_chance
 	return info
@@ -171,6 +175,9 @@ func _fire() -> void:
 		spec.chain_range = t.chain_range
 		spec.explosion_radius = t.explosion_radius
 		spec.homing_turn_deg = t.homing_turn_deg
+		spec.split_count = t.split_count
+		spec.split_damage_pct = t.split_damage_pct
+		spec.split_texture = data.split_projectile_texture
 		spec.player = player
 		spec.lifesteal = not is_clone
 		(pool.acquire() as Projectile).launch(global_position + Vector2.from_angle(angle) * COMBAT.muzzle_offset, angle, spec)

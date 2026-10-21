@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Kristallstab: Stab mit hellblauem Kristall an der Spitze -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#BFF3FF" stop-opacity="0.85"/><stop offset="1" stop-color="#BFF3FF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="38" cy="20" r="12" fill="url(#glow)"/>
+  <path d="M4,32 L30,22" stroke="#2A1E2E" stroke-width="7" stroke-linecap="round"/>
+  <path d="M4,32 L30,22" stroke="#8C6239" stroke-width="3" stroke-linecap="round"/>
+  <path d="M30,20 L36,10 L44,18 L40,30 L32,28 Z" fill="#9BE7FF" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M36,10 L36,24 L44,18 M36,24 L32,28 M36,24 L40,30" fill="none" stroke="#4A90E2" stroke-width="1.5"/>
+  <path d="M33,19 L35,14" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+</svg>

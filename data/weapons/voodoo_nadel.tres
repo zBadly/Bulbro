@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/fx/projectile_needle.svg" id="1_n3gr6"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="2_aalck"]
+[ext_resource type="Texture2D" path="res://art/weapons/voodoo_nadel.svg" id="3_7qju3"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="4_ap6s1"]
+
+[sub_resource type="Resource" id="Resource_vf53i"]
+script = ExtResource("4_ap6s1")
+base_damage = 5.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.7
+})
+cooldown = 0.5
+range = 380.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 2
+price = 25
+
+[sub_resource type="Resource" id="Resource_woiq0"]
+script = ExtResource("4_ap6s1")
+base_damage = 8.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.7
+})
+cooldown = 0.46
+range = 380.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 2
+price = 50
+
+[sub_resource type="Resource" id="Resource_4pdwi"]
+script = ExtResource("4_ap6s1")
+base_damage = 11.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.7
+})
+cooldown = 0.43
+range = 380.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 2
+price = 90
+
+[sub_resource type="Resource" id="Resource_q4ucw"]
+script = ExtResource("4_ap6s1")
+base_damage = 16.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.7
+})
+cooldown = 0.39
+range = 380.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 2
+price = 163
+
+[resource]
+script = ExtResource("2_aalck")
+id = &"voodoo_nadel"
+name_key = "WEAPON_VOODOO_NADEL"
+kind = 2
+classes = Array[StringName]([&"ethereal"])
+texture = ExtResource("3_7qju3")
+tiers = Array[ExtResource("4_ap6s1")]([SubResource("Resource_vf53i"), SubResource("Resource_woiq0"), SubResource("Resource_4pdwi"), SubResource("Resource_q4ucw")])
+projectile_texture = ExtResource("1_n3gr6")
+projectile_speed = 1800.0

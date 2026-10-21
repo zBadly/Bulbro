@@ -28,6 +28,9 @@ extends Resource
 @export var burn_spread_radius: float = 0.0
 @export var burn_tint: Color = Color.WHITE
 @export var homing_retarget_interval: float = 0.0
+## Splitter (Kristallstab): Fächerbreite in Grad und Flugweite in px.
+@export var split_spread_deg: float = 0.0
+@export var split_range: float = 0.0
 
 @export_group("Strukturen")
 @export var structure_spawn_radius: float = 0.0

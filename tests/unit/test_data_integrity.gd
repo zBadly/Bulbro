@@ -2,7 +2,7 @@ extends GutTest
 ## Lädt jede .tres unter res://data und prüft die Pflichtfelder je Typ.
 
 const DATA_ROOT: String = "res://data"
-const EXPECTED_WEAPONS: int = 17
+const EXPECTED_WEAPONS: int = 22
 const EXPECTED_ITEMS: int = 34
 
 

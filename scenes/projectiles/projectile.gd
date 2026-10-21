@@ -77,6 +77,11 @@ func _on_body_entered(body: Node2D) -> void:
 		_finish()
 		return
 	Hits.apply_weapon_hit(target, info, _spec.player, _spec.lifesteal)
+	if _spec.split_count > 0:
+		# Im Kollisions-Callback dürfen keine Physikobjekte entstehen
+		_split.call_deferred(target.get_hit_position(), _direction, _spec, target.get_instance_id())
+		_finish()
+		return
 	if _spec.chain_count > 0:
 		_chain_from(target)
 		_finish()
@@ -106,6 +111,33 @@ func _chain_from(first: Damageable) -> void:
 		_spec.info.knockback_dir = current.get_hit_position().direction_to(next.get_hit_position())
 		Hits.apply_weapon_hit(next, _spec.info, _spec.player, _spec.lifesteal)
 		current = next
+
+
+## Splitter im Fächer um die Flugrichtung; sie treffen das zersplitterte Ziel nicht erneut und splittern nicht weiter.
+func _split(origin: Vector2, direction: Vector2, spec: ProjectileSpec, ignore_id: int) -> void:
+	var projectile_pool: ObjectPool = Pools.get_pool(get_tree(), Pools.PLAYER_PROJECTILES)
+	if projectile_pool == null:
+		return
+	var amount: int = maxi(CombatMath.MIN_DAMAGE, roundi(spec.info.amount * spec.split_damage_pct / CombatMath.PERCENT))
+	var spread: float = deg_to_rad(COMBAT.split_spread_deg)
+	for i in spec.split_count:
+		var shard: ProjectileSpec = ProjectileSpec.new()
+		shard.texture = spec.split_texture if spec.split_texture != null else spec.texture
+		shard.speed = spec.speed
+		shard.max_range = COMBAT.split_range
+		shard.info = DamageInfo.create(amount, spec.info.is_crit, 0.0, spec.info.source)
+		shard.player = spec.player
+		shard.lifesteal = spec.lifesteal
+		var t: float = float(i) / float(maxi(1, spec.split_count - 1)) if spec.split_count > 1 else 0.5
+		var angle: float = direction.angle() + lerpf(-spread * 0.5, spread * 0.5, t)
+		var projectile: Projectile = projectile_pool.acquire() as Projectile
+		projectile.launch(origin, angle, shard)
+		projectile.ignore(ignore_id)
+
+
+## Dieses Ziel wird von diesem Projektil nicht getroffen (Splitter und ihr Ursprungsziel).
+func ignore(instance_id: int) -> void:
+	_hit_ids[instance_id] = true
 
 
 func _set_direction(direction: Vector2) -> void:

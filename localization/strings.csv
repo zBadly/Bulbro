@@ -310,3 +310,12 @@ EFFECT_HP_DRAIN,Verliert %s HP alle %s s,Loses %s HP every %s s
 EFFECT_OVERHEAL,Heilung über Max HP wird zu Schaden am nächsten Gegner,Healing above max HP damages the nearest enemy
 RULE_NO_REGEN,HP-Regen wirkungslos,HP regen has no effect
 RULE_NO_CRIT,Kann nicht kritisch treffen,Cannot deal critical hits
+WEAPON_BURN_CHANCE,%d %% Brandchance: %s Brandschaden x%d,%d %% burn chance: %s burn damage x%d
+WEAPON_SPLIT,Zersplittert in %d Splitter (je %d %% Schaden),Shatters into %d shards (%d %% damage each)
+WEAPON_ROOT,"%d %% Chance, Gegner %s s festzuhalten",%d %% chance to root enemies for %s s
+WEAPON_SOULS,Kills geben +%d Seele,Kills grant +%d soul
+WEAPON_SEELENLATERNE,Seelenlaterne,Soul Lantern
+WEAPON_FEUERZEUGWERFER,Feuerzeugwerfer,Lighter Thrower
+WEAPON_KRISTALLSTAB,Kristallstab,Crystal Staff
+WEAPON_VOODOO_NADEL,Voodoo-Nadel,Voodoo Needle
+WEAPON_DORNENRANKE,Dornenranke,Thorn Vine

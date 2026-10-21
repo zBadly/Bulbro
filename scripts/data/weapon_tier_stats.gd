@@ -22,6 +22,8 @@ extends Resource
 ## Brand (Überspannung): Schaden pro Tick und Anzahl Ticks.
 @export var burn_damage: float = 0.0
 @export var burn_ticks: int = 0
+## Chance pro Treffer, dass der Brand zündet (1 = immer).
+@export_range(0.0, 1.0) var burn_chance: float = 1.0
 ## Ketten-Blitz: springt nach dem Treffer auf so viele weitere Ziele.
 @export var chain_count: int = 0
 @export var chain_range: float = 0.0
@@ -31,3 +33,11 @@ extends Resource
 @export var homing_turn_deg: float = 0.0
 @export_range(0.0, 1.0) var heal_on_hit_chance: float = 0.0
 @export_range(0.0, 1.0) var spark_on_kill_chance: float = 0.0
+## Zusätzliche Seelen für das Seelenglas bei einem Kill mit dieser Waffe (Seelenlaterne).
+@export var extra_souls: int = 0
+## Festhalten beim Treffer (Dornenranke): Chance und Dauer in Sekunden.
+@export_range(0.0, 1.0) var root_chance: float = 0.0
+@export var root_duration: float = 0.0
+## Zersplittern beim Treffer (Kristallstab): Anzahl Splitter und deren Schaden in % des Treffers.
+@export var split_count: int = 0
+@export var split_damage_pct: float = 0.0

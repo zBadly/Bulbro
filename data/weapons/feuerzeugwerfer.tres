@@ -1,0 +1,85 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/fx/projectile_flame.svg" id="1_fr2yb"]
+[ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="2_enjyj"]
+[ext_resource type="Texture2D" path="res://art/weapons/feuerzeugwerfer.svg" id="3_xvfyu"]
+[ext_resource type="Script" path="res://scripts/data/weapon_tier_stats.gd" id="4_2c2fl"]
+
+[sub_resource type="Resource" id="Resource_txnf4"]
+script = ExtResource("4_2c2fl")
+base_damage = 2.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.8
+})
+cooldown = 0.2
+range = 200.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 99
+spread_deg = 30.0
+price = 35
+burn_damage = 2.0
+burn_ticks = 3
+burn_chance = 0.2
+
+[sub_resource type="Resource" id="Resource_i6mrq"]
+script = ExtResource("4_2c2fl")
+base_damage = 3.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.8
+})
+cooldown = 0.18
+range = 200.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 99
+spread_deg = 30.0
+price = 70
+burn_damage = 3.0
+burn_ticks = 3
+burn_chance = 0.2
+
+[sub_resource type="Resource" id="Resource_uxd7a"]
+script = ExtResource("4_2c2fl")
+base_damage = 4.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.8
+})
+cooldown = 0.17
+range = 200.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 99
+spread_deg = 30.0
+price = 126
+burn_damage = 4.0
+burn_ticks = 3
+burn_chance = 0.2
+
+[sub_resource type="Resource" id="Resource_tilyv"]
+script = ExtResource("4_2c2fl")
+base_damage = 6.0
+scalings = Dictionary[StringName, float]({
+&"elemental_dmg": 0.8
+})
+cooldown = 0.16
+range = 200.0
+crit_chance = 0.03
+crit_multiplier = 2.0
+piercing = 99
+spread_deg = 30.0
+price = 228
+burn_damage = 6.0
+burn_ticks = 3
+burn_chance = 0.2
+
+[resource]
+script = ExtResource("2_enjyj")
+id = &"feuerzeugwerfer"
+name_key = "WEAPON_FEUERZEUGWERFER"
+kind = 2
+classes = Array[StringName]([&"elemental"])
+texture = ExtResource("3_xvfyu")
+tiers = Array[ExtResource("4_2c2fl")]([SubResource("Resource_txnf4"), SubResource("Resource_i6mrq"), SubResource("Resource_uxd7a"), SubResource("Resource_tilyv")])
+projectile_texture = ExtResource("1_fr2yb")
+projectile_speed = 700.0

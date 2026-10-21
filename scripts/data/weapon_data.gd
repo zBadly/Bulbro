@@ -25,6 +25,8 @@ const MAX_TIER: int = 4
 @export_group("Fernkampf")
 @export var projectile_texture: Texture2D
 @export var projectile_speed: float = 0.0
+## Grafik der Splitter (Kristallstab).
+@export var split_projectile_texture: Texture2D
 
 @export_group("Besonderheiten")
 ## Zusätzlicher Grundschaden pro weiterer Waffe derselben Art (Ast).

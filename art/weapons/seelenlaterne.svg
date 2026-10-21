@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Seelenlaterne: Laterne mit blauer Seelenflamme, zeigt nach rechts -->
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="#7FC8FF" stop-opacity="0.85"/><stop offset="1" stop-color="#7FC8FF" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="28" cy="26" r="16" fill="url(#glow)"/>
+  <path d="M4,26 L14,26" stroke="#2A1E2E" stroke-width="7" stroke-linecap="round"/>
+  <path d="M4,26 L14,26" stroke="#9AA0A6" stroke-width="3" stroke-linecap="round"/>
+  <path d="M20,14 L36,14 L38,18 L18,18 Z" fill="#5A5F66" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="18" y="18" width="20" height="18" rx="3" fill="#2B3E5C" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M28,33 C22,31 23,25 28,20 C29,25 34,26 28,33 Z" fill="#7FC8FF" stroke="#2A1E2E" stroke-width="2"/>
+  <path d="M28,31 C26,30 26,27 28,25 C29,27 30,28 28,31 Z" fill="#E6F6FF"/>
+  <path d="M18,36 L38,36 L36,40 L20,40 Z" fill="#5A5F66" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="28" cy="10" r="3" fill="none" stroke="#2A1E2E" stroke-width="2.5"/>
+</svg>

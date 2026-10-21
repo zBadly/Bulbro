@@ -11,6 +11,9 @@ var source: Node
 ## Zusatzwirkungen des Treffers (von der Waffe gesetzt).
 var burn_damage: float = 0.0
 var burn_ticks: int = 0
+var burn_chance: float = 1.0
+var root_chance: float = 0.0
+var root_duration: float = 0.0
 var heal_on_hit_chance: float = 0.0
 var spark_on_kill_chance: float = 0.0
 ## Brand-Tick (für Brand-Kills und damit Treffer-Effekte nicht erneut auslösen).

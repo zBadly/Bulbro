@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Feuerzeugwerfer: rotes Feuerzeug mit Düse und Flamme nach rechts -->
+  <rect x="4" y="20" width="22" height="18" rx="4" fill="#E74C3C" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="7" y="23" width="6" height="12" rx="2" fill="#F2857A"/>
+  <rect x="24" y="16" width="10" height="10" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="22" cy="14" r="4" fill="#5A5F66" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M34,21 C40,14 46,18 45,21 C46,24 40,28 34,21 Z" fill="#FF9F43" stroke="#2A1E2E" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M36,21 C40,18 43,20 42,21 C43,22 40,24 36,21 Z" fill="#FFE066"/>
+</svg>

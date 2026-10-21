@@ -61,9 +61,12 @@ static func apply_weapon_hit(target: Damageable, info: DamageInfo, player: Playe
 		if info.burn_damage > 0.0 and target is Enemy:
 			(target as Enemy).apply_burn(info.burn_damage, info.burn_ticks, null)
 		return
-	if info.burn_damage > 0.0 and target is Enemy:
+	var enemy: Enemy = target as Enemy
+	if enemy != null and info.burn_damage > 0.0 and (info.burn_chance >= 1.0 or player.rng.randf() < info.burn_chance):
 		var burn: float = CombatMath.burn_damage(info.burn_damage, player.stats.get_stat(Stats.BURN_DMG_PCT))
-		(target as Enemy).apply_burn(burn, info.burn_ticks, player)
+		enemy.apply_burn(burn, info.burn_ticks, player)
+	if enemy != null and info.root_chance > 0.0 and player.rng.randf() < info.root_chance:
+		enemy.root(info.root_duration)
 	player.enemy_hit.emit(target, info)
 	if lifesteal:
 		player.try_lifesteal()

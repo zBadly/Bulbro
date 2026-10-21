@@ -45,4 +45,4 @@ func test_get_tier_clamps() -> void:
 
 
 func test_registry_loads_weapons() -> void:
-	assert_eq(DataRegistry.get_all("weapons").size(), 17)
+	assert_eq(DataRegistry.get_all("weapons").size(), 22)
