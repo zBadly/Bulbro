@@ -6,7 +6,8 @@ Alle Namen, Grafiken (SVG), Texte und Sounds sind eigene Kreationen; das Spiel i
 
 **Lies vor jeder Aufgabe [docs/GDD.md](docs/GDD.md).** Es ist die verbindliche Quelle für Mechaniken, Zahlen und Architektur.
 
-Aktuelle Ausbaustufe: docs/PHASE_15.md, Pakete einzeln abarbeiten, nach jedem Paket Commit + Push, Stand in docs/ENTWICKLUNG.md notieren.
+Aktuelle Ausbaustufe: [docs/PHASE_15.md](docs/PHASE_15.md), Pakete einzeln abarbeiten, nach jedem Paket Commit + Push, Stand in docs/ENTWICKLUNG.md notieren.
+Zum Einstieg in eine neue Sitzung zuerst den Abschnitt „Nächste Sitzung“ ganz oben in [docs/ENTWICKLUNG.md](docs/ENTWICKLUNG.md) lesen.
 
 ## Arbeitsregeln (GDD Abschnitt 0)
 

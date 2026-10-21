@@ -26,6 +26,8 @@
 ## Paket 5: Run-Statistiken und Run-Ende
 - Pro Run erfassen: Kills, Schaden und DPS je Waffe und je Item mit Schadenseffekt, Kills von Verbündeten/Strukturen/Pets, erlittener Schaden, geheilte HP, ausgewichene Treffer, gesammelte und ausgegebene Funken, Rerolls, Level, Zeit je Welle.
 - Nach dem Bosssieg ein Bildschirm mit drei Optionen: "Endlos weiterspielen", "Neue Runde" (zur Charakterauswahl), "Hauptmenü". Daneben ein Reiter "Statistiken" mit allen Run-Werten (Tabelle je Waffe/Item sortierbar nach Kills/Schaden), ohne die Auswahl zu verlassen. Gleicher Statistik-Bildschirm auch bei Niederlage.
+- Schadenszahlen aus dem Kampf schweben beim Run-Ende-Bildschirm noch sichtbar hinter dem Titel; sie sollen beim Run-Ende verschwinden.
+- Der Button "Nochmal" bleibt zusätzlich zu den drei Optionen erhalten.
 
 ## Paket 6: Endlos-Modus (überarbeiten)
 - Nach dem Bosssieg wählbar. Wellen dauern 60 s, Gegner-HP, Schaden und Dichte steigen pro Welle über einen Endlos-Faktor; Aufladung wird schwächer.
