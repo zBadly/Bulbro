@@ -255,7 +255,9 @@ func _item_result(sim: CharacterSim, characters: Array[CharacterData], difficult
 	var win: float = 0.0
 	var wave: float = 0.0
 	for character: CharacterData in characters:
-		var options: Dictionary = {"items": [[item, ITEM_WAVE]]} if item != null else {}
+		var options: Dictionary = {}
+		if item != null:
+			options["items"] = [[item, ITEM_WAVE]]
 		var result: Dictionary = sim.run_many(character, difficulty, runs, SEED, options)
 		await get_tree().process_frame
 		win += result["win_rate"] / characters.size()
