@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StructureData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/structure_data.gd" id="1_struct"]
+[ext_resource type="Texture2D" path="res://art/world/lichtranke.svg" id="2_tex"]
+
+[resource]
+script = ExtResource("1_struct")
+id = &"lichtranke"
+kind = 1
+name_key = "STRUCTURE_LICHTRANKE"
+texture = ExtResource("2_tex")
+root_radius = 70.0
+root_duration = 1.5
+max_count = 5

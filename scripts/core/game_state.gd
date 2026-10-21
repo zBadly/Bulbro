@@ -51,6 +51,8 @@ var run_reported: bool = false
 var reported_sparks: int = 0
 var reported_kills: int = 0
 var run_stats: RunStats = RunStats.new()
+## Seelenglas des Irrlichts (wird beim Fortsetzen gespeichert).
+var souls: SoulCounter = SoulCounter.new()
 
 ## Run-Einstellungen aus dem Menü (bleiben über start_run und Neustart erhalten).
 var character: CharacterData
@@ -59,7 +61,13 @@ var difficulty: DifficultyData
 
 
 func _ready() -> void:
-	Events.enemy_killed.connect(func(_data: EnemyData, _pos: Vector2, _info: DamageInfo) -> void: run_stats.enemies_killed += 1)
+	Events.enemy_killed.connect(_on_enemy_killed)
+
+
+func _on_enemy_killed(_data: EnemyData, _position: Vector2, info: DamageInfo) -> void:
+	run_stats.enemies_killed += 1
+	if info != null and info.is_burn:
+		run_stats.burn_kills += 1
 
 
 ## Startet einen neuen Run. Ohne Seed wird ein zufälliger gewählt.
@@ -86,6 +94,7 @@ func start_run(seed_value: int = 0) -> void:
 	shop = Shop.create_from_registry()
 	max_structures = 0
 	run_stats = RunStats.new()
+	souls = SoulCounter.new()
 	endless = false
 	endless_start_wave = 0
 	run_reported = false

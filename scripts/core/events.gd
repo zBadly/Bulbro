@@ -39,3 +39,9 @@ signal run_phase_changed(phase: int)
 signal item_added(item: ItemData)
 @warning_ignore("unused_signal")
 signal spark_collected
+## Ein Gegner ist gestorben, während er brannte (Zündkerze: Explosion).
+@warning_ignore("unused_signal")
+signal burning_enemy_killed(position: Vector2)
+## Ein Effekt möchte eine Struktur bauen (Lichtranke); die Arena erzeugt sie.
+@warning_ignore("unused_signal")
+signal structure_requested(data: StructureData, tier: int, position: Vector2)

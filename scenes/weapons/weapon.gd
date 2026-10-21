@@ -10,6 +10,9 @@ var tier: int = WeaponData.MIN_TIER
 var player: Player
 ## Ruheposition relativ zu den WeaponSlots (vom Slot-Layout gesetzt).
 var rest_position: Vector2 = Vector2.ZERO
+## Spiegelbild-Kopie: weniger Schaden, kein Lebensraub, löst keine Angriffs-Effekte aus.
+var is_clone: bool = false
+var damage_factor: float = 1.0
 
 var _cooldown_left: float = 0.0
 var _retarget_left: float = 0.0
@@ -84,6 +87,8 @@ func _physics_process(delta: float) -> void:
 		_aim((_target.get_hit_position() - global_position).angle())
 	if _cooldown_left <= 0.0:
 		_cooldown_left = get_cooldown()
+		if not is_clone:
+			player.weapon_attacked.emit(self, _target)
 		if data.kind == WeaponData.Kind.RANGED:
 			_fire()
 		else:
@@ -125,9 +130,11 @@ func _roll_damage() -> DamageInfo:
 	var base: float = t.base_damage
 	if data.damage_per_same_weapon != 0.0:
 		base += data.damage_per_same_weapon * (player.weapon_slots.count_of(data.id) - 1)
-	var crit: bool = player.rng.randf() < CombatMath.crit_chance(t.crit_chance, s.get_stat(Stats.CRIT_CHANCE))
+	var crit: bool = not player.has_rule(Player.Rule.NO_CRIT) 		and player.rng.randf() < CombatMath.crit_chance(t.crit_chance, s.get_stat(Stats.CRIT_CHANCE))
 	var amount: int = CombatMath.weapon_damage(
 		base, CombatMath.scaling_bonus(t.scalings, s), s.get_stat(Stats.DAMAGE_PCT), t.crit_multiplier if crit else 1.0)
+	if damage_factor != 1.0:
+		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * damage_factor))
 	var info: DamageInfo = DamageInfo.create(amount, crit, t.knockback + s.get_stat(Stats.KNOCKBACK), self)
 	info.burn_damage = t.burn_damage
 	info.burn_ticks = t.burn_ticks
@@ -165,6 +172,7 @@ func _fire() -> void:
 		spec.explosion_radius = t.explosion_radius
 		spec.homing_turn_deg = t.homing_turn_deg
 		spec.player = player
+		spec.lifesteal = not is_clone
 		(pool.acquire() as Projectile).launch(global_position + Vector2.from_angle(angle) * COMBAT.muzzle_offset, angle, spec)
 	AudioManager.play(&"shoot")
 	var muzzle: Vector2 = global_position + Vector2.from_angle(_aim_angle) * COMBAT.muzzle_offset
@@ -222,7 +230,7 @@ func _process_melee_hits() -> void:
 			continue
 		_hit_ids[enemy.get_instance_id()] = true
 		_attack_info.knockback_dir = (enemy.global_position - player.global_position).normalized()
-		Hits.apply_weapon_hit(enemy, _attack_info, player)
+		Hits.apply_weapon_hit(enemy, _attack_info, player, not is_clone)
 
 
 func _end_melee() -> void:

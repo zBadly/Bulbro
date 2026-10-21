@@ -7,6 +7,8 @@ const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const ENEMY_CATEGORY: String = "enemies"
 const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 const STRUCTURE_SCENE: PackedScene = preload("res://scenes/structures/structure.tscn")
+const ALLY_SCENE: PackedScene = preload("res://scenes/allies/ally.tscn")
+const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
 const SPLAT_POOL_SIZE: int = 60
 ## Wie oft während einer Welle Freischaltbedingungen geprüft werden (Sekunden).
 const CHALLENGE_CHECK_INTERVAL: float = 1.0
@@ -44,6 +46,7 @@ const HIT_STOP_COOLDOWN: float = 0.15
 @onready var _pickup_pool: ObjectPool = $Pools/Pickups
 
 var _structures: Array[Structure] = []
+var _ally_pool: ObjectPool
 var _trauma: float = 0.0
 var _screenshake: bool = true
 var _hit_stop_ready_at: float = 0.0
@@ -66,6 +69,13 @@ func _ready() -> void:
 	_enemy_projectile_pool.prewarm(WAVES.enemy_projectile_pool_size)
 	_spawn_marker_pool.prewarm(WAVES.spawn_marker_pool_size)
 	_pickup_pool.prewarm(DROPS.pickup_pool_size)
+	_ally_pool = ObjectPool.new()
+	_ally_pool.name = "Allies"
+	_ally_pool.scene = ALLY_SCENE
+	_ally_pool.group_name = Pools.ALLIES
+	_ally_pool.container = _entities
+	$Pools.add_child(_ally_pool)
+	_ally_pool.prewarm(STATUS.ally_pool_size)
 
 	var rect: Rect2 = config.get_rect()
 	_floor.region_rect = Rect2(Vector2.ZERO, config.size)
@@ -93,6 +103,7 @@ func _ready() -> void:
 	wave_manager.wave_started.connect(_on_wave_started)
 	Events.run_phase_changed.connect(_on_phase_changed)
 	Events.options_changed.connect(_apply_options)
+	Events.structure_requested.connect(_build_structure)
 	for screen: FlowScreen in [_crate_screen, _level_up_screen, _shop_screen]:
 		screen.player = player
 	_debug_menu.player = player
@@ -187,17 +198,30 @@ func _setup_camera(rect: Rect2) -> void:
 func _on_wave_started(_wave_number: int) -> void:
 	_clear_structures()
 	var rng: RandomNumberGenerator = GameState.rng
-	var area: Rect2 = config.get_rect().grow(-COMBAT.structure_spawn_radius * 0.5)
 	for weapon: Weapon in player.weapon_slots.get_weapons():
 		if weapon.data.structure == null:
 			continue
-		var structure: Structure = STRUCTURE_SCENE.instantiate() as Structure
-		structure.setup(weapon.data.structure, weapon.tier, player)
 		var offset: Vector2 = Vector2.from_angle(rng.randf() * TAU) * rng.randf_range(0.5, 1.0) * COMBAT.structure_spawn_radius
-		structure.position = (player.global_position + offset).clamp(area.position, area.end)
-		_entities.add_child(structure)
-		_structures.append(structure)
-	GameState.max_structures = maxi(GameState.max_structures, _structures.size())
+		_build_structure(weapon.data.structure, weapon.tier, player.global_position + offset)
+
+
+## Baut eine Struktur (Waffen zu Wellenbeginn, Effekte über Events.structure_requested).
+## Bei `max_count` verschwindet die älteste gleicher Art; nur Türme zählen für die Freischaltungen.
+func _build_structure(data: StructureData, tier: int, at: Vector2) -> void:
+	_structures = _structures.filter(func(s: Structure) -> bool: return is_instance_valid(s) and not s.is_queued_for_deletion())
+	if data.max_count > 0:
+		var same: Array[Structure] = _structures.filter(func(s: Structure) -> bool: return s.data == data)
+		if same.size() >= data.max_count:
+			same[0].queue_free()
+			_structures.erase(same[0])
+	var area: Rect2 = config.get_rect().grow(-COMBAT.structure_spawn_radius * 0.5)
+	var structure: Structure = STRUCTURE_SCENE.instantiate() as Structure
+	structure.setup(data, tier, player)
+	structure.position = at.clamp(area.position, area.end)
+	_entities.add_child.call_deferred(structure)
+	_structures.append(structure)
+	var turrets: int = _structures.filter(func(s: Structure) -> bool: return s.data.kind == StructureData.Kind.TURRET).size()
+	GameState.max_structures = maxi(GameState.max_structures, turrets)
 
 
 func _clear_structures() -> void:
@@ -210,6 +234,7 @@ func _clear_structures() -> void:
 ## Nach dem Wellenende kurz warten (Banner, Pop), dann Spiel anhalten und Kartons/Level-ups/Shop abarbeiten.
 func _on_wave_ended(wave_number: int) -> void:
 	_clear_structures()
+	_ally_pool.release_all()
 	if wave_number >= wave_manager.get_wave_count() and not GameState.endless:
 		return
 	GameState.set_phase(GameState.Phase.POST_WAVE)

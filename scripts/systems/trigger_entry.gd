@@ -4,6 +4,8 @@ extends RefCounted
 
 var effect: ItemEffect
 var timer: float = 0.0
+## Weiterer Zustand des Exemplars (z. B. Angriffszähler pro Waffe, erzeugte Knoten).
+var state: Dictionary = {}
 
 
 static func create(p_effect: ItemEffect) -> TriggerEntry:

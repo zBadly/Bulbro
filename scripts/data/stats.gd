@@ -43,6 +43,10 @@ const REROLL_PRICE_PCT: StringName = &"reroll_price_pct"
 const CONSUMABLE_HEAL: StringName = &"consumable_heal"
 ## Zusätzliche Funken beim Recyceln in % (Recyclingschild).
 const RECYCLE_PCT: StringName = &"recycle_pct"
+## Brandschaden in % (Zündkerze).
+const BURN_DMG_PCT: StringName = &"burn_dmg_pct"
+## Mehr Funken aus Kills in % (Smartbulb).
+const KILL_SPARK_PCT: StringName = &"kill_spark_pct"
 
 const PRIMARY: Array[StringName] = [
 	MAX_HP, HP_REGEN, LIFESTEAL, DAMAGE_PCT, MELEE_DMG, RANGED_DMG, ELEMENTAL_DMG, ATTACK_SPEED,
@@ -52,7 +56,7 @@ const SECONDARY: Array[StringName] = [
 	XP_GAIN_PCT, PICKUP_RANGE_PCT, ITEM_PRICE_PCT, EXPLOSION_DMG_PCT, EXPLOSION_SIZE_PCT, BOUNCES,
 	PIERCING, PIERCING_DMG_PCT, BOSS_DMG_PCT, STRUCTURE_ATTACK_SPEED_PCT, BURN_SPEED_PCT, BURN_SPREAD,
 	KNOCKBACK, DOUBLE_SPARK_CHANCE, FREE_REROLLS, CRYSTALS, ENEMIES_PCT, ENEMY_SPEED_PCT,
-	REROLL_PRICE_PCT, CONSUMABLE_HEAL, RECYCLE_PCT,
+	REROLL_PRICE_PCT, CONSUMABLE_HEAL, RECYCLE_PCT, BURN_DMG_PCT, KILL_SPARK_PCT,
 ]
 
 

@@ -139,6 +139,11 @@ func _check_set(s: SetBonusData) -> PackedStringArray:
 func _check_structure(s: StructureData) -> PackedStringArray:
 	var p: PackedStringArray = []
 	if not _translated(s.name_key): p.append("Name nicht übersetzt")
-	if s.texture == null or s.projectile_texture == null: p.append("Grafik fehlt")
-	if s.tier_cooldowns.size() != 4: p.append("nicht 4 Abklingzeiten")
+	if s.texture == null: p.append("Grafik fehlt")
+	if s.kind == StructureData.Kind.ROOT:
+		if s.root_radius <= 0.0 or s.root_duration <= 0.0: p.append("Ranke ohne Radius/Dauer")
+		return p
+	if s.projectile_texture == null: p.append("Projektilgrafik fehlt")
+	# Lampenturm hängt am Waffen-Tier (4 Stufen), Drohnen haben eine feste Stufe
+	if s.tier_cooldowns.is_empty() or s.tier_cooldowns.size() > 4: p.append("1 bis 4 Abklingzeiten erwartet")
 	return p

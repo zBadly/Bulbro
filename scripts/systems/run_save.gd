@@ -43,7 +43,9 @@ static func capture(player: Player) -> Dictionary:
 		"run_modifiers": modifiers,
 		"hp": player.current_hp,
 		"run_stats": {"healed": run.healed, "max_damage_pct": run.max_damage_pct, "max_speed_pct": run.max_speed_pct,
-			"max_distinct_weapons": run.max_distinct_weapons, "primitive_only": run.primitive_only, "kills": run.enemies_killed},
+			"max_distinct_weapons": run.max_distinct_weapons, "primitive_only": run.primitive_only, "kills": run.enemies_killed,
+			"burn_kills": run.burn_kills, "max_cursed": run.max_cursed, "lifesteal_healed": run.lifesteal_healed},
+		"souls": GameState.souls.souls,
 		"shop": GameState.shop.to_dict(),
 		"endless": GameState.endless,
 		"endless_start_wave": GameState.endless_start_wave,
@@ -80,6 +82,10 @@ static func restore_state(data: Dictionary) -> void:
 	run.max_distinct_weapons = int(stats["max_distinct_weapons"])
 	run.primitive_only = bool(stats["primitive_only"])
 	run.enemies_killed = int(stats["kills"])
+	run.burn_kills = int(stats.get("burn_kills", 0))
+	run.max_cursed = int(stats.get("max_cursed", 0))
+	run.lifesteal_healed = float(stats.get("lifesteal_healed", 0.0))
+	GameState.souls.souls = int(data.get("souls", 0))
 	GameState.shop.load_dict(data["shop"])
 	GameState.endless = bool(data.get("endless", false))
 	GameState.endless_start_wave = int(data.get("endless_start_wave", 0))

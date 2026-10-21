@@ -7,6 +7,15 @@ signal hp_changed(current: float, maximum: float)
 signal damaged(amount: int)
 signal dodged
 signal died
+## Eine Waffe greift an (Zauberzyklus). Spiegelbild-Waffen melden sich nicht.
+signal weapon_attacked(weapon: Weapon, target: Damageable)
+## Ein Waffen- oder Strukturtreffer (Fluch, Brandchance).
+signal enemy_hit(target: Damageable, info: DamageInfo)
+## Heilung über Max HP hinaus (Vampirbirne).
+signal overhealed(amount: float)
+
+## Sonderregeln, die Charakter-Effekte setzen (PlayerRuleEffect).
+enum Rule { NO_REGEN, NO_CRIT }
 
 const GROUP: StringName = &"player"
 ## Standardanzahl Waffenslots (Charaktere wie die Lichterkette weichen davon ab).
@@ -44,6 +53,9 @@ var standing_still_modifiers: Array[StatModifier] = []
 var run_modifiers: Array[StatModifier] = []
 ## Manuelles Zielen: Waffen feuern in Richtung Maus/rechter Stick statt auf den nächsten Gegner.
 var manual_aim: bool = false
+## Faktor auf den Mindestabstand zwischen zwei Lebensraub-Heilungen (0,5 = doppeltes Limit).
+var lifesteal_interval_factor: float = 1.0
+var rules: Dictionary[Rule, bool] = {}
 
 var _set_modifiers: Array[StatModifier] = []
 var _still_active: bool = false
@@ -126,6 +138,10 @@ func get_move_speed() -> float:
 
 func get_pickup_radius() -> float:
 	return Economy.pickup_radius(config.pickup_radius, stats.get_stat(Stats.PICKUP_RANGE_PCT))
+
+
+func get_body_texture() -> Texture2D:
+	return _sprite.texture
 
 
 ## Körpermitte in Weltkoordinaten (Ziel für Pickups).
@@ -229,27 +245,46 @@ func add_trigger(effect: ItemEffect) -> void:
 	triggers.append(TriggerEntry.create(effect))
 
 
-func heal(amount: float) -> void:
+## Heilt und gibt die tatsächlich geheilten HP zurück. Überschuss meldet `overhealed`.
+func heal(amount: float) -> float:
 	if is_dead or amount <= 0.0:
-		return
+		return 0.0
 	var before: float = current_hp
 	current_hp = minf(current_hp + amount, get_max_hp())
-	GameState.run_stats.healed += current_hp - before
+	var healed: float = current_hp - before
+	GameState.run_stats.healed += healed
 	hp_changed.emit(current_hp, get_max_hp())
+	if amount > healed:
+		overhealed.emit(amount - healed)
+	return healed
+
+
+## HP-Verlust ohne Ausweichen, Rüstung und Unverwundbarkeit (Vampirbirne); nie unter `min_hp`.
+func drain_hp(amount: float, min_hp: float) -> void:
+	if is_dead or current_hp <= min_hp:
+		return
+	current_hp = maxf(min_hp, current_hp - amount)
+	hp_changed.emit(current_hp, get_max_hp())
+
+
+func has_rule(rule: Rule) -> bool:
+	return rules.get(rule, false)
 
 
 ## Von Waffen bei jedem Treffer aufgerufen. Gibt true zurück, wenn Lebensraub geheilt hat.
 func try_lifesteal() -> bool:
-	if not CombatMath.lifesteal_ready(_elapsed, _last_lifesteal_time):
+	if not CombatMath.lifesteal_ready(_elapsed, _last_lifesteal_time, lifesteal_interval_factor):
 		return false
 	if rng.randf() >= CombatMath.lifesteal_chance(stats.get_stat(Stats.LIFESTEAL)):
 		return false
 	_last_lifesteal_time = _elapsed
-	heal(1.0)
+	GameState.run_stats.lifesteal_healed += heal(1.0)
 	return true
 
 
 func _regenerate(delta: float) -> void:
+	if has_rule(Rule.NO_REGEN):
+		return
 	var per_second: float = CombatMath.hp_regen_per_second(stats.get_stat(Stats.HP_REGEN))
 	if per_second > 0.0 and current_hp < get_max_hp():
 		heal(per_second * delta)

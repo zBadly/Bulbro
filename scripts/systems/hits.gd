@@ -54,13 +54,17 @@ static func nearest_target(tree: SceneTree, origin: Vector2, max_range: float, e
 	return best
 
 
-## Ein Waffentreffer mit allen Zusatzwirkungen: Schaden, Brand, Lebensraub, Heilchance.
+## Ein Waffentreffer mit allen Zusatzwirkungen: Schaden, Brand, Lebensraub, Heilchance, Treffer-Effekte.
 static func apply_weapon_hit(target: Damageable, info: DamageInfo, player: Player, lifesteal: bool = true) -> void:
 	target.take_damage(info)
-	if info.burn_damage > 0.0 and target is Enemy:
-		(target as Enemy).apply_burn(info.burn_damage, info.burn_ticks, player)
 	if player == null:
+		if info.burn_damage > 0.0 and target is Enemy:
+			(target as Enemy).apply_burn(info.burn_damage, info.burn_ticks, null)
 		return
+	if info.burn_damage > 0.0 and target is Enemy:
+		var burn: float = CombatMath.burn_damage(info.burn_damage, player.stats.get_stat(Stats.BURN_DMG_PCT))
+		(target as Enemy).apply_burn(burn, info.burn_ticks, player)
+	player.enemy_hit.emit(target, info)
 	if lifesteal:
 		player.try_lifesteal()
 	if info.heal_on_hit_chance > 0.0 and player.rng.randf() < info.heal_on_hit_chance:

@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="StatusConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/status_config.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+frost_tint = Color(0.66, 0.9, 1, 1)
+curse_tint = Color(0.84, 0.72, 1, 1)
+boss_status_factor = 0.5
+root_immunity_time = 1.5
+curse_tick_interval = 1.0
+curse_marker_color = Color(0.608, 0.349, 0.714, 1)
+curse_marker_radius = 9.0
+curse_marker_gap = 12.0
+ally_global_max = 16
+ally_pool_size = 8
+ally_contact_interval = 0.5
+ally_min_speed = 260.0
+ally_retarget_interval = 0.25
+ally_outline_color = Color(0.29, 0.66, 1, 1)
+ally_alpha = 0.8
+mirror_tint = Color(0.7, 0.85, 1, 0.55)
+mirror_follow_distance = 90.0
+mirror_follow_speed = 500.0
+drone_orbit_radius = 95.0
+drone_orbit_speed_deg = 120.0
+root_check_interval = 0.15
+flash_color = Color(1, 1, 1, 0.55)
+flash_time = 0.25

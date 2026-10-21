@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="StructureData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/structure_data.gd" id="1_struct"]
+[ext_resource type="Texture2D" path="res://art/world/drohne.svg" id="2_tex"]
+[ext_resource type="Texture2D" path="res://art/fx/projectile_spark.svg" id="3_proj"]
+
+[resource]
+script = ExtResource("1_struct")
+id = &"drohne"
+name_key = "STRUCTURE_DROHNE"
+texture = ExtResource("2_tex")
+base_damage = 4.0
+scalings = Dictionary[StringName, float]({
+&"engineering": 1.0
+})
+tier_cooldowns = Array[float]([1.0])
+range = 400.0
+projectile_texture = ExtResource("3_proj")
+projectile_speed = 1400.0

@@ -13,6 +13,10 @@ var burn_damage: float = 0.0
 var burn_ticks: int = 0
 var heal_on_hit_chance: float = 0.0
 var spark_on_kill_chance: float = 0.0
+## Brand-Tick (für Brand-Kills und damit Treffer-Effekte nicht erneut auslösen).
+var is_burn: bool = false
+## Zusätzliche Seelen bei einem Kill mit diesem Treffer (Irrlicht).
+var extra_souls: int = 0
 
 
 static func create(p_amount: int, p_is_crit: bool, p_knockback: float, p_source: Node) -> DamageInfo:

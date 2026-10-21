@@ -13,6 +13,9 @@ const LIGHTNING_TIME: float = 0.18
 
 
 const JUICE_HOST_GROUP: StringName = &"juice_host"
+const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
+## Über der Spielwelt, unter HUD und Menüs.
+const FLASH_LAYER: int = 5
 
 
 ## Partikel-Effekt (siehe ParticleFx.Kind) an einer Position, optional in eine Richtung.
@@ -91,3 +94,21 @@ static func explosion(tree: SceneTree, position: Vector2, radius: float) -> void
 	var fx: ExplosionFx = ExplosionFx.new()
 	parent.add_child(fx)
 	fx.play(position, radius)
+
+
+## Kurzer heller Blitz über den ganzen Bildschirm (Stroboskop).
+static func screen_flash(tree: SceneTree) -> void:
+	var parent: Node2D = layer(tree)
+	if parent == null:
+		return
+	var canvas: CanvasLayer = CanvasLayer.new()
+	canvas.layer = FLASH_LAYER
+	var rect: ColorRect = ColorRect.new()
+	rect.color = STATUS.flash_color
+	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	canvas.add_child(rect)
+	parent.add_child(canvas)
+	var tween: Tween = rect.create_tween()
+	tween.tween_property(rect, "modulate:a", 0.0, STATUS.flash_time)
+	tween.finished.connect(canvas.queue_free)

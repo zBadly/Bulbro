@@ -23,6 +23,10 @@ func _on_enemy_killed(data: EnemyData, position: Vector2, info: DamageInfo) -> v
 	# Funkensieb: Chance auf +1 Funke, wenn die Waffe den Kill landet
 	if info != null and info.spark_on_kill_chance > 0.0 and rng.randf() < info.spark_on_kill_chance:
 		sparks += 1
+	# Smartbulb: mehr Funken aus Kills; der Bruchteil wird ausgewürfelt
+	var bonus: float = sparks * player.stats.get_stat(Stats.KILL_SPARK_PCT) / Economy.PERCENT
+	if bonus > 0.0:
+		sparks += floori(bonus) + (1 if rng.randf() < bonus - floorf(bonus) else 0)
 	_spawn_sparks(sparks, position)
 	if data.legendary_crate:
 		_spawn_pickup(Pickup.Kind.LEGENDARY_CRATE, 1, position)

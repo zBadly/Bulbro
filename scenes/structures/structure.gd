@@ -4,6 +4,7 @@ extends Node2D
 ## nicht mit Schaden-%; Angriffstempo mit dem Struktur-Angriffstempo-Stat. Höheres Tier = schneller.
 
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
+const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
 const NO_EXCLUDE: Dictionary[int, bool] = {}
 
 var data: StructureData
@@ -45,6 +46,10 @@ func _physics_process(delta: float) -> void:
 	_cooldown_left -= delta
 	if _cooldown_left > 0.0:
 		return
+	if data.kind == StructureData.Kind.ROOT:
+		_cooldown_left = STATUS.root_check_interval
+		_root_enemies()
+		return
 	var target: Damageable = Hits.nearest_target(get_tree(), _muzzle.global_position, data.range, NO_EXCLUDE)
 	if target == null:
 		return
@@ -65,3 +70,11 @@ func _fire(target: Damageable) -> void:
 	spec.lifesteal = false
 	var start: Vector2 = _muzzle.global_position
 	(pool.acquire() as Projectile).launch(start, start.direction_to(target.get_hit_position()).angle(), spec)
+
+
+## Ranke: hält alle Gegner im Radius fest (mit Schutzzeit danach, siehe Enemy.root).
+func _root_enemies() -> void:
+	for target: Damageable in Hits.alive_targets(get_tree()):
+		var enemy: Enemy = target as Enemy
+		if enemy != null and enemy.global_position.distance_to(global_position) <= data.root_radius:
+			enemy.root(data.root_duration)

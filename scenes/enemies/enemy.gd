@@ -13,6 +13,9 @@ const BUFF_COLOR: Color = Color("#E74C3C")
 
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
+const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
+## Gruppe der gerade verfluchten Gegner (Zähler für die Schwarzlicht-Freischaltung).
+const CURSED_GROUP: StringName = &"cursed_enemies"
 
 var data: EnemyData
 var pool: ObjectPool
@@ -30,6 +33,8 @@ var speed_factor: float = 1.0
 var is_buffed: bool = false
 ## Zusätzlicher HP-Faktor für diesen Spawn (z. B. Elites auf Welle 11/12, doppelter Boss).
 var hp_multiplier: float = 1.0
+var curse: CurseStatus = CurseStatus.new()
+var slow: SlowStatus = SlowStatus.new()
 
 var _alive: bool = false
 var _behavior: EnemyBehavior
@@ -41,6 +46,8 @@ var _burn_timer: float = 0.0
 var _burn_source: Player
 var _flash_material: ShaderMaterial
 var _buff_material: ShaderMaterial
+var _root_immune_left: float = 0.0
+var _curse_marker: CurseMarker
 
 @onready var visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -60,6 +67,9 @@ func setup(p_data: EnemyData) -> void:
 	_buff_material = ShaderMaterial.new()
 	_buff_material.shader = OUTLINE_SHADER
 	_buff_material.set_shader_parameter(BUFF_OUTLINE_PARAM, BUFF_COLOR)
+	_curse_marker = CurseMarker.new()
+	_curse_marker.position = Vector2(0.0, -data.texture.get_height() - STATUS.curse_marker_gap)
+	visual.add_child(_curse_marker)
 	_behavior = data.behavior.create_behavior()
 	_behavior.enemy = self
 	add_child(_behavior)
@@ -88,7 +98,7 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	knockback_velocity = Vector2.ZERO
 	_last_hit = null
 	_burn_ticks_left = 0
-	_sprite.modulate = Color.WHITE
+	_clear_statuses()
 	_contact_distance = data.collision_radius + player.config.collision_radius
 	_sprite.flip_h = false
 	visual.rotation = 0.0
@@ -114,14 +124,17 @@ func distance_to_player() -> float:
 func take_damage(info: DamageInfo) -> void:
 	if not _alive:
 		return
-	hp -= info.amount
+	var amount: int = info.amount
+	if curse.is_active():
+		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * curse.damage_taken_factor()))
+	hp -= amount
 	_last_hit = info
 	Juice.hit_flash(_sprite)
 	AudioManager.play(&"hit_crit" if info.is_crit else &"hit")
 	Fx.particles(get_tree(), ParticleFx.Kind.HIT, get_hit_position(), info.knockback_dir)
 	if info.is_crit:
 		Fx.hit_stop(get_tree())
-	Pools.spawn_damage_number(get_tree(), info.amount, info.is_crit, get_hit_position())
+	Pools.spawn_damage_number(get_tree(), amount, info.is_crit, get_hit_position())
 	apply_knockback(info.knockback_dir * info.knockback * COMBAT.knockback_to_speed * (1.0 - data.knockback_resistance))
 	if hp <= 0.0:
 		die()
@@ -132,7 +145,10 @@ func die() -> void:
 	if not _alive:
 		return
 	_alive = false
+	if is_burning():
+		Events.burning_enemy_killed.emit(global_position)
 	Events.enemy_killed.emit(data, global_position, _last_hit)
+	_clear_statuses()
 	if data.death_spawn != null and data.death_spawn_count > 0:
 		summon_requested.emit(data.death_spawn, data.death_spawn_count, global_position)
 	died.emit(self)
@@ -144,6 +160,7 @@ func despawn(animated: bool = false) -> void:
 	if not _alive:
 		return
 	_alive = false
+	_clear_statuses()
 	died.emit(self)
 	if animated:
 		Juice.squash_pop(visual).finished.connect(_release, CONNECT_ONE_SHOT)
@@ -204,7 +221,7 @@ func apply_burn(damage_per_tick: float, ticks: int, source: Player) -> void:
 	_burn_damage = maxf(_burn_damage if _burn_ticks_left > 0 else 0.0, damage_per_tick)
 	_burn_ticks_left = maxi(_burn_ticks_left, ticks)
 	_burn_source = source
-	_sprite.modulate = COMBAT.burn_tint
+	_update_tint()
 
 
 func is_burning() -> bool:
@@ -221,9 +238,11 @@ func _update_burn(delta: float) -> void:
 	_burn_timer -= COMBAT.burn_interval
 	_burn_ticks_left -= 1
 	if _burn_ticks_left <= 0:
-		_sprite.modulate = Color.WHITE
+		_update_tint()
 	_spread_burn()
-	take_damage(DamageInfo.create(maxi(CombatMath.MIN_DAMAGE, roundi(_burn_damage)), false, 0.0, null))
+	var info: DamageInfo = DamageInfo.create(maxi(CombatMath.MIN_DAMAGE, roundi(_burn_damage)), false, 0.0, null)
+	info.is_burn = true
+	take_damage(info)
 
 
 ## Brandausbreitung: so viele nahe, nicht brennende Gegner wie der Stat burn_spread angibt.
@@ -244,13 +263,108 @@ func _spread_burn() -> void:
 			spread -= 1
 
 
+# --- Status: Fluch, Verlangsamen, Einfrieren, Festhalten ---
+
+## Fluch (Schwarzlicht): +1 Stapel, Dauer neu, erhöhter erlittener Schaden.
+func apply_curse(dps: float, bonus_pct: float, duration: float, max_stacks: int) -> void:
+	if not _alive:
+		return
+	curse.apply(dps, bonus_pct, duration, max_stacks, STATUS.curse_tick_interval)
+	if not is_in_group(CURSED_GROUP):
+		add_to_group(CURSED_GROUP)
+		var run: RunStats = GameState.run_stats
+		run.max_cursed = maxi(run.max_cursed, get_tree().get_node_count_in_group(CURSED_GROUP))
+	_curse_marker.show_stacks(curse.stacks)
+	_update_tint()
+
+
+func is_cursed() -> bool:
+	return curse.is_active()
+
+
+## Tempo x factor für `duration` Sekunden (Elites/Bosse kürzer). Faktor 0 = eingefroren.
+func apply_slow(factor: float, duration: float) -> void:
+	if not _alive:
+		return
+	if data.is_boss or data.is_elite:
+		duration *= STATUS.boss_status_factor
+	slow.apply(factor, duration)
+	_update_tint()
+
+
+func freeze(duration: float) -> void:
+	apply_slow(0.0, duration)
+
+
+## Festhalten (Ranken): wie Einfrieren, danach kurz geschützt, damit niemand dauerhaft gefangen bleibt.
+func root(duration: float) -> bool:
+	if not _alive or _root_immune_left > 0.0:
+		return false
+	apply_slow(0.0, duration)
+	_root_immune_left = duration + STATUS.root_immunity_time
+	return true
+
+
+## Eingefroren oder festgehalten: kein Laufen, kein Angriff, kein Kontaktschaden.
+func is_stopped() -> bool:
+	return slow.is_stopped()
+
+
+func _update_statuses(delta: float) -> void:
+	if _root_immune_left > 0.0:
+		_root_immune_left -= delta
+	if slow.is_active():
+		slow.tick(delta)
+		if not slow.is_active():
+			_update_tint()
+	if curse.is_active():
+		var damage: int = curse.tick(delta)
+		if not curse.is_active():
+			_on_curse_ended()
+		if damage > 0:
+			take_damage(DamageInfo.create(damage, false, 0.0, null))
+
+
+func _on_curse_ended() -> void:
+	if is_in_group(CURSED_GROUP):
+		remove_from_group(CURSED_GROUP)
+	_curse_marker.show_stacks(0)
+	_update_tint()
+
+
+func _clear_statuses() -> void:
+	curse.clear()
+	slow.clear()
+	_root_immune_left = 0.0
+	if _curse_marker != null:
+		_on_curse_ended()
+	else:
+		_sprite.modulate = Color.WHITE
+
+
+## Farbton nach Priorität: Frost vor Brand vor Fluch.
+func _update_tint() -> void:
+	if slow.is_active():
+		_sprite.modulate = STATUS.frost_tint
+	elif is_burning():
+		_sprite.modulate = COMBAT.burn_tint
+	elif curse.is_active():
+		_sprite.modulate = STATUS.curse_tint
+	else:
+		_sprite.modulate = Color.WHITE
+
+
 func _physics_process(delta: float) -> void:
 	if not _alive:
 		return
 	_update_burn(delta)
+	_update_statuses(delta)
 	if not _alive:
 		return
-	var move: Vector2 = _behavior.get_velocity(delta)
+	if slow.is_stopped():
+		_move_knockback_only(delta)
+		return
+	var move: Vector2 = _behavior.get_velocity(delta) * slow.speed_factor()
 	velocity = move + knockback_velocity
 	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, COMBAT.knockback_friction * delta)
 	global_position += velocity * delta
@@ -262,6 +376,15 @@ func _physics_process(delta: float) -> void:
 	Juice.walk_tilt(visual, move)
 	if not player.is_dead and global_position.distance_to(player.global_position) < _contact_distance:
 		player.take_hit(damage)
+
+
+## Eingefroren: nur Rückstoß bewegt den Gegner, Verhalten und Kontaktschaden ruhen.
+func _move_knockback_only(delta: float) -> void:
+	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, COMBAT.knockback_friction * delta)
+	global_position += knockback_velocity * delta
+	if arena_bounds.has_area():
+		var margin: Vector2 = Vector2.ONE * data.collision_radius
+		global_position = global_position.clamp(arena_bounds.position + margin, arena_bounds.end - margin)
 
 
 func _on_spawned() -> void:

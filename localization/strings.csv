@@ -290,3 +290,23 @@ OPT_ENEMY_DAMAGE,Gegner-Schaden,Enemy damage
 OPT_ENEMY_SPEED,Gegner-Tempo,Enemy speed
 ENDLESS_CONTINUE,Endlos weiterspielen,Continue endlessly
 HUD_WAVE_ENDLESS,Welle %d (Endlos),Wave %d (endless)
+STAT_BURN_DMG_PCT,Brandschaden %,Burn Damage %
+STAT_KILL_SPARK_PCT,Funken aus Kills %,Sparks from Kills %
+STRUCTURE_LICHTRANKE,Lichtranke,Light Vine
+STRUCTURE_DROHNE,Licht-Drohne,Light Drone
+TRIGGER_ON_BURNING_KILL,"%d %% Chance, wenn ein brennender Gegner stirbt: %s",%d %% chance when a burning enemy dies: %s
+EFFECT_CURSE_ON_HIT,"Treffer verfluchen Gegner %s s: %s Schaden/s und +%d %% erlittener Schaden, stapelt bis %d","Hits curse enemies for %s s: %s damage/s and +%d %% damage taken, stacks up to %d"
+EFFECT_BURN_ON_HIT,"%d %% Chance pro Treffer: Brand (%s Schaden, %d Ticks)","%d %% chance per hit: burn (%s damage, %d ticks)"
+EFFECT_REANIMATE,"Kills füllen ein Seelenglas (max. %d). Alle %s s ab %d Seelen kehrt der zuletzt getötete Gegnertyp für %s s als Schattengeist zurück (%s Kontaktschaden, max. %d gleichzeitig); +%s Geisterschaden pro %d Seelen","Kills fill a soul jar (max %d). Every %s s with at least %d souls, the last slain enemy type returns for %s s as a shadow ghost (%s contact damage, max %d at once); +%s ghost damage per %d souls"
+EFFECT_SPELL_CYCLE,Jeder %d. Angriff jeder Waffe wirkt zusätzlich im Wechsel: %s,Every %dth attack of each weapon also casts in turn: %s
+ACTION_FROST_NOVA,"Frostnova (%s Schaden, %d %% langsamer für %s s)","frost nova (%s damage, %d %% slower for %s s)"
+ACTION_CHAIN_LIGHTNING,"Kettenblitz (%s Schaden, springt %d-mal)","chain lightning (%s damage, jumps %d times)"
+ACTION_FREEZE,Lichtblitz friert alle Gegner auf dem Bildschirm %s s ein,a flash freezes all enemies on screen for %s s
+ACTION_BUILD_STRUCTURE,wächst eine %s,grows a %s
+EFFECT_MIRROR_CLONE,Ein Spiegelbild folgt dir und feuert alle Waffen mit %d %% Schaden,A mirror image follows you and fires all weapons at %d %% damage
+EFFECT_DRONES,"Startet mit %d kreisenden Drohnen (%s Schaden), +1 Drohne auf Level %s","Starts with %d orbiting drones (%s damage), +1 drone at level %s"
+EFFECT_LIFESTEAL_CAP,Lebensraub-Limit x%s,Lifesteal cap x%s
+EFFECT_HP_DRAIN,Verliert %s HP alle %s s,Loses %s HP every %s s
+EFFECT_OVERHEAL,Heilung über Max HP wird zu Schaden am nächsten Gegner,Healing above max HP damages the nearest enemy
+RULE_NO_REGEN,HP-Regen wirkungslos,HP regen has no effect
+RULE_NO_CRIT,Kann nicht kritisch treffen,Cannot deal critical hits

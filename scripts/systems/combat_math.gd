@@ -84,9 +84,14 @@ static func lifesteal_chance(lifesteal: float) -> float:
 	return clampf(lifesteal / PERCENT, 0.0, 1.0)
 
 
-## Darf jetzt wieder Lebensraub auslösen? (höchstens einmal pro 0,1 s)
-static func lifesteal_ready(now: float, last_time: float) -> bool:
-	return now - last_time >= LIFESTEAL_INTERVAL
+## Darf jetzt wieder Lebensraub auslösen? (höchstens einmal pro 0,1 s; Vampirbirne: Faktor 0,5 = doppeltes Limit)
+static func lifesteal_ready(now: float, last_time: float, interval_factor: float = 1.0) -> bool:
+	return now - last_time >= LIFESTEAL_INTERVAL * interval_factor
+
+
+## Brandschaden pro Tick mit dem Brandschaden-Stat (Zündkerze +50 %).
+static func burn_damage(base: float, burn_dmg_pct: float) -> float:
+	return base * maxf(0.0, 1.0 + burn_dmg_pct / PERCENT)
 
 
 ## Trefferablauf für den Spieler: Ausweichwurf -> Rüstung. 0 = ausgewichen.

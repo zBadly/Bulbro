@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="40" viewBox="0 0 48 40">
+  <!-- Licht-Drohne (Platzhalter): kleine Birne mit zwei Rotoren -->
+  <path d="M4,10 L18,10 M30,10 L44,10" stroke="#2A1E2E" stroke-width="5" stroke-linecap="round"/>
+  <path d="M4,10 L18,10 M30,10 L44,10" stroke="#9AA0A6" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="18" y="8" width="12" height="8" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3"/>
+  <circle cx="24" cy="26" r="11" fill="#F2B83A"/>
+  <circle cx="22.5" cy="24.5" r="10" fill="#FFE066"/>
+  <ellipse cx="19" cy="21" rx="3" ry="2" fill="#FFFFFF" transform="rotate(-35 19 21)"/>
+  <circle cx="24" cy="26" r="11" fill="none" stroke="#2A1E2E" stroke-width="3.5"/>
+  <ellipse cx="21" cy="26" rx="2" ry="3" fill="#2A1E2E"/>
+  <ellipse cx="27" cy="26" rx="2" ry="3" fill="#2A1E2E"/>
+</svg>

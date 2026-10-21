@@ -33,8 +33,10 @@ Bosse testen: F4 → zu Welle 20 springen; bei Spannung 5 erscheinen beide Bosse
 | 11 | Partikel, Screenshake, Hit-Stop, Bodenflecken, synthetisierte Sounds, Musik-Loop, AudioManager |
 | 12 | Versionierter JSON-Spielstand, Challenges mit Popup, gesperrte Items, Barrierefreiheit, manuelles Zielen, Run fortsetzen |
 | 13 | Balancing-Simulator, Endlos-Modus, Übersetzungsprüfung (DE/EN), Performance-Pass, Windows-Export-Preset |
+| 14c-1 | Systeme für 10 neue Charaktere: Fluch, Verlangsamen/Einfrieren/Festhalten, Verbündete (Schattengeister), Seelenglas, Zauberzyklus, Spiegelbild, Drohnen, Lichtranke, Brand-Erweiterungen, Vampirbirnen-Effekte |
 
 Leistung (Radeon RX 590, 1080p, VSync 144 Hz): 100 Gegner aller Typen mit 6 Tier-IV-Fernwaffen min. 118 FPS; 100 Gegner + 300 Projektile konstant 144 FPS.
+100 Gegner + 8 Verbündete + Spiegelbild mit 6 Waffen (Welle 14): mit VSync Ø 143, min. 137 FPS; ohne VSync Ø 311, min. 214 FPS.
 
 ## Entscheidungen und Startwerte
 
@@ -82,6 +84,21 @@ Alle Werte liegen als `.tres` unter `data/` und lassen sich ohne Code ändern.
 ### Juice und Audio
 - Hit-Stop 30 ms mit 0,15 s Abklingzeit, damit Krit-Serien nicht ruckeln.
 - Im Headless-Modus wird keine Musik gestartet (kein Ton, vermeidet Warnungen beim Beenden).
+
+### Status-Effekte und Charakter-Systeme (Paket 14c-1)
+Gemeinsame Werte in `data/config/status_config.tres`, effektspezifische Zahlen in den Effekt-Resources.
+- Neue Trigger-Haken im `ItemEffect`: Waffenangriff, Waffentreffer, brennender Tod, Überheilung, Wellenende. Zustand pro Exemplar in `TriggerEntry.state`.
+- **Fluch** (`CurseStatus`): +1 Stapel pro Treffer (max. aus dem Effekt), Dauer wird zurückgesetzt, Schaden pro Sekunde x Stapel, erlittener Schaden +x % pro Stapel (wirkt auf jeden Schaden, auch Brand und Fluch-Ticks).
+- **Verlangsamen/Einfrieren/Festhalten** (`SlowStatus`): stärkere Verlangsamung gewinnt; Faktor 0 stoppt Bewegung, Verhalten (auch Schießen) und Kontaktschaden. Elites/Bosse halten Status nur 50 % der Dauer. Nach dem Festhalten 1,5 s Schutz.
+- Farbton nach Priorität: Frost vor Brand vor Fluch. Fluch-Symbol mit Stapelzahl ist noch ein gezeichneter Platzhalter.
+- **Verbündete** (`Ally`, Ebene „allies“): unverwundbar, Gegner ignorieren sie, nicht in der Gegnergruppe (Waffen zielen nicht darauf, kein Gegnerlimit). Kontaktschaden alle 0,5 s, Mindesttempo 260. Globales Limit 16, Pool 8.
+- **Seelenglas** (`SoulCounter` in `GameState.souls`, beim Fortsetzen gespeichert): Seelen werden beim Beschwören nicht verbraucht, max. aus dem Effekt (100).
+- **Spiegelbild**: Kopien aller Waffen mit eigenem Schadensfaktor, kein Lebensraub, keine Angriffs-Effekte; folgt mit 90 px Abstand. Wird zu Wellenbeginn mit den aktuellen Waffen gebaut.
+- **Drohnen**: Strukturen (`data/structures/drohne.tres`), kreisen mit 95 px Radius und 120 °/s; Level-ups während der Welle fügen sofort Drohnen hinzu.
+- **Lichtranke**: Struktur-Art ROOT (`data/structures/lichtranke.tres`): Radius 70, hält 1,5 s fest, höchstens 5, zählt nicht als Lampenturm.
+- **Brand**: neuer Stat Brandschaden %; Brandchance pro Treffer als Effekt; `OnKillEffect.only_burning` für Explosionen brennend sterbender Gegner; Brand-Kills werden gezählt.
+- Neue Stats: `burn_dmg_pct`, `kill_spark_pct`. Sonderregeln am Spieler: kein HP-Regen, keine Krits. Lebensraub-Limit per Faktor.
+- Periodische Effekte (Stroboskop-Blitz, Lichtranke) sind `TimedSpawnEffect` mit `FreezeEnemiesAction` bzw. `BuildStructureAction`.
 
 ### Endlos-Modus
 - Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.

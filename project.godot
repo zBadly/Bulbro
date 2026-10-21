@@ -110,6 +110,7 @@ locale/fallback="de"
 2d_physics/layer_5="pickups"
 2d_physics/layer_6="world"
 2d_physics/layer_7="neutral"
+2d_physics/layer_8="allies"
 
 [rendering]
 

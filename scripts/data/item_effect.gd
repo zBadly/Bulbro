@@ -25,7 +25,7 @@ func is_trigger() -> bool:
 	return false
 
 
-func on_enemy_killed(_ctx: EffectContext, _entry: TriggerEntry, _position: Vector2) -> void:
+func on_enemy_killed(_ctx: EffectContext, _entry: TriggerEntry, _position: Vector2, _data: EnemyData, _info: DamageInfo) -> void:
 	pass
 
 
@@ -42,4 +42,28 @@ func on_wave_started(_ctx: EffectContext, entry: TriggerEntry) -> void:
 
 
 func on_wave_tick(_ctx: EffectContext, _entry: TriggerEntry, _delta: float) -> void:
+	pass
+
+
+## Am Wellenende: erzeugte Knoten (Drohnen, Spiegelbild, Verbündete) aufräumen.
+func on_wave_ended(_ctx: EffectContext, _entry: TriggerEntry) -> void:
+	pass
+
+
+## Eine Waffe des Spielers greift an (vor dem Treffer).
+func on_weapon_attack(_ctx: EffectContext, _entry: TriggerEntry, _weapon: Weapon, _target: Damageable) -> void:
+	pass
+
+
+## Ein Waffen- oder Strukturtreffer hat ein Ziel getroffen.
+func on_enemy_hit(_ctx: EffectContext, _entry: TriggerEntry, _target: Damageable, _info: DamageInfo) -> void:
+	pass
+
+
+func on_burning_enemy_killed(_ctx: EffectContext, _entry: TriggerEntry, _position: Vector2) -> void:
+	pass
+
+
+## Heilung über Max HP hinaus (`amount` = überschüssige HP).
+func on_overheal(_ctx: EffectContext, _entry: TriggerEntry, _amount: float) -> void:
 	pass
