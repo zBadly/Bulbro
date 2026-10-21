@@ -12,12 +12,12 @@
 [sub_resource type="Resource" id="Resource_5gt3u"]
 script = ExtResource("2_fkp22")
 stat = &"hp_regen"
-value = 5.0
+value = 7.0
 
 [sub_resource type="Resource" id="Resource_r43lm"]
 script = ExtResource("2_fkp22")
 stat = &"damage_pct"
-value = -25.0
+value = -15.0
 
 [sub_resource type="Resource" id="Resource_mgteh"]
 script = ExtResource("3_dqui5")

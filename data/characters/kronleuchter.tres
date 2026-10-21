@@ -54,9 +54,15 @@ stat = &"melee_dmg"
 kind = 2
 value = -100.0
 
+[sub_resource type="Resource" id="Resource_r2maxhp"]
+script = ExtResource("7_73yns")
+stat = &"max_hp"
+kind = 2
+value = -25.0
+
 [sub_resource type="Resource" id="Resource_6b5xt"]
 script = ExtResource("8_4iwop")
-modifiers = Array[ExtResource("7_73yns")]([SubResource("Resource_075ob")])
+modifiers = Array[ExtResource("7_73yns")]([SubResource("Resource_075ob"), SubResource("Resource_r2maxhp")])
 
 [resource]
 script = ExtResource("9_nkxu1")

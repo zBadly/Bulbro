@@ -13,7 +13,7 @@ base_damage = 6.0
 scalings = Dictionary[StringName, float]({
 &"engineering": 1.0
 })
-tier_cooldowns = Array[float]([1.0])
+tier_cooldowns = Array[float]([0.6])
 range = 400.0
 projectile_texture = ExtResource("3_proj")
 projectile_speed = 1400.0

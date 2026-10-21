@@ -17,12 +17,12 @@
 [sub_resource type="Resource" id="Resource_lu578"]
 script = ExtResource("2_4kun0")
 stat = &"luck"
-value = 100.0
+value = 125.0
 
 [sub_resource type="Resource" id="Resource_vhjej"]
 script = ExtResource("2_4kun0")
 stat = &"attack_speed"
-value = -60.0
+value = -40.0
 
 [sub_resource type="Resource" id="Resource_v8dp5"]
 script = ExtResource("2_4kun0")

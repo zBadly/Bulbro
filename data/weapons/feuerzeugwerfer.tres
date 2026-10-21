@@ -11,7 +11,7 @@ base_damage = 2.0
 scalings = Dictionary[StringName, float]({
 &"elemental_dmg": 0.4
 })
-cooldown = 0.2
+cooldown = 0.25
 range = 200.0
 crit_chance = 0.03
 crit_multiplier = 2.0
@@ -28,7 +28,7 @@ base_damage = 3.0
 scalings = Dictionary[StringName, float]({
 &"elemental_dmg": 0.4
 })
-cooldown = 0.18
+cooldown = 0.23
 range = 200.0
 crit_chance = 0.03
 crit_multiplier = 2.0
@@ -45,7 +45,7 @@ base_damage = 4.0
 scalings = Dictionary[StringName, float]({
 &"elemental_dmg": 0.4
 })
-cooldown = 0.17
+cooldown = 0.21
 range = 200.0
 crit_chance = 0.03
 crit_multiplier = 2.0
@@ -62,7 +62,7 @@ base_damage = 6.0
 scalings = Dictionary[StringName, float]({
 &"elemental_dmg": 0.4
 })
-cooldown = 0.16
+cooldown = 0.2
 range = 200.0
 crit_chance = 0.03
 crit_multiplier = 2.0

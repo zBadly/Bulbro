@@ -119,7 +119,7 @@ Waffenliste (Tier-I-Werte, alle Startwerte):
 | Heilstrahl | Fern | Medizinisch | 8 (80 % Fern) | 1,00 s | 400 | 10 % Chance +1 HP pro Treffer | 30 |
 | Glühwürmchen-Stab | Fern | Ätherisch | 12 (100 % Strom) | 1,20 s | 350 | zielsuchend | 30 |
 | Seelenlaterne | Fern | Elementar, Ätherisch | 11 (100 % Strom) | 1,10 s | 350 | zielsuchende Seelenkugel; Kills geben +1 Seele (Seelenglas) | 30 |
-| Feuerzeugwerfer | Fern | Elementar | 2 (40 % Strom) | 0,20 s | 200 | Flammenkegel, unbegrenzter Durchschlag, 20 % Brandchance pro Treffer | 35 |
+| Feuerzeugwerfer | Fern | Elementar | 2 (40 % Strom) | 0,25 s | 200 | Flammenkegel, unbegrenzter Durchschlag, 20 % Brandchance pro Treffer | 35 |
 | Kristallstab | Fern | Elementar, Präzise | 10 (100 % Strom) | 1,00 s | 400 | zersplittert beim Treffer in 3 Splitter (je 30 % Schaden) | 30 |
 | Voodoo-Nadel | Fern | Ätherisch | 5 (70 % Strom) | 0,65 s | 380 | Durchschlag 2 | 25 |
 | Dornenranke | Nah, Schwung | Primitiv, Medizinisch | 12 (100 % Nah + 50 % Strom) | 1,30 s | 200 | 25 % Chance, Gegner 0,5 s festzuhalten | 25 |
@@ -169,7 +169,7 @@ Sieg-Items der Charaktere 13–22 (werden durch einen Sieg mit dem Charakter im 
 - UV-Röhre | III | Treffer verfluchen Gegner 3 s (2 Schaden/s, +10 % erlittener Schaden, 1 Stapel), -5 % Schaden | 75 | Limit 1 (Schwarzlicht)
 - Pflanzenlicht | III | +50 % Leuchtkristalle, +3 HP-Regen, -10 Reichweite | 65 (Gewächshauslampe)
 - Smart-Steckdose | III | +15 % Funken aus Kills, +1 Gratis-Reroll pro Shop, -5 % Schaden | 75 | Limit 1 (Smartbulb)
-- Wartungsdrohne | III | eine kreisende Licht-Drohne (6 +100 % Technik), -3 % Tempo | 80 | Limit 1 (Drohnenleuchte)
+- Wartungsdrohne | III | eine kreisende Licht-Drohne (6 +100 % Technik, alle 0,6 s), -3 % Tempo | 80 | Limit 1 (Drohnenleuchte)
 - Blitzwürfel | III | alle 15 s friert ein Lichtblitz alle Gegner auf dem Bildschirm 0,5 s ein (ohne Nachteil) | 75 | Limit 1 (Stroboskop)
 - Blutrote Fassung | III | +4 % Lebensraub, Heilung über Max HP wird zu Schaden am nächsten Gegner, -2 HP-Regen | 70 | Limit 1 (Vampirbirne)
 - Spiegelscherbe | III | +2 % Schaden pro getragener Waffe, -10 Reichweite | 70 (Spiegelkugel)
@@ -182,20 +182,20 @@ Format: Name | Stats und Eigenschaften | Startwaffe(n) | Freischaltung.
 3. Neonröhre | +100 Reichweite mit Präzise-Waffen, +25 % Angriffstempo, -30 % Ausweichen, -10 Technik, -10 Fern | Glasscherbe | Start
 4. LED-Schütze | +50 Reichweite, Fern-Modifikationen +50 %, keine Nahkampfwaffen, Max-HP-Modifikationen -25 % | Funkenpistole | Start
 5. Lavalampe | +5 Strom, Strom-Modifikationen +33 %, Nah/Fern/Technik-Modifikationen -100 % | Lötkolben oder Blitzwerfer | Start
-6. Taschenlampe | +10 Technik, Technik-Modifikationen +25 %, -10 % Schaden | Schraubenzieher | 3 Lampentürme gleichzeitig besitzen
-7. Discokugel | +100 Glück, Glück-Modifikationen +25 %, 75 % Chance beim Funken-Aufheben: 1 (+15 % Glück) Schaden an zufälligem Gegner, -60 % Angriffstempo, -50 % XP | beliebig | 300 Funken gesammelt (gesamt)
+6. Taschenlampe | +20 Technik, Technik-Modifikationen +25 % | Schraubenzieher | 3 Lampentürme gleichzeitig besitzen
+7. Discokugel | +125 Glück, Glück-Modifikationen +25 %, 75 % Chance beim Funken-Aufheben: 1 (+15 % Glück) Schaden an zufälligem Gegner, -40 % Angriffstempo, -50 % XP | beliebig | 300 Funken gesammelt (gesamt)
 8. Lichterkette | 12 Waffenslots, -5 % Schaden pro Waffe | beliebig | 6 verschiedene Waffen gleichzeitig
 9. Halogenstrahler | +30 % Schaden, +25 % Gegner, -10 % Ausweichen | beliebig | +50 % Schaden in einem Run
-10. Nachtlicht | +5 HP-Regen, HP-Regen-Modifikationen +50 %, -25 % Schaden | Heilstrahl | 200 HP in einem Run geheilt
+10. Nachtlicht | +7 HP-Regen, HP-Regen-Modifikationen +50 %, -15 % Schaden | Heilstrahl | 200 HP in einem Run geheilt
 11. Blitzlicht | +30 % Tempo, +1 Nah pro 2 % Tempo, -3 Rüstung, -100 Rüstung beim Stillstehen | beliebig | +50 % Tempo in einem Run
-12. Kerze | +8 Max HP, Primitiv-Set-Bonus doppelt, kann keine Elementar-Waffen tragen | Ast | Run nur mit Primitiv-Waffen gewinnen
+12. Kerze | +8 Max HP, +5 HP-Regen, +2 Rüstung, Primitiv-Set-Bonus doppelt, kann keine Elementar-Waffen tragen | Ast | Run nur mit Primitiv-Waffen gewinnen
 13. Irrlicht (Nekromant) | Kills füllen ein Seelenglas (max. 100, Seelen werden nicht verbraucht). Alle 3 s ab 5 Seelen kehrt der zuletzt getötete Gegnertyp 10 s als Schattengeist zurück (blaue Kontur, unverwundbar, Kontaktschaden 5 +100 % Strom, max. 8 gleichzeitig), +1 Geisterschaden pro 20 Seelen; Max-HP-Modifikationen -25 %, -3 Rüstung | Seelenlaterne | 500 Kills in einem Run
 14. Zündkerze (Pyromane) | 25 % Chance pro Treffer auf Brand (3 +50 % Strom, 3 Ticks), +2 Brandausbreitung, +50 % Brandschaden, brennend sterbende Gegner explodieren klein (3 +50 % Strom, Radius 50); Fern-Modifikationen -50 %, keine Medizinisch-Waffen | Feuerzeugwerfer | 300 Gegner durch Brand getötet (gesamt)
-15. Kronleuchter (Erzmagier) | Jeder 4. Angriff jeder Waffe wirkt im Wechsel: Feuerball (8 +100 % Strom, Radius 70), Frostnova (4 +50 % Strom, 40 % langsamer für 2 s), Kettenblitz (6 +80 % Strom, 3 Sprünge); Nah-Modifikationen -100 % | Kristallstab | Run gewinnen, in dem Strom 30 erreicht
-16. Schwarzlicht (Fluchwirker) | Treffer verfluchen Gegner 4 s: 3 Schaden/s pro Stapel, +15 % erlittener Schaden pro Stapel, bis 3 Stapel; kann nicht kritisch treffen | Voodoo-Nadel | 300 Kills mit der Voodoo-Nadel (gesamt)
+15. Kronleuchter (Erzmagier) | Jeder 4. Angriff jeder Waffe wirkt im Wechsel: Feuerball (8 +100 % Strom, Radius 70), Frostnova (4 +50 % Strom, 40 % langsamer für 2 s), Kettenblitz (6 +80 % Strom, 3 Sprünge); Nah-Modifikationen -100 %, Max-HP-Modifikationen -25 % | Kristallstab | Run gewinnen, in dem Strom 30 erreicht
+16. Schwarzlicht (Fluchwirker) | Treffer verfluchen Gegner 4 s: 3 Schaden/s pro Stapel, +15 % erlittener Schaden pro Stapel, bis 3 Stapel; kann nicht kritisch treffen, -2 Rüstung | Voodoo-Nadel | 300 Kills mit der Voodoo-Nadel (gesamt)
 17. Gewächshauslampe (Druide) | Alle 12 s wächst eine Lichtranke, die Gegner 1,5 s festhält (max. 5); Leuchtkristalle doppelt so häufig; Batterien heilen doppelt (+3); -15 % Angriffstempo | Dornenranke | 50 Leuchtkristalle zerstört (gesamt)
 18. Smartbulb (Händler) | +30 % Funken aus Kills, -15 % Shoppreise, +1 Gratis-Reroll pro Shop; -15 % Schaden, -20 % XP | beliebig | 5.000 Funken gesammelt (gesamt)
-19. Drohnenleuchte (Drohnenpilot) | 2 kreisende Licht-Drohnen (6 +100 % Technik), +1 Drohne auf Level 5, 10 und 15; nur 5 Waffenslots | Schraubenzieher | Run mit 5 stehenden Lampentürmen beenden (Sieg oder Niederlage)
+19. Drohnenleuchte (Drohnenpilot) | 3 kreisende Licht-Drohnen (6 +100 % Technik, alle 0,6 s), +1 Drohne auf Level 5, 10 und 15, +30 Technik; nur 5 Waffenslots | Schraubenzieher | Run mit 5 stehenden Lampentürmen beenden (Sieg oder Niederlage)
 20. Stroboskop (Zeitmagier) | Alle 10 s friert ein Lichtblitz alle Gegner auf dem Bildschirm 1 s ein (Elites/Bosse 0,5 s); -30 Reichweite, -2 Rüstung | Laserpointer | Welle 15 erreichen, ohne ein Item mit Ausweichen zu nehmen
 21. Vampirbirne (Blutsauger) | +12 % Lebensraub, Lebensraub-Limit verdoppelt, Heilung über Max HP wird zu Schaden am nächsten Gegner; verliert 1 HP pro 4 s (nie unter 1), HP-Regen wirkungslos | Glasscherbe | 200 HP durch Lebensraub in einem Run geheilt
 22. Spiegelkugel (Doppelgänger) | Ein Spiegelbild folgt mit Abstand und feuert Kopien aller Waffen mit 40 % Schaden (kein Lebensraub); -20 % Max HP | beliebig | Eine Welle mit 6 gleichen Waffen (beliebiges Tier) beenden

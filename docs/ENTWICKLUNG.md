@@ -36,7 +36,7 @@ Bosse testen: F4 → zu Welle 20 springen; bei Spannung 5 erscheinen beide Bosse
 | 14a | Feste Angebotskarten (Kopf/Mitte/Fuß, gleiche Höhe, Schrift schrumpft statt Karte), Charakterauswahl mit festen Bereichen (Raster 4 Reihen, Infopanel scrollt intern) |
 | 14c-3 | 10 neue Charaktere, Freischaltungen mit Fortschritt (Bestwert/Summe), 10 Sieg-Items, Debug: alle Charaktere freischalten |
 | 14c-2 | 5 neue Startwaffen: Seelenlaterne, Feuerzeugwerfer, Kristallstab, Voodoo-Nadel, Dornenranke (auch im Shop) |
-| 14c-5 | Charakter-Simulator; Balancing der neuen Charaktere und Waffen (Feuerzeugwerfer, Voodoo-Nadel, Seelenlaterne, Blitzwerfer, Drohnenleuchte, Vampirbirne, Stroboskop, Smartbulb, Blitzwürfel, Geisterkerze) |
+| 14c-5 | Charakter-Simulator; Balancing in zwei Runden: neue Charaktere und Waffen, schwache alte Charaktere (Kerze, Taschenlampe, Discokugel, Nachtlicht), Drohnenleuchte |
 | 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
 | 14c-1 | Systeme für 10 neue Charaktere: Fluch, Verlangsamen/Einfrieren/Festhalten, Verbündete (Schattengeister), Seelenglas, Zauberzyklus, Spiegelbild, Drohnen, Lichtranke, Brand-Erweiterungen, Vampirbirnen-Effekte |
 
@@ -132,8 +132,11 @@ Grundlage: `--characters`, `--weapons`, `--items` (200 Runs, Vergleichswerte).
 - Feuerzeugwerfer 80 % → 40 % Strom (er griff 5-mal pro Sekunde mit voller Skalierung an); Voodoo-Nadel Abklingzeit 0,50 → 0,65 s (Tiers 0,60/0,55/0,51); Seelenlaterne Grundschaden 8 → 11 (17/24/35); Blitzwerfer Abklingzeit 0,60 → 0,70 s (0,64/0,60/0,55).
 - Drohnenleuchte 5 statt 4 Waffenslots, Drohnen 6 statt 4 Grundschaden (auch Wartungsdrohne); Vampirbirne +12 % Lebensraub, HP-Verlust 1 pro 4 s; Stroboskop-Blitz alle 10 s; Smartbulb -15 % Schaden.
 - Blitzwürfel ohne Nachteil; Geisterkerze 25 % Chance, -1 Rüstung.
+- Runde 2: Schwarzlicht -2 Rüstung, Kronleuchter Max-HP-Modifikationen -25 % (Schaden kürzen wirkte laut Simulator kaum, beide hatten große Schadensreserven); Feuerzeugwerfer Abklingzeit 0,20 → 0,25 s (0,23/0,21/0,20).
+- Runde 2, alte Charaktere: Kerze +5 HP-Regen, +2 Rüstung (scheiterte vorher meist in Welle 3); Taschenlampe +20 Technik, kein Schadensmalus; Discokugel +125 Glück, -40 % Angriffstempo; Nachtlicht +7 HP-Regen, -15 % Schaden.
+- Drohnenleuchte (Ziel ~80 % / 50 % Siegquote auf Spannung 0 / 3): Drohnen schießen alle 0,6 statt 1,0 s (gilt auch für die Wartungsdrohne), Start mit 3 Drohnen, +30 Technik. Getestet und verworfen: nur kürzere Abklingzeit, +50 % Fern-Skalierung (wirkungslos ohne Fern-Waffen), nur 3 Drohnen, 4 Drohnen + 40 Technik (77 % / 50 %).
 - Bewusst nicht geändert: Zündkerze-Brandschaden, Fluch-Verstärkung, Kronleuchter-Zauberzyklus, Spawn-Intervalle auf Spannung 0 (Einsteigerstufe darf leicht sein).
-- Siegquote im Schnitt aller Charaktere je Spannung 0–5 laut Simulator: 82 / 74 / 63 / 52 / 43 / 31 %.
+- Siegquote im Schnitt aller Charaktere je Spannung 0–5 laut Simulator nach Runde 1: 82 / 74 / 63 / 52 / 43 / 31 %; nach Runde 2 auf Spannung 0 / 3: 85 % / 57 % (alte 12: 83 / 54 %, neue 10: 87 / 60 %).
 
 ### Endlos-Modus
 - Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.

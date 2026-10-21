@@ -70,7 +70,7 @@ func test_start_values_match_plan() -> void:
 	assert_eq([lantern.base_damage, lantern.cooldown, lantern.range, lantern.price], [11.0, 1.1, 350.0, 30])
 	assert_gt(lantern.homing_turn_deg, 0.0, "zielsuchend")
 	var lighter: WeaponTierStats = _weapon("feuerzeugwerfer").tiers[0]
-	assert_eq([lighter.base_damage, lighter.cooldown, lighter.range, lighter.price], [2.0, 0.2, 200.0, 35])
+	assert_eq([lighter.base_damage, lighter.cooldown, lighter.range, lighter.price], [2.0, 0.25, 200.0, 35])
 	assert_gte(lighter.piercing, TextFormat.PIERCE_ALL, "unbegrenzter Durchschlag")
 	assert_almost_eq(lighter.burn_chance, 0.2, 0.001)
 	var staff: WeaponTierStats = _weapon("kristallstab").tiers[0]

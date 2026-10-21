@@ -8,6 +8,8 @@
 [ext_resource type="Resource" path="res://data/weapons/voodoo_nadel.tres" id="6_u6ig4"]
 [ext_resource type="Texture2D" path="res://art/characters/schwarzlicht.svg" id="7_q3p68"]
 [ext_resource type="Texture2D" path="res://art/portraits/schwarzlicht.svg" id="p_portrait"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="r2_mod"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="r2_eff"]
 
 [sub_resource type="Resource" id="Resource_ghnhi"]
 script = ExtResource("2_xmywn")
@@ -20,12 +22,21 @@ max_stacks = 3
 script = ExtResource("3_ri84q")
 rule = 1
 
+[sub_resource type="Resource" id="Resource_r2armor"]
+script = ExtResource("r2_mod")
+stat = &"armor"
+value = -2.0
+
+[sub_resource type="Resource" id="Resource_r2stats"]
+script = ExtResource("r2_eff")
+modifiers = Array[ExtResource("r2_mod")]([SubResource("Resource_r2armor")])
+
 [resource]
 script = ExtResource("4_ap3it")
 id = &"schwarzlicht"
 name_key = "CHAR_SCHWARZLICHT"
 texture = ExtResource("7_q3p68")
-effects = Array[ExtResource("1_1cme1")]([SubResource("Resource_ghnhi"), SubResource("Resource_76kjj")])
+effects = Array[ExtResource("1_1cme1")]([SubResource("Resource_ghnhi"), SubResource("Resource_76kjj"), SubResource("Resource_r2stats")])
 starting_weapons = Array[ExtResource("5_fxtoj")]([ExtResource("6_u6ig4")])
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"elemental"])
