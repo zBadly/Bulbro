@@ -60,6 +60,7 @@ static func unlocked_items(items: Array[ItemData]) -> Array[ItemData]:
 
 
 ## Kontext für die Prüfung. Gesamtwerte: gespeichert plus noch nicht gemeldete Zuwächse dieses Runs.
+## Nach end_run() ist der Run inaktiv und schon über evaluate_run_end gemeldet: dann zählt nur der Spielstand.
 static func make_context(at_run_end: bool, victory: bool) -> ChallengeContext:
 	var ctx: ChallengeContext = ChallengeContext.new()
 	ctx.run = GameState.run_stats
@@ -68,11 +69,14 @@ static func make_context(at_run_end: bool, victory: bool) -> ChallengeContext:
 	ctx.victory = victory
 	ctx.at_run_end = at_run_end
 	ctx.character_id = GameState.character.id if GameState.character != null else &""
-	var run_totals: Dictionary[String, int] = GameState.run_totals() if GameState.is_run_active else {}
+	var run_totals: Dictionary[String, int] = GameState.run_totals()
 	for challenge: ChallengeData in all_challenges():
 		if challenge.is_total():
 			var key: String = challenge.total_key()
-			ctx.totals[key] = SaveManager.get_stat(key) + run_totals.get(key, 0) - GameState.reported_totals.get(key, 0)
+			var unreported: int = 0
+			if GameState.is_run_active:
+				unreported = run_totals.get(key, 0) - GameState.reported_totals.get(key, 0)
+			ctx.totals[key] = SaveManager.get_stat(key) + unreported
 	return ctx
 
 

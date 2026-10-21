@@ -6,6 +6,8 @@ Alle Namen, Grafiken (SVG), Texte und Sounds sind eigene Kreationen; das Spiel i
 
 **Lies vor jeder Aufgabe [docs/GDD.md](docs/GDD.md).** Es ist die verbindliche Quelle für Mechaniken, Zahlen und Architektur.
 
+Aktuelle Ausbaustufe: docs/PHASE_15.md, Pakete einzeln abarbeiten, nach jedem Paket Commit + Push, Stand in docs/ENTWICKLUNG.md notieren.
+
 ## Arbeitsregeln (GDD Abschnitt 0)
 
 - Rolle: Senior-Entwickler für Godot 4.x (GDScript mit statischen Typen) und Game Designer.

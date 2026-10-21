@@ -15,4 +15,7 @@ func is_weapon() -> bool:
 
 
 func get_modifiers() -> Array[StatModifier]:
-	return item.get_modifiers() if item != null else []
+	# Kein Ternär mit "[]": das Literal wäre ungetypt und die Zuweisung an Array[StatModifier] schlüge fehl.
+	if item == null:
+		return []
+	return item.get_modifiers()
