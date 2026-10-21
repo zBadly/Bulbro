@@ -17,6 +17,9 @@ const GRID_COLUMNS: int = 6
 const PORTRAIT_BUTTON: Vector2 = Vector2(116, 140)
 const PORTRAIT_LARGE: Vector2 = Vector2(144, 192)
 const DETAIL_WIDTH: float = 520.0
+## Sichtbare Rasterzeilen; Raster und Infopanel sind immer so hoch (feste Bereiche, nichts springt beim Auswählen).
+## Bei mehr Charakteren scrollt nur das Raster.
+const GRID_VISIBLE_ROWS: int = 4
 const DIFFICULTY_WIDTH: float = 820.0
 const GAP: int = 20
 const LOCKED_COLOR: Color = Color("#000000")
@@ -27,6 +30,7 @@ var _character: CharacterData
 var _weapon: WeaponData
 var _content: VBoxContainer
 var _detail: VBoxContainer
+var _detail_scroll: ScrollContainer
 var _confirm: Button
 
 
@@ -61,7 +65,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _show_step(step: Step) -> void:
 	_step = step
+	# Sofort aus dem Layout nehmen, sonst wird einen Frame lang alter und neuer Inhalt zusammen zentriert
 	for child: Node in _content.get_children():
+		_content.remove_child(child)
 		child.queue_free()
 	match step:
 		Step.CHARACTER:
@@ -89,17 +95,31 @@ func _build_characters() -> void:
 	var row: HBoxContainer = HBoxContainer.new()
 	row.add_theme_constant_override("separation", GAP * 2)
 	_content.add_child(row)
+	var area_height: float = GRID_VISIBLE_ROWS * PORTRAIT_BUTTON.y + (GRID_VISIBLE_ROWS - 1) * (GAP / 2)
+	var grid_scroll: ScrollContainer = ScrollContainer.new()
+	grid_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	grid_scroll.custom_minimum_size = Vector2(GRID_COLUMNS * PORTRAIT_BUTTON.x + (GRID_COLUMNS - 1) * (GAP / 2), area_height)
+	# Scrollt nur, wenn mehr als GRID_VISIBLE_ROWS Reihen existieren und der Fokus aus dem Bild wandert
+	grid_scroll.follow_focus = true
+	row.add_child(grid_scroll)
 	var grid: GridContainer = GridContainer.new()
 	grid.columns = GRID_COLUMNS
 	grid.add_theme_constant_override("h_separation", GAP / 2)
 	grid.add_theme_constant_override("v_separation", GAP / 2)
-	row.add_child(grid)
+	grid_scroll.add_child(grid)
 	var detail_panel: PanelContainer = UiStyle.make_panel()
-	detail_panel.custom_minimum_size = Vector2(DETAIL_WIDTH, 0.0)
+	detail_panel.custom_minimum_size = Vector2(DETAIL_WIDTH, area_height)
+	detail_panel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	row.add_child(detail_panel)
+	# Langer Text scrollt nur innerhalb des Panels
+	_detail_scroll = ScrollContainer.new()
+	_detail_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_detail_scroll.follow_focus = false
+	detail_panel.add_child(_detail_scroll)
 	_detail = VBoxContainer.new()
+	_detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_detail.add_theme_constant_override("separation", GAP / 2)
-	detail_panel.add_child(_detail)
+	_detail_scroll.add_child(_detail)
 
 	var selected_button: Button = null
 	for character: CharacterData in _characters:
@@ -128,7 +148,9 @@ func _build_characters() -> void:
 func _select_character(character: CharacterData) -> void:
 	_character = character
 	for child: Node in _detail.get_children():
+		_detail.remove_child(child)
 		child.queue_free()
+	_detail_scroll.scroll_vertical = 0
 	var unlocked: bool = Unlocks.is_unlocked(character)
 	var portrait: TextureRect = TextureRect.new()
 	portrait.texture = character.texture

@@ -38,8 +38,10 @@ func close() -> void:
 	_clear()
 
 
+## Alten Inhalt sofort aus dem Layout nehmen, damit der Neuaufbau keinen Frame lang doppelt zentriert wird.
 func _clear() -> void:
 	for child: Node in _content.get_children():
+		_content.remove_child(child)
 		child.queue_free()
 
 

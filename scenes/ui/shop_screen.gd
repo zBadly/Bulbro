@@ -84,13 +84,13 @@ func _offer_card(index: int, offer: ShopOffer) -> OfferCard:
 		card.preview_modifiers = offer.get_modifiers()
 	card.focused.connect(func(c: OfferCard) -> void: _stat_panel.refresh(c.preview_modifiers))
 	if offer.sold:
-		card.add_action(tr("SOLD"), func() -> void: pass, true)
+		card.set_status(tr("SOLD"), UiStyle.TIER_COLORS[0])
 		return card
 	var affordable: bool = offer.price <= GameState.sparks
 	card.set_price(offer.price, affordable)
 	var fits: bool = not offer.is_weapon() or player.weapon_slots.can_accept(offer.weapon, offer.tier)
 	_focus_targets["buy_%d" % index] = card.add_action(tr("BUY"), _on_buy.bind(index), not affordable or not fits)
-	_focus_targets["lock_%d" % index] = card.add_action(tr("UNLOCK") if offer.locked else tr("LOCK"), _on_lock.bind(index))
+	_focus_targets["lock_%d" % index] = card.add_side_action(tr("UNLOCK") if offer.locked else tr("LOCK"), _on_lock.bind(index))
 	return card
 
 
