@@ -59,6 +59,7 @@ explosion_radius = 75.0
 
 [resource]
 script = ExtResource("2_ylaf3")
+lore_text = "LORE_WEAPON_LEUCHTRAKETE"
 id = &"leuchtrakete"
 name_key = "WEAPON_LEUCHTRAKETE"
 kind = 2

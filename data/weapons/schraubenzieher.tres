@@ -55,6 +55,7 @@ price = 163
 
 [resource]
 script = ExtResource("1_8ca3l")
+lore_text = "LORE_WEAPON_SCHRAUBENZIEHER"
 id = &"schraubenzieher"
 name_key = "WEAPON_SCHRAUBENZIEHER"
 kind = 1

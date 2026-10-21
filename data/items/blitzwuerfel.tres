@@ -17,6 +17,7 @@ action = SubResource("Resource_mhbgt")
 
 [resource]
 script = ExtResource("7_66dwr")
+lore_text = "LORE_ITEM_BLITZWUERFEL"
 id = &"blitzwuerfel"
 name_key = "ITEM_BLITZWUERFEL"
 tier = 3

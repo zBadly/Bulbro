@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LexiconTopicData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/lexicon_topic_data.gd" id="1_topic"]
+[ext_resource type="Texture2D" path="res://art/pickups/battery.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_topic")
+id = &"life"
+name_key = "LEX_TOPIC_LIFE"
+icon = ExtResource("2_icon")
+order = 0
+stats = Array[StringName]([&"max_hp", &"hp_regen", &"lifesteal", &"consumable_heal"])
+lore_text = "LORE_TOPIC_LIFE"

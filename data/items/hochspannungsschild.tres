@@ -27,6 +27,7 @@ modifiers = Array[ExtResource("2_yn5uw")]([SubResource("Resource_6o4fx"), SubRes
 
 [resource]
 script = ExtResource("5_dcjpd")
+lore_text = "LORE_ITEM_HOCHSPANNUNGSSCHILD"
 id = &"hochspannungsschild"
 name_key = "ITEM_HOCHSPANNUNGSSCHILD"
 tier = 3

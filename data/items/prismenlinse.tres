@@ -22,6 +22,7 @@ modifiers = Array[ExtResource("2_osunv")]([SubResource("Resource_77pmt"), SubRes
 
 [resource]
 script = ExtResource("5_lkyqs")
+lore_text = "LORE_ITEM_PRISMENLINSE"
 id = &"prismenlinse"
 name_key = "ITEM_PRISMENLINSE"
 tier = 3

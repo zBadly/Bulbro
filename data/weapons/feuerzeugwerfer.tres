@@ -75,6 +75,7 @@ burn_chance = 0.2
 
 [resource]
 script = ExtResource("2_enjyj")
+lore_text = "LORE_WEAPON_FEUERZEUGWERFER"
 id = &"feuerzeugwerfer"
 name_key = "WEAPON_FEUERZEUGWERFER"
 kind = 2

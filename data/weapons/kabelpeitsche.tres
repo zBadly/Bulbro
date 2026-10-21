@@ -54,6 +54,7 @@ price = 163
 
 [resource]
 script = ExtResource("1_bvijh")
+lore_text = "LORE_WEAPON_KABELPEITSCHE"
 id = &"kabelpeitsche"
 name_key = "WEAPON_KABELPEITSCHE"
 kind = 1

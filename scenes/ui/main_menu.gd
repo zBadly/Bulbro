@@ -1,9 +1,10 @@
 class_name MainMenu
 extends Control
-## Hauptmenü: Start (zur Charakterauswahl), Optionen, Beenden.
+## Hauptmenü: Start (zur Charakterauswahl), Lexikon, Optionen, Beenden.
 
 const RUN_SETUP_SCENE: String = "res://scenes/ui/run_setup.tscn"
 const RUN_SCENE: String = "res://scenes/world/main.tscn"
+const LEXICON_SCENE: String = "res://scenes/ui/lexicon.tscn"
 const FLOOR_TEXTURE: Texture2D = preload("res://art/world/floor_tile.svg")
 const HERO_TEXTURE: Texture2D = preload("res://art/characters/standardbirne.svg")
 const HERO_SCALE: float = 2.5
@@ -75,6 +76,7 @@ func _build() -> void:
 		if character != null:
 			first = _button(box, tr("MENU_CONTINUE") % [tr(character.name_key), int(run.get("wave", 0))], _continue_run)
 	var start: Button = _button(box, tr("MENU_START"), func() -> void: get_tree().change_scene_to_file(RUN_SETUP_SCENE))
+	_button(box, tr("MENU_LEXICON"), func() -> void: get_tree().change_scene_to_file(LEXICON_SCENE))
 	_button(box, tr("MENU_OPTIONS"), _options.open)
 	_button(box, tr("MENU_QUIT"), func() -> void: get_tree().quit())
 	(first if first != null else start).call_deferred("grab_focus")

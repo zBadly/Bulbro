@@ -27,6 +27,7 @@ modifiers = Array[ExtResource("2_i8uks")]([SubResource("Resource_8vwus"), SubRes
 
 [resource]
 script = ExtResource("5_5xj4q")
+lore_text = "LORE_ITEM_FUNKENMAGNET"
 id = &"funkenmagnet"
 name_key = "ITEM_FUNKENMAGNET"
 tier = 2

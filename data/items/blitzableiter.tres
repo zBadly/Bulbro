@@ -21,6 +21,7 @@ action = SubResource("Resource_12fsw")
 
 [resource]
 script = ExtResource("5_3s2ee")
+lore_text = "LORE_ITEM_BLITZABLEITER"
 id = &"blitzableiter"
 name_key = "ITEM_BLITZABLEITER"
 tier = 4

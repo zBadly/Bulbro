@@ -45,6 +45,8 @@ modifier = SubResource("Resource_rurg6")
 
 [resource]
 script = ExtResource("6_cach6")
+tip_key = "TIP_CHAR_BLITZLICHT"
+lore_text = "LORE_CHAR_BLITZLICHT"
 id = &"blitzlicht"
 name_key = "CHAR_BLITZLICHT"
 texture = ExtResource("12_wpe7u")

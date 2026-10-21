@@ -20,6 +20,7 @@ cooldown = 2.0
 
 [sub_resource type="Resource" id="Resource_r804v"]
 script = ExtResource("1_bp0nq")
+description_key = "PHASE_ENEMY_SCHATTENWEBER_1"
 next_at_hp = 0.6
 max_duration = 25.0
 speed_multiplier = 0.7
@@ -36,6 +37,7 @@ cooldown = 0.18
 
 [sub_resource type="Resource" id="Resource_w34nh"]
 script = ExtResource("1_bp0nq")
+description_key = "PHASE_ENEMY_SCHATTENWEBER_2"
 attacks = Array[ExtResource("2_dnqgo")]([SubResource("Resource_3jexy")])
 
 [sub_resource type="Resource" id="Resource_cbhhn"]
@@ -44,6 +46,9 @@ phases = Array[ExtResource("1_bp0nq")]([SubResource("Resource_r804v"), SubResour
 
 [resource]
 script = ExtResource("6_2ugut")
+counter_key = "COUNTER_ENEMY_SCHATTENWEBER"
+behavior_key = "BEHAVIOR_ENEMY_SCHATTENWEBER"
+lore_text = "LORE_ENEMY_SCHATTENWEBER"
 id = &"schattenweber"
 name_key = "ENEMY_SCHATTENWEBER"
 texture = ExtResource("7_hflks")

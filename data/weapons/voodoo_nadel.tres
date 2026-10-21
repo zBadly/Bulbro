@@ -59,6 +59,7 @@ price = 163
 
 [resource]
 script = ExtResource("2_aalck")
+lore_text = "LORE_WEAPON_VOODOO_NADEL"
 id = &"voodoo_nadel"
 name_key = "WEAPON_VOODOO_NADEL"
 kind = 2

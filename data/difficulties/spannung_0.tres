@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_dm0wv")
+lore_text = "LORE_SPANNUNG_0"
 name_key = "SPANNUNG_0"
 description_key = "SPANNUNG_0_DESC"
 horde_chance = 0.4

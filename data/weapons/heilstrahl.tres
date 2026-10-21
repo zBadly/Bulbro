@@ -59,6 +59,7 @@ heal_on_hit_chance = 0.1
 
 [resource]
 script = ExtResource("2_sdtgy")
+lore_text = "LORE_WEAPON_HEILSTRAHL"
 id = &"heilstrahl"
 name_key = "WEAPON_HEILSTRAHL"
 kind = 2

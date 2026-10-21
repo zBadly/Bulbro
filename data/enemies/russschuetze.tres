@@ -16,6 +16,9 @@ projectile_texture = ExtResource("1_7g2ok")
 
 [resource]
 script = ExtResource("3_w7sa7")
+counter_key = "COUNTER_ENEMY_RUSSSCHUETZE"
+behavior_key = "BEHAVIOR_ENEMY_RUSSSCHUETZE"
+lore_text = "LORE_ENEMY_RUSSSCHUETZE"
 id = &"russschuetze"
 name_key = "ENEMY_RUSSSCHUETZE"
 texture = ExtResource("4_tfn7s")

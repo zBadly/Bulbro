@@ -19,6 +19,10 @@ enum IdleStyle { BOB, HOVER_FLICKER }
 @export var preferred_tags: Array[StringName] = []
 ## Reihenfolge in der Charakterauswahl (GDD-Liste).
 @export var order: int = 0
+## Lexikon: Übersetzungsschlüssel eines witzigen Satzes (Glühbirnen-Thema).
+@export var lore_text: String = ""
+## Lexikon: Spielstil-Tipp (Übersetzungsschlüssel, 1-2 Sätze).
+@export var tip_key: String = ""
 
 @export_group("Sonderregeln")
 ## Multiplikator auf Set-Boni einzelner Klassen (Kerze: Primitiv x2).

@@ -29,6 +29,8 @@ modifiers = Array[ExtResource("3_4hbbm")]([SubResource("Resource_jpgvm")])
 
 [resource]
 script = ExtResource("5_4kqrf")
+tip_key = "TIP_CHAR_SPIEGELKUGEL"
+lore_text = "LORE_CHAR_SPIEGELKUGEL"
 id = &"spiegelkugel"
 name_key = "CHAR_SPIEGELKUGEL"
 texture = ExtResource("11_rsku1")

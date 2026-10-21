@@ -21,6 +21,7 @@ action = SubResource("Resource_4578d")
 
 [resource]
 script = ExtResource("5_dayga")
+lore_text = "LORE_ITEM_TESLA_SPULE"
 id = &"tesla_spule"
 name_key = "ITEM_TESLA_SPULE"
 tier = 2

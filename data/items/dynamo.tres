@@ -27,6 +27,7 @@ modifiers = Array[ExtResource("2_se8an")]([SubResource("Resource_8q37x"), SubRes
 
 [resource]
 script = ExtResource("5_l4fw7")
+lore_text = "LORE_ITEM_DYNAMO"
 id = &"dynamo"
 name_key = "ITEM_DYNAMO"
 tier = 2

@@ -12,6 +12,8 @@ extends Resource
 ## Für die Gewichtung im Shop nach Charakter-Vorlieben (z. B. hp, luck, economy).
 @export var tags: Array[StringName] = []
 @export var effects: Array[ItemEffect] = []
+## Lexikon: Übersetzungsschlüssel eines witzigen Satzes (Glühbirnen-Thema).
+@export var lore_text: String = ""
 
 
 func get_modifiers() -> Array[StatModifier]:

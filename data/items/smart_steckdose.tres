@@ -27,6 +27,7 @@ modifiers = Array[ExtResource("2_o2gqf")]([SubResource("Resource_pndok"), SubRes
 
 [resource]
 script = ExtResource("5_677n1")
+lore_text = "LORE_ITEM_SMART_STECKDOSE"
 id = &"smart_steckdose"
 name_key = "ITEM_SMART_STECKDOSE"
 tier = 3

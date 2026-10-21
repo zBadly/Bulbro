@@ -351,3 +351,411 @@ ITEM_BLITZWUERFEL,Blitzwürfel,Flash Cube
 ITEM_BLUTROTE_FASSUNG,Blutrote Fassung,Blood-Red Socket
 ITEM_SPIEGELSCHERBE,Spiegelscherbe,Mirror Shard
 OPT_REDUCED_FX,Blitzeffekte reduzieren,Reduce flash effects
+MENU_LEXICON,Lexikon,Lexicon
+LEX_TITLE,Lexikon,Lexicon
+LEX_TAB_CHARACTERS,Charaktere,Characters
+LEX_TAB_WEAPONS,Waffen,Weapons
+LEX_TAB_ITEMS,Items,Items
+LEX_TAB_ENEMIES,Gegner,Enemies
+LEX_TAB_CLASSES,Waffenklassen,Weapon Classes
+LEX_TAB_MECHANICS,Spielmechaniken,Mechanics
+LEX_TAB_COUNT,%s (%d),%s (%d)
+LEX_SEARCH,Suchen …,Search …
+LEX_TAB_HINT,Q / E  ·  LB / RB: Reiter wechseln,Q / E  ·  LB / RB: switch tabs
+LEX_NO_RESULTS,Keine Treffer in diesem Reiter.,No results in this tab.
+LEX_FILTER_ALL,Alle,All
+LEX_FILTER_CLASS,Klasse,Class
+LEX_FILTER_RANGE,Art,Type
+LEX_FILTER_TIER,Tier,Tier
+LEX_FILTER_TAG,Tag,Tag
+LEX_FILTER_KIND,Art,Type
+LEX_SORT,Sortierung,Sort
+LEX_SORT_TIER,Nach Tier,By tier
+LEX_SORT_NAME,Nach Name,By name
+LEX_MELEE,Nahkampf,Melee
+LEX_RANGED,Fernkampf,Ranged
+LEX_ENEMY_NORMAL,Normaler Gegner,Normal enemy
+LEX_ENEMY_ELITE,Elite,Elite
+LEX_ENEMY_BOSS,Boss,Boss
+LEX_KIND_0,"Nahkampf, Stoß","Melee, thrust"
+LEX_KIND_1,"Nahkampf, Schwung","Melee, swing"
+LEX_KIND_2,Fernkampf,Ranged
+LEX_START_CHARACTER,Startcharakter,Starting character
+LEX_UNLOCKABLE,Freischaltbar,Unlockable
+LEX_STATS,Stats,Stats
+LEX_SPECIAL,Besonderheiten,Special traits
+LEX_START_WEAPONS,Startwaffen,Starting weapons
+LEX_TIP,Spielstil-Tipp,Playstyle tip
+LEX_UNLOCK,Freischaltung,Unlock
+LEX_WIN_ITEM,Sieg-Item,Victory item
+LEX_NONE,Keine,None
+LEX_COMPLETED,Geschafft,Completed
+LEX_TIERS,Werte je Tier,Values per tier
+LEX_ROW_DAMAGE,Schaden,Damage
+LEX_ROW_COOLDOWN,Abklingzeit,Cooldown
+LEX_ROW_RANGE,Reichweite,Range
+LEX_ROW_CRIT,Krit,Crit
+LEX_ROW_PRICE,Preis,Price
+LEX_SECONDS,%s s,%s s
+LEX_SCALING,Skalierung,Scaling
+LEX_CLASSES,Klassen,Classes
+LEX_EFFECTS,Effekte,Effects
+LEX_PRICE,Preis,Price
+LEX_PRICE_TEXT,"%d Funken, steigt jede Welle (in Welle %d: %d)","%d sparks, rises every wave (wave %d: %d)"
+LEX_LIMIT,Limit,Limit
+LEX_NO_LIMIT,Unbegrenzt,Unlimited
+LEX_TAGS,Tags,Tags
+LEX_WIN_UNLOCK,Sieg mit %s,Win with %s
+LEX_BEHAVIOR,Verhalten,Behavior
+LEX_VALUES,Werte,Stats
+LEX_BASE,Basis,Base
+LEX_PER_WAVE,pro Welle,per wave
+LEX_AT_WAVE,Welle %d,Wave %d
+LEX_ROW_HP,HP,HP
+LEX_ROW_CONTACT,Kontakt,Contact
+LEX_ROW_PROJECTILE,Projektil,Projectile
+LEX_ROW_SPEED,Tempo,Speed
+LEX_FIRST_WAVE,Auftreten,Appears
+LEX_DROPS,Drops,Drops
+LEX_COUNTER,Konter-Tipp,Counter tip
+LEX_PHASES,Phasen,Phases
+LEX_WAVE_FROM,Ab Welle %d,From wave %d
+LEX_WAVE_THIEF,"Ab Welle %d, mit %d %% Chance mehrmals pro Welle","From wave %d, with a %d %% chance several times per wave"
+LEX_WAVE_DIFFICULTY,(ab Spannung %d),(from tension %d)
+LEX_WAVE_ELITE,In Elite-Wellen ab Spannung %d (Welle %s),In elite waves from tension %d (wave %s)
+LEX_WAVE_BOSS,Bosswelle %d,Boss wave %d
+LEX_WAVE_DOUBLE_BOSS,Ab Spannung %d kommen beide Bosse gleichzeitig.,From tension %d both bosses appear together.
+LEX_DROP_SPARKS,%d Funken,%d sparks
+LEX_DROP_CRATE,Garantiert ein Karton,Guaranteed crate
+LEX_DROP_LEGENDARY,Legendärer Karton (Tier IV),Legendary crate (tier IV)
+LEX_DROP_SPAWN,Setzt beim Tod %dx %s frei,Releases %dx %s on death
+LEX_DROP_CONSUMABLE,%s %% Chance auf Batterie oder Karton,%s %% chance of a battery or crate
+LEX_PHASE,Phase %d: %s,Phase %d: %s
+LEX_PHASE_UNTIL_HP,(bis %d %% HP),(until %d %% HP)
+LEX_PHASE_UNTIL_HP_TIME,(bis %d %% HP oder %s s),(until %d %% HP or %s s)
+LEX_WEAPON_COUNT,Waffen: %d,Weapons: %d
+LEX_SET_BONUS,Set-Boni nach Anzahl Waffen,Set bonuses by number of weapons
+LEX_CLASS_WEAPONS,Waffen dieser Klasse,Weapons of this class
+LEX_WEAPONS_SHORT,Waffen,Weapons
+LEX_STAT_COUNT,Stats: %d,Stats: %d
+LEX_TOPIC,Thema,Topic
+LEX_EXPLANATION,Erklärung,Explanation
+LEX_DIFFICULTY_TABLE,Übersicht,Overview
+LEX_DIFFICULTY_LIST,Stufen,Levels
+LEX_UPGRADE_TABLE,Upgrade-Werte je Tier,Upgrade values per tier
+LEX_SPECIAL_WAVES,Sonderwellen,Special waves
+TAG_ARMOR,Rüstung,Armor
+TAG_ATTACK_SPEED,Angriffstempo,Attack speed
+TAG_CRIT,Krit,Crit
+TAG_DAMAGE,Schaden,Damage
+TAG_DODGE,Ausweichen,Dodge
+TAG_ECONOMY,Wirtschaft,Economy
+TAG_ELEMENTAL,Strom,Elemental
+TAG_EXPLOSIVE,Explosiv,Explosive
+TAG_HP,HP,HP
+TAG_LUCK,Glück,Luck
+TAG_MELEE,Nahkampf,Melee
+TAG_RANGE,Reichweite,Range
+TAG_RANGED,Fernkampf,Ranged
+TAG_REGEN,Regeneration,Regeneration
+TAG_SPEED,Tempo,Speed
+TAG_STRUCTURE,Strukturen,Structures
+TAG_XP,XP,XP
+LORE_CHAR_STANDARDBIRNE,"60 Watt, null Allüren und immer eine helle Idee.","60 watts, zero attitude and always a bright idea."
+TIP_CHAR_STANDARDBIRNE,"Kauf früh Aufladung und Max HP und probier aus, welche Waffenklasse dir liegt. Die Standardbirne verzeiht fast jeden Build.",Buy charge and max HP early and find out which weapon class suits you. The Standard Bulb forgives almost any build.
+LORE_CHAR_GLUEHFADEN_BOXER,"Der Glühfaden ist zäh, die Schläge sind zäher.","The filament is tough, the punches are tougher."
+TIP_CHAR_GLUEHFADEN_BOXER,Sammle Funkenfäuste und kombiniere sie; das Unbewaffnet-Set gibt zusätzlich Ausweichen. Fernschaden ist für dich verschwendet.,Collect Spark Fists and combine them; the unarmed set adds even more dodge. Ranged damage is wasted on you.
+LORE_CHAR_NEONROEHRE,Leuchtet in Pink und sticht mit Präzision – Stil ist alles.,Glows pink and stabs with precision – style is everything.
+TIP_CHAR_NEONROEHRE,"Setz auf Präzise-Waffen wie Glasscherbe und Kabelpeitsche, die Extra-Reichweite hält Gegner auf Abstand. Ausweichen ist schwach, also lieber Rüstung und HP.","Go for precise weapons like the Glass Shard and Cable Whip; the extra range keeps enemies at bay. Your dodge is poor, so prefer armor and HP."
+LORE_CHAR_LED_SCHUETZE,Spart 80 % Energie und steckt sie komplett ins Zielen.,Saves 80 % energy and puts all of it into aiming.
+TIP_CHAR_LED_SCHUETZE,"Jeder Punkt Fernschaden zählt anderthalbfach, also stapel Fern und Schusswaffen. Halte Abstand, denn Max HP wächst bei dir langsamer.","Every point of ranged damage counts one and a half times, so stack ranged and guns. Keep your distance, as your max HP grows more slowly."
+LORE_CHAR_LAVALAMPE,"Blubbert gemütlich vor sich hin, bis sie Blitze schleudert.",Bubbles away peacefully until it starts hurling lightning.
+TIP_CHAR_LAVALAMPE,"Nur Strom zählt: Kupferdraht, Strom-Upgrades und Elementar-Waffen. Nah-, Fern- und Technik-Boni bringen dir nichts.","Only elemental counts: Copper Wire, elemental upgrades and elemental weapons. Melee, ranged and engineering bonuses do nothing for you."
+LORE_CHAR_TASCHENLAMPE,Hat immer Werkzeug dabei und leuchtet jedem Problem ins Gesicht.,Always carries tools and shines right into every problem's face.
+TIP_CHAR_TASCHENLAMPE,"Mehr Schraubenzieher bedeuten mehr Lampentürme, und Technik ist dein Schaden. Lauf so, dass die Gegner durch das Turmfeuer müssen.","More Screwdrivers mean more lamp towers, and engineering is your damage. Move so that enemies have to cross the tower fire."
+LORE_CHAR_DISCOKUGEL,"Wirft tausend Lichtpunkte, und mit etwas Glück trifft einer.","Throws a thousand specks of light; with a little luck, one hits."
+TIP_CHAR_DISCOKUGEL,"Jeder aufgehobene Funke schlägt zurück, also bleib in Bewegung und sammle alles ein. Glück verbessert Shop und Kartons, das langsame Angriffstempo gleicht es aber erst spät aus.","Every spark you pick up strikes back, so keep moving and collect everything. Luck improves the shop and crates, but only makes up for the slow attack speed later on."
+LORE_CHAR_LICHTERKETTE,"Zwölf Lämpchen, ein Gedanke: mehr ist mehr.","Twelve little lights, one thought: more is more."
+TIP_CHAR_LICHTERKETTE,"Viele günstige Waffen füllen die 12 Slots schnell; mische Klassen für mehrere Set-Boni. Kombiniere erst, wenn der Schadensmalus wehtut.",Lots of cheap weapons fill the 12 slots quickly; mix classes for several set bonuses. Only combine once the damage penalty starts to hurt.
+LORE_CHAR_HALOGENSTRAHLER,"So hell, dass die Schatten Schlange stehen.",So bright that the shadows queue up.
+TIP_CHAR_HALOGENSTRAHLER,"Mehr Gegner heißt mehr Funken. Nimm Waffen mit Durchschlag oder Flächenschaden, die von dichten Gruppen profitieren.",More enemies means more sparks. Pick weapons with piercing or area damage that profit from dense crowds.
+LORE_CHAR_NACHTLICHT,Vertreibt seit Generationen Monster unterm Bett und heilt nebenbei.,"Has chased monsters from under the bed for generations, healing on the side."
+TIP_CHAR_NACHTLICHT,"Regeneration hält dich am Leben, Rüstung macht sie noch wertvoller. Gleiche den Schadensmalus mit starken Waffen statt mit Glaskanonen-Items aus.",Regeneration keeps you alive and armor makes it even more valuable. Offset the damage penalty with strong weapons rather than glass-cannon items.
+LORE_CHAR_BLITZLICHT,"Klick, Blitz, weg. Stillstehen ist was für Birnen ohne Akku.","Click, flash, gone. Standing still is for bulbs without batteries."
+TIP_CHAR_BLITZLICHT,"Tempo ist dein Schaden: Schmierfett und Tempo-Upgrades erhöhen auch den Nahkampf. Bleib nie stehen, sonst ist deine Rüstung weg.","Speed is your damage: Grease and speed upgrades also raise your melee damage. Never stop moving, or your armor is gone."
+LORE_CHAR_KERZE,"Glaubt nicht an Strom, aber fest an Stöcke.","Doesn't believe in electricity, but firmly believes in sticks."
+TIP_CHAR_KERZE,"Ast und Batterie-Schleuder sind deine Freunde, das Primitiv-Set gibt dir doppelt Max HP. Elementar-Waffen kannst du nicht tragen.","The Branch and Battery Sling are your friends, and the primitive set gives you double max HP. You can't carry elemental weapons."
+LORE_CHAR_IRRLICHT,Führt Wanderer in die Irre und Schatten zurück ins Licht – als Diener.,Leads wanderers astray and shadows back into the light – as servants.
+TIP_CHAR_IRRLICHT,"Je mehr Kills, desto mehr Geister: Schnelle Waffen füllen das Seelenglas zügig. Strom verstärkt den Kontaktschaden deiner Geister.",More kills mean more ghosts: fast weapons fill the soul jar quickly. Elemental boosts your ghosts' contact damage.
+LORE_CHAR_ZUENDKERZE,Gibt jedem Motor den Funken und jedem Gegner das Feuer.,Gives every engine its spark and every enemy its fire.
+TIP_CHAR_ZUENDKERZE,"Brandausbreitung lässt das Feuer durch ganze Gruppen springen, und brennende Gegner explodieren beim Tod. Halte Strom hoch, er verstärkt jeden Brand.","Burn spread lets fire jump through whole crowds, and burning enemies explode on death. Keep elemental high, it boosts every burn."
+LORE_CHAR_KRONLEUCHTER,Hängt gern hoch und zaubert noch höher.,Likes to hang high and cast even higher.
+TIP_CHAR_KRONLEUCHTER,"Schnelle Waffen wirken öfter Zauber, denn jeder 4. Angriff zählt. Strom verstärkt Feuerball, Frostnova und Kettenblitz.","Fast weapons cast spells more often, since every 4th attack counts. Elemental boosts the fireball, frost nova and chain lightning."
+LORE_CHAR_SCHWARZLICHT,"Macht sichtbar, was niemand sehen will: den eigenen Untergang.",Reveals what nobody wants to see: their own doom.
+TIP_CHAR_SCHWARZLICHT,"Viele schnelle Treffer stapeln den Fluch auf das Maximum, und verfluchte Gegner nehmen von allem mehr Schaden. Krit-Items sind für dich wertlos.","Many fast hits stack the curse to its maximum, and cursed enemies take more damage from everything. Crit items are worthless to you."
+LORE_CHAR_GEWAECHSHAUSLAMPE,"Die Pflanzen wachsen prächtig, die Motten eher weniger.","The plants thrive. The moths, not so much."
+TIP_CHAR_GEWAECHSHAUSLAMPE,"Lichtranken halten Gruppen fest, also kämpfe in ihrer Nähe. Zerstöre Leuchtkristalle für Batterien, die bei dir doppelt heilen.","Light vines hold crowds in place, so fight near them. Destroy glow crystals for batteries, which heal you twice as much."
+LORE_CHAR_SMARTBULB,Per App steuerbar und immer auf der Suche nach dem besten Tarif.,App-controlled and always hunting for the best rate.
+TIP_CHAR_SMARTBULB,Mehr Funken und niedrigere Preise: Kauf früh Aufladung und reroll großzügig nach starken Items. Der Schadensmalus verlangt einen soliden Build.,More sparks and lower prices: buy charge early and reroll generously for strong items. The damage penalty demands a solid build.
+LORE_CHAR_DROHNENLEUCHTE,"Warum selbst kämpfen, wenn man Drohnen hat?",Why fight yourself when you have drones?
+TIP_CHAR_DROHNENLEUCHTE,Technik verstärkt Drohnen und Lampentürme gleichzeitig. Mit nur 5 Slots lohnt sich jeder Schraubenzieher doppelt.,"Engineering boosts drones and lamp towers at once. With only 5 slots, every Screwdriver pays off twice."
+LORE_CHAR_STROBOSKOP,Zwischen zwei Blitzen bleibt für Schatten die Zeit stehen.,"Between two flashes, time stands still for shadows."
+TIP_CHAR_STROBOSKOP,"Der Lichtblitz friert regelmäßig alles ein: Nutze die Pause, um aus Umzingelungen zu laufen oder Bosse zu bearbeiten.",The flash regularly freezes everything: use the pause to escape when surrounded or to work on bosses.
+LORE_CHAR_VAMPIRBIRNE,Trinkt keinen Strom. Trinkt etwas Dunkleres.,Doesn't drink electricity. Drinks something darker.
+TIP_CHAR_VAMPIRBIRNE,"Lebensraub ersetzt Regeneration völlig; viele schnelle Treffer heilen am meisten. Überheilung schadet Gegnern, also bleib nah am Max HP.","Lifesteal fully replaces regeneration; many fast hits heal the most. Overhealing damages enemies, so stay close to max HP."
+LORE_CHAR_SPIEGELKUGEL,"Doppelt hält besser, doppelt leuchtet heller.","Twice the shine, twice the fight."
+TIP_CHAR_SPIEGELKUGEL,Dein Spiegelbild kopiert jede Waffe: Starke Einzelwaffen profitieren am meisten. Mit weniger Max HP solltest du vorsichtig spielen.,Your mirror image copies every weapon: strong single weapons benefit the most. With less max HP you should play carefully.
+LORE_WEAPON_AST,"Natürlich nachhaltig, garantiert ohne Stecker.","Naturally sustainable, guaranteed plug-free."
+LORE_WEAPON_BATTERIE_SCHLEUDER,Leere Batterien haben endlich wieder eine Aufgabe.,Dead batteries finally have a purpose again.
+LORE_WEAPON_BLITZWERFER,Wirft Blitze wie andere Konfetti.,Throws lightning the way others throw confetti.
+LORE_WEAPON_DORNENRANKE,Bio-Stacheldraht aus eigenem Anbau.,Home-grown organic barbed wire.
+LORE_WEAPON_FEUERZEUGWERFER,"Hat noch nie eine Kerze angezündet, dafür viele Motten.","Never lit a candle, but plenty of moths."
+LORE_WEAPON_FUNKENFAUST,"Für alle, die Probleme lieber direkt ansprechen.",For those who prefer to address problems directly.
+LORE_WEAPON_FUNKENPISTOLE,"Piu piu, aber mit Hochspannung.","Pew pew, but high-voltage."
+LORE_WEAPON_FUNKENSIEB,Siebt Gegner aus und behält die Funken.,Sifts out enemies and keeps the sparks.
+LORE_WEAPON_GLASSCHERBE,Früher eine Glühbirne. Heute eine Warnung.,Once a light bulb. Now a warning.
+LORE_WEAPON_GLUEHWUERMCHEN_STAB,"Die Glühwürmchen finden ihr Ziel, ganz ohne Navi.","The fireflies find their target, no GPS needed."
+LORE_WEAPON_HEILSTRAHL,"Ein Strahl, der heilt – nur nicht die Gegner.",A beam that heals – just not the enemies.
+LORE_WEAPON_KABELPEITSCHE,"Kabelsalat, zur Kampfkunst erhoben.","Cable spaghetti, elevated to a martial art."
+LORE_WEAPON_KRISTALLSTAB,Zerbricht beim Aufprall – mit voller Absicht.,Shatters on impact – entirely on purpose.
+LORE_WEAPON_LAMPENHAMMER,"Wenn Licht nicht reicht, hilft Wucht.","When light isn't enough, force helps."
+LORE_WEAPON_LASERPOINTER,Katzen lieben ihn. Schatten eher weniger.,"Cats love it. Shadows, not so much."
+LORE_WEAPON_LEUCHTRAKETE,"Sagt hallo, und dann bumm.","Says hello, and then boom."
+LORE_WEAPON_LOETKOLBEN,Verbindet Drähte und trennt Gegner.,Joins wires and separates enemies.
+LORE_WEAPON_PRISMA,"Ein Strahl rein, drei raus: Physik ist großzügig.","One beam in, three out: physics is generous."
+LORE_WEAPON_SCHRAUBENZIEHER,"Dreht Schrauben, baut Türme, verdreht Köpfe.","Turns screws, builds towers, turns heads."
+LORE_WEAPON_SEELENLATERNE,"Leuchtet heller mit jeder Seele, die sie trägt.",Shines brighter with every soul it carries.
+LORE_WEAPON_TASCHENLAMPENSTRAHL,Durchleuchtet alles. Wirklich alles.,Shines through everything. Really everything.
+LORE_WEAPON_VOODOO_NADEL,"Ein kleiner Piks für dich, ein großer Fluch für die Motte.","A small prick for you, a big curse for the moth."
+LORE_ITEM_BLITZABLEITER,Fängt Blitze und gibt sie gern weiter.,Catches lightning and happily passes it on.
+LORE_ITEM_BLITZWUERFEL,Würfelt nicht. Blitzt.,Doesn't roll. Flashes.
+LORE_ITEM_BLUTROTE_FASSUNG,"Stilvoll, edel und ein bisschen durstig.","Stylish, elegant and a little thirsty."
+LORE_ITEM_DISCOSPLITTER,Ein Stück Partykugel bringt Glück – und Stil.,A piece of disco ball brings luck – and style.
+LORE_ITEM_DYNAMO,Strampeln für die Stromrechnung.,Pedal power for the power bill.
+LORE_ITEM_ENERGIERIEGEL,Mit Extra-Volt und null Vitaminen.,"Extra volts, zero vitamins."
+LORE_ITEM_ERSATZSICHERUNG,"Für den Moment, in dem es knallt.",For the moment it goes bang.
+LORE_ITEM_EWIGE_FLAMME,Brennt ewig. Die Garantie leider nur zwei Jahre.,"Burns forever. The warranty, sadly, only two years."
+LORE_ITEM_FUNKENMAGNET,Zieht Funken an wie Licht die Motten.,Attracts sparks the way light attracts moths.
+LORE_ITEM_GEISTERKERZE,"Flackert, obwohl kein Wind weht.",Flickers although there's no wind.
+LORE_ITEM_GLASFASER,"Licht in Lichtgeschwindigkeit, quer durch alles.","Light at light speed, straight through everything."
+LORE_ITEM_GLUEHWUERMCHENGLAS,Die Glühwürmchen sind freiwillig hier. Sagen sie.,The fireflies are here voluntarily. So they say.
+LORE_ITEM_GUMMIHANDSCHUH,Schützt vor Stromschlägen und Schattenkrallen.,Protects against shocks and shadow claws.
+LORE_ITEM_HOCHSPANNUNGSSCHILD,Lebensgefahr! Für alle anderen.,Danger of death! For everybody else.
+LORE_ITEM_ISOLIERBAND,Repariert alles außer Fernbeziehungen.,Fixes everything except long-distance relationships.
+LORE_ITEM_KERNREAKTOR,Etwas viel für eine Glühbirne. Genau richtig.,A bit much for a light bulb. Just right.
+LORE_ITEM_KLEINER_AKKU,"Klein, hält aber länger als dein Handy.","Small, but lasts longer than your phone."
+LORE_ITEM_KRISTALLPRISMA,Bricht Licht und Gegner in ihre Bestandteile.,Splits light and enemies into their components.
+LORE_ITEM_KUPFERDRAHT,Leitet Strom und schlechte Laune direkt zum Gegner.,Conducts electricity and bad moods straight to the enemy.
+LORE_ITEM_LADESTATION,Die Steckdose zum Mitnehmen.,A power outlet to go.
+LORE_ITEM_LASERZIELFERNROHR,"Roter Punkt, großes Problem.","Red dot, big problem."
+LORE_ITEM_LUPE,"Sieht weiter, versteht trotzdem nicht alles.","Sees further, still doesn't understand everything."
+LORE_ITEM_PFLANZENLICHT,"Wo dieses Licht hinscheint, wachsen Kristalle.","Wherever this light shines, crystals grow."
+LORE_ITEM_PRISMENLINSE,Lässt Strahlen hüpfen wie Kiesel auf dem Teich.,Makes beams skip like pebbles on a pond.
+LORE_ITEM_RECYCLINGSCHILD,Der grüne Punkt für Glühbirnen.,The recycling seal for light bulbs.
+LORE_ITEM_SCHALTPLAN,"Wer ihn lesen kann, baut bessere Türme.",Whoever can read it builds better towers.
+LORE_ITEM_SCHMIERFETT,Läuft wie geschmiert – nur das Glück rutscht weg.,Runs like clockwork – only your luck slips away.
+LORE_ITEM_SCHUTZBRILLE,Findet Schwachstellen und schützt vor dem eigenen Glanz.,Spots weak points and guards against your own glare.
+LORE_ITEM_SMART_STECKDOSE,"Weiß immer, wann der Strom am billigsten ist.",Always knows when power is cheapest.
+LORE_ITEM_SONNENKOLLEKTOR,"Tankt Licht, zahlt in Funken.","Soaks up light, pays out in sparks."
+LORE_ITEM_SPARSCHWEIN,Grunzt nach jeder Welle zufrieden.,Oinks contentedly after every wave.
+LORE_ITEM_SPIEGELSCHERBE,Sieben Jahre Pech? Nicht für dich.,Seven years of bad luck? Not for you.
+LORE_ITEM_STAUBTUCH,Saubere Birnen weichen besser aus.,Clean bulbs dodge better.
+LORE_ITEM_STROMTARIF_GUTSCHEIN,Gültig in allen Läden der Schattenwelt.,Valid in every shop of the shadow realm.
+LORE_ITEM_SUPERNOVA,"Wenn Gegner gehen, dann mit Knall.","When enemies leave, they leave with a bang."
+LORE_ITEM_TESLA_SPULE,Nikola wäre stolz.,Nikola would be proud.
+LORE_ITEM_UEBERSPANNUNG,Ein bisschen zu viel Volt war noch nie genug.,A little too many volts was never enough.
+LORE_ITEM_UV_ROEHRE,Macht Flecken sichtbar und Gegner krank.,Reveals stains and makes enemies sick.
+LORE_ITEM_VERLAENGERUNGSKABEL,Reicht bis in die nächste Welle.,Reaches all the way into the next wave.
+LORE_ITEM_VORSCHALTGERAET,"Stabilisiert den Strom, aber nicht die Reflexe.","Stabilizes the current, not your reflexes."
+LORE_ITEM_WARTUNGSDROHNE,"Summt, kreist und kümmert sich um Ungeziefer.","Hums, circles and takes care of pests."
+LORE_ITEM_WERKSTATTKOFFER,Enthält alles außer einer Anleitung.,Contains everything except instructions.
+LORE_ITEM_WUERFELLAMPE,Leuchtet bei jedem Wurf eine andere Zahl.,Lights up a different number with every roll.
+LORE_ITEM_ZUENDSPULE,Macht aus einem Funken ein Lagerfeuer.,Turns a spark into a bonfire.
+LORE_ENEMY_SCHATTENLING,Ein kleiner Schatten mit großen Plänen und kurzen Beinen.,A small shadow with big plans and short legs.
+BEHAVIOR_ENEMY_SCHATTENLING,Läuft stur auf dich zu und verletzt bei Berührung.,Walks straight at you and hurts on contact.
+COUNTER_ENEMY_SCHATTENLING,In Bewegung bleiben; jede Waffe räumt sie ab.,Keep moving; any weapon clears them out.
+LORE_ENEMY_MOTTE,Fliegt aufs Licht. Bereut es sofort.,Flies toward the light. Regrets it instantly.
+BEHAVIOR_ENEMY_MOTTE,"Schnell und in Schwärmen unterwegs, hält aber kaum etwas aus.","Fast and comes in swarms, but barely takes a hit."
+COUNTER_ENEMY_MOTTE,Waffen mit Durchschlag oder Flächenschaden mähen ganze Schwärme nieder.,Piercing or area weapons mow down whole swarms.
+LORE_ENEMY_RAMMKAEFER,Hat nie gelernt zu bremsen.,Never learned how to brake.
+BEHAVIOR_ENEMY_RAMMKAEFER,Verfolgt dich und sprintet alle paar Sekunden mit hohem Tempo los.,Chases you and dashes at high speed every few seconds.
+COUNTER_ENEMY_RAMMKAEFER,Kurz vor dem Sprint zur Seite ausweichen; Rückstoß bremst ihn aus.,Sidestep just before the dash; knockback slows it down.
+LORE_ENEMY_FUNKENDIEB,"Klaut Funken, aber nie die Show.","Steals sparks, but never the show."
+BEHAVIOR_ENEMY_FUNKENDIEB,Flieht vor dir und hält dabei erstaunlich viel aus.,Runs away from you and is surprisingly tough.
+COUNTER_ENEMY_FUNKENDIEB,Fernwaffen mit hoher Reichweite holen ihn ein; drängt ihn an den Arenarand.,Long-range weapons catch it; corner it at the arena edge.
+LORE_ENEMY_RUSSSPUCKER,Hat eine Rauchvergiftung und teilt sie gern.,Has smoke poisoning and loves to share.
+BEHAVIOR_ENEMY_RUSSSPUCKER,Hält Abstand und spuckt Rußprojektile auf dich.,Keeps its distance and spits soot projectiles at you.
+COUNTER_ENEMY_RUSSSPUCKER,Mit Fernwaffen bekämpfen oder schnell heranlaufen; den Projektilen seitlich ausweichen.,Fight it with ranged weapons or rush in; sidestep the projectiles.
+LORE_ENEMY_FLACKERER,Ein Wackelkontakt mit Helfersyndrom.,A loose contact with a helper complex.
+BEHAVIOR_ENEMY_FLACKERER,Hält sich in der Nähe anderer Gegner auf und heilt sie.,Stays close to other enemies and heals them.
+COUNTER_ENEMY_FLACKERER,Zuerst ausschalten: Zielsuchende Waffen oder viel Reichweite helfen.,Take it out first: homing weapons or lots of range help.
+LORE_ENEMY_SCHATTENKLOTZ,Der Türsteher der Finsternis.,The bouncer of the darkness.
+BEHAVIOR_ENEMY_SCHATTENKLOTZ,"Groß und zäh, sprintet und lässt sich kaum zurückstoßen.","Big and tough, dashes and barely reacts to knockback."
+COUNTER_ENEMY_SCHATTENKLOTZ,Abstand halten und Dauerschaden austeilen; Brand und Fluch wirken gut.,Keep your distance and deal sustained damage; burn and curse work well.
+LORE_ENEMY_HETZER,"Zu viel Kaffee, zu wenig Geduld.","Too much coffee, too little patience."
+BEHAVIOR_ENEMY_HETZER,"Wird jede Sekunde schneller, bis er dich fast einholt.",Gets faster every second until it almost catches you.
+COUNTER_ENEMY_HETZER,"Früh erledigen, bevor er auf Touren kommt; Verlangsamen hält ihn auf.",Kill it early before it gets going; slows hold it back.
+LORE_ENEMY_HELMMOTTE,"Sicherheit geht vor, auch beim Ins-Licht-Fliegen.","Safety first, even when flying into the light."
+BEHAVIOR_ENEMY_HELMMOTTE,"Robuste Motte mit Helm, die dich unbeirrt verfolgt.",A tough moth with a helmet that chases you relentlessly.
+COUNTER_ENEMY_HELMMOTTE,Hoher Einzelschaden knackt den Helm; Krit-Waffen sind ideal.,High single-target damage cracks the helmet; crit weapons are ideal.
+LORE_ENEMY_BRUTSACK,"Eine Überraschungstüte, die keiner haben will.",A goodie bag nobody wants.
+BEHAVIOR_ENEMY_BRUTSACK,"Langsam, platzt aber beim Tod und setzt Rußschützen frei.","Slow, but bursts on death and releases soot shooters."
+COUNTER_ENEMY_BRUTSACK,Aus der Distanz platzen lassen und die Rußschützen sofort angehen.,Pop it from a distance and deal with the shooters right away.
+LORE_ENEMY_RUSSSCHUETZE,Dreht sich im Kreis und trifft trotzdem.,Goes round in circles and still hits.
+BEHAVIOR_ENEMY_RUSSSCHUETZE,Kreist um dich und schießt aus kurzer Distanz.,Circles around you and fires from close range.
+COUNTER_ENEMY_RUSSSCHUETZE,Nahkampfwaffen erwischen sie auf ihrer Kreisbahn; nicht stehen bleiben.,Melee weapons catch them on their orbit; don't stand still.
+LORE_ENEMY_VERSTAERKER,Dreht bei allen anderen die Lautstärke auf.,Turns everyone else's volume up.
+BEHAVIOR_ENEMY_VERSTAERKER,"Flieht und stärkt andere Gegner: mehr HP, Schaden und Tempo (rote Kontur).","Flees and buffs other enemies: more HP, damage and speed (red outline)."
+COUNTER_ENEMY_VERSTAERKER,"Sofort jagen, bevor die Gruppe gestärkt ist; Fernwaffen sind hier Gold wert.",Hunt it down at once before the pack gets buffed; ranged weapons are worth their weight in gold.
+LORE_ENEMY_KOLBENGOLEM,"Ein alter Glühkolben, dessen Wut nie abgekühlt ist.",An old bulb whose rage never cooled down.
+BEHAVIOR_ENEMY_KOLBENGOLEM,Elite: stürmt auf dich zu und feuert dabei Projektile zur Seite.,Elite: charges at you and fires projectiles to the sides.
+COUNTER_ENEMY_KOLBENGOLEM,Quer zur Sturmrichtung ausweichen; zwischen den Angriffen bleibt Zeit für Schaden.,Dodge sideways to the charge; there's time to deal damage between attacks.
+PHASE_ENEMY_KOLBENGOLEM_1,Stürmt regelmäßig auf dich zu und feuert dabei Projektile zur Seite.,"Charges at you regularly, firing projectiles to the sides."
+PHASE_ENEMY_KOLBENGOLEM_2,"Stürmt häufiger und kürzer, mit noch mehr Projektilen.","Charges more often and in shorter bursts, with even more projectiles."
+LORE_ENEMY_RUSSMUTTER,Hat viele Kinder und keine Geduld.,Has many children and zero patience.
+BEHAVIOR_ENEMY_RUSSMUTTER,"Elite: schickt Schnittwellen in mehrere Richtungen, später flieht sie und ruft Schattenlinge.","Elite: sends slash waves in several directions, later flees and summons shadowlings."
+COUNTER_ENEMY_RUSSMUTTER,Zwischen den Schnittwellen diagonal stehen; Flächenschaden gegen die Schattenlinge bereithalten.,Stand diagonally between the slash waves; keep area damage ready for the shadowlings.
+PHASE_ENEMY_RUSSMUTTER_1,Schickt regelmäßig vier Schnittwellen gleichzeitig los.,Regularly sends out four slash waves at once.
+PHASE_ENEMY_RUSSMUTTER_2,"Flieht, schneidet doppelt und ruft Schattenlinge herbei.","Flees, slashes twice and summons shadowlings."
+LORE_ENEMY_SCHATTENWEBER,Strickt Pullover aus Dunkelheit. Niemand will sie tragen.,Knits sweaters out of darkness. Nobody wants to wear them.
+BEHAVIOR_ENEMY_SCHATTENWEBER,"Elite: webt Projektilkreise um sich, später Spiralen.","Elite: weaves rings of projectiles around itself, later spirals."
+COUNTER_ENEMY_SCHATTENWEBER,Durch die Lücken der Kreise schlüpfen; in Phase 2 im Bogen laufen statt geradeaus.,"Slip through the gaps in the rings; in phase 2 move in arcs, not straight lines."
+PHASE_ENEMY_SCHATTENWEBER_1,Schießt Projektilkreise um sich herum.,Fires rings of projectiles around itself.
+PHASE_ENEMY_SCHATTENWEBER_2,Schießt Spiralmuster auf dich.,Fires spiral patterns at you.
+LORE_ENEMY_DIMMER,Dreht allen das Licht herunter – auch dir.,Turns everyone's lights down – including yours.
+BEHAVIOR_ENEMY_DIMMER,"Boss: verfolgt dich, dasht und umgibt sich mit kreisenden Projektilen.","Boss: chases you, dashes and surrounds itself with spinning projectiles."
+COUNTER_ENEMY_DIMMER,Den Dashes seitlich ausweichen; in Phase 2 Abstand halten und durch die Lücken der Salven laufen.,Dodge the dashes sideways; in phase 2 keep your distance and move through the gaps in the volleys.
+PHASE_ENEMY_DIMMER_1,"Verfolgt dich, dasht und schießt kreisende Projektile.","Chases you, dashes and fires spinning projectiles."
+PHASE_ENEMY_DIMMER_2,"Kein Dash mehr, dafür Projektilsalven in alle Richtungen.","No more dashes, but volleys in every direction."
+LORE_ENEMY_FINSTERNIS,Das Ende jedes Lichts. Behauptet sie zumindest.,The end of every light. Or so it claims.
+BEHAVIOR_ENEMY_FINSTERNIS,"Boss: markiert Zonen um dich, aus denen kurz darauf Projektile brechen.",Boss: marks zones around you that burst into projectiles a moment later.
+COUNTER_ENEMY_FINSTERNIS,"Markierte Zonen sofort verlassen; in der letzten Phase wird sie schnell, dann viel laufen und mit Fernschaden arbeiten.","Leave marked zones at once; in the last phase it gets fast, so keep moving and rely on ranged damage."
+PHASE_ENEMY_FINSTERNIS_1,"Markiert Zonen um dich, die nach kurzer Zeit Projektile erzeugen.",Marks zones around you that spawn projectiles after a moment.
+PHASE_ENEMY_FINSTERNIS_2,Die Zonen werden größer.,The zones grow larger.
+PHASE_ENEMY_FINSTERNIS_3,Wird viel schneller und schießt zusätzlich Projektilkreise.,Becomes much faster and also fires rings of projectiles.
+LORE_CLASS_BLADE,Scharf wie eine Birnenscherbe und genauso vorsichtig zu genießen.,Sharp as a broken bulb and to be enjoyed just as carefully.
+LORE_CLASS_BLUNT,Feingefühl wird überbewertet.,Subtlety is overrated.
+LORE_CLASS_PRECISE,"Trifft genau dort, wo es wehtut.",Hits exactly where it hurts.
+LORE_CLASS_HEAVY,"Schwer zu tragen, schwerer abzubekommen.","Heavy to carry, heavier to take."
+LORE_CLASS_PRIMITIVE,"Bevor es Strom gab, gab es Stöcke.","Before electricity, there were sticks."
+LORE_CLASS_UNARMED,Wer braucht Waffen mit Fäusten aus Glühfaden?,Who needs weapons with fists of filament?
+LORE_CLASS_ELEMENTAL,"Volt, Watt, Ampere – die heilige Dreifaltigkeit.","Volts, watts, amps – the holy trinity."
+LORE_CLASS_TOOL,Für jedes Problem das passende Werkzeug.,The right tool for every problem.
+LORE_CLASS_EXPLOSIVE,"Kurz, laut und ziemlich hell.","Short, loud and pretty bright."
+LORE_CLASS_GUN,"Wer zielt, hat schon halb getroffen.",Aiming is half the hit.
+LORE_CLASS_MEDICAL,Licht heilt. Sagt zumindest die Werbung.,Light heals. At least that's what the ads say.
+LORE_CLASS_ETHEREAL,"Nicht ganz von dieser Welt, aber voll bei der Sache.","Not quite of this world, but fully committed."
+LORE_CLASS_SUPPORT,Hinter jeder großen Birne steht ein guter Helfer.,Behind every great bulb stands a good helper.
+LORE_SPANNUNG_0,Gemütliche 230 Volt.,A cozy 230 volts.
+LORE_SPANNUNG_1,Das Licht flackert schon ein bisschen.,The lights are flickering a little.
+LORE_SPANNUNG_2,Die Sicherung wird nervös.,The fuse is getting nervous.
+LORE_SPANNUNG_3,"Funken sprühen, Motten zittern.","Sparks fly, moths tremble."
+LORE_SPANNUNG_4,Starkstrom. Bitte nicht anfassen.,High voltage. Please do not touch.
+LORE_SPANNUNG_5,Kurzschluss mit Ansage.,"A short circuit, announced in advance."
+LEX_TOPIC_LIFE,Leben und Heilung,Life and Healing
+LORE_TOPIC_LIFE,Eine Birne ohne Leben ist nur Glas.,A bulb without life is just glass.
+LEX_TOPIC_DAMAGE,Schaden,Damage
+LORE_TOPIC_DAMAGE,"Mehr Watt, mehr Wumms.","More watts, more wallop."
+LEX_TOPIC_ATTACK,Angriff und Reichweite,Attack and Range
+LORE_TOPIC_ATTACK,"Wer weiter leuchtet, trifft früher.","Shine further, hit sooner."
+LEX_TOPIC_DEFENSE,Verteidigung,Defense
+LORE_TOPIC_DEFENSE,Gutes Glas ist dickes Glas.,Good glass is thick glass.
+LEX_TOPIC_MOVEMENT,Bewegung und Sammeln,Movement and Collecting
+LORE_TOPIC_MOVEMENT,Eine Birne in Bewegung brennt nicht durch.,A bulb in motion never burns out.
+LEX_TOPIC_ECONOMY,Glück und Wirtschaft,Luck and Economy
+LORE_TOPIC_ECONOMY,Funken sparen ist auch eine Art zu leuchten.,Saving sparks is a kind of shining too.
+LEX_TOPIC_ENGINEERING,Technik und Strukturen,Engineering and Structures
+LORE_TOPIC_ENGINEERING,Lass die Türme die Arbeit machen.,Let the towers do the work.
+LEX_TOPIC_EXPLOSION_BURN,Explosionen und Brand,Explosions and Burn
+LORE_TOPIC_EXPLOSION_BURN,Manche Probleme löst man mit Feuer.,Some problems are solved with fire.
+LEX_TOPIC_WORLD,Gegner und Welt,Enemies and World
+LORE_TOPIC_WORLD,"Die Arena ist nur so dunkel, wie du sie machst.",The arena is only as dark as you make it.
+LEX_TOPIC_LEVELS,XP und Level-ups,XP and Level-ups
+LEX_TOPIC_LEVELS_TEXT,"Jeder Funke zählt als 1 Funke und 1 XP. Für das nächste Level brauchst du (Level + %d)² XP, und jedes Level-up gibt +%s Max HP.
+Level-ups werden am Wellenende abgearbeitet: Du wählst eine von %d Upgrade-Karten, die du gegen Funken neu würfeln kannst. Level %d bringt garantiert Tier II, Level %s Tier III und ab Level %d jedes %d. Level Tier IV.","Every spark counts as 1 spark and 1 XP. The next level needs (level + %d)² XP, and every level-up grants +%s max HP.
+Level-ups are handled at the end of a wave: pick one of %d upgrade cards, which you can reroll for sparks. Level %d guarantees tier II, levels %s tier III, and from level %d every %dth level is tier IV."
+LORE_TOPIC_LEVELS,Jedes Level macht die Birne ein bisschen heller.,Every level makes the bulb a little brighter.
+LEX_TOPIC_SHOP,Shop,Shop
+LEX_TOPIC_SHOP_TEXT,"Nach jeder Welle bietet der Shop %d Angebote aus Waffen und Items an. Tier II gibt es ab Shop %d, Tier III ab Shop %d, Tier IV ab Shop %d; Welle und Glück verbessern die Chancen.
+[color=#FFD43B]Sperren:[/color] Ein gesperrtes Angebot bleibt samt Preis liegen, auch über mehrere Shops, bis du es kaufst oder entsperrst.
+[color=#FFD43B]Reroll:[/color] Würfelt alle ungesperrten Angebote neu. Der erste Reroll kostet etwa die Wellennummer, jeder weitere etwas mehr; im nächsten Shop wird es wieder günstig. Kaufst du alle Angebote, ist der nächste Reroll gratis.
+[color=#FFD43B]Preise:[/color] Mit jeder Welle steigen die Preise um %s %% des Grundpreises plus %s Funken.
+[color=#FFD43B]Kombinieren:[/color] Zwei gleiche Waffen gleichen Tiers werden zu einer Waffe des nächsten Tiers (bis Tier IV). Kaufst du eine vorhandene Waffe bei vollen Slots, wird automatisch kombiniert.
+[color=#FFD43B]Recyceln:[/color] Eine Waffe zu recyceln gibt %s %% ihres Preises als Funken zurück.","After every wave the shop offers %d items and weapons. Tier II appears from shop %d, tier III from shop %d, tier IV from shop %d; the wave number and luck improve the odds.
+[color=#FFD43B]Lock:[/color] A locked offer stays, price included, even across several shops, until you buy or unlock it.
+[color=#FFD43B]Reroll:[/color] Rerolls all unlocked offers. The first reroll costs about the wave number, each further one a bit more; the next shop starts cheap again. If you buy every offer, the next reroll is free.
+[color=#FFD43B]Prices:[/color] Every wave, prices rise by %s %% of the base price plus %s sparks.
+[color=#FFD43B]Combine:[/color] Two identical weapons of the same tier merge into one weapon of the next tier (up to tier IV). Buying a weapon you already own with full slots combines automatically.
+[color=#FFD43B]Recycle:[/color] Recycling a weapon returns %s %% of its price as sparks."
+LORE_TOPIC_SHOP,"Der einzige Laden, der nach Mitternacht offen hat.",The only shop that's open after midnight.
+LEX_TOPIC_DIFFICULTY,Spannungsstufen,Tension Levels
+LEX_TOPIC_DIFFICULTY_TEXT,"Vor jedem Run wählst du die Spannung. Jede Stufe macht Gegner zäher und stärker, höhere Stufen bringen neue Gegnertypen. Sonderwellen sind zufällig Elite- oder Hordewellen: In einer Elite-Welle erscheint ein Elite-Gegner mit legendärem Karton, in einer Hordewelle kommen deutlich größere Gruppen. Die Barrierefreiheits-Optionen können Gegner zusätzlich abschwächen.","Before every run you choose the tension. Each level makes enemies tougher and stronger, and higher levels add new enemy types. Special waves are randomly elite or horde waves: an elite wave brings an elite enemy with a legendary crate, a horde wave brings much larger groups. The accessibility options can weaken enemies further."
+LORE_TOPIC_DIFFICULTY,"Mehr Spannung, mehr Spaß – bis die Sicherung fliegt.","More tension, more fun – until the fuse blows."
+LEX_TOPIC_HARVEST,Aufladung,Harvesting
+LEX_TOPIC_HARVEST_TEXT,"Aufladung ist dein Sparkonto: Am Ende jeder Welle bekommst du so viele Funken und XP, wie der Wert beträgt. Danach wächst sie von allein um %s %% (aufgerundet), aber nur, solange sie positiv ist. Je früher du sie steigerst, desto länger arbeiten die Zinsen für dich.
+Im Endlos-Modus zahlt sie nur %s %% aus.","Harvesting is your savings account: at the end of each wave you gain as many sparks and XP as its value. Afterwards it grows on its own by %s %% (rounded up), but only while it's positive. The earlier you raise it, the longer the interest works for you.
+In endless mode it only pays out %s %%."
+LORE_TOPIC_HARVEST,"Strom, der von allein mehr wird. Leider nur im Spiel.",Power that grows on its own. Sadly only in games.
+LEX_TOPIC_CRATES,Kartons und Drops,Crates and Drops
+LEX_TOPIC_CRATES_TEXT,"Besiegte Gegner lassen mit %s %% Chance einen Verbrauchsgegenstand fallen: meist eine Batterie, die %s HP heilt, anfangs in %s %% der Fälle einen Ersatzteil-Karton. Jeder weitere Karton in derselben Welle wird seltener, Glück macht beides häufiger.
+Kartons heilen beim Aufheben %s HP und werden am Wellenende geöffnet: Du behältst das Item oder recycelst es für %s %% seines Preises.
+Elites lassen einen legendären Karton fallen, der immer ein Tier-IV-Item enthält.
+Leuchtkristalle erscheinen ab Sekunde %s einer Welle, halten höchstens %d Treffer aus und geben %d Funken und immer eine Batterie (in %s %% der Fälle einen Karton).","Defeated enemies drop a consumable with a %s %% chance: usually a battery that heals %s HP, initially a spare-parts crate %s %% of the time. Each further crate in the same wave becomes rarer, and luck makes both more common.
+Crates heal %s HP when picked up and are opened at the end of the wave: keep the item or recycle it for %s %% of its price.
+Elites drop a legendary crate that always contains a tier IV item.
+Glow crystals appear from second %s of a wave, survive at most %d hits and give %d sparks plus a guaranteed battery (a crate %s %% of the time)."
+LORE_TOPIC_CRATES,"Was drin ist, weiß man erst, wenn man ihn aufreißt.",You only know what's inside once you tear it open.
+LEX_TOPIC_BURN,Brand,Burn
+LEX_TOPIC_BURN_TEXT,"Brennende Gegner nehmen alle %s s Schaden, bis alle Ticks verbraucht sind. Mit Brandausbreitung springt das Feuer bei jedem Tick auf Gegner in der Nähe über (bis %s px). Mehr Brandschaden verstärkt jeden Tick, mehr Brandtempo lässt die Ticks schneller kommen. Manche Charaktere und Items lösen zusätzliche Effekte aus, wenn ein brennender Gegner stirbt.","Burning enemies take damage every %s s until all ticks are used up. With burn spread, the fire jumps to nearby enemies on every tick (up to %s px). More burn damage strengthens each tick, more burn speed makes the ticks come faster. Some characters and items trigger extra effects when a burning enemy dies."
+LORE_TOPIC_BURN,"Heiß, heißer, Motte.","Hot, hotter, moth."
+LEX_TOPIC_CURSE,Fluch,Curse
+LEX_TOPIC_CURSE_TEXT,"Ein Fluch klebt eine Weile am Gegner und schadet ihm alle %s s. Jeder weitere Treffer fügt einen Stapel hinzu (bis zum Limit des Effekts) und setzt die Dauer zurück. Pro Stapel steigen der Schaden über Zeit und der Schaden, den der Gegner aus allen Quellen nimmt, auch durch Brand. Ein lila Symbol mit Zahl zeigt die Stapel.","A curse sticks to an enemy for a while and damages it every %s s. Every further hit adds a stack (up to the effect's limit) and resets the duration. Each stack raises the damage over time and the damage the enemy takes from all sources, burn included. A purple symbol with a number shows the stacks."
+LORE_TOPIC_CURSE,"Ein schlechter Tag, der einfach nicht aufhört.",A bad day that just won't end.
+LEX_TOPIC_SLOW,"Verlangsamen, Einfrieren, Festhalten","Slow, Freeze, Root"
+LEX_TOPIC_SLOW_TEXT,"Verlangsamen senkt das Tempo eines Gegners; bei mehreren Effekten gilt der stärkste. Eingefrorene Gegner bleiben stehen, schießen nicht und machen keinen Kontaktschaden. Festgehaltene Gegner hängen in Ranken fest; danach sind sie %s s geschützt, bevor sie erneut festgehalten werden können. Elites und Bosse halten jeden dieser Effekte nur %s %% so lange.","Slows reduce an enemy's speed; with several effects, the strongest wins. Frozen enemies stand still, don't shoot and deal no contact damage. Rooted enemies are stuck in vines; afterwards they are protected for %s s before they can be rooted again. Elites and bosses keep each of these effects only %s %% as long."
+LORE_TOPIC_SLOW,"Kälte ist nur Licht, das sich Zeit lässt.",Cold is just light taking its time.
+LEX_TOPIC_ALLIES,Verbündete,Allies
+LEX_TOPIC_ALLIES_TEXT,"Verbündete wie die Schattengeister des Irrlichts kämpfen auf deiner Seite. Sie sind unverwundbar, Gegner ignorieren sie, und sie zählen nicht zum Gegnerlimit. Sie machen alle %s s Kontaktschaden; höchstens %d sind gleichzeitig unterwegs.
+Auch das Spiegelbild der Spiegelkugel hilft mit: Es feuert Kopien deiner Waffen, aber ohne Lebensraub. Drohnen und Lichtranken sind dagegen Strukturen und werden mit Technik stärker.","Allies such as the Will-o'-Wisp's shadow ghosts fight on your side. They are invulnerable, enemies ignore them, and they don't count toward the enemy limit. They deal contact damage every %s s; at most %d can be around at once.
+The Mirror Ball's mirror image helps too: it fires copies of your weapons, but without lifesteal. Drones and light vines, on the other hand, are structures and grow stronger with engineering."
+LORE_TOPIC_ALLIES,Zusammen leuchtet es sich besser.,Shining is better together.
+STAT_INFO_MAX_HP,"Dein Leben. Fällt es auf 0, ist der Run vorbei. Jedes Level-up gibt +%s Max HP, und mehr Max HP heilt dich sofort um denselben Betrag. Negative Werte wirken wie 1.","Your life. If it hits 0, the run is over. Every level-up grants +%s max HP, and gaining max HP heals you by the same amount. Negative values count as 1."
+STAT_INFO_HP_REGEN,"Heilt dich laufend. Der erste Punkt bringt %s HP pro Sekunde, jeder weitere %s mehr; mit 10 Punkten sind es etwa %s HP pro Sekunde. Werte von 0 oder weniger heilen nicht.","Heals you over time. The first point gives %s HP per second, each further point %s more; 10 points give about %s HP per second. Values of 0 or less don't heal."
+STAT_INFO_LIFESTEAL,"Jeder Treffer hat so viel Prozent Chance, dich um 1 HP zu heilen, höchstens %s HP pro Sekunde.","Every hit has this percent chance to heal you for 1 HP, at most %s HP per second."
+STAT_INFO_DAMAGE_PCT,Erhöht allen Schaden deiner Waffen um diesen Prozentsatz (Strukturen ausgenommen). Ein Treffer macht immer mindestens %s Schaden.,Increases all your weapon damage by this percentage (structures excluded). A hit always deals at least %s damage.
+STAT_INFO_MELEE_DMG,"Flacher Bonus für Waffen, die mit Nah skalieren: Bei 100 %% Skalierung bringt jeder Punkt +1 Schaden pro Treffer, bei 50 %% einen halben.","Flat bonus for weapons that scale with melee: at 100 %% scaling each point adds +1 damage per hit, at 50 %% half a point."
+STAT_INFO_RANGED_DMG,"Flacher Bonus für Waffen, die mit Fern skalieren: Bei 100 %% Skalierung bringt jeder Punkt +1 Schaden pro Treffer, bei 50 %% einen halben.","Flat bonus for weapons that scale with ranged: at 100 %% scaling each point adds +1 damage per hit, at 50 %% half a point."
+STAT_INFO_ELEMENTAL_DMG,"Flacher Bonus für alles, was mit Strom skaliert: Waffen, Brand, Blitze und Zauber. Bei 100 %% Skalierung bringt jeder Punkt +1 Schaden.","Flat bonus for everything that scales with elemental: weapons, burn, lightning and spells. At 100 %% scaling each point adds +1 damage."
+STAT_INFO_ATTACK_SPEED,"Waffen greifen schneller an: Die Abklingzeit wird durch (1 + Wert/100) geteilt, eine 1-Sekunden-Waffe braucht mit +50 %% nur noch %s s. Negative Werte bremsen nur %s %% so stark. Mehr als %s Angriffe pro Sekunde gehen nicht.","Weapons attack faster: the cooldown is divided by (1 + value/100), so a 1-second weapon needs only %s s at +50 %%. Negative values slow you only %s %% as much. More than %s attacks per second is impossible."
+STAT_INFO_CRIT_CHANCE,"Wird zur Krit-Chance jeder Waffe addiert (0 bis 100 %%). Ein kritischer Treffer multipliziert den Schaden mit dem Krit-Faktor der Waffe, meist x2.","Added to every weapon's crit chance (0 to 100 %%). A critical hit multiplies the damage by the weapon's crit factor, usually x2."
+STAT_INFO_ENGINEERING,"Macht Strukturen wie Lampentürme, Drohnen und Lichtranken stärker. Ihr Schaden skaliert mit Technik statt mit Schaden %%.","Makes structures such as lamp towers, drones and light vines stronger. Their damage scales with engineering instead of damage %%."
+STAT_INFO_RANGE,Addiert sich zur Reichweite jeder Waffe. Nahkampfwaffen bekommen nur %s %% davon. Eine Waffe reicht immer mindestens %s px weit.,Added to every weapon's range. Melee weapons only get %s %% of it. A weapon always reaches at least %s px.
+STAT_INFO_ARMOR,"Senkt den erlittenen Schaden: 5 Rüstung schlucken etwa %s %%, 15 Rüstung %s %%. Formel: Rüstung / (Rüstung + %s). Jeder Punkt wirkt wie gut 6 %% mehr Leben; negative Rüstung erhöht den Schaden.","Reduces damage taken: 5 armor absorbs about %s %%, 15 armor %s %%. Formula: armor / (armor + %s). Each point is worth roughly 6 %% more life; negative armor increases damage."
+STAT_INFO_DODGE,"Chance, einem Treffer komplett auszuweichen, höchstens %s %%. Negative Werte wirken wie 0.","Chance to avoid a hit completely, capped at %s %%. Negative values count as 0."
+STAT_INFO_SPEED,Bewegungstempo in Prozent. Das Grundtempo beträgt %s px/s; bei -100 %% stehst du still.,Movement speed in percent. Base speed is %s px/s; at -100 %% you stand still.
+STAT_INFO_LUCK,"Mehr Batterien und Kartons von Gegnern und bessere Seltenheit in Shop, Kartons und Level-ups. 100 Glück verdoppelt die Batterie-Chance, bei -100 Glück gibt es keine Batterien mehr.","More batteries and crates from enemies, better rarity in the shop, crates and level-ups. 100 luck doubles the battery chance, at -100 luck no batteries drop at all."
+STAT_INFO_HARVESTING,"Am Ende jeder Welle bekommst du so viele Funken und XP. Danach wächst der Wert um %s %% (aufgerundet), solange er positiv ist.",At the end of every wave you gain this many sparks and XP. Afterwards the value grows by %s %% (rounded up) as long as it's positive.
+STAT_INFO_XP_GAIN_PCT,"Mehr Erfahrung pro Funke, in Prozent.","More experience per spark, in percent."
+STAT_INFO_PICKUP_RANGE_PCT,"Vergrößert den Radius, in dem Funken zu dir fliegen (Grundwert %s px), in Prozent.","Increases the radius in which sparks fly to you (base %s px), in percent."
+STAT_INFO_ITEM_PRICE_PCT,Ändert alle Shop-Preise um diesen Prozentsatz; negative Werte machen alles billiger.,Changes all shop prices by this percentage; negative values make everything cheaper.
+STAT_INFO_EXPLOSION_DMG_PCT,"Mehr Schaden für alle Explosionen, in Prozent.","More damage for all explosions, in percent."
+STAT_INFO_EXPLOSION_SIZE_PCT,"Größere Explosionen, in Prozent.","Larger explosions, in percent."
+STAT_INFO_BOUNCES,Projektile prallen so oft zusätzlich zum nächsten Gegner ab.,Projectiles bounce on to the next enemy this many extra times.
+STAT_INFO_PIERCING,Projektile durchschlagen so viele zusätzliche Gegner.,Projectiles pierce this many additional enemies.
+STAT_INFO_PIERCING_DMG_PCT,"Ändert den Schaden von Projektilen, nachdem sie einen Gegner durchschlagen haben.",Changes projectile damage after they have pierced an enemy.
+STAT_INFO_BOSS_DMG_PCT,"Mehr Schaden gegen Elites und Bosse, in Prozent.","More damage against elites and bosses, in percent."
+STAT_INFO_STRUCTURE_ATTACK_SPEED_PCT,Strukturen feuern um diesen Prozentsatz schneller.,Structures fire faster by this percentage.
+STAT_INFO_BURN_SPEED_PCT,Brand-Ticks kommen um diesen Prozentsatz schneller.,Burn ticks come faster by this percentage.
+STAT_INFO_BURN_SPREAD,Bei jedem Brand-Tick springt das Feuer auf so viele Gegner in der Nähe über.,On every burn tick the fire jumps to this many nearby enemies.
+STAT_INFO_KNOCKBACK,Zusätzlicher Rückstoß bei jedem Treffer: Gegner werden weiter weggeschubst.,Extra knockback on every hit: enemies get pushed further away.
+STAT_INFO_DOUBLE_SPARK_CHANCE,"Chance in Prozent, dass ein aufgehobener Funke doppelt zählt.",Percent chance that a collected spark counts twice.
+STAT_INFO_FREE_REROLLS,So viele Rerolls sind in jedem Shop kostenlos.,This many rerolls are free in every shop.
+STAT_INFO_CRYSTALS,Leuchtkristalle erscheinen um diesen Prozentsatz häufiger.,Glow crystals appear more often by this percentage.
+STAT_INFO_ENEMIES_PCT,"Mehr Gegner pro Gruppe, in Prozent: gefährlicher, aber auch mehr Funken.","More enemies per group, in percent: more dangerous, but also more sparks."
+STAT_INFO_ENEMY_SPEED_PCT,Ändert das Tempo aller Gegner um diesen Prozentsatz; negative Werte machen sie langsamer.,Changes the speed of all enemies by this percentage; negative values slow them down.
+STAT_INFO_REROLL_PRICE_PCT,Ändert den Preis von Rerolls um diesen Prozentsatz.,Changes reroll prices by this percentage.
+STAT_INFO_CONSUMABLE_HEAL,Batterien und Kartons heilen so viele HP zusätzlich (Grundwert %s HP).,Batteries and crates heal this many extra HP (base %s HP).
+STAT_INFO_RECYCLE_PCT,Recyceln bringt so viel Prozent mehr Funken.,Recycling yields this many percent more sparks.
+STAT_INFO_BURN_DMG_PCT,"Mehr Schaden für jeden Brand-Tick, in Prozent.","More damage for every burn tick, in percent."
+STAT_INFO_KILL_SPARK_PCT,Gegner lassen um diesen Prozentsatz mehr Funken fallen.,Enemies drop more sparks by this percentage.
+LEX_DROP_VICTORY,Kein Drop – sein Sturz gewinnt den Run,No drop – its defeat wins the run

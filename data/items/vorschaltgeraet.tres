@@ -22,6 +22,7 @@ modifiers = Array[ExtResource("2_48mq5")]([SubResource("Resource_iun2f"), SubRes
 
 [resource]
 script = ExtResource("5_tsq4v")
+lore_text = "LORE_ITEM_VORSCHALTGERAET"
 id = &"vorschaltgeraet"
 name_key = "ITEM_VORSCHALTGERAET"
 tier = 2

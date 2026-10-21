@@ -13,6 +13,9 @@ heal_pct = 15.0
 
 [resource]
 script = ExtResource("2_t80md")
+counter_key = "COUNTER_ENEMY_FLACKERER"
+behavior_key = "BEHAVIOR_ENEMY_FLACKERER"
+lore_text = "LORE_ENEMY_FLACKERER"
 id = &"flackerer"
 name_key = "ENEMY_FLACKERER"
 texture = ExtResource("3_gbgst")

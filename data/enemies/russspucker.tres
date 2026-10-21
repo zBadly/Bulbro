@@ -17,6 +17,9 @@ projectile_texture = ExtResource("1_pfque")
 
 [resource]
 script = ExtResource("3_1qpvf")
+counter_key = "COUNTER_ENEMY_RUSSSPUCKER"
+behavior_key = "BEHAVIOR_ENEMY_RUSSSPUCKER"
+lore_text = "LORE_ENEMY_RUSSSPUCKER"
 id = &"russspucker"
 name_key = "ENEMY_RUSSSPUCKER"
 texture = ExtResource("4_ia51j")

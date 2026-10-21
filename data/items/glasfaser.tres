@@ -22,6 +22,7 @@ modifiers = Array[ExtResource("2_j8kla")]([SubResource("Resource_ky44y"), SubRes
 
 [resource]
 script = ExtResource("5_uqx5l")
+lore_text = "LORE_ITEM_GLASFASER"
 id = &"glasfaser"
 name_key = "ITEM_GLASFASER"
 tier = 3

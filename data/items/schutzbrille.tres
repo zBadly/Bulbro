@@ -22,6 +22,7 @@ modifiers = Array[ExtResource("2_26u52")]([SubResource("Resource_7yw8d"), SubRes
 
 [resource]
 script = ExtResource("5_sai5w")
+lore_text = "LORE_ITEM_SCHUTZBRILLE"
 id = &"schutzbrille"
 name_key = "ITEM_SCHUTZBRILLE"
 tier = 2

@@ -59,6 +59,7 @@ price = 163
 
 [resource]
 script = ExtResource("2_hjgs6")
+lore_text = "LORE_WEAPON_FUNKENPISTOLE"
 id = &"funkenpistole"
 name_key = "WEAPON_FUNKENPISTOLE"
 kind = 2

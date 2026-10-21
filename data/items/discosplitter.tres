@@ -27,6 +27,7 @@ modifiers = Array[ExtResource("2_6lmli")]([SubResource("Resource_gxs8q"), SubRes
 
 [resource]
 script = ExtResource("5_1hdl6")
+lore_text = "LORE_ITEM_DISCOSPLITTER"
 id = &"discosplitter"
 name_key = "ITEM_DISCOSPLITTER"
 tier = 3

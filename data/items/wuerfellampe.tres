@@ -17,6 +17,7 @@ modifiers = Array[ExtResource("2_82c6y")]([SubResource("Resource_yhxrt")])
 
 [resource]
 script = ExtResource("5_kehpb")
+lore_text = "LORE_ITEM_WUERFELLAMPE"
 id = &"wuerfellampe"
 name_key = "ITEM_WUERFELLAMPE"
 tier = 2

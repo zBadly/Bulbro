@@ -33,6 +33,8 @@ modifiers = Array[ExtResource("r2_mod")]([SubResource("Resource_r2armor")])
 
 [resource]
 script = ExtResource("4_ap3it")
+tip_key = "TIP_CHAR_SCHWARZLICHT"
+lore_text = "LORE_CHAR_SCHWARZLICHT"
 id = &"schwarzlicht"
 name_key = "CHAR_SCHWARZLICHT"
 texture = ExtResource("7_q3p68")

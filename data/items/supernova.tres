@@ -21,6 +21,7 @@ action = SubResource("Resource_5fjq0")
 
 [resource]
 script = ExtResource("5_k6hlq")
+lore_text = "LORE_ITEM_SUPERNOVA"
 id = &"supernova"
 name_key = "ITEM_SUPERNOVA"
 tier = 4

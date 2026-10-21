@@ -15,6 +15,9 @@ speed_multiplier = 1.5
 
 [resource]
 script = ExtResource("2_3ceks")
+counter_key = "COUNTER_ENEMY_VERSTAERKER"
+behavior_key = "BEHAVIOR_ENEMY_VERSTAERKER"
+lore_text = "LORE_ENEMY_VERSTAERKER"
 id = &"verstaerker"
 name_key = "ENEMY_VERSTAERKER"
 texture = ExtResource("3_3kli2")

@@ -23,6 +23,7 @@ modifiers = Array[ExtResource("3_nxv0d")]([SubResource("Resource_csh65")])
 
 [resource]
 script = ExtResource("6_mcv7r")
+lore_text = "LORE_ITEM_SPIEGELSCHERBE"
 id = &"spiegelscherbe"
 name_key = "ITEM_SPIEGELSCHERBE"
 tier = 3

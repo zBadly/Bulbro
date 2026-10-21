@@ -59,6 +59,7 @@ price = 98
 
 [resource]
 script = ExtResource("2_og3bf")
+lore_text = "LORE_WEAPON_BATTERIE_SCHLEUDER"
 id = &"batterie_schleuder"
 name_key = "WEAPON_BATTERIE_SCHLEUDER"
 kind = 2

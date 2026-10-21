@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_hdbyt")
+lore_text = "LORE_SPANNUNG_3"
 level = 3
 name_key = "SPANNUNG_3"
 description_key = "SPANNUNG_3_DESC"

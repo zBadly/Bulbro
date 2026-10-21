@@ -30,6 +30,8 @@ modifiers = Array[ExtResource("2_qkcoe")]([SubResource("Resource_n7vwf"), SubRes
 
 [resource]
 script = ExtResource("4_mqsc0")
+tip_key = "TIP_CHAR_KERZE"
+lore_text = "LORE_CHAR_KERZE"
 id = &"kerze"
 name_key = "CHAR_KERZE"
 texture = ExtResource("7_x4dop")

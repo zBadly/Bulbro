@@ -59,6 +59,7 @@ price = 293
 
 [resource]
 script = ExtResource("2_kwpmu")
+lore_text = "LORE_WEAPON_TASCHENLAMPENSTRAHL"
 id = &"taschenlampenstrahl"
 name_key = "WEAPON_TASCHENLAMPENSTRAHL"
 kind = 2

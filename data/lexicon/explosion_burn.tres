@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LexiconTopicData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/lexicon_topic_data.gd" id="1_topic"]
+[ext_resource type="Texture2D" path="res://art/items/supernova.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_topic")
+id = &"explosion_burn"
+name_key = "LEX_TOPIC_EXPLOSION_BURN"
+icon = ExtResource("2_icon")
+order = 7
+stats = Array[StringName]([&"explosion_dmg_pct", &"explosion_size_pct", &"burn_dmg_pct", &"burn_speed_pct", &"burn_spread"])
+lore_text = "LORE_TOPIC_EXPLOSION_BURN"

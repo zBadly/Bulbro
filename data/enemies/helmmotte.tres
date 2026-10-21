@@ -9,6 +9,9 @@ script = ExtResource("1_mljsd")
 
 [resource]
 script = ExtResource("2_nje4f")
+counter_key = "COUNTER_ENEMY_HELMMOTTE"
+behavior_key = "BEHAVIOR_ENEMY_HELMMOTTE"
+lore_text = "LORE_ENEMY_HELMMOTTE"
 id = &"helmmotte"
 name_key = "ENEMY_HELMMOTTE"
 texture = ExtResource("3_o4eox")

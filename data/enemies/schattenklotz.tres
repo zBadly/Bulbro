@@ -14,6 +14,9 @@ charge_speed = 700.0
 
 [resource]
 script = ExtResource("2_gt38i")
+counter_key = "COUNTER_ENEMY_SCHATTENKLOTZ"
+behavior_key = "BEHAVIOR_ENEMY_SCHATTENKLOTZ"
+lore_text = "LORE_ENEMY_SCHATTENKLOTZ"
 id = &"schattenklotz"
 name_key = "ENEMY_SCHATTENKLOTZ"
 texture = ExtResource("3_nqff8")

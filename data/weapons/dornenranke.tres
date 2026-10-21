@@ -66,6 +66,7 @@ root_duration = 0.5
 
 [resource]
 script = ExtResource("1_h6pc3")
+lore_text = "LORE_WEAPON_DORNENRANKE"
 id = &"dornenranke"
 name_key = "WEAPON_DORNENRANKE"
 kind = 1

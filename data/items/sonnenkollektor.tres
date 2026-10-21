@@ -32,6 +32,7 @@ modifiers = Array[ExtResource("2_yfds3")]([SubResource("Resource_q2njw"), SubRes
 
 [resource]
 script = ExtResource("5_5o8wp")
+lore_text = "LORE_ITEM_SONNENKOLLEKTOR"
 id = &"sonnenkollektor"
 name_key = "ITEM_SONNENKOLLEKTOR"
 tier = 3

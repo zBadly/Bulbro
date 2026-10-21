@@ -22,6 +22,7 @@ modifiers = Array[ExtResource("2_acp7f")]([SubResource("Resource_slp1f"), SubRes
 
 [resource]
 script = ExtResource("5_lqfqi")
+lore_text = "LORE_ITEM_UEBERSPANNUNG"
 id = &"ueberspannung"
 name_key = "ITEM_UEBERSPANNUNG"
 tier = 3

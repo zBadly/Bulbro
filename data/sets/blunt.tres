@@ -96,5 +96,6 @@ modifiers = Array[ExtResource("2_p0mww")]([SubResource("Resource_hb8ee"), SubRes
 
 [resource]
 script = ExtResource("3_8kaaq")
+lore_text = "LORE_CLASS_BLUNT"
 weapon_class = &"blunt"
 levels = Array[ExtResource("1_u7rju")]([SubResource("Resource_6s46f"), SubResource("Resource_vdjcg"), SubResource("Resource_ut5qo"), SubResource("Resource_nfpdk"), SubResource("Resource_ujtj1")])

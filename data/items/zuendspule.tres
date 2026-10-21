@@ -27,6 +27,7 @@ modifiers = Array[ExtResource("2_86h4v")]([SubResource("Resource_6hfg2"), SubRes
 
 [resource]
 script = ExtResource("5_0qa84")
+lore_text = "LORE_ITEM_ZUENDSPULE"
 id = &"zuendspule"
 name_key = "ITEM_ZUENDSPULE"
 tier = 3

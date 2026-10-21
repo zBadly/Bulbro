@@ -17,6 +17,7 @@ modifiers = Array[ExtResource("2_vlyx6")]([SubResource("Resource_vke8a")])
 
 [resource]
 script = ExtResource("5_q1hpe")
+lore_text = "LORE_ITEM_STROMTARIF_GUTSCHEIN"
 id = &"stromtarif_gutschein"
 name_key = "ITEM_STROMTARIF_GUTSCHEIN"
 icon = ExtResource("4_2nbxe")

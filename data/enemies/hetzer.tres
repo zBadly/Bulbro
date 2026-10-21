@@ -12,6 +12,9 @@ acceleration = 45.0
 
 [resource]
 script = ExtResource("2_hp02v")
+counter_key = "COUNTER_ENEMY_HETZER"
+behavior_key = "BEHAVIOR_ENEMY_HETZER"
+lore_text = "LORE_ENEMY_HETZER"
 id = &"hetzer"
 name_key = "ENEMY_HETZER"
 texture = ExtResource("3_uidvd")

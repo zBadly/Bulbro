@@ -64,6 +64,7 @@ split_damage_pct = 30.0
 
 [resource]
 script = ExtResource("2_4cis8")
+lore_text = "LORE_WEAPON_KRISTALLSTAB"
 id = &"kristallstab"
 name_key = "WEAPON_KRISTALLSTAB"
 kind = 2

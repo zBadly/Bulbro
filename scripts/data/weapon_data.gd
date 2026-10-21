@@ -21,6 +21,8 @@ const MAX_TIER: int = 4
 @export var sprite_rotation_deg: float = 0.0
 ## Index 0 = Tier I ... Index 3 = Tier IV.
 @export var tiers: Array[WeaponTierStats] = []
+## Lexikon: Übersetzungsschlüssel eines witzigen Satzes (Glühbirnen-Thema).
+@export var lore_text: String = ""
 
 @export_group("Fernkampf")
 @export var projectile_texture: Texture2D

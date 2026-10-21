@@ -63,6 +63,7 @@ price = 228
 
 [resource]
 script = ExtResource("2_v3dlq")
+lore_text = "LORE_WEAPON_PRISMA"
 id = &"prisma"
 name_key = "WEAPON_PRISMA"
 kind = 2

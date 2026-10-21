@@ -54,6 +54,7 @@ price = 98
 
 [resource]
 script = ExtResource("1_sioo2")
+lore_text = "LORE_WEAPON_AST"
 id = &"ast"
 name_key = "WEAPON_AST"
 classes = Array[StringName]([&"primitive"])

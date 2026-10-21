@@ -17,6 +17,7 @@ modifiers = Array[ExtResource("2_k0hyb")]([SubResource("Resource_u78q6")])
 
 [resource]
 script = ExtResource("5_2fkl1")
+lore_text = "LORE_ITEM_KLEINER_AKKU"
 id = &"kleiner_akku"
 name_key = "ITEM_KLEINER_AKKU"
 icon = ExtResource("4_y8po2")

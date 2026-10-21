@@ -17,6 +17,7 @@ modifiers = Array[ExtResource("2_p10a7")]([SubResource("Resource_bq158")])
 
 [resource]
 script = ExtResource("5_spywj")
+lore_text = "LORE_ITEM_ENERGIERIEGEL"
 id = &"energieriegel"
 name_key = "ITEM_ENERGIERIEGEL"
 icon = ExtResource("4_45p51")

@@ -26,6 +26,7 @@ script = ExtResource("4_xb6a8")
 
 [resource]
 script = ExtResource("6_t41wp")
+lore_text = "LORE_ITEM_BLUTROTE_FASSUNG"
 id = &"blutrote_fassung"
 name_key = "ITEM_BLUTROTE_FASSUNG"
 tier = 3

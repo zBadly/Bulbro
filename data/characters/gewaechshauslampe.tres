@@ -43,6 +43,8 @@ modifiers = Array[ExtResource("5_anirj")]([SubResource("Resource_oj2v2"), SubRes
 
 [resource]
 script = ExtResource("7_wfv0v")
+tip_key = "TIP_CHAR_GEWAECHSHAUSLAMPE"
+lore_text = "LORE_CHAR_GEWAECHSHAUSLAMPE"
 id = &"gewaechshauslampe"
 name_key = "CHAR_GEWAECHSHAUSLAMPE"
 texture = ExtResource("10_go43i")

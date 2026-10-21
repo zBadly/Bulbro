@@ -39,6 +39,8 @@ script = ExtResource("7_d4s8e")
 
 [resource]
 script = ExtResource("8_03pbt")
+tip_key = "TIP_CHAR_VAMPIRBIRNE"
+lore_text = "LORE_CHAR_VAMPIRBIRNE"
 id = &"vampirbirne"
 name_key = "CHAR_VAMPIRBIRNE"
 texture = ExtResource("11_76rpx")

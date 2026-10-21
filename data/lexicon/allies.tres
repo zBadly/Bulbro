@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LexiconTopicData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/lexicon_topic_data.gd" id="1_topic"]
+[ext_resource type="Texture2D" path="res://art/fx/projectile_soul.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_topic")
+id = &"allies"
+name_key = "LEX_TOPIC_ALLIES"
+icon = ExtResource("2_icon")
+order = 17
+text_key = "LEX_TOPIC_ALLIES_TEXT"
+lore_text = "LORE_TOPIC_ALLIES"

@@ -42,6 +42,8 @@ modifiers = Array[ExtResource("3_hcsma")]([SubResource("Resource_a5nii"), SubRes
 
 [resource]
 script = ExtResource("5_uhryv")
+tip_key = "TIP_CHAR_NEONROEHRE"
+lore_text = "LORE_CHAR_NEONROEHRE"
 id = &"neonroehre"
 name_key = "CHAR_NEONROEHRE"
 texture = ExtResource("8_u47bu")

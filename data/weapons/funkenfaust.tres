@@ -58,6 +58,7 @@ price = 98
 
 [resource]
 script = ExtResource("1_ewyun")
+lore_text = "LORE_WEAPON_FUNKENFAUST"
 id = &"funkenfaust"
 name_key = "WEAPON_FUNKENFAUST"
 classes = Array[StringName]([&"unarmed"])

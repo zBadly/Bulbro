@@ -5,6 +5,7 @@ extends Node
 const DATA_ROOT: String = "res://data"
 const CATEGORIES: PackedStringArray = [
 	"weapons", "items", "characters", "enemies", "waves", "upgrades", "sets", "challenges",
+	"difficulties", "lexicon",
 ]
 ## In exportierten Builds werden .tres-Dateien umbenannt und über .remap referenziert.
 const REMAP_SUFFIX: String = ".remap"

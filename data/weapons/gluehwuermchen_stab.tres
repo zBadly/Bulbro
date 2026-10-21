@@ -59,6 +59,7 @@ homing_turn_deg = 360.0
 
 [resource]
 script = ExtResource("2_b20ku")
+lore_text = "LORE_WEAPON_GLUEHWUERMCHEN_STAB"
 id = &"gluehwuermchen_stab"
 name_key = "WEAPON_GLUEHWUERMCHEN_STAB"
 kind = 2

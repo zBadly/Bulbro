@@ -63,6 +63,7 @@ chain_range = 220.0
 
 [resource]
 script = ExtResource("2_rgd54")
+lore_text = "LORE_WEAPON_BLITZWERFER"
 id = &"blitzwerfer"
 name_key = "WEAPON_BLITZWERFER"
 kind = 2

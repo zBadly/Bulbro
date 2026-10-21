@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_4rifu")
+lore_text = "LORE_SPANNUNG_4"
 level = 4
 name_key = "SPANNUNG_4"
 description_key = "SPANNUNG_4_DESC"

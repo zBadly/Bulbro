@@ -11,6 +11,9 @@ calm_speed_factor = 0.5
 
 [resource]
 script = ExtResource("2_vasd3")
+counter_key = "COUNTER_ENEMY_FUNKENDIEB"
+behavior_key = "BEHAVIOR_ENEMY_FUNKENDIEB"
+lore_text = "LORE_ENEMY_FUNKENDIEB"
 id = &"funkendieb"
 name_key = "ENEMY_FUNKENDIEB"
 texture = ExtResource("3_gnu1y")

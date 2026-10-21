@@ -58,6 +58,7 @@ spark_on_kill_chance = 0.15
 
 [resource]
 script = ExtResource("1_3w70j")
+lore_text = "LORE_WEAPON_FUNKENSIEB"
 id = &"funkensieb"
 name_key = "WEAPON_FUNKENSIEB"
 classes = Array[StringName]([&"support"])

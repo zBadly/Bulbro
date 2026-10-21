@@ -59,6 +59,7 @@ price = 195
 
 [resource]
 script = ExtResource("2_2gfw8")
+lore_text = "LORE_WEAPON_LASERPOINTER"
 id = &"laserpointer"
 name_key = "WEAPON_LASERPOINTER"
 kind = 2

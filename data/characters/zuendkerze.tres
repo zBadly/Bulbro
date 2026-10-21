@@ -61,6 +61,8 @@ modifiers = Array[ExtResource("5_6lndk")]([SubResource("Resource_sxwk8")])
 
 [resource]
 script = ExtResource("7_wl084")
+tip_key = "TIP_CHAR_ZUENDKERZE"
+lore_text = "LORE_CHAR_ZUENDKERZE"
 id = &"zuendkerze"
 name_key = "CHAR_ZUENDKERZE"
 texture = ExtResource("10_rflb1")

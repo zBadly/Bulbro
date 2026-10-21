@@ -58,6 +58,7 @@ price = 260
 
 [resource]
 script = ExtResource("1_ujfue")
+lore_text = "LORE_WEAPON_LAMPENHAMMER"
 id = &"lampenhammer"
 name_key = "WEAPON_LAMPENHAMMER"
 kind = 1

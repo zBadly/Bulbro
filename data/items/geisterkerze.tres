@@ -32,6 +32,7 @@ modifiers = Array[ExtResource("4_7mkfr")]([SubResource("Resource_3acg2")])
 
 [resource]
 script = ExtResource("7_v3cvl")
+lore_text = "LORE_ITEM_GEISTERKERZE"
 id = &"geisterkerze"
 name_key = "ITEM_GEISTERKERZE"
 tier = 3

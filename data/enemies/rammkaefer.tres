@@ -14,6 +14,9 @@ charge_speed = 800.0
 
 [resource]
 script = ExtResource("2_4v2x8")
+counter_key = "COUNTER_ENEMY_RAMMKAEFER"
+behavior_key = "BEHAVIOR_ENEMY_RAMMKAEFER"
+lore_text = "LORE_ENEMY_RAMMKAEFER"
 id = &"rammkaefer"
 name_key = "ENEMY_RAMMKAEFER"
 texture = ExtResource("3_pw8ns")

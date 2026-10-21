@@ -37,6 +37,8 @@ modifiers = Array[ExtResource("3_acl64")]([SubResource("Resource_djqek"), SubRes
 
 [resource]
 script = ExtResource("5_3har3")
+tip_key = "TIP_CHAR_GLUEHFADEN_BOXER"
+lore_text = "LORE_CHAR_GLUEHFADEN_BOXER"
 id = &"gluehfaden_boxer"
 name_key = "CHAR_GLUEHFADEN_BOXER"
 texture = ExtResource("8_4io72")

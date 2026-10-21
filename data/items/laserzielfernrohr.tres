@@ -32,6 +32,7 @@ modifiers = Array[ExtResource("2_ya35a")]([SubResource("Resource_5es0r"), SubRes
 
 [resource]
 script = ExtResource("5_j8htw")
+lore_text = "LORE_ITEM_LASERZIELFERNROHR"
 id = &"laserzielfernrohr"
 name_key = "ITEM_LASERZIELFERNROHR"
 tier = 4

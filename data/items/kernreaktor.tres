@@ -27,6 +27,7 @@ modifiers = Array[ExtResource("2_1sbp6")]([SubResource("Resource_0kcgk"), SubRes
 
 [resource]
 script = ExtResource("5_lnn4w")
+lore_text = "LORE_ITEM_KERNREAKTOR"
 id = &"kernreaktor"
 name_key = "ITEM_KERNREAKTOR"
 tier = 4

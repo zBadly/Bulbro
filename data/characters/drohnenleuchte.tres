@@ -28,6 +28,8 @@ modifiers = Array[ExtResource("r2_mod")]([SubResource("Resource_r2eng")])
 
 [resource]
 script = ExtResource("4_ng1u5")
+tip_key = "TIP_CHAR_DROHNENLEUCHTE"
+lore_text = "LORE_CHAR_DROHNENLEUCHTE"
 id = &"drohnenleuchte"
 name_key = "CHAR_DROHNENLEUCHTE"
 texture = ExtResource("7_osfog")

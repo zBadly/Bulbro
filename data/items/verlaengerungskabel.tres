@@ -22,6 +22,7 @@ modifiers = Array[ExtResource("2_3kf3f")]([SubResource("Resource_vw3jv"), SubRes
 
 [resource]
 script = ExtResource("5_3jdh6")
+lore_text = "LORE_ITEM_VERLAENGERUNGSKABEL"
 id = &"verlaengerungskabel"
 name_key = "ITEM_VERLAENGERUNGSKABEL"
 tier = 2

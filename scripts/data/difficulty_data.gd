@@ -5,6 +5,8 @@ extends Resource
 @export var level: int = 0
 @export var name_key: String = ""
 @export var description_key: String = ""
+## Lexikon: Übersetzungsschlüssel eines witzigen Satzes (Glühbirnen-Thema).
+@export var lore_text: String = ""
 ## Aufschlag auf HP und Schaden aller Gegner in % (bis +40 %).
 @export var enemy_hp_pct: float = 0.0
 @export var enemy_damage_pct: float = 0.0

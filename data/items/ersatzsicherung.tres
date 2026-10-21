@@ -17,6 +17,7 @@ modifiers = Array[ExtResource("2_wavmk")]([SubResource("Resource_8tmth")])
 
 [resource]
 script = ExtResource("5_ctvc5")
+lore_text = "LORE_ITEM_ERSATZSICHERUNG"
 id = &"ersatzsicherung"
 name_key = "ITEM_ERSATZSICHERUNG"
 icon = ExtResource("4_8aofn")

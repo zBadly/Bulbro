@@ -17,6 +17,7 @@ modifiers = Array[ExtResource("2_nntjf")]([SubResource("Resource_51n10")])
 
 [resource]
 script = ExtResource("5_0r22i")
+lore_text = "LORE_ITEM_RECYCLINGSCHILD"
 id = &"recyclingschild"
 name_key = "ITEM_RECYCLINGSCHILD"
 tier = 2

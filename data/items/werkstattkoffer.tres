@@ -22,6 +22,7 @@ modifiers = Array[ExtResource("2_b8608")]([SubResource("Resource_eci1e"), SubRes
 
 [resource]
 script = ExtResource("5_d5mdw")
+lore_text = "LORE_ITEM_WERKSTATTKOFFER"
 id = &"werkstattkoffer"
 name_key = "ITEM_WERKSTATTKOFFER"
 tier = 3

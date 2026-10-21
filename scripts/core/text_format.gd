@@ -66,12 +66,25 @@ static func tier_name(tier: int) -> String:
 
 ## Beschreibung eines Charakters: Stat-Änderungen, Sondereffekte und Sonderregeln (BBCode).
 static func describe_character(character: CharacterData) -> String:
-	var mods: Array[StatModifier] = []
 	var lines: PackedStringArray = []
+	var stats: String = describe_character_stats(character)
+	if stats != "":
+		lines.append(stats)
+	lines.append_array(character_special_lines(character))
+	return "\n".join(lines)
+
+
+## Nur die Stat-Änderungen eines Charakters (BBCode, leer ohne Stats).
+static func describe_character_stats(character: CharacterData) -> String:
+	var mods: Array[StatModifier] = []
 	for effect: ItemEffect in character.effects:
 		mods.append_array(effect.get_modifiers())
-	if not mods.is_empty():
-		lines.append(describe_modifiers(mods))
+	return describe_modifiers(mods)
+
+
+## Sondereffekte und Sonderregeln eines Charakters (ohne reine Stat-Änderungen).
+static func character_special_lines(character: CharacterData) -> PackedStringArray:
+	var lines: PackedStringArray = []
 	for effect: ItemEffect in character.effects:
 		lines.append_array(effect.describe())
 	if character.weapon_slots != Player.DEFAULT_WEAPON_SLOTS:
@@ -82,7 +95,7 @@ static func describe_character(character: CharacterData) -> String:
 		lines.append(t("CHAR_RULE_BANNED") % t(WeaponClasses.label_key(weapon_class)))
 	for weapon_class: StringName in character.set_bonus_multiplier:
 		lines.append(t("CHAR_RULE_SET_MULT") % [t(WeaponClasses.label_key(weapon_class)), number(character.set_bonus_multiplier[weapon_class])])
-	return "\n".join(lines)
+	return lines
 
 
 ## Übersetzung als String (für den %-Operator auch außerhalb von Nodes).
@@ -93,14 +106,35 @@ static func t(key: String) -> String:
 ## Kurzbeschreibung einer Waffe in einem Tier (Schaden mit Skalierung, Tempo, Reichweite, Besonderheiten, Klassen).
 static func describe_weapon(weapon: WeaponData, tier: int) -> String:
 	var tier_stats: WeaponTierStats = weapon.get_tier(tier)
-	var scalings: PackedStringArray = []
-	for stat: StringName in tier_stats.scalings:
-		scalings.append("%d %% %s" % [roundi(tier_stats.scalings[stat] * 100.0), t(Stats.label_key(stat))])
 	var lines: PackedStringArray = []
-	lines.append(t("WEAPON_DAMAGE") % [number(tier_stats.base_damage), ", ".join(scalings)])
+	lines.append(t("WEAPON_DAMAGE") % [number(tier_stats.base_damage), weapon_scaling_text(tier_stats)])
 	lines.append(t("WEAPON_COOLDOWN") % ("%.2f" % tier_stats.cooldown))
 	lines.append(t("WEAPON_RANGE") % number(tier_stats.range))
 	lines.append(t("WEAPON_CRIT") % [number(tier_stats.crit_chance * 100.0), number(tier_stats.crit_multiplier)])
+	lines.append_array(weapon_special_lines(weapon, tier))
+	lines.append(t("WEAPON_CLASSES") % weapon_classes_text(weapon))
+	return "\n".join(lines)
+
+
+## Skalierung wie "100 % Nah, 50 % Strom".
+static func weapon_scaling_text(tier_stats: WeaponTierStats) -> String:
+	var scalings: PackedStringArray = []
+	for stat: StringName in tier_stats.scalings:
+		scalings.append("%d %% %s" % [roundi(tier_stats.scalings[stat] * 100.0), t(Stats.label_key(stat))])
+	return ", ".join(scalings)
+
+
+static func weapon_classes_text(weapon: WeaponData) -> String:
+	var classes: PackedStringArray = []
+	for weapon_class: StringName in weapon.classes:
+		classes.append(t(WeaponClasses.label_key(weapon_class)))
+	return ", ".join(classes)
+
+
+## Besonderheiten einer Waffe in einem Tier (Rückstoß, Durchschlag, Brand, ...); leer bei einfachen Waffen.
+static func weapon_special_lines(weapon: WeaponData, tier: int) -> PackedStringArray:
+	var tier_stats: WeaponTierStats = weapon.get_tier(tier)
+	var lines: PackedStringArray = []
 	if tier_stats.knockback > 0.0:
 		lines.append(t("WEAPON_KNOCKBACK") % number(tier_stats.knockback))
 	if tier_stats.piercing >= PIERCE_ALL:
@@ -135,8 +169,4 @@ static func describe_weapon(weapon: WeaponData, tier: int) -> String:
 		lines.append(t("WEAPON_PER_SAME") % number(weapon.damage_per_same_weapon))
 	if weapon.structure != null:
 		lines.append(t("WEAPON_STRUCTURE") % t(weapon.structure.name_key))
-	var classes: PackedStringArray = []
-	for weapon_class: StringName in weapon.classes:
-		classes.append(t(WeaponClasses.label_key(weapon_class)))
-	lines.append(t("WEAPON_CLASSES") % ", ".join(classes))
-	return "\n".join(lines)
+	return lines

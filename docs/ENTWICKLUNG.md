@@ -38,6 +38,7 @@ Bosse testen: F4 → zu Welle 20 springen; bei Spannung 5 erscheinen beide Bosse
 | 14c-2 | 5 neue Startwaffen: Seelenlaterne, Feuerzeugwerfer, Kristallstab, Voodoo-Nadel, Dornenranke (auch im Shop) |
 | 14c-5 | Charakter-Simulator; Balancing in zwei Runden: neue Charaktere und Waffen, schwache alte Charaktere (Kerze, Taschenlampe, Discokugel, Nachtlicht), Drohnenleuchte |
 | 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
+| 6 (Lexikon) | Hauptmenüpunkt „Lexikon“ mit 6 Reitern (Charaktere, Waffen, Items, Gegner, Waffenklassen, Spielmechaniken), Suche über alle Reiter, Filter, Sprüche (`lore_text`) für alle Einträge |
 | 14c-1 | Systeme für 10 neue Charaktere: Fluch, Verlangsamen/Einfrieren/Festhalten, Verbündete (Schattengeister), Seelenglas, Zauberzyklus, Spiegelbild, Drohnen, Lichtranke, Brand-Erweiterungen, Vampirbirnen-Effekte |
 
 Leistung (Radeon RX 590, 1080p, VSync 144 Hz): 100 Gegner aller Typen mit 6 Tier-IV-Fernwaffen min. 118 FPS; 100 Gegner + 300 Projektile konstant 144 FPS.
@@ -137,6 +138,14 @@ Grundlage: `--characters`, `--weapons`, `--items` (200 Runs, Vergleichswerte).
 - Drohnenleuchte (Ziel ~80 % / 50 % Siegquote auf Spannung 0 / 3): Drohnen schießen alle 0,6 statt 1,0 s (gilt auch für die Wartungsdrohne), Start mit 3 Drohnen, +30 Technik. Getestet und verworfen: nur kürzere Abklingzeit, +50 % Fern-Skalierung (wirkungslos ohne Fern-Waffen), nur 3 Drohnen, 4 Drohnen + 40 Technik (77 % / 50 %).
 - Bewusst nicht geändert: Zündkerze-Brandschaden, Fluch-Verstärkung, Kronleuchter-Zauberzyklus, Spawn-Intervalle auf Spannung 0 (Einsteigerstufe darf leicht sein).
 - Siegquote im Schnitt aller Charaktere je Spannung 0–5 laut Simulator nach Runde 1: 82 / 74 / 63 / 52 / 43 / 31 %; nach Runde 2 auf Spannung 0 / 3: 85 % / 57 % (alte 12: 83 / 54 %, neue 10: 87 / 60 %).
+
+### Lexikon (Paket 6)
+- Einträge baut `Lexicon` (`scripts/systems/lexicon.gd`) aus der DataRegistry; neue `.tres` erscheinen automatisch. Effekttexte nutzen dieselben Funktionen wie der Shop (`ItemData.get_description`, `TextFormat.weapon_special_lines`, `TextFormat.describe_character_stats`).
+- Neue Felder (alle Übersetzungsschlüssel): `lore_text` an Charakter, Waffe, Item, Gegner, Set-Bonus, Spannung und Lexikon-Thema; `CharacterData.tip_key`; `EnemyData.behavior_key`/`counter_key`; `BossPhaseData.description_key`.
+- Spielmechaniken sind `LexiconTopicData` unter `data/lexicon` (Kategorie „lexicon“ der DataRegistry, ebenso neu: „difficulties“). Jeder Stat gehört zu genau einem Thema und wird mit `STAT_INFO_<STAT>` erklärt; Zahlen in den Texten kommen aus Formeln und Configs.
+- „Ab Welle“ wird aus den Wellen berechnet (Funkendieb: `drop_config`, Rußschütze: auch über Brutsack, Elites: Sonderwellen der Spannungen, Bosse: Bosswelle). Beispielwerte gelten für Welle 20, bei Elites für ihre letzte mögliche Welle.
+- Gesperrte Charaktere und Items: Silhouette, Name, Bedingung mit Fortschritt; die Suche findet bei ihnen nur Name und Bedingung.
+- Komponenten: `EntryCard` (feste Größe, Schrift schrumpft bei langen Namen), `DetailPanel` (Kopf fest, Inhalt scrollt), `StatTable`. Reiter: Maus, Q/E, LB/RB (Aktionen `tab_prev`/`tab_next`); rechter Stick bzw. Bild auf/ab scrollt das Detailpanel.
 
 ### Endlos-Modus
 - Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.

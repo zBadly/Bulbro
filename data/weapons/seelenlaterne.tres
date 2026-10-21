@@ -63,6 +63,7 @@ extra_souls = 1
 
 [resource]
 script = ExtResource("2_uo5k1")
+lore_text = "LORE_WEAPON_SEELENLATERNE"
 id = &"seelenlaterne"
 name_key = "WEAPON_SEELENLATERNE"
 kind = 2

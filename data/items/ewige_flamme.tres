@@ -22,6 +22,7 @@ modifiers = Array[ExtResource("2_3u7ng")]([SubResource("Resource_u62th"), SubRes
 
 [resource]
 script = ExtResource("5_kpoiw")
+lore_text = "LORE_ITEM_EWIGE_FLAMME"
 id = &"ewige_flamme"
 name_key = "ITEM_EWIGE_FLAMME"
 tier = 4

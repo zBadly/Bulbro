@@ -18,6 +18,8 @@ value_per_weapon = -5.0
 
 [resource]
 script = ExtResource("3_kmbda")
+tip_key = "TIP_CHAR_LICHTERKETTE"
+lore_text = "LORE_CHAR_LICHTERKETTE"
 id = &"lichterkette"
 name_key = "CHAR_LICHTERKETTE"
 texture = ExtResource("9_lpemx")

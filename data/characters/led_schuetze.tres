@@ -36,6 +36,8 @@ modifiers = Array[ExtResource("2_bt2ts")]([SubResource("Resource_dhlug"), SubRes
 
 [resource]
 script = ExtResource("4_4t5gk")
+tip_key = "TIP_CHAR_LED_SCHUETZE"
+lore_text = "LORE_CHAR_LED_SCHUETZE"
 id = &"led_schuetze"
 name_key = "CHAR_LED_SCHUETZE"
 texture = ExtResource("7_1ovt4")

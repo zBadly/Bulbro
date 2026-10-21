@@ -24,6 +24,7 @@ modifiers = Array[ExtResource("3_553y0")]([SubResource("Resource_t6xuh")])
 
 [resource]
 script = ExtResource("6_mdutj")
+lore_text = "LORE_ITEM_UV_ROEHRE"
 id = &"uv_roehre"
 name_key = "ITEM_UV_ROEHRE"
 tier = 3

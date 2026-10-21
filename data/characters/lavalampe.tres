@@ -49,6 +49,8 @@ modifiers = Array[ExtResource("2_ql6ii")]([SubResource("Resource_a8ihs"), SubRes
 
 [resource]
 script = ExtResource("4_yaesr")
+tip_key = "TIP_CHAR_LAVALAMPE"
+lore_text = "LORE_CHAR_LAVALAMPE"
 id = &"lavalampe"
 name_key = "CHAR_LAVALAMPE"
 texture = ExtResource("8_2t254")

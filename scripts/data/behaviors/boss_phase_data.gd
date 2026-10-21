@@ -10,6 +10,8 @@ enum Movement { CHASE, FLEE, STAND, CHARGE }
 @export var max_duration: float = 0.0
 @export var movement: Movement = Movement.CHASE
 @export var speed_multiplier: float = 1.0
+## Lexikon: Beschreibung der Phase (Übersetzungsschlüssel).
+@export var description_key: String = ""
 
 @export_group("Sturmangriff")
 @export var charge_interval: float = 0.0

@@ -62,6 +62,7 @@ burn_ticks = 3
 
 [resource]
 script = ExtResource("1_2gvuk")
+lore_text = "LORE_WEAPON_LOETKOLBEN"
 id = &"loetkolben"
 name_key = "WEAPON_LOETKOLBEN"
 classes = Array[StringName]([&"elemental", &"tool"])

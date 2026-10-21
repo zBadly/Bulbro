@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LexiconTopicData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/lexicon_topic_data.gd" id="1_topic"]
+[ext_resource type="Texture2D" path="res://art/fx/burn_flames.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_topic")
+id = &"burn"
+name_key = "LEX_TOPIC_BURN"
+icon = ExtResource("2_icon")
+order = 14
+text_key = "LEX_TOPIC_BURN_TEXT"
+lore_text = "LORE_TOPIC_BURN"

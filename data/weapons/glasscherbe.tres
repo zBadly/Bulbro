@@ -54,6 +54,7 @@ price = 130
 
 [resource]
 script = ExtResource("1_cbfs6")
+lore_text = "LORE_WEAPON_GLASSCHERBE"
 id = &"glasscherbe"
 name_key = "WEAPON_GLASSCHERBE"
 classes = Array[StringName]([&"blade", &"precise"])

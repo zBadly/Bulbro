@@ -19,6 +19,7 @@ action = SubResource("Resource_cmka6")
 
 [resource]
 script = ExtResource("5_nwxmb")
+lore_text = "LORE_ITEM_LADESTATION"
 id = &"ladestation"
 name_key = "ITEM_LADESTATION"
 tier = 3

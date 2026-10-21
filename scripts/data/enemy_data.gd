@@ -6,6 +6,11 @@ extends Resource
 @export var name_key: String = ""
 @export var texture: Texture2D
 @export var collision_radius: float = 0.0
+## Lexikon: Übersetzungsschlüssel eines witzigen Satzes (Glühbirnen-Thema).
+@export var lore_text: String = ""
+## Lexikon: Verhalten und Konter-Tipp (Übersetzungsschlüssel).
+@export var behavior_key: String = ""
+@export var counter_key: String = ""
 
 @export_group("Werte")
 @export var base_hp: float = 0.0

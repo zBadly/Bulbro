@@ -27,6 +27,7 @@ modifiers = Array[ExtResource("2_o4pgw")]([SubResource("Resource_bbfcm"), SubRes
 
 [resource]
 script = ExtResource("5_t1i60")
+lore_text = "LORE_ITEM_SCHALTPLAN"
 id = &"schaltplan"
 name_key = "ITEM_SCHALTPLAN"
 tier = 2

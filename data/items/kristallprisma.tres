@@ -24,6 +24,7 @@ spells = Array[ExtResource("3_oofhf")]([SubResource("Resource_m6lps")])
 
 [resource]
 script = ExtResource("6_8m54f")
+lore_text = "LORE_ITEM_KRISTALLPRISMA"
 id = &"kristallprisma"
 name_key = "ITEM_KRISTALLPRISMA"
 tier = 3
