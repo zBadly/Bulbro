@@ -104,4 +104,4 @@ Annahmen des Simulators (Waffenzahl, Tier und Stat-Zuwachs pro Welle) stehen als
 - Upgrade-Karten haben keine Icons.
 - Musik ist ein synthetisierter Platzhalter; CC0-Tracks nach `audio/music` legen und in `data/config/audio_config.tres` eintragen.
 - Balancing: Simulator-Vorschläge noch nicht übernommen (Spannung 0 laut Modell in 14 von 19 Wellen zu leicht; Strom-Build rund 1,5x stärker als Fern/Nah, vor allem durch den Ketten-Blitz).
-- Windows-Build erst nach Installation der Export-Vorlagen (Godot: Editor → Export-Vorlagen verwalten).
+- Windows-Build läuft (Export-Vorlagen 4.7.2 installiert); Ergebnis `build/windows/Bulbro.exe` (nicht im Git).

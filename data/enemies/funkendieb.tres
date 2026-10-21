@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="EnemyData" format=3]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://b3v6ul4os1ogh"]
 
-[ext_resource type="Script" path="res://scripts/data/behaviors/flee_data.gd" id="1_kmacv"]
-[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="2_vasd3"]
-[ext_resource type="Texture2D" path="res://art/enemies/funkendieb.svg" id="3_gnu1y"]
+[ext_resource type="Script" uid="uid://qdeoxac166a6" path="res://scripts/data/behaviors/flee_data.gd" id="1_kmacv"]
+[ext_resource type="Script" uid="uid://21rj4ka47nth" path="res://scripts/data/enemy_data.gd" id="2_vasd3"]
+[ext_resource type="Texture2D" uid="uid://cor0tvduo40j7" path="res://art/enemies/funkendieb.svg" id="3_gnu1y"]
 
 [sub_resource type="Resource" id="Resource_3vxvg"]
 script = ExtResource("1_kmacv")
