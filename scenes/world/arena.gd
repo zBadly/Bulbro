@@ -88,6 +88,7 @@ func _ready() -> void:
 	player.died.connect(_on_player_died)
 	_pause_menu.give_up_requested.connect(player.kill)
 	wave_manager.run_won.connect(_on_run_won)
+	_game_over.endless_requested.connect(_continue_endless)
 	wave_manager.wave_ended.connect(_on_wave_ended)
 	wave_manager.wave_started.connect(_on_wave_started)
 	Events.run_phase_changed.connect(_on_phase_changed)
@@ -209,7 +210,7 @@ func _clear_structures() -> void:
 ## Nach dem Wellenende kurz warten (Banner, Pop), dann Spiel anhalten und Kartons/Level-ups/Shop abarbeiten.
 func _on_wave_ended(wave_number: int) -> void:
 	_clear_structures()
-	if wave_number >= wave_manager.get_wave_count():
+	if wave_number >= wave_manager.get_wave_count() and not GameState.endless:
 		return
 	GameState.set_phase(GameState.Phase.POST_WAVE)
 	await get_tree().create_timer(WAVES.intermission_time).timeout
@@ -247,6 +248,16 @@ func _on_run_won() -> void:
 	_pause_menu.enabled = false
 	GameState.end_run(true)
 	_game_over.show_result(true, wave_manager.get_wave_number(), player)
+
+
+## Nach dem Sieg weiterspielen: Kartons, Level-ups und Shop wie gewohnt, dann Endloswellen.
+func _continue_endless() -> void:
+	GameState.endless = true
+	GameState.endless_start_wave = wave_manager.get_wave_count()
+	GameState.is_run_active = true
+	_pause_menu.enabled = true
+	get_tree().paused = true
+	GameState.advance_post_wave()
 
 
 ## Debug (F6): füllt die Arena bis zum Gegnerlimit (Performance-Test).

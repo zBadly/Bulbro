@@ -6,10 +6,26 @@ const PERCENT: float = 100.0
 const EXPLOSION_TRAUMA: float = 0.15
 
 
+## Liste der Gruppe pro Physik-Frame zwischengespeichert (Heiler, Verstärker, Zielsuche fragen sehr oft).
+## Betritt oder verlässt ein Ziel den Baum, wird sie sofort ungültig (invalidate_targets).
+static var _cache_frame: int = -1
+static var _cache_nodes: Array[Node] = []
+
+
+static func invalidate_targets() -> void:
+	_cache_frame = -1
+
+
 ## Alle lebenden Ziele. Neutrale Objekte (Leuchtkristalle) nur auf Wunsch.
 static func alive_targets(tree: SceneTree, include_neutral: bool = false) -> Array[Damageable]:
+	var frame: int = Engine.get_physics_frames()
+	if frame != _cache_frame:
+		_cache_frame = frame
+		_cache_nodes = tree.get_nodes_in_group(Damageable.GROUP)
 	var result: Array[Damageable] = []
-	for node: Node in tree.get_nodes_in_group(Damageable.GROUP):
+	for node: Node in _cache_nodes:
+		if not is_instance_valid(node):
+			continue
 		var target: Damageable = node as Damageable
 		if target != null and target.is_alive() and (include_neutral or not target.is_neutral()):
 			result.append(target)

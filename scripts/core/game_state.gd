@@ -43,6 +43,13 @@ var assist_damage: float = 1.0
 var assist_speed: float = 1.0
 ## Gesetzt vom Hauptmenü ("Fortsetzen"): gespeicherter Run, den die Arena wiederherstellt.
 var resume_data: Dictionary = {}
+## Endlos-Modus nach dem Sieg in der letzten regulären Welle.
+var endless: bool = false
+var endless_start_wave: int = 0
+## Bereits in die Gesamtstatistik übernommen (Endlos-Modus wertet den Run zweimal aus).
+var run_reported: bool = false
+var reported_sparks: int = 0
+var reported_kills: int = 0
 var run_stats: RunStats = RunStats.new()
 
 ## Run-Einstellungen aus dem Menü (bleiben über start_run und Neustart erhalten).
@@ -79,6 +86,11 @@ func start_run(seed_value: int = 0) -> void:
 	shop = Shop.create_from_registry()
 	max_structures = 0
 	run_stats = RunStats.new()
+	endless = false
+	endless_start_wave = 0
+	run_reported = false
+	reported_sparks = 0
+	reported_kills = 0
 	assist_hp = SaveManager.get_assist_factor(SaveManager.ENEMY_HP_KEY)
 	assist_damage = SaveManager.get_assist_factor(SaveManager.ENEMY_DAMAGE_KEY)
 	assist_speed = SaveManager.get_assist_factor(SaveManager.ENEMY_SPEED_KEY)
@@ -100,6 +112,16 @@ func _ensure_setup() -> void:
 		starting_weapon = character.starting_weapons[0] if not character.starting_weapons.is_empty() else null
 	if difficulty == null:
 		difficulty = load(DEFAULT_DIFFICULTY)
+
+
+## Anzahl Endloswellen bisher (0 vor dem Endlos-Modus).
+func endless_level() -> int:
+	return maxi(0, current_wave - endless_start_wave) if endless else 0
+
+
+## Gegner-Faktor im Endlos-Modus: (1 + Zuwachs)^Endloswelle, optional gedeckelt.
+func endless_factor(growth: float, cap: float = INF) -> float:
+	return minf(pow(1.0 + growth, endless_level()), 1.0 + cap)
 
 
 func set_run_setup(p_character: CharacterData, p_weapon: WeaponData, p_difficulty: DifficultyData) -> void:

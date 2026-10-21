@@ -12,6 +12,7 @@ const BUFF_OUTLINE_PARAM: StringName = &"outline_color"
 const BUFF_COLOR: Color = Color("#E74C3C")
 
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
+const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 
 var data: EnemyData
 var pool: ObjectPool
@@ -74,11 +75,13 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	var difficulty: DifficultyData = GameState.difficulty
 	var hp_factor: float = 1.0 + (difficulty.enemy_hp_pct / CombatMath.PERCENT if difficulty != null else 0.0)
 	var damage_factor: float = 1.0 + (difficulty.enemy_damage_pct / CombatMath.PERCENT if difficulty != null else 0.0)
+	hp_factor *= GameState.endless_factor(WAVES.endless_hp_growth)
+	damage_factor *= GameState.endless_factor(WAVES.endless_damage_growth)
 	max_hp = data.hp_for_wave(wave) * hp_factor * hp_multiplier * GameState.assist_hp
 	hp = max_hp
 	damage = data.damage_for_wave(wave) * damage_factor * GameState.assist_damage
 	projectile_damage = data.projectile_damage_for_wave(wave) * damage_factor * GameState.assist_damage
-	speed_factor = maxf(0.0, 1.0 + p_player.stats.get_stat(Stats.ENEMY_SPEED_PCT) / CombatMath.PERCENT) * GameState.assist_speed
+	speed_factor = maxf(0.0, 1.0 + p_player.stats.get_stat(Stats.ENEMY_SPEED_PCT) / CombatMath.PERCENT) * GameState.assist_speed * GameState.endless_factor(WAVES.endless_speed_growth, WAVES.endless_speed_max)
 	speed = rng.randf_range(data.speed_min, data.speed_max) * speed_factor
 	is_buffed = false
 	_sprite.material = _flash_material

@@ -118,7 +118,8 @@ func test_brood_sac_releases_three_shooters() -> void:
 	var sac: Enemy = _enemy("brutsack")
 	var before: int = _manager.active_enemy_count()
 	_hit(sac, 9999)
-	assert_eq(_manager.active_enemy_count(), before - 1 + 3)
+	await wait_physics_frames(2)
+	assert_eq(_manager.active_enemy_count(), before - 1 + 3, "Beschwörung erfolgt verzögert (nicht im Kollisions-Callback)")
 
 
 func test_healer_heals_nearby_enemy() -> void:

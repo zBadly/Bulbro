@@ -4,6 +4,7 @@ extends Node
 ## liegengebliebene Funken in den Beutel, Kartons einsammeln, Batterien entfernen, Aufladung auszahlen.
 
 const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
+const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const DOUBLE_SPARK_VALUE: int = 2
 
 var player: Player
@@ -101,7 +102,8 @@ func _harvest() -> void:
 	var harvesting: float = player.stats.get_stat(Stats.HARVESTING)
 	if harvesting == 0.0:
 		return
-	var amount: int = roundi(harvesting)
+	var factor: float = WAVES.endless_harvest_factor if GameState.endless else 1.0
+	var amount: int = roundi(harvesting * factor)
 	GameState.add_sparks(amount)
 	if amount > 0:
 		GameState.add_xp(Economy.xp_gain(amount, player.stats.get_stat(Stats.XP_GAIN_PCT)))

@@ -1,5 +1,7 @@
 class_name GameOverScreen
 extends CanvasLayer
+
+signal endless_requested
 ## Run-Ende (Sieg oder Niederlage): erreichte Welle, Build-Übersicht, neu freigeschaltete Charaktere.
 
 const RUN_SETUP_SCENE: String = "res://scenes/ui/run_setup.tscn"
@@ -26,6 +28,8 @@ func _ready() -> void:
 
 
 func show_result(victory: bool, wave_number: int, player: Player) -> void:
+	for child: Node in get_children():
+		child.queue_free()
 	var unlocked: Array[ChallengeData] = Unlocks.evaluate_run_end(victory)
 	var dim: ColorRect = ColorRect.new()
 	dim.color = DIM_COLOR
@@ -89,12 +93,15 @@ func show_result(victory: bool, wave_number: int, player: Player) -> void:
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
 	buttons.add_theme_constant_override("separation", GAP)
 	_box.add_child(buttons)
+	var endless: Button = null
+	if victory and not GameState.endless:
+		endless = _button(buttons, tr("ENDLESS_CONTINUE"), _continue_endless)
 	var retry: Button = _button(buttons, tr("RUN_END_RETRY"), _restart)
 	_button(buttons, tr("RUN_END_NEW_RUN"), _change_scene.bind(RUN_SETUP_SCENE))
 	_button(buttons, tr("RUN_END_MAIN_MENU"), _change_scene.bind(MAIN_MENU_SCENE))
 	show()
 	get_tree().paused = true
-	retry.grab_focus()
+	(endless if endless != null else retry).grab_focus()
 
 
 func _label(text: String, size: int, color: Color = UiStyle.TEXT_COLOR) -> void:
@@ -133,6 +140,13 @@ func _button(parent: Control, text: String, callback: Callable) -> Button:
 	button.pressed.connect(callback)
 	parent.add_child(button)
 	return button
+
+
+func _continue_endless() -> void:
+	hide()
+	for child: Node in get_children():
+		child.queue_free()
+	endless_requested.emit()
 
 
 func _restart() -> void:

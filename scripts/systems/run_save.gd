@@ -45,6 +45,9 @@ static func capture(player: Player) -> Dictionary:
 		"run_stats": {"healed": run.healed, "max_damage_pct": run.max_damage_pct, "max_speed_pct": run.max_speed_pct,
 			"max_distinct_weapons": run.max_distinct_weapons, "primitive_only": run.primitive_only, "kills": run.enemies_killed},
 		"shop": GameState.shop.to_dict(),
+		"endless": GameState.endless,
+		"endless_start_wave": GameState.endless_start_wave,
+		"reported": [GameState.run_reported, GameState.reported_sparks, GameState.reported_kills],
 	}
 
 
@@ -78,6 +81,12 @@ static func restore_state(data: Dictionary) -> void:
 	run.primitive_only = bool(stats["primitive_only"])
 	run.enemies_killed = int(stats["kills"])
 	GameState.shop.load_dict(data["shop"])
+	GameState.endless = bool(data.get("endless", false))
+	GameState.endless_start_wave = int(data.get("endless_start_wave", 0))
+	var reported: Array = data.get("reported", [false, 0, 0])
+	GameState.run_reported = bool(reported[0])
+	GameState.reported_sparks = int(reported[1])
+	GameState.reported_kills = int(reported[2])
 
 
 ## Baut den Spieler nach: Charakter, Waffen, Items (inkl. Trigger), Run-Modifikatoren, HP.

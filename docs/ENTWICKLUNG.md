@@ -32,8 +32,9 @@ Bosse testen: F4 → zu Welle 20 springen; bei Spannung 5 erscheinen beide Bosse
 | 10 | Restliche Gegner, Phasensystem, 3 Elites, 2 Bosse, Elite-/Hordewellen, legendäre Kartons |
 | 11 | Partikel, Screenshake, Hit-Stop, Bodenflecken, synthetisierte Sounds, Musik-Loop, AudioManager |
 | 12 | Versionierter JSON-Spielstand, Challenges mit Popup, gesperrte Items, Barrierefreiheit, manuelles Zielen, Run fortsetzen |
+| 13 | Balancing-Simulator, Endlos-Modus, Übersetzungsprüfung (DE/EN), Performance-Pass, Windows-Export-Preset |
 
-Leistung: 100 Gegner aller Typen mit Effektwaffen und Partikeln ≥ 98 FPS (Radeon RX 590, 1080p).
+Leistung (Radeon RX 590, 1080p, VSync 144 Hz): 100 Gegner aller Typen mit 6 Tier-IV-Fernwaffen min. 118 FPS; 100 Gegner + 300 Projektile konstant 144 FPS.
 
 ## Entscheidungen und Startwerte
 
@@ -82,9 +83,25 @@ Alle Werte liegen als `.tres` unter `data/` und lassen sich ohne Code ändern.
 - Hit-Stop 30 ms mit 0,15 s Abklingzeit, damit Krit-Serien nicht ruckeln.
 - Im Headless-Modus wird keine Musik gestartet (kein Ton, vermeidet Warnungen beim Beenden).
 
+### Endlos-Modus
+- Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.
+- Pro Endloswelle (Zinseszins): Gegner-HP +15 %, Schaden +10 %, Tempo +3 % (höchstens +60 %). Aufladung zahlt nur 50 % aus.
+- Ein Run wird in der Gesamtstatistik nur einmal gezählt; Funken und Kills nur als Zuwachs.
+
+## Werkzeuge
+
+| Befehl | Zweck |
+|---|---|
+| `godot --headless --path . res://tools/balance_sim.tscn -- <Spannung>` | Balancing-Tabelle: Gegner-HP pro Welle gegen DPS von drei Builds (Fern, Nah, Strom) |
+| `… -- <Spannung> --apply` | Vorgeschlagene Intervall-Faktoren in die Wellen-`.tres` schreiben |
+| `godot --headless --path . --export-release "Windows Desktop" build/windows/Bulbro.exe` | Windows-Build (benötigt installierte Export-Vorlagen) |
+
+Annahmen des Simulators (Waffenzahl, Tier und Stat-Zuwachs pro Welle) stehen als Konstanten in `scripts/systems/balance_model.gd`.
+
 ## Offene Punkte
 
 - Gegner überlappen sich (keine gegenseitige Abstoßung, bewusst für die Performance).
 - Upgrade-Karten haben keine Icons.
 - Musik ist ein synthetisierter Platzhalter; CC0-Tracks nach `audio/music` legen und in `data/config/audio_config.tres` eintragen.
-- Balancing aller Startwerte steht noch aus.
+- Balancing: Simulator-Vorschläge noch nicht übernommen (Spannung 0 laut Modell in 14 von 19 Wellen zu leicht; Strom-Build rund 1,5x stärker als Fern/Nah, vor allem durch den Ketten-Blitz).
+- Windows-Build erst nach Installation der Export-Vorlagen (Godot: Editor → Export-Vorlagen verwalten).

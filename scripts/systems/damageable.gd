@@ -13,6 +13,11 @@ var knockback_velocity: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	add_to_group(GROUP)
+	Hits.invalidate_targets()
+
+
+func _exit_tree() -> void:
+	Hits.invalidate_targets()
 
 
 func is_alive() -> bool:

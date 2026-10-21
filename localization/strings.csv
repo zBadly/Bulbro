@@ -288,3 +288,5 @@ OPT_MANUAL_AIM,Manuelles Zielen (Taste F),Manual aiming (key F)
 OPT_ENEMY_HP,Gegner-HP,Enemy HP
 OPT_ENEMY_DAMAGE,Gegner-Schaden,Enemy damage
 OPT_ENEMY_SPEED,Gegner-Tempo,Enemy speed
+ENDLESS_CONTINUE,Endlos weiterspielen,Continue endlessly
+HUD_WAVE_ENDLESS,Welle %d (Endlos),Wave %d (endless)

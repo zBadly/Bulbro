@@ -31,7 +31,7 @@ func prewarm(count: int) -> void:
 
 func acquire() -> Node:
 	var node: Node = _free.pop_back() if not _free.is_empty() else _create()
-	node.process_mode = Node.PROCESS_MODE_INHERIT
+	_set_process_mode(node, Node.PROCESS_MODE_INHERIT)
 	if node is CanvasItem:
 		(node as CanvasItem).show()
 	_active.append(node)
@@ -64,6 +64,14 @@ func get_active() -> Array[Node]:
 	return _active.duplicate()
 
 
+## Während eines Physik-Frames (z. B. in body_entered) darf der Physikzustand nicht direkt geändert werden.
+func _set_process_mode(node: Node, mode: Node.ProcessMode) -> void:
+	if Engine.is_in_physics_frame():
+		node.set_deferred(&"process_mode", mode)
+	else:
+		node.process_mode = mode
+
+
 func _create() -> Node:
 	var node: Node = scene.instantiate()
 	if &"pool" in node:
@@ -75,6 +83,6 @@ func _create() -> Node:
 
 
 func _deactivate(node: Node) -> void:
-	node.process_mode = Node.PROCESS_MODE_DISABLED
+	_set_process_mode(node, Node.PROCESS_MODE_DISABLED)
 	if node is CanvasItem:
 		(node as CanvasItem).hide()

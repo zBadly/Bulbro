@@ -61,6 +61,11 @@ GODOT="/d/Game/Tools/Godot/Godot_v4.7.2-stable_win64_console.exe"
 
 # GUT-Testlauf (Konfiguration in .gutconfig.json)
 "$GODOT" --headless --path . -s addons/gut/gut_cmdln.gd
+# Balancing-Simulator (Tabelle; mit --apply werden Vorschläge in die Wellen geschrieben)
+"$GODOT" --headless --path . res://tools/balance_sim.tscn -- 0
+
+# Windows-Build (Export-Vorlagen müssen im Editor installiert sein)
+"$GODOT" --headless --path . --export-release "Windows Desktop" build/windows/Bulbro.exe
 ```
 
 Der Headless-Modus kompiliert keine Shader. Nach Shader-Änderungen die betroffene Szene einmal mit echtem Renderer starten (ohne `--headless`) und die Ausgabe auf Fehler prüfen.

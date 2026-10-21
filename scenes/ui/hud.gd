@@ -33,6 +33,8 @@ var _boss_bars: Dictionary[Enemy, ProgressBar] = {}
 
 
 func _ready() -> void:
+	# Läuft auch pausiert, damit z. B. der Balken eines besiegten Bosses hinter dem Siegbildschirm verschwindet.
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	var left: VBoxContainer = VBoxContainer.new()
 	left.position = Vector2.ONE * SCREEN_MARGIN
 	left.add_theme_constant_override("separation", ROW_GAP)
@@ -156,7 +158,7 @@ func _on_hp_changed(current: float, maximum: float) -> void:
 
 
 func _on_wave_started(number: int) -> void:
-	_wave_label.text = tr("HUD_WAVE") % number
+	_wave_label.text = tr("HUD_WAVE_ENDLESS") % number if GameState.endless else tr("HUD_WAVE") % number
 	_banner.hide()
 
 

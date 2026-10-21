@@ -100,7 +100,7 @@ func start_next_wave() -> void:
 
 
 func start_wave(number: int) -> void:
-	_wave = _waves[number - 1]
+	_wave = _waves[number - 1] if number <= _waves.size() else _make_endless_wave(number)
 	GameState.current_wave = number
 	time_left = _wave.duration
 	_wave_time = 0.0
@@ -205,11 +205,21 @@ func _end_wave() -> void:
 	var number: int = _wave.wave_number
 	Events.wave_ended.emit(number)
 	wave_ended.emit(number)
-	if number >= _waves.size():
+	if number == _waves.size() and not GameState.endless:
 		state = State.FINISHED
 		run_won.emit()
 	else:
 		state = State.INTERMISSION
+
+
+## Endloswelle: Gegnergruppen der Vorlagewelle, feste Dauer; Stärke wächst über GameState.endless_factor.
+func _make_endless_wave(number: int) -> WaveData:
+	var template: WaveData = _waves[clampi(CONFIG.endless_template_wave, 1, _waves.size()) - 1]
+	var wave: WaveData = template.duplicate()
+	wave.wave_number = number
+	wave.duration = CONFIG.endless_wave_duration
+	wave.is_boss = false
+	return wave
 
 
 func _get_pool(data: EnemyData) -> ObjectPool:
@@ -234,7 +244,12 @@ func _on_enemy_died(enemy: Enemy) -> void:
 	_active.erase(enemy)
 
 
+## Beschwörungen kommen oft aus Kollisions-Callbacks (Tod durch Treffer); dort dürfen keine Physikobjekte entstehen.
 func _on_summon_requested(data: EnemyData, count: int, origin: Vector2) -> void:
+	_spawn_summons.call_deferred(data, count, origin)
+
+
+func _spawn_summons(data: EnemyData, count: int, origin: Vector2) -> void:
 	if state != State.WAVE:
 		return
 	var rng: RandomNumberGenerator = GameState.rng

@@ -8,23 +8,33 @@ const FONT: Font = preload("res://assets/fonts/LilitaOne-Regular.ttf")
 var pool: ObjectPool
 
 var _tween: Tween
+## Einmal pro Typ erzeugt: LabelSettings sind deutlich günstiger als Theme-Overrides pro Treffer.
+static var _normal_settings: LabelSettings
+static var _crit_settings: LabelSettings
 
 @onready var _label: Label = $Label
 
 
 func _ready() -> void:
 	z_index = COMBAT.damage_number_z_index
-	_label.add_theme_font_override("font", FONT)
-	_label.add_theme_color_override("font_outline_color", COMBAT.damage_number_outline_color)
-	_label.add_theme_constant_override("outline_size", COMBAT.damage_number_outline_size)
+	if _normal_settings == null:
+		_normal_settings = _make_settings(COMBAT.damage_number_font_size, COMBAT.damage_number_color)
+		_crit_settings = _make_settings(COMBAT.damage_number_crit_font_size, COMBAT.damage_number_crit_color)
+
+
+static func _make_settings(font_size: int, color: Color) -> LabelSettings:
+	var settings: LabelSettings = LabelSettings.new()
+	settings.font = FONT
+	settings.font_size = font_size
+	settings.font_color = color
+	settings.outline_color = COMBAT.damage_number_outline_color
+	settings.outline_size = COMBAT.damage_number_outline_size
+	return settings
 
 
 func show_damage(amount: int, is_crit: bool, world_position: Vector2) -> void:
 	_label.text = str(amount)
-	_label.add_theme_font_size_override("font_size",
-		COMBAT.damage_number_crit_font_size if is_crit else COMBAT.damage_number_font_size)
-	_label.add_theme_color_override("font_color",
-		COMBAT.damage_number_crit_color if is_crit else COMBAT.damage_number_color)
+	_label.label_settings = _crit_settings if is_crit else _normal_settings
 	_label.reset_size()
 	_label.position = -_label.size * 0.5
 	# Kosmetischer Versatz, bewusst nicht über den Run-RNG, damit Runs reproduzierbar bleiben.
