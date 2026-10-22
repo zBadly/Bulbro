@@ -182,6 +182,18 @@ static func effect_flash(item: CanvasItem) -> Tween:
 	return tween
 
 
+## Endlos-Animation (Hüpfen/Schweben) beenden und Lage zurücksetzen, z. B. vor einem Charakterwechsel.
+static func stop_idle(node: Node2D) -> void:
+	_kill(node, META_BOB)
+	node.position.y = 0.0
+	node.scale = _base_scale(node)
+
+
+static func stop_flicker(item: CanvasItem) -> void:
+	_kill(item, META_FLICKER)
+	item.self_modulate = Color.WHITE
+
+
 static func _base_scale(node: Node2D) -> Vector2:
 	if not node.has_meta(META_BASE_SCALE):
 		node.set_meta(META_BASE_SCALE, node.scale)

@@ -186,14 +186,6 @@ ITEM_BLITZABLEITER,Blitzableiter,Lightning Rod
 ITEM_LASERZIELFERNROHR,Laserzielfernrohr,Laser Scope
 ITEM_EWIGE_FLAMME,Ewige Flamme,Eternal Flame
 ITEM_SUPERNOVA,Supernova,Supernova
-DEBUG_MENU_TITLE,Debug-Menü (F4),Debug menu (F4)
-DEBUG_GIVE_ITEM,Item geben,Give item
-DEBUG_GIVE_WEAPON,Waffe geben (Tier),Give weapon (tier)
-DEBUG_JUMP_WAVE,Zu Welle springen,Jump to wave
-DEBUG_INVULNERABLE,Unverwundbar,Invulnerable
-DEBUG_ADD_SPARKS,+%d Funken,+%d sparks
-DEBUG_LEVEL_UP,Level-up,Level up
-DEBUG_CLOSE,Schließen,Close
 CHAR_STANDARDBIRNE,Standardbirne,Standard Bulb
 CHAR_GLUEHFADEN_BOXER,Glühfaden-Boxer,Filament Boxer
 CHAR_NEONROEHRE,Neonröhre,Neon Tube
@@ -329,7 +321,6 @@ CHALLENGE_14,"Welle %s erreichen, ohne ein Ausweichen-Item zu nehmen",Reach wave
 CHALLENGE_15,%s HP in einem Run durch Lebensraub heilen,Heal %s HP through lifesteal in one run
 CHALLENGE_16,Eine Welle mit %s gleichen Waffen beenden,Finish a wave with %s identical weapons
 CHALLENGE_PROGRESS,Fortschritt: %s,Progress: %s
-DEBUG_UNLOCK_CHARACTERS,Alle Charaktere freischalten,Unlock all characters
 CHAR_IRRLICHT,Irrlicht,Will-o'-Wisp
 CHAR_ZUENDKERZE,Zündkerze,Spark Plug
 CHAR_KRONLEUCHTER,Kronleuchter,Chandelier
@@ -882,3 +873,54 @@ LEX_STAT_LIMIT,Grenze,Limit
 LEX_SHOW_ALL,Alles anzeigen,Show all
 LEX_STILL_LOCKED,Noch gesperrt,Still locked
 LEX_SHOW_ALL_HINT,F  ·  Y: Alles anzeigen an/aus,F  ·  Y: toggle show all
+OPT_SECTION_ADVANCED,Erweitert,Advanced
+OPT_ADMIN_MODE,Admin-Modus,Admin mode
+OPT_ADMIN_HINT,"Runs mit Admin-Aktionen zählen nicht für Freischaltungen, Achievements und Statistiken.","Runs with admin actions do not count for unlocks, achievements and statistics."
+ADMIN_TITLE,Admin-Menü (F10),Admin Menu (F10)
+ADMIN_BADGE,ADMIN,ADMIN
+ADMIN_USED_NOTE,"Dieser Run zählt nicht mehr für Freischaltungen, Achievements und Statistiken.","This run no longer counts for unlocks, achievements and statistics."
+ADMIN_UNUSED_NOTE,Die erste Aktion markiert den Run als Admin-Run (zählt dann nicht mehr).,The first action marks the run as an admin run (it then no longer counts).
+ADMIN_TAB_RUN,Run,Run
+ADMIN_TAB_PLAYER,Spieler,Player
+ADMIN_TAB_ENEMIES,Gegner,Enemies
+ADMIN_TAB_INVENTORY,Inventar,Inventory
+ADMIN_TAB_SHOP,Shop,Shop
+ADMIN_TAB_META,Meta,Meta
+ADMIN_WAVE,Welle,Wave
+ADMIN_START_WAVE,Welle starten,Start wave
+ADMIN_ENDLESS_HINT,Ab Welle %d: Endlos-Modus,From wave %d: endless mode
+ADMIN_TIME_FROZEN,Wellenzeit anhalten,Freeze wave timer
+ADMIN_SKIP_WAVE,Welle überspringen,Skip wave
+ADMIN_SPEED,Spielgeschwindigkeit,Game speed
+ADMIN_HITBOXES,Hitboxen anzeigen,Show hitboxes
+ADMIN_CHARACTER,Charakter,Character
+ADMIN_SWITCH,Wechseln,Switch
+ADMIN_LEVEL,Level,Level
+ADMIN_SET,Setzen,Set
+ADMIN_LEVEL_UP,Level-up (+1),Level up (+1)
+ADMIN_SPARKS,Funken,Sparks
+ADMIN_INVULNERABLE,Unverwundbar,Invulnerable
+ADMIN_INFINITE_HP,Unendlich HP,Infinite HP
+ADMIN_DAMAGE_BOOST,Schaden x10,Damage x10
+ADMIN_COUNT,Anzahl,Count
+ADMIN_AT_MOUSE,An der Maus,At the mouse
+ADMIN_RANDOM,Zufällig,Random
+ADMIN_SPAWN,Spawnen,Spawn
+ADMIN_CLEAR_ENEMIES,Alle Gegner entfernen,Remove all enemies
+ADMIN_FILL,Arena füllen (Gegnerlimit),Fill arena (enemy limit)
+ADMIN_BOSS,Boss,Boss
+ADMIN_ELITE,Elite,Elite
+ADMIN_TIER,Tier,Tier
+ADMIN_GIVE_WEAPON,Waffe geben,Give weapon
+ADMIN_REMOVE_WEAPON,Waffe entfernen,Remove weapon
+ADMIN_GIVE_ITEM,Item geben,Give item
+ADMIN_REMOVE_ITEM,Item entfernen,Remove item
+ADMIN_SHOP_FREE,Alles kostenlos,Everything free
+ADMIN_FREE_REROLL,Reroll gratis,Free reroll
+ADMIN_SHOP_SLOT,Platz,Slot
+ADMIN_PLACE_OFFER,In den Shop legen,Put into shop
+ADMIN_OFFER_ITEM,Item: %s,Item: %s
+ADMIN_OFFER_WEAPON,Waffe: %s,Weapon: %s
+ADMIN_UNLOCK_CHARACTERS,Alle Charaktere freischalten,Unlock all characters
+ADMIN_NOT_IN_WAVE,Nur während einer Welle,Only during a wave
+ADMIN_CLOSE,Schließen,Close

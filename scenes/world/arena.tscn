@@ -21,7 +21,7 @@
 [ext_resource type="Script" path="res://scenes/ui/level_up_screen.gd" id="19_level_up"]
 [ext_resource type="Script" path="res://scenes/ui/shop_screen.gd" id="20_shop"]
 [ext_resource type="Script" path="res://scenes/world/effect_system.gd" id="21_effects"]
-[ext_resource type="Script" path="res://scenes/ui/debug_menu.gd" id="22_debug_menu"]
+[ext_resource type="Script" path="res://scenes/ui/admin_menu.gd" id="22_debug_menu"]
 [ext_resource type="Script" path="res://scenes/fx/particle_fx.gd" id="23_particles"]
 [ext_resource type="Script" path="res://scenes/world/juice_hooks.gd" id="24_juice"]
 [ext_resource type="PackedScene" path="res://scenes/fx/splat.tscn" id="25_splat"]
@@ -118,7 +118,7 @@ script = ExtResource("19_level_up")
 layer = 40
 script = ExtResource("20_shop")
 
-[node name="DebugMenu" type="CanvasLayer" parent="."]
+[node name="AdminMenu" type="CanvasLayer" parent="."]
 layer = 90
 script = ExtResource("22_debug_menu")
 

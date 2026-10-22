@@ -16,6 +16,8 @@ const BAG_COLOR: Color = Color("#FFD43B")
 const BOSS_BAR_SIZE: Vector2 = Vector2(720, 26)
 const BOSS_NAME_SIZE: int = 24
 const BOSS_COLOR: Color = Color("#9B59B6")
+const ADMIN_BADGE_SIZE: int = 20
+const ADMIN_BADGE_COLOR: Color = Color("#E74C3C")
 
 var _hp_bar: ProgressBar
 var _hp_label: Label
@@ -30,6 +32,8 @@ var _wave_manager: WaveManager
 var _boss_box: VBoxContainer
 ## Elite/Boss -> eigener HP-Balken.
 var _boss_bars: Dictionary[Enemy, ProgressBar] = {}
+## Kleines Abzeichen, sobald im Run eine Admin-Aktion ausgeführt wurde.
+var _admin_badge: Label
 
 
 func _ready() -> void:
@@ -57,6 +61,10 @@ func _ready() -> void:
 	_bag_label = UiStyle.make_label(BAG_TEXT_SIZE, BAG_COLOR)
 	_bag_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	spark_row.add_child(_bag_label)
+	_admin_badge = UiStyle.make_label(ADMIN_BADGE_SIZE, ADMIN_BADGE_COLOR)
+	_admin_badge.text = tr("ADMIN_BADGE")
+	_admin_badge.hide()
+	left.add_child(_admin_badge)
 
 	var top: VBoxContainer = VBoxContainer.new()
 	top.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
@@ -111,6 +119,7 @@ func _process(_delta: float) -> void:
 	if _wave_manager != null and _wave_manager.state == WaveManager.State.WAVE:
 		_timer_label.text = str(ceili(_wave_manager.time_left))
 	_update_boss_bars()
+	_admin_badge.visible = GameState.admin.used
 
 
 func _on_boss_spawned(enemy: Enemy) -> void:

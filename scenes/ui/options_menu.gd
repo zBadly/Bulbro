@@ -17,6 +17,9 @@ const ASSIST_KEYS: Dictionary[String, String] = {
 	SaveManager.ENEMY_HP_KEY: "OPT_ENEMY_HP", SaveManager.ENEMY_DAMAGE_KEY: "OPT_ENEMY_DAMAGE", SaveManager.ENEMY_SPEED_KEY: "OPT_ENEMY_SPEED",
 }
 const ASSIST_STEP: float = 5.0
+const SECTION_SIZE: int = 30
+const HINT_SIZE: int = 20
+const HINT_WIDTH: float = 720.0
 
 var _first_focus: Control
 
@@ -86,6 +89,20 @@ func open() -> void:
 	language.selected = maxi(0, LOCALES.find(SaveManager.get_option(SaveManager.LOCALE_KEY, SaveManager.DEFAULT_LOCALE)))
 	language.item_selected.connect(_on_language_selected)
 	grid.add_child(language)
+
+	var advanced: Label = UiStyle.make_label(SECTION_SIZE, UiStyle.SPARK_COLOR)
+	advanced.text = tr("OPT_SECTION_ADVANCED")
+	box.add_child(advanced)
+	var admin_row: HBoxContainer = HBoxContainer.new()
+	admin_row.add_theme_constant_override("separation", GAP * 2)
+	box.add_child(admin_row)
+	_label(admin_row, "OPT_ADMIN_MODE")
+	admin_row.add_child(_toggle(SaveManager.ADMIN_MODE_KEY, false, func(_on: bool) -> void: pass))
+	var hint: Label = UiStyle.make_label(HINT_SIZE, UiStyle.TIER_COLORS[0])
+	hint.text = tr("OPT_ADMIN_HINT")
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	hint.custom_minimum_size = Vector2(HINT_WIDTH, 0.0)
+	box.add_child(hint)
 
 	var back: Button = UiStyle.make_button(tr("BACK"), TEXT_SIZE)
 	back.size_flags_horizontal = Control.SIZE_SHRINK_CENTER

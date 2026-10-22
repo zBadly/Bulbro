@@ -84,6 +84,20 @@ func reroll(ctx: ShopContext) -> void:
 	_fill(ctx)
 
 
+## Admin: ein bestimmtes Item oder eine Waffe in einen Angebotsplatz legen (gesperrt, bleibt bis zum Kauf).
+func place_offer(index: int, item: ItemData, weapon: WeaponData, tier: int, ctx: ShopContext) -> void:
+	var offer: ShopOffer = ShopOffer.new()
+	offer.item = item
+	offer.weapon = weapon
+	offer.tier = tier if weapon != null else item.tier
+	var base_price: int = weapon.get_tier(tier).price if weapon != null else item.price
+	offer.price = Economy.inflated_price(base_price, ctx.wave, ctx.item_price_pct)
+	offer.locked = true
+	while offers.size() <= index:
+		offers.append(generate_offer(ctx, {}))
+	offers[index] = offer
+
+
 func toggle_lock(index: int) -> void:
 	var offer: ShopOffer = offers[index]
 	if not offer.sold:

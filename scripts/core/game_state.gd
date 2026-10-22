@@ -51,6 +51,8 @@ var run_reported: bool = false
 ## Bereits in die Gesamtstatistik übernommene Werte dieses Runs (Statistik-Schlüssel -> Wert).
 var reported_totals: Dictionary[String, int] = {}
 var run_stats: RunStats = RunStats.new()
+## Admin-Modus dieses Runs (Merker und Schalter).
+var admin: AdminState = AdminState.new()
 ## Seelenglas des Irrlichts (wird beim Fortsetzen gespeichert).
 var souls: SoulCounter = SoulCounter.new()
 
@@ -113,6 +115,7 @@ func start_run(seed_value: int = 0) -> void:
 	shop = Shop.create_from_registry()
 	max_structures = 0
 	run_stats = RunStats.new()
+	admin = AdminState.new()
 	souls = SoulCounter.new()
 	endless = false
 	endless_start_wave = 0

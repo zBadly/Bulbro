@@ -19,6 +19,8 @@ const SCREENSHAKE_KEY: String = "screenshake"
 const MANUAL_AIM_KEY: String = "manual_aim"
 ## Lexikon: gesperrte Einträge vollständig anzeigen.
 const LEXICON_SHOW_ALL_KEY: String = "lexicon_show_all"
+## Erweitert: Admin-Modus (F10 öffnet ingame das Admin-Menü).
+const ADMIN_MODE_KEY: String = "admin_mode"
 ## Barrierefreiheit: Bildschirmblitze stark abschwächen.
 const REDUCED_FX_KEY: String = "reduced_effects"
 ## Barrierefreiheit: Gegnerwerte in Prozent (25-100).

@@ -49,7 +49,7 @@ func _build(focus_hint: String) -> void:
 	var sparks: Label = UiStyle.make_label(HEADER_SIZE, UiStyle.SPARK_COLOR)
 	sparks.text = tr("SPARKS_AVAILABLE") % GameState.sparks
 	header.add_child(sparks)
-	var price: int = shop.reroll_price(_ctx)
+	var price: int = _reroll_price()
 	var reroll: Button = UiStyle.make_button(tr("REROLL") % price if price > 0 else tr("REROLL_FREE"), OfferCard.BUTTON_SIZE)
 	reroll.disabled = price > GameState.sparks
 	reroll.pressed.connect(_on_reroll)
@@ -86,8 +86,8 @@ func _offer_card(index: int, offer: ShopOffer) -> OfferCard:
 	if offer.sold:
 		card.set_status(tr("SOLD"), UiStyle.TIER_COLORS[0])
 		return card
-	var affordable: bool = offer.price <= GameState.sparks
-	card.set_price(offer.price, affordable)
+	var affordable: bool = _offer_price(offer) <= GameState.sparks
+	card.set_price(_offer_price(offer), affordable)
 	var fits: bool = not offer.is_weapon() or player.weapon_slots.can_accept(offer.weapon, offer.tier)
 	_focus_targets["buy_%d" % index] = card.add_action(tr("BUY"), _on_buy.bind(index), not affordable or not fits)
 	_focus_targets["lock_%d" % index] = card.add_side_action(tr("UNLOCK") if offer.locked else tr("LOCK"), _on_lock.bind(index))
@@ -195,7 +195,7 @@ func _on_buy(index: int) -> void:
 	var offer: ShopOffer = GameState.shop.offers[index]
 	if offer.is_weapon() and not player.weapon_slots.can_accept(offer.weapon, offer.tier):
 		return
-	if not GameState.spend(offer.price):
+	if not GameState.spend(_offer_price(offer)):
 		return
 	if offer.is_weapon():
 		player.weapon_slots.add_or_combine(offer.weapon, offer.tier)
@@ -214,7 +214,7 @@ func _on_lock(index: int) -> void:
 
 
 func _on_reroll() -> void:
-	if not GameState.spend(GameState.shop.reroll_price(_ctx)):
+	if not GameState.spend(_reroll_price()):
 		return
 	AudioManager.play(&"reroll")
 	GameState.shop.reroll(_ctx)
@@ -239,3 +239,18 @@ func _on_recycle_weapon(weapon: Weapon) -> void:
 func _on_next_wave() -> void:
 	AudioManager.play(&"ui_click")
 	GameState.set_phase.call_deferred(GameState.Phase.WAVE)
+
+
+## Preis mit Admin-Schalter "Alles kostenlos".
+func _offer_price(offer: ShopOffer) -> int:
+	return 0 if GameState.admin.shop_free else offer.price
+
+
+func _reroll_price() -> int:
+	return 0 if GameState.admin.free_reroll else GameState.shop.reroll_price(_ctx)
+
+
+## Admin: Angebote nach einer Änderung neu aufbauen (nur wenn der Shop offen ist).
+func refresh() -> void:
+	if visible:
+		_build("next")

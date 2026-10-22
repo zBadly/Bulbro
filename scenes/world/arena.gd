@@ -35,7 +35,7 @@ const HIT_STOP_COOLDOWN: float = 0.15
 @onready var _hud: Hud = $Hud
 @onready var _game_over: GameOverScreen = $GameOver
 @onready var _pause_menu: PauseMenu = $PauseMenu
-@onready var _debug_menu: DebugMenu = $DebugMenu
+@onready var _admin_menu: AdminMenu = $AdminMenu
 @onready var _crate_screen: CrateScreen = $CrateScreen
 @onready var _level_up_screen: LevelUpScreen = $LevelUpScreen
 @onready var _shop_screen: ShopScreen = $ShopScreen
@@ -106,8 +106,13 @@ func _ready() -> void:
 	Events.structure_requested.connect(_build_structure)
 	for screen: FlowScreen in [_crate_screen, _level_up_screen, _shop_screen]:
 		screen.player = player
-	_debug_menu.player = player
-	_debug_menu.wave_manager = wave_manager
+	_admin_menu.player = player
+	_admin_menu.wave_manager = wave_manager
+	_admin_menu.shop_screen = _shop_screen
+	_admin_menu.speed_changed.connect(_apply_game_speed)
+	var hitboxes: HitboxOverlay = HitboxOverlay.new()
+	hitboxes.root = self
+	add_child(hitboxes)
 	_drop_manager.player = player
 	_effect_system.player = player
 	_juice_hooks.player = player
@@ -152,7 +157,12 @@ func _process(delta: float) -> void:
 
 
 func _exit_tree() -> void:
-	Engine.time_scale = 1.0
+	Engine.time_scale = AdminState.NORMAL_SPEED
+
+
+## Admin: Spielgeschwindigkeit; der Hit-Stop kehrt danach zu ihr zurück.
+func _apply_game_speed() -> void:
+	Engine.time_scale = GameState.admin.game_speed
 
 
 ## Bildschirmwackeln: Trauma addiert sich, Ausschlag wächst quadratisch und klingt ab.
@@ -164,19 +174,11 @@ func add_trauma(amount: float) -> void:
 ## Hit-Stop: Spielzeit für wenige Millisekunden fast anhalten. Mit Abklingzeit, damit Krit-Serien nicht ruckeln.
 func hit_stop() -> void:
 	var now: float = Time.get_ticks_msec() / 1000.0
-	if now < _hit_stop_ready_at or Engine.time_scale < 1.0 or get_tree().paused:
+	if now < _hit_stop_ready_at or Engine.time_scale < GameState.admin.game_speed or get_tree().paused:
 		return
 	_hit_stop_ready_at = now + HIT_STOP_COOLDOWN
 	Engine.time_scale = HIT_STOP_SCALE
-	get_tree().create_timer(HIT_STOP_TIME, true, false, true).timeout.connect(func() -> void: Engine.time_scale = 1.0)
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not OS.is_debug_build():
-		return
-	if event.is_action_pressed(&"debug_spawn_enemies"):
-		_debug_spawn_enemies()
-		get_viewport().set_input_as_handled()
+	get_tree().create_timer(HIT_STOP_TIME, true, false, true).timeout.connect(_apply_game_speed)
 
 
 func _draw() -> void:
@@ -287,8 +289,8 @@ func _continue_endless() -> void:
 	GameState.advance_post_wave()
 
 
-## Debug (F6): füllt die Arena bis zum Gegnerlimit (Performance-Test).
-func _debug_spawn_enemies() -> void:
+## Admin: füllt die Arena bis zum Gegnerlimit (Performance-Test).
+func fill_arena() -> void:
 	var enemies: Array[Resource] = DataRegistry.get_all(ENEMY_CATEGORY).filter(
 		func(r: Resource) -> bool: return (r as EnemyData).despawnable)
 	if enemies.is_empty():

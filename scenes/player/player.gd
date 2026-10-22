@@ -169,7 +169,8 @@ func take_hit(raw_damage: float) -> int:
 	if amount == 0:
 		dodged.emit()
 		return 0
-	current_hp = maxf(0.0, current_hp - amount)
+	if not GameState.admin.infinite_hp:
+		current_hp = maxf(0.0, current_hp - amount)
 	_invulnerable_left = config.invulnerability_time
 	Juice.hit_flash(_sprite)
 	damaged.emit(amount)
@@ -187,20 +188,117 @@ func apply_item(item: ItemData) -> void:
 ## Charakter anwenden: Grafik, Waffenslots, Effekte, Sonderregeln, Shop-Vorlieben.
 func apply_character(data: CharacterData) -> void:
 	character = data
-	_sprite.texture = data.texture
-	_sprite.offset = Vector2(0.0, -data.texture.get_height() * 0.5)
 	_apply_character_visuals(data)
+	_apply_character_rules(data)
+	update_weapon_modifiers()
+
+
+## Waffenslots, Set-Multiplikatoren, Effekte und Shop-Vorlieben (ohne Grafik).
+func _apply_character_rules(data: CharacterData) -> void:
 	if data.weapon_slots > 0:
 		weapon_slots.max_slots = data.weapon_slots
 	set_bonus_multiplier = data.set_bonus_multiplier.duplicate()
 	for effect: ItemEffect in data.effects:
 		_apply_character_effect(effect)
 	GameState.preferred_tags = data.preferred_tags.duplicate()
+
+
+## Baut alle Werte neu auf: Grundwerte, Charakter, Items (in Kaufreihenfolge), Run-Modifikatoren, Set-Boni.
+## Ergibt dieselben Werte wie der normale Aufbau im Run. Trigger-Effekte, die es weiterhin gibt, behalten ihren
+## Zustand (Timer, Zähler, erzeugte Drohnen/Spiegelbild/Geister); weggefallene räumen ihre Knoten auf,
+## neue starten während einer Welle sofort. Waffen und aktuelle HP bleiben (HP höchstens bis Max HP).
+func rebuild() -> void:
+	var hp: float = current_hp
+	var old_triggers: Array[TriggerEntry] = triggers.duplicate()
+	triggers.clear()
+	stats.stats_changed.disconnect(_on_stats_changed)
+	stats = StatSystem.new(config.base_stats)
+	class_bonuses.clear()
+	per_weapon_effects.clear()
+	standing_still_modifiers.clear()
+	_still_active = false
+	rules.clear()
+	lifesteal_interval_factor = 1.0
+	set_bonus_multiplier.clear()
+	_set_modifiers = []
+	weapon_slots.max_slots = config.weapon_slots
+	if character != null:
+		_apply_character_rules(character)
+	for item: ItemData in GameState.items:
+		apply_item(item)
+	stats.add_modifiers(run_modifiers)
 	update_weapon_modifiers()
+	_reconcile_triggers(old_triggers)
+	stats.stats_changed.connect(_on_stats_changed)
+	_known_max_hp = get_max_hp()
+	current_hp = minf(hp, _known_max_hp)
+	hp_changed.emit(current_hp, _known_max_hp)
+
+
+## Neu registrierte Trigger übernehmen den Zustand ihres Vorgängers (gleiche Effekt-Resource, gleiche Reihenfolge).
+func _reconcile_triggers(old_triggers: Array[TriggerEntry]) -> void:
+	var ctx: EffectContext = EffectContext.create(self)
+	var in_wave: bool = GameState.is_run_active and GameState.phase == GameState.Phase.WAVE
+	var unmatched: Array[TriggerEntry] = old_triggers.duplicate()
+	for i in triggers.size():
+		var fresh: TriggerEntry = triggers[i]
+		var previous: TriggerEntry = null
+		for old: TriggerEntry in unmatched:
+			if old.effect == fresh.effect:
+				previous = old
+				break
+		if previous != null:
+			unmatched.erase(previous)
+			triggers[i] = previous
+		elif in_wave:
+			fresh.effect.on_wave_started(ctx, fresh)
+	for old: TriggerEntry in unmatched:
+		old.effect.on_wave_ended(ctx, old)
+
+
+## Admin: Charakter wechseln. Werte werden neu berechnet, Waffen bleiben (auch über dem neuen Slot-Limit).
+## Laufende Werte des Runs (Seelenglas, Zähler von Items) bleiben, Effekte des alten Charakters enden.
+func switch_character(data: CharacterData) -> void:
+	character = data
+	_reset_character_visuals()
+	_apply_character_visuals(data)
+	rebuild()
+	GameState.character = data
+
+
+func _reset_character_visuals() -> void:
+	Juice.stop_idle(_visual)
+	Juice.stop_flicker(_sprite)
+	Juice.idle_bob(_visual)
+	_light.color = config.light_color
+	if _swing != null:
+		_swing.queue_free()
+		_swing = null
+
+
+## Admin: Level direkt setzen. Der Max-HP-Bonus pro Level wird angepasst, Upgrade-Karten gibt es nicht.
+func admin_set_level(level: int) -> void:
+	var delta: int = level - GameState.level
+	GameState.level = maxi(0, level)
+	GameState.xp = 0.0
+	if delta > 0:
+		for i in delta:
+			add_run_modifier(StatModifier.create(Stats.MAX_HP, config.max_hp_per_level))
+	else:
+		for i in -delta:
+			for j in range(run_modifiers.size() - 1, -1, -1):
+				var mod: StatModifier = run_modifiers[j]
+				if mod.stat == Stats.MAX_HP and mod.kind == StatModifier.Kind.FLAT and is_equal_approx(mod.value, config.max_hp_per_level):
+					run_modifiers.remove_at(j)
+					stats.remove_modifier(mod)
+					break
+	Events.xp_changed.emit(GameState.xp, GameState.xp_needed(), GameState.level)
 
 
 ## Lichtfarbe, Animationsstil und nachschwingende Teile des Charakters.
 func _apply_character_visuals(data: CharacterData) -> void:
+	_sprite.texture = data.texture
+	_sprite.offset = Vector2(0.0, -data.texture.get_height() * 0.5)
 	if data.light_color.a > 0.0:
 		_light.color = data.light_color
 	if data.idle_style == CharacterData.IdleStyle.HOVER_FLICKER:

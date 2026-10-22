@@ -84,6 +84,8 @@ static func make_context(at_run_end: bool, victory: bool) -> ChallengeContext:
 ## Gibt neu geschaffte zurück und meldet jede über Events.challenge_completed.
 static func check(at_run_end: bool, victory: bool) -> Array[ChallengeData]:
 	var completed: Array[ChallengeData] = []
+	if GameState.admin.used:
+		return completed
 	var ctx: ChallengeContext = make_context(at_run_end, victory)
 	for challenge: ChallengeData in all_challenges():
 		if SaveManager.is_challenge_completed(challenge.id):
@@ -123,6 +125,10 @@ static func unlock_all_characters() -> void:
 
 ## Am Run-Ende: Statistiken und Sieg speichern, Challenges prüfen, unterbrochenen Run löschen.
 static func evaluate_run_end(victory: bool) -> Array[ChallengeData]:
+	if GameState.admin.used:
+		# Admin-Run: keine Statistik, kein Sieg, keine Challenges; nur den Fortsetzen-Stand verwerfen.
+		SaveManager.clear_run()
+		return []
 	# Im Endlos-Modus wird ein Run zweimal ausgewertet (Sieg, später Tod): nur Zuwächse zählen.
 	var run_totals: Dictionary[String, int] = GameState.run_totals()
 	for key: String in run_totals:

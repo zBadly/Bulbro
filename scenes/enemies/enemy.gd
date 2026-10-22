@@ -151,6 +151,8 @@ func take_damage(info: DamageInfo) -> void:
 	if not _alive:
 		return
 	var amount: int = info.amount
+	if GameState.admin.damage_factor != 1.0:
+		amount = roundi(amount * GameState.admin.damage_factor)
 	if curse.is_active():
 		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * curse.damage_taken_factor()))
 	hp -= amount

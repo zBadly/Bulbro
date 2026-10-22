@@ -43,6 +43,7 @@ static func capture(player: Player) -> Dictionary:
 		"run_modifiers": modifiers,
 		"hp": player.current_hp,
 		"run_stats": run.to_dict(),
+		"admin_used": GameState.admin.used,
 		"souls": GameState.souls.souls,
 		"shop": GameState.shop.to_dict(),
 		"endless": GameState.endless,
@@ -74,6 +75,7 @@ static func restore_state(data: Dictionary) -> void:
 	for key: String in data["special_waves"]:
 		GameState.special_waves[int(key)] = data["special_waves"][key]
 	GameState.run_stats = RunStats.from_dict(data["run_stats"])
+	GameState.admin.used = bool(data.get("admin_used", false))
 	GameState.souls.souls = int(data.get("souls", 0))
 	GameState.shop.load_dict(data["shop"])
 	GameState.endless = bool(data.get("endless", false))

@@ -8,7 +8,8 @@ Stand 21.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 
 - **Erledigt:** Paket 1 (Crash nach Bosssieg, `a4c51cb`, Nacharbeit typisierte Literale `89833f1`) und Paket 2 (Lexikon-Erweiterungen, `55bf4bc`).
 - **Crash-Fix im echten Spiel bestätigt:** Bosssieg mit LED-Schütze auf Spannung 0. „Glasfaser“ wurde freigeschaltet, Sieg, Challenge und Statistik sind gespeichert, der Fortsetzen-Stand wurde gelöscht.
-- **Als Nächstes:** Paket 3 (Admin-Modus), danach die Pakete 4 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
+- **Erledigt 22.10.:** Spielstand-Trennung für Headless-Checks/Tests (`38855c5`) und Paket 3 (Admin-Modus).
+- **Als Nächstes:** Paket 4 (HUD und Tooltips), danach die Pakete 5 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
 
 Offene Punkte:
 - `stats.runs` = 2 im echten Spielstand ist geklärt (22.10.): Die 6.014 Kills übersteigen, was ein einzelner Run auf Spannung 0 liefern kann (rund 4.850 Gegner in den Wellen 1–19 plus Bosswelle). Es sind also zwei echte Runs mit Kills zu Ende gegangen, vermutlich der in der Sicherung vom 21.10. gespeicherte, unterbrochene Run (per „Fortsetzen“) und der Sieg mit dem LED-Schützen. Headless-Check und Tests können seit dem 22.10. ohnehin nicht mehr in den echten Spielstand schreiben.
@@ -17,7 +18,8 @@ Offene Punkte:
 - Paket 5 hat zwei Zusatzpunkte: Schadenszahlen beim Run-Ende ausblenden, „Nochmal“-Button behalten.
 
 Hinweise für den Neustart:
-- Paket 3 berührt `Unlocks.check`, `Unlocks.evaluate_run_end` und `SaveManager.add_stat`: Ein Run mit Admin-Modus darf dort nichts zählen. Das F4-Debug-Menü (`debug_menu`) wird in den Admin-Modus integriert.
+- Admin-Modus: `GameState.admin.used` sperrt `Unlocks.check` und `Unlocks.evaluate_run_end`. Neue Zähler (Achievements in Paket 9, Endlos-Bestwert in Paket 6) müssen dieselbe Sperre beachten.
+- `Player.rebuild()` baut alle Werte neu auf (Charakter, Items, Run-Modifikatoren, Set-Boni); `test_player_rebuild.gd` vergleicht das für alle 22 Charaktere mit dem normalen Aufbau. Neue Effekt-Arten müssen dort weiter exakt gleich herauskommen.
 - Der echte Spielstand liegt unter `%APPDATA%\Godot\app_userdata\Bulbro\save.json` (Sicherung `save.backup_2026-10-21.json`). Nie ohne OK des Spielers ändern. Tests nutzen `test_save.json` (`tests/pre_run_hook.gd`), Screenshot-Skripte sollen `SaveManager.use_path("user://shot_save.json")` setzen.
 - Spielstand-Trennung (22.10.): Ohne Bildschirm nutzt das Spiel automatisch `user://headless_save.json` (frisch bei jedem Start), Tests zusätzlich `test_save.json`. Skripte mit Bildschirm setzen `-- --save=user://<name>.json` oder `BULBRO_SAVE`. Abgesichert durch `tests/unit/test_save_isolation.gd`.
 - Leere Literale `{}`/`[]` nie in Ternär-Ausdrücken an typisierte Variablen geben; `tests/unit/test_typed_literals.gd` schlägt sonst fehl.
@@ -31,10 +33,9 @@ Hinweise für den Neustart:
 | WASD / Pfeile / Stick | Bewegen |
 | Esc / Start | Pause (Weiter, Optionen, Aufgeben) |
 | F3 | Debug-Overlay mit allen Stats, FPS und Gegnerzahl |
-| F4 | Debug-Menü: Item/Waffe in beliebigem Tier geben, Welle springen, unverwundbar, Funken, Level-up, alle Charaktere freischalten |
-| F6 | Arena bis zum Gegnerlimit (100) füllen, Performance-Test |
+| F10 | Admin-Menü (Optionen → Erweitert → Admin-Modus): Welle/Endlos wählen, Zeit anhalten/überspringen, Geschwindigkeit, Hitboxen, Charakter wechseln, Level/Funken setzen, Unverwundbar, Unendlich HP, Schaden x10, Gegner spawnen (auch Elites/Bosse)/entfernen/Arena füllen, Waffen/Items geben und entfernen, Shop kostenlos/Reroll gratis/Angebot platzieren, alle Charaktere freischalten |
 
-Bosse testen: F4 → zu Welle 20 springen; bei Spannung 5 erscheinen beide Bosse.
+Bosse testen: F10 → Run → Welle 20 starten; bei Spannung 5 erscheinen beide Bosse. Admin-Runs zählen nicht für Freischaltungen und Statistiken (Abzeichen „ADMIN“ im HUD).
 
 ## Stand je Phase
 
@@ -57,6 +58,7 @@ Bosse testen: F4 → zu Welle 20 springen; bei Spannung 5 erscheinen beide Bosse
 | 14a | Feste Angebotskarten (Kopf/Mitte/Fuß, gleiche Höhe, Schrift schrumpft statt Karte), Charakterauswahl mit festen Bereichen (Raster 4 Reihen, Infopanel scrollt intern) |
 | 14c-3 | 10 neue Charaktere, Freischaltungen mit Fortschritt (Bestwert/Summe), 10 Sieg-Items, Debug: alle Charaktere freischalten |
 | 14c-2 | 5 neue Startwaffen: Seelenlaterne, Feuerzeugwerfer, Kristallstab, Voodoo-Nadel, Dornenranke (auch im Shop) |
+| 15-3 | Admin-Modus (F10, Optionen → Erweitert): Admin-Menü mit 6 Reitern, Admin-Runs zählen nicht, `Player.rebuild()` mit Regressionstest für alle 22 Charaktere |
 | 14c-5 | Charakter-Simulator; Balancing in zwei Runden: neue Charaktere und Waffen, schwache alte Charaktere (Kerze, Taschenlampe, Discokugel, Nachtlicht), Drohnenleuchte |
 | 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
 | 6 (Lexikon) | Hauptmenüpunkt „Lexikon“ mit 6 Reitern (Charaktere, Waffen, Items, Gegner, Waffenklassen, Spielmechaniken), Suche über alle Reiter, Filter, Sprüche (`lore_text`) für alle Einträge |
@@ -172,6 +174,15 @@ Grundlage: `--characters`, `--weapons`, `--items` (200 Runs, Vergleichswerte).
 - „Ab Welle“ wird aus den Wellen berechnet (Funkendieb: `drop_config`, Rußschütze: auch über Brutsack, Elites: Sonderwellen der Spannungen, Bosse: Bosswelle). Beispielwerte gelten für Welle 20, bei Elites für ihre letzte mögliche Welle.
 - Gesperrte Charaktere und Items: Silhouette, Name, Bedingung mit Fortschritt; die Suche findet bei ihnen nur Name und Bedingung.
 - Komponenten: `EntryCard` (feste Größe, Schrift schrumpft bei langen Namen), `DetailPanel` (Kopf fest, Inhalt scrollt), `StatTable`. Reiter: Maus, Q/E, LB/RB (Aktionen `tab_prev`/`tab_next`); rechter Stick bzw. Bild auf/ab scrollt das Detailpanel.
+
+### Admin-Modus (Phase 15, Paket 3)
+- Merker `GameState.admin.used` ab der ersten ausgeführten Aktion (Öffnen allein zählt nicht), gespeichert im Fortsetzen-Stand; in der Shop-Phase wird der Fortsetzen-Stand sofort neu geschrieben.
+- Admin-Run: keine Challenges, keine Bestwerte, keine Gesamtstatistik, kein Sieg; der Fortsetzen-Stand wird am Ende trotzdem gelöscht.
+- Schaden x10 wirkt in `Enemy.take_damage` auf jeden Schaden an Gegnern. Unendlich HP: Treffer kommen an (Blitz, Trigger), ziehen aber keine HP ab. Wellen über 20 starten als Endloswellen.
+- Spielgeschwindigkeit 0,5x/1x/2x/4x; der Hit-Stop kehrt zur gewählten Geschwindigkeit zurück. Hitboxen: Farbe nach Kollisionsebene.
+- Level setzen passt den +1-Max-HP-Bonus pro Level an, ohne Upgrade-Karten. Item entfernen und Charakterwechsel bauen den Spieler mit `Player.rebuild()` neu auf.
+- Charakterwechsel: Werte neu, Waffen bleiben (auch über dem Slot-Limit), aktuelle HP bleiben (höchstens Max HP). Effekte des alten Charakters enden (Drohnen, Spiegelbild, Geister verschwinden), die des neuen starten sofort. Das Seelenglas (`GameState.souls`) bleibt erhalten. Trigger von Items behalten ihren Zustand (Timer, Zähler); das gilt künftig auch für Kondensator-Zähler und Reservebatterie aus Paket 8.
+- F4-Debug-Menü und F6-Arena-Füller gibt es nicht mehr; beides steckt im Admin-Menü.
 
 ### Endlos-Modus
 - Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.

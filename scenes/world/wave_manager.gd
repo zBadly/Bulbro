@@ -83,15 +83,42 @@ func active_enemy_count() -> int:
 
 ## Debug: aktuelle Welle sofort abbrechen (ohne Drops) und Welle `number` starten.
 func jump_to_wave(number: int) -> void:
+	_clear_wave()
+	start_wave(clampi(number, 1, _waves.size()))
+
+
+func _clear_wave() -> void:
+	clear_enemies()
+	var projectile_pool: ObjectPool = Pools.get_pool(get_tree(), Pools.ENEMY_PROJECTILES)
+	if projectile_pool != null:
+		projectile_pool.release_all()
+
+
+## Admin: Welle sofort beenden (wie Ablauf des Timers, bei der Bosswelle = Sieg).
+func skip_wave() -> void:
+	if state == State.WAVE:
+		_end_wave()
+
+
+## Admin: Welle `number` starten; ab der letzten regulären Welle + 1 als Endloswelle.
+func admin_jump_to_wave(number: int) -> void:
+	if number > _waves.size():
+		GameState.endless = true
+		GameState.endless_start_wave = _waves.size()
+	else:
+		GameState.endless = false
+		GameState.endless_start_wave = 0
+	_clear_wave()
+	start_wave(maxi(1, number))
+
+
+## Admin: alle Gegner und angekündigten Spawns ohne Drop entfernen.
+func clear_enemies() -> void:
 	for pending: PendingSpawn in _pending:
 		pending.marker.release()
 	_pending.clear()
 	for enemy: Enemy in _active.duplicate():
 		enemy.despawn()
-	var projectile_pool: ObjectPool = Pools.get_pool(get_tree(), Pools.ENEMY_PROJECTILES)
-	if projectile_pool != null:
-		projectile_pool.release_all()
-	start_wave(clampi(number, 1, _waves.size()))
 
 
 ## Nach Wellenende, Level-ups und Shop aufgerufen.
@@ -122,7 +149,8 @@ func _physics_process(delta: float) -> void:
 		State.WAVE:
 			if player.is_dead:
 				return
-			_wave_time += delta
+			if not GameState.admin.time_frozen:
+				_wave_time += delta
 			time_left = maxf(0.0, _wave.duration - _wave_time)
 			if not _wave.is_boss or time_left > 0.0:
 				_update_groups()
