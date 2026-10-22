@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="HudConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/hud_config.gd" id="1_hud"]
+
+[resource]
+script = ExtResource("1_hud")
+enemy_bar_height = 5.0
+enemy_bar_width_factor = 1.6
+enemy_bar_min_width = 28.0
+enemy_bar_max_width = 72.0
+enemy_bar_gap = 6.0
+enemy_bar_outline = 1.0
+enemy_bar_fill = Color(0.905882, 0.298039, 0.235294, 1)
+enemy_bar_background = Color(0.0588235, 0.0588235, 0.0862745, 0.8)
+enemy_bar_outline_color = Color(0.164706, 0.117647, 0.180392, 1)
+weapon_outline_width = 2.5
+weapon_outline_alpha = 0.9

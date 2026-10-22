@@ -5,6 +5,8 @@ extends RefCounted
 var player: Player
 var tree: SceneTree
 var rng: RandomNumberGenerator
+## Herkunft des gerade ausgeführten Effekts (setzt das EffectSystem vor jedem Aufruf).
+var origin: StringName = &""
 
 
 static func create(p_player: Player) -> EffectContext:
@@ -19,3 +21,8 @@ static func create(p_player: Player) -> EffectContext:
 func effect_damage(base_damage: float, scalings: Dictionary[StringName, float]) -> int:
 	var stats: StatSystem = player.stats
 	return CombatMath.weapon_damage(base_damage, CombatMath.scaling_bonus(scalings, stats), stats.get_stat(Stats.DAMAGE_PCT), 1.0)
+
+
+## Treffer einer Item-Aktion mit der Herkunft des auslösenden Effekts.
+func damage_info(amount: int) -> DamageInfo:
+	return DamageInfo.create(amount, false, 0.0, null, origin)

@@ -28,6 +28,12 @@ func before_each() -> void:
 	_ctx = EffectContext.create(_player)
 
 
+## Mit queue_free entfernte Knoten (Drohnen, Spiegelbild, Gegner) vor GUTs Kinder-Prüfung wirklich freigeben.
+## Ob GUT dazwischen einen Frame abwartet, hängt sonst von der Laufzeit ab ("unfreed children").
+func after_all() -> void:
+	await wait_process_frames(1)
+
+
 func _enemy(hp: float, at: Vector2, boss: bool = false) -> Enemy:
 	var enemy: Enemy = ENEMY_SCENE.instantiate()
 	add_child_autofree(enemy)

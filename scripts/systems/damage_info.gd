@@ -8,6 +8,8 @@ var is_crit: bool = false
 var knockback: float = 0.0
 var knockback_dir: Vector2 = Vector2.ZERO
 var source: Node
+## Herkunft für die Run-Statistik (DamageSource, z. B. "weapon/funkenpistole"); leer = nicht gezählt.
+var origin: StringName = &""
 ## Zusatzwirkungen des Treffers (von der Waffe gesetzt).
 var burn_damage: float = 0.0
 var burn_ticks: int = 0
@@ -22,10 +24,11 @@ var is_burn: bool = false
 var extra_souls: int = 0
 
 
-static func create(p_amount: int, p_is_crit: bool, p_knockback: float, p_source: Node) -> DamageInfo:
+static func create(p_amount: int, p_is_crit: bool, p_knockback: float, p_source: Node, p_origin: StringName = &"") -> DamageInfo:
 	var info: DamageInfo = DamageInfo.new()
 	info.amount = p_amount
 	info.is_crit = p_is_crit
 	info.knockback = p_knockback
 	info.source = p_source
+	info.origin = p_origin
 	return info

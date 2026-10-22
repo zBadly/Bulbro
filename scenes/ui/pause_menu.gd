@@ -1,6 +1,6 @@
 class_name PauseMenu
 extends CanvasLayer
-## Pause (Esc / Start): Weiter, Optionen, Aufgeben.
+## Pause (Esc / Start): Weiter, Optionen, Aufgeben; darunter Waffen und Items mit Tooltips.
 
 signal give_up_requested
 
@@ -12,10 +12,13 @@ const GAP: int = 20
 
 ## Solange false (z. B. Run-Ende sichtbar), lässt sich nicht pausieren.
 var enabled: bool = true
+## Von der Arena gesetzt (für die Build-Übersicht).
+var player: Player
 
 var _box: VBoxContainer
 var _resume: Button
 var _options: OptionsMenu
+var _overview: BuildOverview
 
 
 func _ready() -> void:
@@ -57,7 +60,19 @@ func _toggle() -> void:
 	get_tree().paused = visible
 	Events.pause_toggled.emit(visible)
 	if visible:
+		_rebuild_overview()
 		_resume.grab_focus()
+
+
+## Waffen und Items bei jedem Öffnen neu aufbauen (Kills und Schaden ändern sich in der Welle).
+func _rebuild_overview() -> void:
+	if _overview != null:
+		_box.remove_child(_overview)
+		_overview.queue_free()
+		_overview = null
+	if player != null:
+		_overview = BuildOverview.new(player)
+		_box.add_child(_overview)
 
 
 func _open_options() -> void:

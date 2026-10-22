@@ -65,7 +65,7 @@ func _fire(target: Damageable) -> void:
 	spec.texture = data.projectile_texture
 	spec.speed = data.projectile_speed
 	spec.max_range = data.range
-	spec.info = DamageInfo.create(get_damage(), false, 0.0, self)
+	spec.info = DamageInfo.create(get_damage(), false, 0.0, self, DamageSource.structure(data.id))
 	spec.player = player
 	spec.lifesteal = false
 	var start: Vector2 = _muzzle.global_position

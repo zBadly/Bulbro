@@ -11,7 +11,7 @@ func execute(ctx: EffectContext, origin: Vector2) -> void:
 	var amount: int = ctx.effect_damage(base_damage, scalings)
 	for enemy: Damageable in Hits.random_enemies(ctx.tree, count, ctx.rng):
 		Fx.lightning(ctx.tree, origin, enemy.get_hit_position())
-		enemy.take_damage(DamageInfo.create(amount, false, 0.0, null))
+		enemy.take_damage(ctx.damage_info(amount))
 
 
 func describe() -> String:

@@ -23,6 +23,8 @@ const LEXICON_SHOW_ALL_KEY: String = "lexicon_show_all"
 const ADMIN_MODE_KEY: String = "admin_mode"
 ## Barrierefreiheit: Bildschirmblitze stark abschwächen.
 const REDUCED_FX_KEY: String = "reduced_effects"
+## HP-Leisten unter normalen Gegnern: EnemyHpBar.Mode als Zahl (immer, nur bei Schaden, aus).
+const ENEMY_HP_BAR_KEY: String = "enemy_hp_bars"
 ## Barrierefreiheit: Gegnerwerte in Prozent (25-100).
 const ENEMY_HP_KEY: String = "enemy_hp_pct"
 const ENEMY_DAMAGE_KEY: String = "enemy_damage_pct"

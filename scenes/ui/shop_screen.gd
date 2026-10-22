@@ -1,7 +1,8 @@
 class_name ShopScreen
 extends FlowScreen
 ## Shop zwischen den Wellen (GDD 7): 4 Angebote, Kaufen, Sperren, Reroll, Waffeninventar mit Kombinieren
-## und Recyceln, Item-Übersicht, Stat-Panel mit Vorher/Nachher-Vorschau und Sonderwellen-Vorschau.
+## und Recyceln, Item-Übersicht, aktive Set-Boni, Stat-Panel mit Vorher/Nachher-Vorschau und Sonderwellen-Vorschau.
+## Besessene Waffen, Items und Set-Boni zeigen Tooltips (Maus und Gamepad-Fokus).
 
 const CONFIG: ShopConfig = preload("res://data/config/shop_config.tres")
 const WAVE_CATEGORY: String = "waves"
@@ -12,6 +13,7 @@ const WEAPON_ICON: Vector2 = Vector2(48, 48)
 const ITEM_ICON: Vector2 = Vector2(48, 48)
 const MINI_BORDER: int = 3
 const SECTION_GAP: int = 14
+const SET_CHIP_GAP: int = 8
 
 var _ctx: ShopContext
 var _stat_panel: StatPanel
@@ -97,9 +99,14 @@ func _offer_card(index: int, offer: ShopOffer) -> OfferCard:
 func _build_weapons(parent: VBoxContainer) -> void:
 	var slots: WeaponSlots = player.weapon_slots
 	var weapons: Array[Weapon] = slots.get_weapons()
+	# Kopfzeile: "Waffen (6/6)" und daneben die aktiven Set-Boni (spart eine Zeile)
+	var header: HBoxContainer = HBoxContainer.new()
+	header.add_theme_constant_override("separation", GAP)
+	parent.add_child(header)
 	var label: Label = UiStyle.make_label(SECTION_SIZE)
 	label.text = tr("SHOP_WEAPONS") % [weapons.size(), slots.max_slots]
-	parent.add_child(label)
+	header.add_child(label)
+	_build_set_bonuses(header)
 	var row: HBoxContainer = HBoxContainer.new()
 	row.add_theme_constant_override("separation", GAP)
 	parent.add_child(row)
@@ -118,7 +125,8 @@ func _build_weapons(parent: VBoxContainer) -> void:
 		icon.custom_minimum_size = WEAPON_ICON
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.tooltip_text = tr(weapon.data.name_key)
+		var tooltip: Callable = TooltipText.weapon.bind(weapon)
+		GameTooltip.attach(icon, tooltip, true, false)
 		box.add_child(icon)
 		var tier_label: Label = UiStyle.make_label(SMALL_SIZE, UiStyle.tier_color(weapon.tier))
 		tier_label.text = TextFormat.tier_name(weapon.tier)
@@ -127,10 +135,12 @@ func _build_weapons(parent: VBoxContainer) -> void:
 		if slots.find_combine_partner(weapon.data, weapon.tier, weapon) != null:
 			var combine: Button = UiStyle.make_button(tr("COMBINE"), SMALL_SIZE)
 			combine.pressed.connect(_on_combine.bind(weapon))
+			GameTooltip.attach(combine, tooltip, false, true)
 			box.add_child(combine)
 			_focus_targets["combine_%d" % i] = combine
 		var recycle: Button = UiStyle.make_button(tr("RECYCLE") % _weapon_recycle_value(weapon), SMALL_SIZE)
 		recycle.pressed.connect(_on_recycle_weapon.bind(weapon))
+		GameTooltip.attach(recycle, tooltip, false, true)
 		box.add_child(recycle)
 		_focus_targets["recycle_%d" % i] = recycle
 
@@ -140,25 +150,45 @@ func _build_items(parent: VBoxContainer) -> void:
 	label.text = tr("SHOP_ITEMS")
 	parent.add_child(label)
 	var flow: HFlowContainer = HFlowContainer.new()
+	flow.add_theme_constant_override("h_separation", MINI_BORDER * 2)
+	flow.add_theme_constant_override("v_separation", MINI_BORDER * 2)
 	parent.add_child(flow)
-	var counts: Dictionary[StringName, int] = GameState.item_counts()
-	var shown: Dictionary[StringName, bool] = {}
-	for item: ItemData in GameState.items:
-		if shown.has(item.id):
-			continue
-		shown[item.id] = true
-		var icon: TextureRect = TextureRect.new()
-		icon.texture = item.icon
-		icon.custom_minimum_size = ITEM_ICON
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.tooltip_text = tr(item.name_key)
+	for entry: Dictionary in BuildOverview.item_stacks():
+		var data: ItemData = entry["item"]
+		var count: int = entry["count"]
+		var icon: BuildIcon = BuildIcon.new(data.icon, data.tier, count, TooltipText.item.bind(data, count), ITEM_ICON)
 		flow.add_child(icon)
-		if counts[item.id] > 1:
-			var count: Label = UiStyle.make_label(SMALL_SIZE)
-			count.text = "x%d" % counts[item.id]
-			count.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-			icon.add_child(count)
+		_focus_targets["item_%s" % data.id] = icon
+
+
+## Leiste "Aktive Set-Boni": je Klasse mit mindestens 2 Waffen ein Chip "Klinge 3/6" mit Tooltip aller Stufen.
+func _build_set_bonuses(parent: HBoxContainer) -> void:
+	var row: HBoxContainer = HBoxContainer.new()
+	row.add_theme_constant_override("separation", SET_CHIP_GAP)
+	row.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	parent.add_child(row)
+	var label: Label = UiStyle.make_label(SMALL_SIZE)
+	label.text = tr("SHOP_SET_BONUSES")
+	label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(label)
+	var counts: Dictionary[StringName, int] = TooltipText.class_counts(player.weapon_slots.get_weapons())
+	var any: bool = false
+	for weapon_class: StringName in WeaponClasses.ALL:
+		var count: int = counts.get(weapon_class, 0)
+		var set_bonus: SetBonusData = TooltipText.set_bonus_for(weapon_class)
+		if count < SetBonusData.MIN_WEAPONS or set_bonus == null:
+			continue
+		any = true
+		var chip: Button = UiStyle.make_button(tr("SHOP_SET_CHIP") % [tr(WeaponClasses.label_key(weapon_class)), count, TooltipText.max_level(set_bonus)], SMALL_SIZE)
+		var factor: float = player.set_bonus_multiplier.get(weapon_class, 1.0)
+		GameTooltip.attach(chip, TooltipText.set_bonus_text.bind(set_bonus, count, factor))
+		row.add_child(chip)
+		_focus_targets["set_%s" % weapon_class] = chip
+	if not any:
+		var none: Label = UiStyle.make_label(SMALL_SIZE, UiStyle.TIER_COLORS[0])
+		none.text = tr("SHOP_SET_NONE")
+		none.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		row.add_child(none)
 
 
 func _build_preview(parent: VBoxContainer) -> void:

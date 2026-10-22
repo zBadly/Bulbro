@@ -75,6 +75,8 @@ func open() -> void:
 	grid.add_child(_toggle(SaveManager.REDUCED_FX_KEY, false, func(_on: bool) -> void: pass))
 	_label(grid, "OPT_MANUAL_AIM")
 	grid.add_child(_toggle(SaveManager.MANUAL_AIM_KEY, false, func(_on: bool) -> void: pass))
+	_label(grid, "OPT_HP_BARS")
+	grid.add_child(_choice(SaveManager.ENEMY_HP_BAR_KEY, EnemyHpBar.MODE_KEYS, EnemyHpBar.DEFAULT_MODE))
 	for key: String in ASSIST_KEYS:
 		_label(grid, ASSIST_KEYS[key])
 		grid.add_child(_assist_slider(key))
@@ -157,6 +159,18 @@ func _toggle(key: String, default: bool, on_change: Callable) -> CheckButton:
 		SaveManager.set_option(key, on)
 		on_change.call(on))
 	return toggle
+
+
+## Auswahlliste, gespeichert als Index.
+func _choice(key: String, item_keys: PackedStringArray, default: int) -> OptionButton:
+	var choice: OptionButton = OptionButton.new()
+	choice.add_theme_font_override("font", UiStyle.FONT)
+	choice.add_theme_font_size_override("font_size", TEXT_SIZE)
+	for item_key: String in item_keys:
+		choice.add_item(tr(item_key))
+	choice.selected = clampi(int(SaveManager.get_option(key, default)), 0, item_keys.size() - 1)
+	choice.item_selected.connect(func(index: int) -> void: SaveManager.set_option(key, index))
+	return choice
 
 
 func _on_language_selected(index: int) -> void:

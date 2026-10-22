@@ -20,7 +20,7 @@ func on_enemy_hit(ctx: EffectContext, _entry: TriggerEntry, target: Damageable, 
 		return
 	if chance < 1.0 and ctx.rng.randf() >= chance:
 		return
-	enemy.apply_curse(damage_per_second, damage_taken_pct, duration, max_stacks)
+	enemy.apply_curse(damage_per_second, damage_taken_pct, duration, max_stacks, ctx.origin)
 
 
 func describe() -> PackedStringArray:

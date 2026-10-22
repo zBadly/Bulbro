@@ -4,12 +4,13 @@ Ergänzt [GDD.md](GDD.md) und [ART_STYLE.md](ART_STYLE.md). Hier stehen der Stan
 
 ## Nächste Sitzung
 
-Stand 21.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
+Stand 22.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 
 - **Erledigt:** Paket 1 (Crash nach Bosssieg, `a4c51cb`, Nacharbeit typisierte Literale `89833f1`) und Paket 2 (Lexikon-Erweiterungen, `55bf4bc`).
 - **Crash-Fix im echten Spiel bestätigt:** Bosssieg mit LED-Schütze auf Spannung 0. „Glasfaser“ wurde freigeschaltet, Sieg, Challenge und Statistik sind gespeichert, der Fortsetzen-Stand wurde gelöscht.
-- **Erledigt 22.10.:** Spielstand-Trennung für Headless-Checks/Tests (`38855c5`) und Paket 3 (Admin-Modus).
-- **Als Nächstes:** Paket 4 (HUD und Tooltips), danach die Pakete 5 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
+- **Erledigt 22.10.:** Spielstand-Trennung für Headless-Checks/Tests (`38855c5`), Paket 3 (Admin-Modus, `7211a38`) und Paket 4 (HUD und Tooltips).
+- **Als Nächstes:** Paket 5 (Run-Statistiken und Run-Ende), danach die Pakete 6 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
+- **Für Paket 5 schon vorhanden:** Kills und Schaden je Herkunft in `GameState.run_stats.source_kills`/`source_damage` (Schlüssel `DamageSource`, z. B. `weapon/ast`, `item/supernova`, `character/zuendkerze`, `ally`, `structure/lampenturm`), gespeichert im Fortsetzen-Stand. Die Statistik-Tabelle soll diese Werte lesen, nicht neu zählen. Noch zu ergänzen: DPS (braucht die Zeit je Welle), erlittener Schaden, ausgewichene Treffer, ausgegebene Funken, Rerolls.
 
 Offene Punkte:
 - `stats.runs` = 2 im echten Spielstand ist geklärt (22.10.): Die 6.014 Kills übersteigen, was ein einzelner Run auf Spannung 0 liefern kann (rund 4.850 Gegner in den Wellen 1–19 plus Bosswelle). Es sind also zwei echte Runs mit Kills zu Ende gegangen, vermutlich der in der Sicherung vom 21.10. gespeicherte, unterbrochene Run (per „Fortsetzen“) und der Sieg mit dem LED-Schützen. Headless-Check und Tests können seit dem 22.10. ohnehin nicht mehr in den echten Spielstand schreiben.
@@ -59,6 +60,7 @@ Bosse testen: F10 → Run → Welle 20 starten; bei Spannung 5 erscheinen beide 
 | 14c-3 | 10 neue Charaktere, Freischaltungen mit Fortschritt (Bestwert/Summe), 10 Sieg-Items, Debug: alle Charaktere freischalten |
 | 14c-2 | 5 neue Startwaffen: Seelenlaterne, Feuerzeugwerfer, Kristallstab, Voodoo-Nadel, Dornenranke (auch im Shop) |
 | 15-3 | Admin-Modus (F10, Optionen → Erweitert): Admin-Menü mit 6 Reitern, Admin-Runs zählen nicht, `Player.rebuild()` mit Regressionstest für alle 22 Charaktere |
+| 15-4 | HUD und Tooltips: HP-Leisten unter normalen Gegnern (Option Immer/Nur bei Schaden/Aus), Tooltips für Waffen, Items, Set-Boni und Stats in Shop, Pause und Run-Ende (Maus und Gamepad, nie abgeschnitten), Stat-Panel mit Farben und Obergrenzen, Leiste „Aktive Set-Boni“, Tier-Kontur der schwebenden Waffen, Kills/Schaden je Waffe/Item/Effekt |
 | 14c-5 | Charakter-Simulator; Balancing in zwei Runden: neue Charaktere und Waffen, schwache alte Charaktere (Kerze, Taschenlampe, Discokugel, Nachtlicht), Drohnenleuchte |
 | 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
 | 6 (Lexikon) | Hauptmenüpunkt „Lexikon“ mit 6 Reitern (Charaktere, Waffen, Items, Gegner, Waffenklassen, Spielmechaniken), Suche über alle Reiter, Filter, Sprüche (`lore_text`) für alle Einträge |
@@ -69,6 +71,7 @@ Bosse testen: F10 → Run → Welle 20 starten; bei Spannung 5 erscheinen beide 
 Leistung (Radeon RX 590, 1080p, VSync 144 Hz): 100 Gegner aller Typen mit 6 Tier-IV-Fernwaffen min. 118 FPS; 100 Gegner + 300 Projektile konstant 144 FPS.
 100 Gegner + 8 Verbündete + Spiegelbild mit 6 Waffen (Welle 14): mit VSync Ø 143, min. 137 FPS; ohne VSync Ø 311, min. 214 FPS.
 Paket 4 (neue Partikel und Status-Grafiken, Welle 14, 100 Gegner, VSync): Kronleuchter mit 6 Kristallstäben T4 Ø 138, min. 122 FPS; Spiegelkugel mit 6 Fernwaffen T4 Ø 140, min. 123 FPS.
+Phase 15, Paket 4 (HP-Leisten unter Gegnern, Welle 14, 100 Gegner ständig aufgefüllt, 6 Fernwaffen T4, zwei Läufe): Leisten „Immer“ (100 sichtbar) mit VSync Ø 142–143, min. 113–128 FPS, ohne VSync Ø 346–390, min. 235–355; Leisten „Aus“ mit VSync Ø 144, min. 143–144, ohne VSync Ø 315–373, min. 218–266. Die Leisten kosten messbar nichts; die Minima mit VSync fallen in den ersten Messblock direkt nach dem Wellensprung.
 
 ## Entscheidungen und Startwerte
 
@@ -183,6 +186,14 @@ Grundlage: `--characters`, `--weapons`, `--items` (200 Runs, Vergleichswerte).
 - Level setzen passt den +1-Max-HP-Bonus pro Level an, ohne Upgrade-Karten. Item entfernen und Charakterwechsel bauen den Spieler mit `Player.rebuild()` neu auf.
 - Charakterwechsel: Werte neu, Waffen bleiben (auch über dem Slot-Limit), aktuelle HP bleiben (höchstens Max HP). Effekte des alten Charakters enden (Drohnen, Spiegelbild, Geister verschwinden), die des neuen starten sofort. Das Seelenglas (`GameState.souls`) bleibt erhalten. Trigger von Items behalten ihren Zustand (Timer, Zähler); das gilt künftig auch für Kondensator-Zähler und Reservebatterie aus Paket 8.
 - F4-Debug-Menü und F6-Arena-Füller gibt es nicht mehr; beides steckt im Admin-Menü.
+
+### HUD und Tooltips (Phase 15, Paket 4)
+- HP-Leisten nur unter normalen Gegnern; Elites und Bosse behalten die große Leiste oben (dort zeigt Paket 7 die Phasen). Standard „Nur bei Schaden“, Option unter Optionen → „HP-Leisten der Gegner“ (`enemy_hp_bars`, Index von `EnemyHpBar.Mode`). Größe, Abstand, Farben und Waffen-Kontur in `data/config/hud_config.tres` (Startwerte: Höhe 5 px, Breite 1,6 × Kollisionsdurchmesser, 28–72 px, Kontur 2,5 px mit 90 % Deckkraft).
+- Tooltips (`GameTooltip`) hängen am Element, nicht an der Maus: rechts daneben, sonst links, sonst darunter oder darüber, zuletzt an den Rand geklemmt (8 px Abstand). Inhalte in `TooltipText`. Stat-Zeilen zeigen den Tooltip nur bei Maus-Hover, damit der Gamepad-Fokus nicht durch 30 Zeilen wandert. Im Shop zeigen die Kombinieren-/Recyceln-Buttons beim Fokus den Tooltip ihrer Waffe.
+- Waffen-Tooltip: aktueller Schaden ohne Krit als „Summe = Grundschaden + x % von Stat“, dazu Schaden-% und Schadensfaktor (Spiegelbild); Abklingzeit, Reichweite und Krit mit allen Stats des Spielers. Set-Boni je Klasse mit Stufen 2–6, Set-Multiplikator des Charakters eingerechnet.
+- Kills und Schaden je Herkunft: gezählt wird der Schaden, den ein Gegner tatsächlich verliert (ohne Overkill). Brand und Fluch zählen für die Waffe oder das Item, das sie ausgelöst hat; Explosionen von Projektilen und Splitter für ihre Waffe; Item-Aktionen für ihr Item; Charakter-Effekte als `character/<id>`; Strukturen und Drohnen als `structure/<id>`. Zwei gleiche Waffen teilen sich die Werte (Tooltip „alle 2 zusammen“).
+- Obergrenzen im Stat-Panel (`CombatMath.stat_cap`): Ausweichen (`dodge_cap`), Krit-Chance, Lebensraub und Doppelte Funken je 100. Die Erklärung im Tooltip kommt aus denselben Texten wie im Lexikon (`Lexicon.stat_text`).
+- Im Shop stehen die aktiven Set-Boni in der Kopfzeile „Waffen (x/y)“, damit auch 22 Items in zwei Reihen und die Wellen-Vorschau in 1280×720 sichtbar bleiben.
 
 ### Endlos-Modus
 - Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.

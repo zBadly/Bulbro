@@ -126,3 +126,14 @@ static func scaling_bonus(scalings: Dictionary[StringName, float], stats: StatSy
 static func weapon_damage(base_damage: float, scaling: float, damage_pct: float, crit_multiplier: float) -> int:
 	var damage: float = (base_damage + scaling) * maxf(0.0, 1.0 + damage_pct / PERCENT) * crit_multiplier
 	return maxi(MIN_DAMAGE, roundi(damage))
+
+
+## Obergrenze eines Stats in seiner Einheit (INF = keine). Mehr als die Grenze wirkt nicht
+## (Ausweichen bis dodge_cap, Krit, Lebensraub und Doppelfunken bis 100 %). Erklärung: STAT_LIMIT_<STAT>.
+static func stat_cap(stat: StringName, dodge_cap: float) -> float:
+	match stat:
+		Stats.DODGE:
+			return dodge_cap
+		Stats.CRIT_CHANCE, Stats.LIFESTEAL, Stats.DOUBLE_SPARK_CHANCE:
+			return PERCENT
+	return INF

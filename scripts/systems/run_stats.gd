@@ -25,6 +25,28 @@ var max_same_weapons: int = 0
 var dodge_item_taken: bool = false
 ## Gerade stehende Lampentürme; bleibt nach dem Wellenende stehen, damit das Run-Ende ihn kennt (Drohnenleuchte).
 var current_turrets: int = 0
+## Kills und verursachter Schaden je Herkunft (DamageSource, z. B. "weapon/ast", "item/supernova", "ally").
+## Grundlage für Tooltips und die Run-Statistik.
+var source_kills: Dictionary[StringName, int] = {}
+var source_damage: Dictionary[StringName, int] = {}
+
+
+func record_damage(origin: StringName, amount: int) -> void:
+	if origin != &"" and amount > 0:
+		source_damage[origin] = source_damage.get(origin, 0) + amount
+
+
+func record_kill(origin: StringName) -> void:
+	if origin != &"":
+		source_kills[origin] = source_kills.get(origin, 0) + 1
+
+
+func kills_of(origin: StringName) -> int:
+	return source_kills.get(origin, 0)
+
+
+func damage_of(origin: StringName) -> int:
+	return source_damage.get(origin, 0)
 
 
 func to_dict() -> Dictionary:
@@ -35,7 +57,8 @@ func to_dict() -> Dictionary:
 		"max_distinct_weapons": max_distinct_weapons, "primitive_only": primitive_only, "kills": enemies_killed,
 		"burn_kills": burn_kills, "max_cursed": max_cursed, "lifesteal_healed": lifesteal_healed,
 		"crystals": crystals_destroyed, "weapon_kills": kills, "max_elemental": max_elemental,
-		"max_same_weapons": max_same_weapons, "dodge_item_taken": dodge_item_taken, "current_turrets": current_turrets}
+		"max_same_weapons": max_same_weapons, "dodge_item_taken": dodge_item_taken, "current_turrets": current_turrets,
+		"source_kills": _to_plain(source_kills), "source_damage": _to_plain(source_damage)}
 
 
 static func from_dict(data: Dictionary) -> RunStats:
@@ -57,4 +80,18 @@ static func from_dict(data: Dictionary) -> RunStats:
 	run.max_same_weapons = int(data.get("max_same_weapons", 0))
 	run.dodge_item_taken = bool(data.get("dodge_item_taken", false))
 	run.current_turrets = int(data.get("current_turrets", 0))
+	_from_plain(data.get("source_kills", {}), run.source_kills)
+	_from_plain(data.get("source_damage", {}), run.source_damage)
 	return run
+
+
+static func _to_plain(values: Dictionary[StringName, int]) -> Dictionary:
+	var plain: Dictionary = {}
+	for key: StringName in values:
+		plain[String(key)] = values[key]
+	return plain
+
+
+static func _from_plain(plain: Dictionary, target: Dictionary[StringName, int]) -> void:
+	for key: String in plain:
+		target[StringName(key)] = int(plain[key])

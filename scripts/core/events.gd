@@ -23,6 +23,9 @@ signal options_changed
 signal challenge_completed(challenge: ChallengeData)
 @warning_ignore("unused_signal")
 signal enemy_killed(data: EnemyData, position: Vector2, info: DamageInfo)
+## Ein Gegner hat Schaden genommen (`amount` ohne Overkill); `origin` siehe DamageSource.
+@warning_ignore("unused_signal")
+signal enemy_damaged(origin: StringName, amount: int)
 @warning_ignore("unused_signal")
 signal sparks_changed(sparks: int, bag: int)
 @warning_ignore("unused_signal")

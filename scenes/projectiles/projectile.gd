@@ -128,7 +128,7 @@ func _split(origin: Vector2, direction: Vector2, spec: ProjectileSpec, ignore_id
 		shard.texture = spec.split_texture if spec.split_texture != null else spec.texture
 		shard.speed = spec.speed
 		shard.max_range = COMBAT.split_range
-		shard.info = DamageInfo.create(amount, spec.info.is_crit, 0.0, spec.info.source)
+		shard.info = DamageInfo.create(amount, spec.info.is_crit, 0.0, spec.info.source, spec.info.origin)
 		shard.player = spec.player
 		shard.lifesteal = spec.lifesteal
 		var t: float = float(i) / float(maxi(1, spec.split_count - 1)) if spec.split_count > 1 else 0.5

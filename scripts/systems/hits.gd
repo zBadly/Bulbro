@@ -59,12 +59,12 @@ static func apply_weapon_hit(target: Damageable, info: DamageInfo, player: Playe
 	_damage(target, info, player)
 	if player == null:
 		if info.burn_damage > 0.0 and target is Enemy:
-			(target as Enemy).apply_burn(info.burn_damage, info.burn_ticks, null)
+			(target as Enemy).apply_burn(info.burn_damage, info.burn_ticks, null, info.origin)
 		return
 	var enemy: Enemy = target as Enemy
 	if enemy != null and info.burn_damage > 0.0 and (info.burn_chance >= 1.0 or player.rng.randf() < info.burn_chance):
 		var burn: float = CombatMath.burn_damage(info.burn_damage, player.stats.get_stat(Stats.BURN_DMG_PCT))
-		enemy.apply_burn(burn, info.burn_ticks, player)
+		enemy.apply_burn(burn, info.burn_ticks, player, info.origin)
 	if enemy != null and info.root_chance > 0.0 and player.rng.randf() < info.root_chance:
 		enemy.root(info.root_duration)
 	player.enemy_hit.emit(target, info)
@@ -85,7 +85,7 @@ static func explode(tree: SceneTree, player: Player, origin: Vector2, radius: fl
 	Fx.particles(tree, ParticleFx.Kind.EXPLOSION, origin)
 	Fx.shake(tree, EXPLOSION_TRAUMA)
 	AudioManager.play(&"explosion")
-	var blast: DamageInfo = DamageInfo.create(amount, info.is_crit, info.knockback, info.source)
+	var blast: DamageInfo = DamageInfo.create(amount, info.is_crit, info.knockback, info.source, info.origin)
 	for target: Damageable in alive_targets(tree, true):
 		var hit_pos: Vector2 = target.get_hit_position()
 		if origin.distance_to(hit_pos) <= size:

@@ -17,7 +17,7 @@ func on_enemy_hit(ctx: EffectContext, _entry: TriggerEntry, target: Damageable, 
 	if enemy == null or not enemy.is_alive() or ctx.rng.randf() >= chance:
 		return
 	var damage: float = CombatMath.burn_damage(ctx.effect_damage(base_damage, scalings), ctx.player.stats.get_stat(Stats.BURN_DMG_PCT))
-	enemy.apply_burn(damage, ticks, ctx.player)
+	enemy.apply_burn(damage, ticks, ctx.player, ctx.origin)
 
 
 func describe() -> PackedStringArray:

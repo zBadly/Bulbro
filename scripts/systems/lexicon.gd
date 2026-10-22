@@ -27,6 +27,8 @@ const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const TOWER: StructureData = preload("res://data/structures/lampenturm.tres")
 ## Teile einer Stat-Erklärung nach der Wirkung (LEX_STAT_<TEIL> als Überschrift, STAT_<TEIL>_<STAT> als Text).
 const STAT_PARTS: PackedStringArray = ["FORMULA", "EXAMPLE", "LIMIT"]
+const STAT_INFO_PART: String = "INFO"
+const STAT_LIMIT_PART: String = "LIMIT"
 ## Eingaben der Rechenbeispiele in den Stat-Texten (die Ergebnisse kommen aus den Formeln).
 const EXAMPLE_STAT: float = 10.0
 const EXAMPLE_DAMAGE: float = 10.0
@@ -595,11 +597,21 @@ static func topic_text(key: String) -> String:
 ## Platzhalter wie {armor_k} füllt stat_values() mit den Zahlen aus CombatMath, Economy und den Configs.
 static func stat_info(stat: StringName) -> String:
 	var values: Dictionary = stat_values()
-	var upper: String = String(stat).to_upper()
-	var lines: PackedStringArray = [t("STAT_INFO_" + upper).format(values)]
+	var lines: PackedStringArray = [stat_text(stat, STAT_INFO_PART, values)]
 	for part: String in STAT_PARTS:
-		lines.append("[color=%s]%s:[/color] %s" % [HEADING_COLOR, t("LEX_STAT_" + part), t("STAT_%s_%s" % [part, upper]).format(values)])
+		lines.append(stat_heading_line(stat, part, values))
 	return "\n".join(lines)
+
+
+## Ein Teil der Stat-Erklärung (STAT_<TEIL>_<STAT>) mit den Beispielzahlen. Auch das Stat-Panel nutzt diese Texte.
+static func stat_text(stat: StringName, part: String, values: Dictionary = {}) -> String:
+	var filled: Dictionary = values if not values.is_empty() else stat_values()
+	return t("STAT_%s_%s" % [part, String(stat).to_upper()]).format(filled)
+
+
+## "Grenze: ..." mit farbiger Überschrift.
+static func stat_heading_line(stat: StringName, part: String, values: Dictionary = {}) -> String:
+	return "[color=%s]%s:[/color] %s" % [HEADING_COLOR, t("LEX_STAT_" + part), stat_text(stat, part, values)]
 
 
 ## Beispielzahlen für die Stat-Texte, immer aus den echten Formeln berechnet.

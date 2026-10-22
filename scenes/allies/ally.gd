@@ -116,7 +116,7 @@ func _physics_process(delta: float) -> void:
 		Juice.walk_tilt(visual, move)
 	elif _contact_cooldown <= 0.0:
 		_contact_cooldown = STATUS.ally_contact_interval
-		_target.take_damage(DamageInfo.create(damage, false, 0.0, self))
+		_target.take_damage(DamageInfo.create(damage, false, 0.0, self, DamageSource.ally()))
 
 
 ## Nächster lebender Gegner (keine neutralen Objekte).

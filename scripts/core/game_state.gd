@@ -64,6 +64,7 @@ var difficulty: DifficultyData
 
 func _ready() -> void:
 	Events.enemy_killed.connect(_on_enemy_killed)
+	Events.enemy_damaged.connect(func(origin: StringName, amount: int) -> void: run_stats.record_damage(origin, amount))
 	Events.crystal_destroyed.connect(func(_position: Vector2) -> void: run_stats.crystals_destroyed += 1)
 
 
@@ -71,6 +72,7 @@ func _on_enemy_killed(_data: EnemyData, _position: Vector2, info: DamageInfo) ->
 	run_stats.enemies_killed += 1
 	if info == null:
 		return
+	run_stats.record_kill(info.origin)
 	if info.is_burn:
 		run_stats.burn_kills += 1
 	var weapon: Weapon = info.source as Weapon if is_instance_valid(info.source) else null

@@ -924,3 +924,21 @@ ADMIN_OFFER_WEAPON,Waffe: %s,Weapon: %s
 ADMIN_UNLOCK_CHARACTERS,Alle Charaktere freischalten,Unlock all characters
 ADMIN_NOT_IN_WAVE,Nur während einer Welle,Only during a wave
 ADMIN_CLOSE,Schließen,Close
+OPT_HP_BARS,HP-Leisten der Gegner,Enemy health bars
+OPT_HP_BARS_ALWAYS,Immer,Always
+OPT_HP_BARS_DAMAGED,Nur bei Schaden,Only when damaged
+OPT_HP_BARS_OFF,Aus,Off
+TIP_DAMAGE,Schaden: %s,Damage: %s
+TIP_DAMAGE_SCALING,%d %% von %s %s,%d %% of %s %s
+TIP_DAMAGE_PCT,%s %% Schaden,%s %% damage
+TIP_SET_SUMMARY,"%d/%d %s: %s, %s","%d/%d %s: %s, %s"
+TIP_SET_NONE,noch kein Bonus,no bonus yet
+TIP_SET_NEXT,nächste Stufe bei %d,next level at %d
+TIP_SET_MAX,höchste Stufe erreicht,max level reached
+TIP_SET_LEVEL,%d: %s,%d: %s
+TIP_RUN,"In diesem Run: %d Kills, %d Schaden","This run: %d kills, %d damage"
+TIP_RUN_ALL,"In diesem Run (alle %d zusammen): %d Kills, %d Schaden","This run (all %d combined): %d kills, %d damage"
+STAT_CAP,(max. %s),(max. %s)
+SHOP_SET_BONUSES,Aktive Set-Boni:,Active set bonuses:
+SHOP_SET_NONE,keine (ab 2 Waffen einer Klasse),none (from 2 weapons of one class)
+SHOP_SET_CHIP,%s %d/%d,%s %d/%d

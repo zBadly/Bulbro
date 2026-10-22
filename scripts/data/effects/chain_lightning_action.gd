@@ -21,7 +21,7 @@ func execute(ctx: EffectContext, origin: Vector2) -> void:
 		if i > 0:
 			Fx.lightning(ctx.tree, from, to)
 		Fx.zap(ctx.tree, to)
-		target.take_damage(DamageInfo.create(amount, false, 0.0, null))
+		target.take_damage(ctx.damage_info(amount))
 		from = to
 
 

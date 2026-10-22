@@ -10,12 +10,12 @@ extends EffectAction
 
 
 func execute(ctx: EffectContext, origin: Vector2) -> void:
-	var amount: int = ctx.effect_damage(base_damage, scalings)
+	var info: DamageInfo = ctx.damage_info(ctx.effect_damage(base_damage, scalings))
 	var player: Player = ctx.player
 	var tree: SceneTree = ctx.tree
 	var explode: Callable = func() -> void:
 		if is_instance_valid(player) and not player.is_dead:
-			Hits.explode(tree, player, origin, radius, DamageInfo.create(amount, false, 0.0, null))
+			Hits.explode(tree, player, origin, radius, info)
 	if travel_speed > 0.0 and is_instance_valid(player):
 		Fx.fireball(tree, player.get_center(), origin, travel_speed, explode)
 	else:

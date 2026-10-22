@@ -19,7 +19,7 @@ func execute(ctx: EffectContext, origin: Vector2) -> void:
 		if enemy != null:
 			enemy.apply_slow(1.0 - slow_pct / CombatMath.PERCENT, duration)
 		if amount > 0:
-			target.take_damage(DamageInfo.create(amount, false, 0.0, null))
+			target.take_damage(ctx.damage_info(amount))
 
 
 func describe() -> String:

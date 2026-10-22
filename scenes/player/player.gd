@@ -42,6 +42,8 @@ var _last_lifesteal_time: float = -INF
 var _known_max_hp: float = 0.0
 ## Registrierte Trigger-Effekte von Items und Charakter (vom EffectSystem aufgerufen).
 var triggers: Array[TriggerEntry] = []
+## Herkunft der Effekte, die gerade angewendet werden (Item oder Charakter), für die Trigger.
+var _applying_origin: StringName = &""
 ## Multiplikator für Set-Boni einzelner Klassen (z. B. Kerze: Primitiv doppelt).
 var set_bonus_multiplier: Dictionary[StringName, float] = {}
 
@@ -181,8 +183,10 @@ func take_hit(raw_damage: float) -> int:
 
 
 func apply_item(item: ItemData) -> void:
+	_applying_origin = DamageSource.item(item.id)
 	for effect: ItemEffect in item.effects:
 		effect.apply(self)
+	_applying_origin = &""
 
 
 ## Charakter anwenden: Grafik, Waffenslots, Effekte, Sonderregeln, Shop-Vorlieben.
@@ -198,8 +202,10 @@ func _apply_character_rules(data: CharacterData) -> void:
 	if data.weapon_slots > 0:
 		weapon_slots.max_slots = data.weapon_slots
 	set_bonus_multiplier = data.set_bonus_multiplier.duplicate()
+	_applying_origin = DamageSource.character(data.id)
 	for effect: ItemEffect in data.effects:
 		_apply_character_effect(effect)
+	_applying_origin = &""
 	GameState.preferred_tags = data.preferred_tags.duplicate()
 
 
@@ -251,8 +257,10 @@ func _reconcile_triggers(old_triggers: Array[TriggerEntry]) -> void:
 			unmatched.erase(previous)
 			triggers[i] = previous
 		elif in_wave:
+			ctx.origin = fresh.origin
 			fresh.effect.on_wave_started(ctx, fresh)
 	for old: TriggerEntry in unmatched:
+		ctx.origin = old.origin
 		old.effect.on_wave_ended(ctx, old)
 
 
@@ -374,7 +382,7 @@ func get_set_modifiers() -> Array[StatModifier]:
 
 
 func add_trigger(effect: ItemEffect) -> void:
-	triggers.append(TriggerEntry.create(effect))
+	triggers.append(TriggerEntry.create(effect, _applying_origin))
 
 
 ## Heilt und gibt die tatsächlich geheilten HP zurück. Überschuss meldet `overhealed`.

@@ -61,6 +61,7 @@ func _ready() -> void:
 		RunSave.restore_state(resume)
 	add_to_group(Fx.JUICE_HOST_GROUP)
 	_screenshake = SaveManager.get_option(SaveManager.SCREENSHAKE_KEY, true)
+	EnemyHpBar.mode = int(SaveManager.get_option(SaveManager.ENEMY_HP_BAR_KEY, EnemyHpBar.DEFAULT_MODE)) as EnemyHpBar.Mode
 	_splat_pool.container = $Floor
 	_splat_pool.prewarm(SPLAT_POOL_SIZE)
 	AudioManager.play_music()
@@ -97,6 +98,7 @@ func _ready() -> void:
 	_hud.bind(player, wave_manager)
 	player.died.connect(_on_player_died)
 	_pause_menu.give_up_requested.connect(player.kill)
+	_pause_menu.player = player
 	wave_manager.run_won.connect(_on_run_won)
 	_game_over.endless_requested.connect(_continue_endless)
 	wave_manager.wave_ended.connect(_on_wave_ended)
@@ -138,6 +140,8 @@ func _apply_options() -> void:
 	_darkness.visible = SaveManager.get_option(SaveManager.LIGHTING_KEY, true)
 	_screenshake = SaveManager.get_option(SaveManager.SCREENSHAKE_KEY, true)
 	player.manual_aim = SaveManager.get_option(SaveManager.MANUAL_AIM_KEY, false)
+	EnemyHpBar.mode = int(SaveManager.get_option(SaveManager.ENEMY_HP_BAR_KEY, EnemyHpBar.DEFAULT_MODE)) as EnemyHpBar.Mode
+	get_tree().call_group(EnemyHpBar.GROUP, &"refresh_mode")
 
 
 ## Freischaltungen während der Welle (z. B. 3 Lampentürme) sofort melden; Siege werden am Run-Ende geprüft.

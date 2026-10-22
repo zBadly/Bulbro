@@ -50,6 +50,9 @@ var _burn_damage: float = 0.0
 var _burn_ticks_left: int = 0
 var _burn_timer: float = 0.0
 var _burn_source: Player
+## Herkunft von Brand und Fluch (Run-Statistik).
+var _burn_origin: StringName = &""
+var _curse_origin: StringName = &""
 var _flash_material: ShaderMaterial
 var _buff_material: ShaderMaterial
 var _root_immune_left: float = 0.0
@@ -60,6 +63,8 @@ var _hold_fx: Sprite2D
 var _burn_fx_scale: Vector2 = Vector2.ONE
 var _rooted: bool = false
 var _frost_particle_left: float = 0.0
+## HP-Leiste unter normalen Gegnern (null bei Elites und Bossen).
+var _hp_bar: EnemyHpBar
 
 @onready var visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -87,6 +92,10 @@ func setup(p_data: EnemyData) -> void:
 	_burn_fx = _make_overlay(visual, Vector2(0.0, -half_height * 0.9), body_width * 0.8 / BURN_TEXTURE.get_width())
 	_burn_fx.texture = BURN_TEXTURE
 	_burn_fx_scale = _burn_fx.scale
+	if not data.is_elite and not data.is_boss:
+		_hp_bar = EnemyHpBar.new()
+		_hp_bar.setup(data.collision_radius)
+		add_child(_hp_bar)
 	_behavior = data.behavior.create_behavior()
 	_behavior.enemy = self
 	add_child(_behavior)
@@ -129,6 +138,7 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	_sprite.flip_h = false
 	visual.rotation = 0.0
 	_alive = true
+	_update_hp_bar()
 	_behavior.reset()
 	Juice.spawn_pop(visual).finished.connect(_on_spawned, CONNECT_ONE_SHOT)
 	if data.is_boss or data.is_elite:
@@ -155,8 +165,11 @@ func take_damage(info: DamageInfo) -> void:
 		amount = roundi(amount * GameState.admin.damage_factor)
 	if curse.is_active():
 		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * curse.damage_taken_factor()))
+	# Gezählt wird nur der Schaden, den der Gegner wirklich verliert (kein Overkill).
+	Events.enemy_damaged.emit(info.origin, mini(amount, ceili(hp)))
 	hp -= amount
 	_last_hit = info
+	_update_hp_bar()
 	Juice.hit_flash(_sprite)
 	AudioManager.play(&"hit_crit" if info.is_crit else &"hit")
 	Fx.particles(get_tree(), ParticleFx.Kind.HIT, get_hit_position(), info.knockback_dir)
@@ -173,6 +186,8 @@ func die() -> void:
 	if not _alive:
 		return
 	_alive = false
+	if _hp_bar != null:
+		_hp_bar.hide()
 	if is_burning():
 		Events.burning_enemy_killed.emit(global_position)
 	Events.enemy_killed.emit(data, global_position, _last_hit)
@@ -188,6 +203,8 @@ func despawn(animated: bool = false) -> void:
 	if not _alive:
 		return
 	_alive = false
+	if _hp_bar != null:
+		_hp_bar.hide()
 	_clear_statuses()
 	died.emit(self)
 	if animated:
@@ -211,6 +228,7 @@ func fire_projectile_from(origin: Vector2, direction: Vector2, projectile_speed:
 func heal(amount: float) -> void:
 	if _alive:
 		hp = minf(max_hp, hp + amount)
+		_update_hp_bar()
 
 
 ## Verstärker-Buff: mehr HP, Schaden und Tempo, rote Kontur. Wirkt nur einmal.
@@ -225,6 +243,11 @@ func apply_buff(hp_mult: float, damage_mult: float, speed_mult: float) -> void:
 	speed *= speed_mult
 	speed_factor *= speed_mult
 	_sprite.material = _buff_material
+
+
+func _update_hp_bar() -> void:
+	if _hp_bar != null:
+		_hp_bar.set_ratio(hp / max_hp if max_hp > 0.0 else 0.0)
 
 
 ## Nächster lebender Verbündeter (für Heiler).
@@ -243,12 +266,13 @@ func nearest_ally() -> Enemy:
 
 
 ## Überspannung: Brandschaden über Zeit. Ein stärkerer oder längerer Brand ersetzt den alten.
-func apply_burn(damage_per_tick: float, ticks: int, source: Player) -> void:
+func apply_burn(damage_per_tick: float, ticks: int, source: Player, origin: StringName = &"") -> void:
 	if not _alive or ticks <= 0:
 		return
 	_burn_damage = maxf(_burn_damage if _burn_ticks_left > 0 else 0.0, damage_per_tick)
 	_burn_ticks_left = maxi(_burn_ticks_left, ticks)
 	_burn_source = source
+	_burn_origin = origin
 	_update_tint()
 
 
@@ -268,7 +292,7 @@ func _update_burn(delta: float) -> void:
 	if _burn_ticks_left <= 0:
 		_update_tint()
 	_spread_burn()
-	var info: DamageInfo = DamageInfo.create(maxi(CombatMath.MIN_DAMAGE, roundi(_burn_damage)), false, 0.0, null)
+	var info: DamageInfo = DamageInfo.create(maxi(CombatMath.MIN_DAMAGE, roundi(_burn_damage)), false, 0.0, null, _burn_origin)
 	info.is_burn = true
 	take_damage(info)
 
@@ -287,16 +311,17 @@ func _spread_burn() -> void:
 		if other == null or other == self or other.is_burning():
 			continue
 		if other.global_position.distance_to(global_position) <= COMBAT.burn_spread_radius:
-			other.apply_burn(_burn_damage, _burn_ticks_left + 1, _burn_source)
+			other.apply_burn(_burn_damage, _burn_ticks_left + 1, _burn_source, _burn_origin)
 			spread -= 1
 
 
 # --- Status: Fluch, Verlangsamen, Einfrieren, Festhalten ---
 
 ## Fluch (Schwarzlicht): +1 Stapel, Dauer neu, erhöhter erlittener Schaden.
-func apply_curse(dps: float, bonus_pct: float, duration: float, max_stacks: int) -> void:
+func apply_curse(dps: float, bonus_pct: float, duration: float, max_stacks: int, origin: StringName = &"") -> void:
 	if not _alive:
 		return
+	_curse_origin = origin
 	curse.apply(dps, bonus_pct, duration, max_stacks, STATUS.curse_tick_interval)
 	if not is_in_group(CURSED_GROUP):
 		add_to_group(CURSED_GROUP)
@@ -370,7 +395,7 @@ func _update_statuses(delta: float) -> void:
 		if not curse.is_active():
 			_on_curse_ended()
 		if damage > 0:
-			take_damage(DamageInfo.create(damage, false, 0.0, null))
+			take_damage(DamageInfo.create(damage, false, 0.0, null, _curse_origin))
 
 
 func _on_curse_ended() -> void:

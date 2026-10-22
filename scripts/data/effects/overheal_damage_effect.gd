@@ -18,7 +18,7 @@ func on_overheal(ctx: EffectContext, entry: TriggerEntry, amount: float) -> void
 		var target: Damageable = _nearest_enemy(ctx)
 		if target != null:
 			Fx.lightning(ctx.tree, ctx.player.get_center(), target.get_hit_position())
-			target.take_damage(DamageInfo.create(whole, false, 0.0, null))
+			target.take_damage(ctx.damage_info(whole))
 			pool -= whole
 	entry.state[POOL_KEY] = pool
 

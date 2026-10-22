@@ -4,6 +4,10 @@ extends Node2D
 ## Nahkampf: Stoß oder Schwung mit Hitbox, trifft mehrere Gegner. Fernkampf: gepoolte Projektile.
 
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
+const HUD: HudConfig = preload("res://data/config/hud_config.tres")
+const OUTLINE_SHADER: Shader = preload("res://art/shaders/outline.gdshader")
+const OUTLINE_COLOR_PARAM: StringName = &"outline_color"
+const OUTLINE_WIDTH_PARAM: StringName = &"outline_width"
 
 var data: WeaponData
 var tier: int = WeaponData.MIN_TIER
@@ -45,10 +49,30 @@ func _ready() -> void:
 func _apply_data() -> void:
 	_sprite.texture = data.texture
 	_sprite.rotation = deg_to_rad(data.sprite_rotation_deg)
+	_sprite.material = tier_outline_material(tier)
+
+
+## Kontur in der Tier-Farbe, damit das Tier auch im Getümmel erkennbar ist.
+static func tier_outline_material(p_tier: int) -> ShaderMaterial:
+	var material: ShaderMaterial = ShaderMaterial.new()
+	material.shader = OUTLINE_SHADER
+	var color: Color = UiStyle.tier_color(p_tier)
+	color.a = HUD.weapon_outline_alpha
+	material.set_shader_parameter(OUTLINE_COLOR_PARAM, color)
+	material.set_shader_parameter(OUTLINE_WIDTH_PARAM, HUD.weapon_outline_width)
+	return material
 
 
 func get_tier_stats() -> WeaponTierStats:
 	return data.get_tier(tier)
+
+
+## Grundschaden des Tiers plus Bonus für gleiche Waffen (vor Skalierung und Schaden-%).
+func get_base_damage() -> float:
+	var base: float = get_tier_stats().base_damage
+	if data.damage_per_same_weapon != 0.0:
+		base += data.damage_per_same_weapon * (player.weapon_slots.count_of(data.id) - 1)
+	return base
 
 
 func get_range() -> float:
@@ -127,15 +151,13 @@ func _aim(angle: float) -> void:
 func _roll_damage() -> DamageInfo:
 	var t: WeaponTierStats = get_tier_stats()
 	var s: StatSystem = player.stats
-	var base: float = t.base_damage
-	if data.damage_per_same_weapon != 0.0:
-		base += data.damage_per_same_weapon * (player.weapon_slots.count_of(data.id) - 1)
+	var base: float = get_base_damage()
 	var crit: bool = not player.has_rule(Player.Rule.NO_CRIT) 		and player.rng.randf() < CombatMath.crit_chance(t.crit_chance, s.get_stat(Stats.CRIT_CHANCE))
 	var amount: int = CombatMath.weapon_damage(
 		base, CombatMath.scaling_bonus(t.scalings, s), s.get_stat(Stats.DAMAGE_PCT), t.crit_multiplier if crit else 1.0)
 	if damage_factor != 1.0:
 		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * damage_factor))
-	var info: DamageInfo = DamageInfo.create(amount, crit, t.knockback + s.get_stat(Stats.KNOCKBACK), self)
+	var info: DamageInfo = DamageInfo.create(amount, crit, t.knockback + s.get_stat(Stats.KNOCKBACK), self, DamageSource.weapon(data.id))
 	info.burn_damage = t.burn_damage
 	info.burn_ticks = t.burn_ticks
 	info.burn_chance = t.burn_chance
