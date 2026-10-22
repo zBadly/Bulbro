@@ -72,6 +72,8 @@ GODOT="/d/Game/Tools/Godot/Godot_v4.7.2-stable_win64_console.exe"
 "$GODOT" --headless --path . --export-release "Windows Desktop" build/windows/Bulbro.exe
 ```
 
+Spielstände: Ohne Bildschirm (Headless-Check, GUT) nutzt das Spiel automatisch einen frischen eigenen Spielstand (`user://headless_save.json`), GUT zusätzlich `user://test_save.json`. Werkzeuge und Screenshot-Skripte mit Bildschirm setzen `-- --save=user://<name>.json` oder die Umgebungsvariable `BULBRO_SAVE`. Der echte Spielstand (`user://save.json`) wird nur bei einem normalen Spielstart verwendet.
+
 Der Headless-Modus kompiliert keine Shader. Nach Shader-Änderungen die betroffene Szene einmal mit echtem Renderer starten (ohne `--headless`) und die Ausgabe auf Fehler prüfen.
 
 Hilfsskripte, die mit `-s` laufen (`extends SceneTree`), werden kompiliert, bevor Autoloads existieren: Sie dürfen keine Klassen per Typ referenzieren, die Autoloads nutzen (z. B. `Arena`, `Player`). Stattdessen `Node` und `call()` verwenden.

@@ -41,6 +41,15 @@ const STAT_CRYSTALS: String = "crystals"
 ## Kills pro Waffe: "kills_<waffen-id>".
 const WEAPON_KILLS_PREFIX: String = "kills_"
 
+# Eigener Spielstand statt des echten (Headless-Checks, Tests, Werkzeuge)
+## Kommandozeile: godot ... -- --save=user://check_save.json
+const SAVE_ARG_PREFIX: String = "--save="
+## Umgebungsvariable mit dem Pfad, falls kein Argument gesetzt ist.
+const SAVE_ENV: String = "BULBRO_SAVE"
+## Ohne Angabe nutzt ein Start ohne Bildschirm (Headless-Check, GUT) immer diesen frischen Spielstand.
+const HEADLESS_SAVE_PATH: String = "user://headless_save.json"
+const HEADLESS_DISPLAY: String = "headless"
+
 ## Pfad der Spielstanddatei (Tests setzen über use_path einen eigenen).
 var save_path: String = SAVE_PATH
 
@@ -48,8 +57,28 @@ var _data: Dictionary = {}
 
 
 func _ready() -> void:
-	load_game()
+	save_path = resolve_path(OS.get_cmdline_user_args(), OS.get_environment(SAVE_ENV), DisplayServer.get_name() == HEADLESS_DISPLAY)
+	if save_path == HEADLESS_SAVE_PATH:
+		# Headless-Checks starten immer leer, damit Ergebnisse nicht von früheren Läufen abhängen
+		reset()
+	else:
+		load_game()
 	apply_options()
+
+
+## Welcher Spielstand gilt: Argument "--save=" vor Umgebungsvariable vor Headless-Standard; sonst der echte.
+static func resolve_path(user_args: PackedStringArray, env_value: String, headless: bool) -> String:
+	for arg: String in user_args:
+		if arg.begins_with(SAVE_ARG_PREFIX) and arg.length() > SAVE_ARG_PREFIX.length():
+			return arg.trim_prefix(SAVE_ARG_PREFIX)
+	if env_value != "":
+		return env_value
+	return HEADLESS_SAVE_PATH if headless else SAVE_PATH
+
+
+## Läuft auf dem echten Spielstand des Spielers.
+func is_real_save() -> bool:
+	return save_path == SAVE_PATH
 
 
 ## Für Tests: eigenen Spielstand verwenden (wird frisch geladen).

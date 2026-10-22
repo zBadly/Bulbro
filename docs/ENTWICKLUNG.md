@@ -11,7 +11,7 @@ Stand 21.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 - **Als Nächstes:** Paket 3 (Admin-Modus), danach die Pakete 4 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
 
 Offene Punkte:
-- Im echten Spielstand steht `stats.runs` auf 2, erwartet war 1. Vermutlich wurde nach dem Sieg ein weiterer Run gestartet und beendet; noch beim Spieler nachfragen. Im Code ist kein doppeltes Zählen bekannt (`GameState.run_reported`).
+- `stats.runs` = 2 im echten Spielstand ist geklärt (22.10.): Die 6.014 Kills übersteigen, was ein einzelner Run auf Spannung 0 liefern kann (rund 4.850 Gegner in den Wellen 1–19 plus Bosswelle). Es sind also zwei echte Runs mit Kills zu Ende gegangen, vermutlich der in der Sicherung vom 21.10. gespeicherte, unterbrochene Run (per „Fortsetzen“) und der Sieg mit dem LED-Schützen. Headless-Check und Tests können seit dem 22.10. ohnehin nicht mehr in den echten Spielstand schreiben.
 - Runs, die zwischen dem 21.10. 14:10 (Fehler eingeführt) und dem Fix endeten, fehlen in der Statistik und lassen sich nicht nachtragen.
 - `piercing_dmg_pct` und `boss_dmg_pct` wirken seit Paket 2, aber noch kein Item gibt diese Stats (Kandidaten für Paket 8).
 - Paket 5 hat zwei Zusatzpunkte: Schadenszahlen beim Run-Ende ausblenden, „Nochmal“-Button behalten.
@@ -19,7 +19,7 @@ Offene Punkte:
 Hinweise für den Neustart:
 - Paket 3 berührt `Unlocks.check`, `Unlocks.evaluate_run_end` und `SaveManager.add_stat`: Ein Run mit Admin-Modus darf dort nichts zählen. Das F4-Debug-Menü (`debug_menu`) wird in den Admin-Modus integriert.
 - Der echte Spielstand liegt unter `%APPDATA%\Godot\app_userdata\Bulbro\save.json` (Sicherung `save.backup_2026-10-21.json`). Nie ohne OK des Spielers ändern. Tests nutzen `test_save.json` (`tests/pre_run_hook.gd`), Screenshot-Skripte sollen `SaveManager.use_path("user://shot_save.json")` setzen.
-- Achtung: Der Headless-Check `--quit-after 300 res://scenes/world/main.tscn` lädt den echten Spielstand. Läuft gleichzeitig das Spiel, könnten sich beide überschreiben, deshalb nicht parallel zum Spielen prüfen.
+- Spielstand-Trennung (22.10.): Ohne Bildschirm nutzt das Spiel automatisch `user://headless_save.json` (frisch bei jedem Start), Tests zusätzlich `test_save.json`. Skripte mit Bildschirm setzen `-- --save=user://<name>.json` oder `BULBRO_SAVE`. Abgesichert durch `tests/unit/test_save_isolation.gd`.
 - Leere Literale `{}`/`[]` nie in Ternär-Ausdrücken an typisierte Variablen geben; `tests/unit/test_typed_literals.gd` schlägt sonst fehl.
 - Screenshots in echter Größe 1920×1080 gehen nur im Vollbild, gesetzt im Skript (`DisplayServer.window_set_mode`). `--resolution` allein ergibt wegen der Taskleiste 1920×1061.
 
