@@ -15,9 +15,20 @@ func test_all_generated_sounds_are_loaded() -> void:
 
 
 func test_same_sound_is_limited() -> void:
+	AudioManager.output_enabled = true
 	for i in 20:
 		AudioManager.play(&"hit")
-	assert_lte(AudioManager.call("_count_playing", &"hit"), CONFIG.max_instances[&"hit"])
+	var playing: int = AudioManager.call("_count_playing", &"hit")
+	AudioManager.stop_all()
+	AudioManager.output_enabled = false
+	assert_gt(playing, 0)
+	assert_lte(playing, CONFIG.max_instances[&"hit"])
+
+
+func test_headless_plays_no_effects() -> void:
+	assert_false(AudioManager.output_enabled)
+	AudioManager.play(&"hit")
+	assert_eq(AudioManager.call("_count_playing", &"hit"), 0)
 
 
 func test_spark_series_raises_pitch_and_resets() -> void:

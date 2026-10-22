@@ -78,7 +78,7 @@ func _build() -> void:
 	var start: Button = _button(box, tr("MENU_START"), func() -> void: get_tree().change_scene_to_file(RUN_SETUP_SCENE))
 	_button(box, tr("MENU_LEXICON"), func() -> void: get_tree().change_scene_to_file(LEXICON_SCENE))
 	_button(box, tr("MENU_OPTIONS"), _options.open)
-	_button(box, tr("MENU_QUIT"), func() -> void: get_tree().quit())
+	_button(box, tr("MENU_QUIT"), AudioManager.quit_game)
 	(first if first != null else start).call_deferred("grab_focus")
 
 

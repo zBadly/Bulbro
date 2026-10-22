@@ -18,7 +18,7 @@ Offene Punkte:
 - Runs, die zwischen dem 21.10. 14:10 (Fehler eingeführt) und dem Fix endeten, fehlen in der Statistik und lassen sich nicht nachtragen.
 - `piercing_dmg_pct` und `boss_dmg_pct` wirken seit Paket 2, aber noch kein Item gibt diese Stats (Kandidaten für Paket 8).
 - Der Run-Ende-Bildschirm wurde mit nachgestellten Run-Daten geprüft (Screenshots 1920×1080 und 1280×720, Sieg und Tod im Endlos-Modus). Ein echter Sieg im Spiel mit Blick auf DPS-Werte und Diagramm steht noch aus.
-- Headless-Check: Die Run-Szene meldet sporadisch „ObjectDB instances leaked / resources still in use at exit“ (auch ohne Paket 5, etwa jeder zweite Lauf). Beim nächsten Auftreten mit `--verbose` prüfen.
+- Erledigt 22.10.: „ObjectDB instances leaked“ im Headless-Check der Run-Szene. Betroffen waren nur `AudioStreamWAV` und `AudioStreamPlaybackWAV`: Effekte, die beim Beenden noch liefen. `stop()` übergibt das Stoppen asynchron an den Mixer-Thread; endet das Programm vorher, hält der AudioServer die Wiedergabe fest. Jetzt spielt der AudioManager headless keine Effekte (`output_enabled`), und „Beenden“ bzw. Fenster schließen laufen über `AudioManager.quit_game()` (alles stoppen, 0,1 s warten). Messung mit Unendlich HP über 20 Endloswellen (21–41): Nodes konstant 5.227, Objekte 11.430 ± 30, Resources konstant 1.276. Während eines Runs bleibt nichts liegen; die Zunahme in den ersten Wellen sind neue Gegner-Pools (je Gegnertyp 30 vorgewärmte Gegner, 271 Nodes).
 
 Hinweise für den Neustart:
 - Admin-Modus: `GameState.admin.used` sperrt `Unlocks.check` und `Unlocks.evaluate_run_end`. Neue Zähler (Achievements in Paket 9, Endlos-Bestwert in Paket 6) müssen dieselbe Sperre beachten.
