@@ -942,3 +942,38 @@ STAT_CAP,(max. %s),(max. %s)
 SHOP_SET_BONUSES,Aktive Set-Boni:,Active set bonuses:
 SHOP_SET_NONE,keine (ab 2 Waffen einer Klasse),none (from 2 weapons of one class)
 SHOP_SET_CHIP,%s %d/%d,%s %d/%d
+RUN_TAB_OVERVIEW,Übersicht,Overview
+RUN_TAB_STATS,Statistiken,Statistics
+REACHED_ENDLESS_WAVE,Endlos-Welle %d erreicht (Welle %d),Reached endless wave %d (wave %d)
+RUN_STATS_TIME,Kampfzeit,Combat time
+RUN_STATS_WAVE,Welle,Wave
+RUN_STATS_ENDLESS_WAVE,Endlos %d (Welle %d),Endless %d (wave %d)
+RUN_STATS_LEVEL,Level,Level
+RUN_STATS_KILLS,Kills,Kills
+RUN_STATS_SPARKS,Funken gesammelt / ausgegeben,Sparks collected / spent
+RUN_STATS_SPARKS_VALUE,%s / %s,%s / %s
+RUN_STATS_DAMAGE_TAKEN,Erlittener Schaden,Damage taken
+RUN_STATS_HEALED,Geheilte HP,HP healed
+RUN_STATS_DODGES,Ausgewichen,Dodged hits
+RUN_STATS_REROLLS,Rerolls,Rerolls
+RUN_STATS_TOTAL_DAMAGE,Schaden gesamt,Total damage
+RUN_STATS_COL_SOURCE,Quelle,Source
+RUN_STATS_COL_KIND,Art,Type
+RUN_STATS_COL_KILLS,Kills,Kills
+RUN_STATS_COL_DAMAGE,Schaden,Damage
+RUN_STATS_COL_SHARE,Anteil,Share
+RUN_STATS_COL_DPS,DPS,DPS
+RUN_STATS_SHARE_TIP,Anteil dieser Quelle am gesamten Schaden des Runs,This source's share of the run's total damage
+RUN_STATS_DPS_TIP,Schaden pro Sekunde Kampfzeit seit dem ersten Treffer,Damage per second of combat time since the first hit
+RUN_STATS_SORT_HINT,Spaltenkopf anklicken zum Sortieren  ·  R / X: Sortierung wechseln,Click a column header to sort  ·  R / X: change sorting
+RUN_STATS_KIND_WEAPON,Waffe,Weapon
+RUN_STATS_KIND_ITEM,Item,Item
+RUN_STATS_KIND_CHARACTER,Charakter,Character
+RUN_STATS_KIND_ALLY,Verbündete,Allies
+RUN_STATS_KIND_STRUCTURE,Struktur,Structure
+RUN_STATS_MVP,MVP,MVP
+RUN_STATS_EMPTY,In diesem Run wurde kein Schaden verursacht.,No damage was dealt in this run.
+RUN_STATS_CHART_TITLE,Schaden pro Welle,Damage per wave
+RUN_STATS_CHART_MAX,max. %s,max %s
+RUN_STATS_THOUSANDS,.,","
+RUN_STATS_DECIMAL,",",.

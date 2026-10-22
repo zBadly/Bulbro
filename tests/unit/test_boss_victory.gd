@@ -62,6 +62,8 @@ func test_boss_kill_in_arena_shows_victory() -> void:
 	arena.wave_manager.jump_to_wave(arena.wave_manager.get_wave_count())
 	var frames: int = 0
 	while arena.wave_manager.state != WaveManager.State.FINISHED and frames < MAX_KILL_FRAMES:
+		# Schwebende Schadenszahlen bis zum Sieg (Paket 5: verschwinden beim Run-Ende).
+		Pools.spawn_damage_number(get_tree(), 99, false, arena.player.global_position)
 		for enemy: Enemy in arena.wave_manager._active.duplicate():
 			if enemy.is_alive():
 				enemy.die()
@@ -74,3 +76,5 @@ func test_boss_kill_in_arena_shows_victory() -> void:
 	assert_true(GameState.run_reported, "Run gemeldet")
 	assert_true(SaveManager.is_challenge_completed(&"win_spiegelkugel"), "Sieg-Challenge ausgewertet")
 	assert_eq(SaveManager.get_won_difficulties(&"spiegelkugel"), [5])
+	assert_eq((arena.get_node("Pools/DamageNumbers") as ObjectPool).active_count(), 0, "keine Schadenszahlen hinter dem Titel")
+	assert_eq(SaveManager.get_run_history().size(), 1, "Run in der Historie")

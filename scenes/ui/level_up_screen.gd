@@ -62,6 +62,7 @@ func _on_reroll() -> void:
 		return
 	AudioManager.play(&"reroll")
 	_rerolls += 1
+	GameState.run_stats.rerolls += 1
 	_build.call_deferred()
 
 

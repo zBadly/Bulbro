@@ -8,15 +8,17 @@ Stand 22.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 
 - **Erledigt:** Paket 1 (Crash nach Bosssieg, `a4c51cb`, Nacharbeit typisierte Literale `89833f1`) und Paket 2 (Lexikon-Erweiterungen, `55bf4bc`).
 - **Crash-Fix im echten Spiel bestätigt:** Bosssieg mit LED-Schütze auf Spannung 0. „Glasfaser“ wurde freigeschaltet, Sieg, Challenge und Statistik sind gespeichert, der Fortsetzen-Stand wurde gelöscht.
-- **Erledigt 22.10.:** Spielstand-Trennung für Headless-Checks/Tests (`38855c5`), Paket 3 (Admin-Modus, `7211a38`) und Paket 4 (HUD und Tooltips).
-- **Als Nächstes:** Paket 5 (Run-Statistiken und Run-Ende), danach die Pakete 6 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
-- **Für Paket 5 schon vorhanden:** Kills und Schaden je Herkunft in `GameState.run_stats.source_kills`/`source_damage` (Schlüssel `DamageSource`, z. B. `weapon/ast`, `item/supernova`, `character/zuendkerze`, `ally`, `structure/lampenturm`), gespeichert im Fortsetzen-Stand. Die Statistik-Tabelle soll diese Werte lesen, nicht neu zählen. Noch zu ergänzen: DPS (braucht die Zeit je Welle), erlittener Schaden, ausgewichene Treffer, ausgegebene Funken, Rerolls.
+- **Erledigt 22.10.:** Spielstand-Trennung für Headless-Checks/Tests (`38855c5`), Paket 3 (Admin-Modus, `7211a38`), Paket 4 (HUD und Tooltips, `5d3fadf`) und Paket 5 (Run-Statistiken und Run-Ende, inkl. der beiden Zusatzpunkte: Schadenszahlen verschwinden, „Nochmal“ bleibt).
+- **Als Nächstes:** Paket 6 (Endlos-Modus überarbeiten), danach die Pakete 7 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
+- **Für Paket 6 schon vorhanden:** Die Run-Historie speichert je Run `endless_wave`; der Bestwert „Höchste Endlos-Welle je Charakter“ kann daraus oder separat entstehen (Admin-Sperre beachten). Das Diagramm „Schaden pro Welle“ färbt Endloswellen lila.
+- **Für Paket 9 schon vorhanden:** `SaveManager.get_run_history()` liefert die letzten 20 Runs (neueste zuerst) mit Charakter, Spannung, Ergebnis, Welle, Endlos-Welle, Datum, Kampfzeit, Level, Kills und Top-3-Quellen. Siehe Abschnitt „Run-Statistik und Run-Ende“.
 
 Offene Punkte:
 - `stats.runs` = 2 im echten Spielstand ist geklärt (22.10.): Die 6.014 Kills übersteigen, was ein einzelner Run auf Spannung 0 liefern kann (rund 4.850 Gegner in den Wellen 1–19 plus Bosswelle). Es sind also zwei echte Runs mit Kills zu Ende gegangen, vermutlich der in der Sicherung vom 21.10. gespeicherte, unterbrochene Run (per „Fortsetzen“) und der Sieg mit dem LED-Schützen. Headless-Check und Tests können seit dem 22.10. ohnehin nicht mehr in den echten Spielstand schreiben.
 - Runs, die zwischen dem 21.10. 14:10 (Fehler eingeführt) und dem Fix endeten, fehlen in der Statistik und lassen sich nicht nachtragen.
 - `piercing_dmg_pct` und `boss_dmg_pct` wirken seit Paket 2, aber noch kein Item gibt diese Stats (Kandidaten für Paket 8).
-- Paket 5 hat zwei Zusatzpunkte: Schadenszahlen beim Run-Ende ausblenden, „Nochmal“-Button behalten.
+- Der Run-Ende-Bildschirm wurde mit nachgestellten Run-Daten geprüft (Screenshots 1920×1080 und 1280×720, Sieg und Tod im Endlos-Modus). Ein echter Sieg im Spiel mit Blick auf DPS-Werte und Diagramm steht noch aus.
+- Headless-Check: Die Run-Szene meldet sporadisch „ObjectDB instances leaked / resources still in use at exit“ (auch ohne Paket 5, etwa jeder zweite Lauf). Beim nächsten Auftreten mit `--verbose` prüfen.
 
 Hinweise für den Neustart:
 - Admin-Modus: `GameState.admin.used` sperrt `Unlocks.check` und `Unlocks.evaluate_run_end`. Neue Zähler (Achievements in Paket 9, Endlos-Bestwert in Paket 6) müssen dieselbe Sperre beachten.
@@ -61,6 +63,7 @@ Bosse testen: F10 → Run → Welle 20 starten; bei Spannung 5 erscheinen beide 
 | 14c-2 | 5 neue Startwaffen: Seelenlaterne, Feuerzeugwerfer, Kristallstab, Voodoo-Nadel, Dornenranke (auch im Shop) |
 | 15-3 | Admin-Modus (F10, Optionen → Erweitert): Admin-Menü mit 6 Reitern, Admin-Runs zählen nicht, `Player.rebuild()` mit Regressionstest für alle 22 Charaktere |
 | 15-4 | HUD und Tooltips: HP-Leisten unter normalen Gegnern (Option Immer/Nur bei Schaden/Aus), Tooltips für Waffen, Items, Set-Boni und Stats in Shop, Pause und Run-Ende (Maus und Gamepad, nie abgeschnitten), Stat-Panel mit Farben und Obergrenzen, Leiste „Aktive Set-Boni“, Tier-Kontur der schwebenden Waffen, Kills/Schaden je Waffe/Item/Effekt |
+| 15-5 | Run-Statistiken und Run-Ende: Reiter „Übersicht“/„Statistiken“ (Q/E, LB/RB), Zusammenfassung (Kampfzeit, Welle, Level, Kills, Funken gesammelt/ausgegeben, erlittener Schaden, geheilte HP, Ausweichen, Rerolls), Tabelle je Quelle mit Kills, Schaden, Anteil und DPS seit dem ersten Treffer, sortierbar (Spaltenkopf, R/X), MVP-Abzeichen, Diagramm „Schaden pro Welle“, Run-Historie der letzten 20 Runs, Schadenszahlen verschwinden beim Run-Ende |
 | 14c-5 | Charakter-Simulator; Balancing in zwei Runden: neue Charaktere und Waffen, schwache alte Charaktere (Kerze, Taschenlampe, Discokugel, Nachtlicht), Drohnenleuchte |
 | 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
 | 6 (Lexikon) | Hauptmenüpunkt „Lexikon“ mit 6 Reitern (Charaktere, Waffen, Items, Gegner, Waffenklassen, Spielmechaniken), Suche über alle Reiter, Filter, Sprüche (`lore_text`) für alle Einträge |
@@ -194,6 +197,16 @@ Grundlage: `--characters`, `--weapons`, `--items` (200 Runs, Vergleichswerte).
 - Kills und Schaden je Herkunft: gezählt wird der Schaden, den ein Gegner tatsächlich verliert (ohne Overkill). Brand und Fluch zählen für die Waffe oder das Item, das sie ausgelöst hat; Explosionen von Projektilen und Splitter für ihre Waffe; Item-Aktionen für ihr Item; Charakter-Effekte als `character/<id>`; Strukturen und Drohnen als `structure/<id>`. Zwei gleiche Waffen teilen sich die Werte (Tooltip „alle 2 zusammen“).
 - Obergrenzen im Stat-Panel (`CombatMath.stat_cap`): Ausweichen (`dodge_cap`), Krit-Chance, Lebensraub und Doppelte Funken je 100. Die Erklärung im Tooltip kommt aus denselben Texten wie im Lexikon (`Lexicon.stat_text`).
 - Im Shop stehen die aktiven Set-Boni in der Kopfzeile „Waffen (x/y)“, damit auch 22 Items in zwei Reihen und die Wellen-Vorschau in 1280×720 sichtbar bleiben.
+
+### Run-Statistik und Run-Ende (Phase 15, Paket 5)
+- Quelle der Tabelle sind nur `RunStats.source_kills`/`source_damage` (Paket 4). Neu erfasst werden nur Werte, die es vorher nicht gab: Kampfzeit je Welle (`wave_times`), erlittener Schaden (nach Rüstung, auch bei „Unendlich HP“), ausgewichene Treffer, ausgegebene Funken (jede erfolgreiche `GameState.spend`) und Rerolls (Shop und Level-up, auch gratis). Geheilte HP gab es schon (`healed`).
+- Kampfzeit: Der WaveManager zählt nur in der laufenden Welle, solange der Spieler lebt (Shop, Kartons, Pause und Zwischenzeit zählen nicht; Admin-„Zeit anhalten“ hält nur den Wellen-Timer an, nicht die Kampfzeit). Ein Tod mitten in der Welle schließt sie mit der bisherigen Zeit ab.
+- Schaden pro Welle (`wave_damage`) ist keine eigene Zählung: Am Wellenende wird der Zuwachs der Summe von `source_damage` gespeichert.
+- DPS je Quelle = Schaden / (Kampfzeit jetzt − Kampfzeit beim ersten Treffer dieser Quelle), mindestens 1 s (`min_dps_time`). `first_hit_time` steht im Fortsetzen-Stand. Spät gekaufte Waffen werden so nicht kleingerechnet.
+- MVP ist die Quelle mit dem meisten Schaden (bei Gleichstand mehr Kills). Sortierung: Klick auf den Spaltenkopf (nochmal = Richtung umkehren), Taste R bzw. X am Gamepad (Aktion `stats_sort`) schaltet Schaden → DPS → Kills → Anteil → Name → Art durch. Zahlen mit Tausender- und Dezimalzeichen der Sprache (DE „1.234“ und „12,3 %“).
+- Run-Historie (`run_history` im Spielstand): höchstens 20 Einträge (`history_size`), Top-3-Quellen (`history_top_sources`), geschrieben in `Unlocks.evaluate_run_end`. Admin-Runs fehlen. Ein Endlos-Run nach dem Sieg ersetzt seinen Eintrag (gleiche `GameState.run_id`, steht im Fortsetzen-Stand); ein Tod im Endlos-Modus bleibt Ergebnis „victory“ mit `endless_wave`.
+- Startwerte in `data/config/run_stats_config.tres`: Historie 20, Top-Quellen 3, DPS-Mindestzeit 1 s.
+- Schadenszahlen: Arena gibt den Pool beim Sieg und nach der Todesverzögerung frei, bevor der Bildschirm erscheint.
 
 ### Endlos-Modus
 - Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.

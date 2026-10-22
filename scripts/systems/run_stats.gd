@@ -29,11 +29,77 @@ var current_turrets: int = 0
 ## Grundlage für Tooltips und die Run-Statistik.
 var source_kills: Dictionary[StringName, int] = {}
 var source_damage: Dictionary[StringName, int] = {}
+## Kampfzeit (Summe der Wellenzeiten) beim ersten Treffer je Herkunft: DPS zählt erst ab da (Paket 5).
+var first_hit_time: Dictionary[StringName, float] = {}
+## Run-Ende-Statistik (Phase 15, Paket 5).
+var damage_taken: int = 0
+var dodges: int = 0
+var sparks_spent: int = 0
+## Rerolls im Shop und bei Level-ups.
+var rerolls: int = 0
+## Kampfzeit je abgeschlossener Welle (s); Shop und Pausen zählen nicht.
+var wave_times: Array[float] = []
+## Schaden je abgeschlossener Welle: Zuwachs der Summe von source_damage (kein eigener Zähler).
+var wave_damage: Array[int] = []
+## Kampfzeit der laufenden Welle (wird nicht gespeichert, der Fortsetzen-Stand liegt immer im Shop).
+var current_wave_time: float = 0.0
+var wave_open: bool = false
 
 
 func record_damage(origin: StringName, amount: int) -> void:
 	if origin != &"" and amount > 0:
+		if not source_damage.has(origin):
+			first_hit_time[origin] = combat_time()
 		source_damage[origin] = source_damage.get(origin, 0) + amount
+
+
+## Neue Welle: eine noch offene (Admin-Sprung ohne Wellenende) wird vorher abgeschlossen.
+func begin_wave() -> void:
+	end_wave()
+	wave_open = true
+	current_wave_time = 0.0
+
+
+func advance(delta: float) -> void:
+	if wave_open:
+		current_wave_time += delta
+
+
+## Schließt die laufende Welle ab (Wellenende oder Tod); ohne offene Welle ohne Wirkung.
+func end_wave() -> void:
+	if not wave_open:
+		return
+	var before: int = 0
+	for amount: int in wave_damage:
+		before += amount
+	wave_times.append(current_wave_time)
+	wave_damage.append(total_damage() - before)
+	current_wave_time = 0.0
+	wave_open = false
+
+
+## Bisherige Kampfzeit: alle abgeschlossenen Wellen plus die laufende.
+func combat_time() -> float:
+	var total: float = current_wave_time
+	for seconds: float in wave_times:
+		total += seconds
+	return total
+
+
+func total_damage() -> int:
+	var total: int = 0
+	for origin: StringName in source_damage:
+		total += source_damage[origin]
+	return total
+
+
+## Schaden pro Sekunde Kampfzeit seit dem ersten Treffer dieser Herkunft (mindestens `min_time` Sekunden).
+func dps_of(origin: StringName, min_time: float) -> float:
+	var damage: int = damage_of(origin)
+	if damage <= 0:
+		return 0.0
+	var seconds: float = combat_time() - first_hit_time.get(origin, 0.0)
+	return damage / maxf(seconds, min_time)
 
 
 func record_kill(origin: StringName) -> void:
@@ -58,7 +124,10 @@ func to_dict() -> Dictionary:
 		"burn_kills": burn_kills, "max_cursed": max_cursed, "lifesteal_healed": lifesteal_healed,
 		"crystals": crystals_destroyed, "weapon_kills": kills, "max_elemental": max_elemental,
 		"max_same_weapons": max_same_weapons, "dodge_item_taken": dodge_item_taken, "current_turrets": current_turrets,
-		"source_kills": _to_plain(source_kills), "source_damage": _to_plain(source_damage)}
+		"source_kills": _to_plain(source_kills), "source_damage": _to_plain(source_damage),
+		"first_hit_time": _to_plain_float(first_hit_time), "damage_taken": damage_taken, "dodges": dodges,
+		"sparks_spent": sparks_spent, "rerolls": rerolls, "wave_times": wave_times.duplicate(),
+		"wave_damage": wave_damage.duplicate()}
 
 
 static func from_dict(data: Dictionary) -> RunStats:
@@ -82,10 +151,28 @@ static func from_dict(data: Dictionary) -> RunStats:
 	run.current_turrets = int(data.get("current_turrets", 0))
 	_from_plain(data.get("source_kills", {}), run.source_kills)
 	_from_plain(data.get("source_damage", {}), run.source_damage)
+	var first_hits: Dictionary = data.get("first_hit_time", {})
+	for key: String in first_hits:
+		run.first_hit_time[StringName(key)] = float(first_hits[key])
+	run.damage_taken = int(data.get("damage_taken", 0))
+	run.dodges = int(data.get("dodges", 0))
+	run.sparks_spent = int(data.get("sparks_spent", 0))
+	run.rerolls = int(data.get("rerolls", 0))
+	for seconds: Variant in data.get("wave_times", []):
+		run.wave_times.append(float(seconds))
+	for amount: Variant in data.get("wave_damage", []):
+		run.wave_damage.append(int(amount))
 	return run
 
 
 static func _to_plain(values: Dictionary[StringName, int]) -> Dictionary:
+	var plain: Dictionary = {}
+	for key: StringName in values:
+		plain[String(key)] = values[key]
+	return plain
+
+
+static func _to_plain_float(values: Dictionary[StringName, float]) -> Dictionary:
 	var plain: Dictionary = {}
 	for key: StringName in values:
 		plain[String(key)] = values[key]

@@ -8,6 +8,8 @@ extends Node
 enum Phase { WAVE, POST_WAVE, CRATES, LEVEL_UP, SHOP, ENDED }
 
 var run_seed: int = 0
+## Eindeutige Kennung des Runs (Run-Historie: Endlos nach dem Sieg aktualisiert denselben Eintrag).
+var run_id: String = ""
 var current_wave: int = 0
 var is_run_active: bool = false
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -66,6 +68,8 @@ func _ready() -> void:
 	Events.enemy_killed.connect(_on_enemy_killed)
 	Events.enemy_damaged.connect(func(origin: StringName, amount: int) -> void: run_stats.record_damage(origin, amount))
 	Events.crystal_destroyed.connect(func(_position: Vector2) -> void: run_stats.crystals_destroyed += 1)
+	Events.wave_started.connect(func(_wave_number: int) -> void: run_stats.begin_wave())
+	Events.wave_ended.connect(func(_wave_number: int) -> void: run_stats.end_wave())
 
 
 func _on_enemy_killed(_data: EnemyData, _position: Vector2, info: DamageInfo) -> void:
@@ -101,6 +105,7 @@ func start_run(seed_value: int = 0) -> void:
 	else:
 		run_seed = seed_value
 	rng.seed = run_seed
+	run_id = "%d_%d" % [int(Time.get_unix_time_from_system()), run_seed]
 	current_wave = 0
 	sparks = 0
 	bag = 0
@@ -164,6 +169,8 @@ func set_run_setup(p_character: CharacterData, p_weapon: WeaponData, p_difficult
 
 func end_run(victory: bool) -> void:
 	is_run_active = false
+	# Tod mitten in der Welle: deren Kampfzeit und Schaden zählen mit.
+	run_stats.end_wave()
 	set_phase(Phase.ENDED)
 	Events.run_ended.emit(victory)
 
@@ -227,6 +234,7 @@ func add_item(item: ItemData) -> void:
 func spend(amount: int) -> bool:
 	if amount > sparks:
 		return false
+	run_stats.sparks_spent += amount
 	add_sparks(-amount)
 	return true
 

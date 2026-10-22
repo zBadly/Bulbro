@@ -140,6 +140,7 @@ static func evaluate_run_end(victory: bool) -> Array[ChallengeData]:
 	if victory and GameState.character != null:
 		SaveManager.record_win(GameState.character.id, GameState.difficulty.level if GameState.difficulty != null else 0)
 	var completed: Array[ChallengeData] = check(true, victory)
+	RunHistory.record(victory)
 	SaveManager.clear_run()
 	return completed
 

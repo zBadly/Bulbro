@@ -136,6 +136,7 @@ func _defaults() -> Dictionary:
 		"progress": {"characters": [], "items": [], "challenges": [], "won_difficulties": {}, "challenge_best": {}},
 		"stats": {STAT_TOTAL_SPARKS: 0, STAT_KILLS: 0, STAT_RUNS: 0, STAT_WINS: 0},
 		"run": {},
+		"run_history": [],
 	}
 
 
@@ -158,6 +159,9 @@ func _migrate(data: Dictionary) -> Dictionary:
 	for section: String in ["options", "stats", "run"]:
 		result[section].merge(data.get(section, {}), true)
 	result["progress"].merge(data.get("progress", {}), true)
+	var history: Variant = data.get("run_history", [])
+	if history is Array:
+		result["run_history"] = history
 	result["version"] = SAVE_VERSION
 	return result
 
@@ -296,6 +300,30 @@ func get_total_sparks() -> int:
 
 static func weapon_kills_key(weapon_id: StringName) -> String:
 	return WEAPON_KILLS_PREFIX + String(weapon_id)
+
+
+# --- Run-Historie (Phase 15, Paket 5; Grundlage für den Statistik-Bildschirm) ---
+
+## Zusammenfassungen der letzten Runs, neueste zuerst (siehe RunHistory.make_entry).
+func get_run_history() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for entry: Variant in _data["run_history"]:
+		if entry is Dictionary:
+			result.append((entry as Dictionary).duplicate(true))
+	return result
+
+
+## Legt einen Eintrag vorne an; ein Eintrag mit derselben Run-ID (Endlos nach dem Sieg) wird ersetzt.
+## Ältere Einträge über `limit` fallen weg. Gespeichert wird mit dem nächsten save_game().
+func record_run_history(entry: Dictionary, limit: int) -> void:
+	var history: Array = _data["run_history"]
+	for i: int in history.size():
+		if history[i] is Dictionary and history[i].get("id", "") == entry.get("id", ""):
+			history.remove_at(i)
+			break
+	history.push_front(entry)
+	if history.size() > limit:
+		history.resize(limit)
 
 
 # --- Unterbrochener Run ---

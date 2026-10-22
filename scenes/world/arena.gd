@@ -274,12 +274,14 @@ func _on_player_died() -> void:
 	_pause_menu.enabled = false
 	GameState.end_run(false)
 	await get_tree().create_timer(WAVES.game_over_delay).timeout
+	_damage_number_pool.release_all()
 	_game_over.show_result(false, wave_manager.get_wave_number(), player)
 
 
 func _on_run_won() -> void:
 	_pause_menu.enabled = false
 	GameState.end_run(true)
+	_damage_number_pool.release_all()
 	_game_over.show_result(true, wave_manager.get_wave_number(), player)
 
 

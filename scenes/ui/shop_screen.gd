@@ -247,6 +247,7 @@ func _on_reroll() -> void:
 	if not GameState.spend(_reroll_price()):
 		return
 	AudioManager.play(&"reroll")
+	GameState.run_stats.rerolls += 1
 	GameState.shop.reroll(_ctx)
 	_build.call_deferred("reroll")
 

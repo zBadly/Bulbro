@@ -29,6 +29,7 @@ static func capture(player: Player) -> Dictionary:
 		"starting_weapon": String(GameState.starting_weapon.id) if GameState.starting_weapon != null else "",
 		"difficulty": GameState.difficulty.level,
 		"seed": GameState.run_seed,
+		"run_id": GameState.run_id,
 		"rng_state": str(GameState.rng.state),
 		"wave": GameState.current_wave,
 		"sparks": GameState.sparks,
@@ -64,6 +65,7 @@ static func restore_state(data: Dictionary) -> void:
 	apply_setup(data)
 	GameState.start_run(int(data["seed"]))
 	GameState.rng.state = int(data["rng_state"])
+	GameState.run_id = String(data.get("run_id", GameState.run_id))
 	GameState.current_wave = int(data["wave"])
 	GameState.sparks = int(data["sparks"])
 	GameState.bag = int(data["bag"])

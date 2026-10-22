@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="RunStatsConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/run_stats_config.gd" id="1_rsc"]
+
+[resource]
+script = ExtResource("1_rsc")
+history_size = 20
+history_top_sources = 3
+min_dps_time = 1.0

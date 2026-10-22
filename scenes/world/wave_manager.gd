@@ -149,6 +149,7 @@ func _physics_process(delta: float) -> void:
 		State.WAVE:
 			if player.is_dead:
 				return
+			GameState.run_stats.advance(delta)
 			if not GameState.admin.time_frozen:
 				_wave_time += delta
 			time_left = maxf(0.0, _wave.duration - _wave_time)

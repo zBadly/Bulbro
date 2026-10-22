@@ -169,8 +169,10 @@ func take_hit(raw_damage: float) -> int:
 	var amount: int = CombatMath.resolve_incoming_damage(
 		raw_damage, stats.get_stat(Stats.ARMOR), stats.get_stat(Stats.DODGE), config.dodge_cap, rng.randf())
 	if amount == 0:
+		GameState.run_stats.dodges += 1
 		dodged.emit()
 		return 0
+	GameState.run_stats.damage_taken += amount
 	if not GameState.admin.infinite_hp:
 		current_hp = maxf(0.0, current_hp - amount)
 	_invulnerable_left = config.invulnerability_time
