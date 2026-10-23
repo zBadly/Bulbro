@@ -195,7 +195,7 @@ func _queue_group(group: SpawnGroupData) -> void:
 	var rng: RandomNumberGenerator = GameState.rng
 	var count: int = _scaled_count(rng.randi_range(group.group_min, group.group_max), rng)
 	if GameState.special_waves.get(get_wave_number(), "") == SPECIAL_HORDE:
-		count = roundi(count * HORDE_FACTOR)
+		count = roundi(count * (EndlessRules.config.horde_factor if GameState.endless else HORDE_FACTOR))
 	var center: Vector2 = pick_spawn_point()
 	var marker_pool: ObjectPool = Pools.get_pool(get_tree(), Pools.SPAWN_MARKERS)
 	for i in count:
@@ -346,6 +346,8 @@ func _spawn_elite() -> void:
 		return
 	var data: EnemyData = elites[GameState.rng.randi_range(0, elites.size() - 1)]
 	var factor: float = REDUCED_HP_FACTOR if get_wave_number() in REDUCED_HP_WAVES else 1.0
+	if GameState.endless:
+		factor = EndlessRules.config.elite_hp_factor
 	_bosses.append(spawn_enemy(data, pick_spawn_point(), factor))
 
 

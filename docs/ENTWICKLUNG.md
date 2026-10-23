@@ -10,7 +10,8 @@ Stand 23.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 - **Crash-Fix im echten Spiel bestätigt:** Bosssieg mit LED-Schütze auf Spannung 0. „Glasfaser“ wurde freigeschaltet, Sieg, Challenge und Statistik sind gespeichert, der Fortsetzen-Stand wurde gelöscht.
 - **Erledigt 22.10.:** Spielstand-Trennung für Headless-Checks/Tests (`38855c5`), Paket 3 (Admin-Modus, `7211a38`), Paket 4 (HUD und Tooltips, `5d3fadf`) und Paket 5 (Run-Statistiken und Run-Ende, inkl. der beiden Zusatzpunkte: Schadenszahlen verschwinden, „Nochmal“ bleibt).
 - **Erledigt 22./23.10.:** Audio-Leak beim Beenden (`35963db`) und Paket 6 (Endlos-Modus, Punkte 1–6 inkl. der Ergänzungen Boss-Kartons und Banner „Bosse besiegt!“ mit Zähler „Besiegte Boss-Zyklen“).
-- **Offen in Paket 6:** Punkt 7, Simulator-Auswertung der Endlos-Schwierigkeit. Tabelle und Wertvorschläge werden dem Spieler gezeigt; Werte in `endless_config.tres` erst nach seinem OK ändern.
+- **Offen in Paket 6:** Punkt 7. Simulator-Auswertung liegt vor (`--endless`, 23.10.): Mit den Startwerten sterben Sieger auf Spannung 0 im Median in Endlos 5 (Welle 25), 40 % an der ersten Elite-/Hordewelle, nur 5 % überleben den ersten Doppelboss. Vorschlag an den Spieler: `hp_growth` 0,06, `damage_growth` 0,05, `density_growth` 0,01, `harvest_decay` 0,02, `horde_factor` 1,5, `elite_hp_factor` 0,75 (Boss-Zyklus unverändert) → Median Endlos 10, P90 Endlos 20, 29 % überleben Welle 30. Werte erst nach seinem OK in `endless_config.tres` übernehmen.
+- Falle: Zugriffe wie `CONFIG.wert` auf eine `const`-Resource wertet GDScript beim Kompilieren aus; Laufzeit-Änderungen (Simulator-Overrides) sehen nur Zugriffe über eine Variable (`EndlessRules.config`).
 - **Als Nächstes:** danach die Pakete 7 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
 - **Für Paket 9 schon vorhanden:** `SaveManager.get_run_history()` liefert die letzten 20 Runs (neueste zuerst) mit Charakter, Spannung, Ergebnis, Welle, Endlos-Welle, Datum, Kampfzeit, Level, Kills und Top-3-Quellen. Siehe Abschnitt „Run-Statistik und Run-Ende“.
 
@@ -233,6 +234,7 @@ Grundlage: `--characters`, `--weapons`, `--items` (200 Runs, Vergleichswerte).
 | `… -- <Spannung> --characters [--runs 200] [--ablate]` | Run-Simulation je Charakter: Siegquote, Ø Welle, Scheiter-Welle, Schadensanteile, stärkster Effekt (Ablation) |
 | `… -- 0 --weapons` / `… -- 3 --items` | DPS aller Waffen gegen die eigene Klasse / Wirkung der Tier-III/IV-Items auf Siegquote |
 | `… -- <Spannung> --trace <charakter-id>` | Einen Run Welle für Welle ausgeben (Kalibrierung) |
+| `… -- <Spannung> --endless [--runs 40] [key=wert …]` | Endlos-Modus: Sieger spielen weiter bis zum Tod; je Charakter P10/Median/P90 der erreichten Endlos-Stufe, Anteil Tod in Bosswellen, häufigste Todesstufen. `key=wert` setzt `EndlessConfig`-Werte nur für diesen Lauf (z. B. `hp_growth=0.06`). Mit `--trace <id> --endless` auch Welle für Welle |
 | `python tools/make_portraits.py` | Charakter-Porträts aus den Spielsprites erzeugen |
 | `godot --headless --path . --export-release "Windows Desktop" build/windows/Bulbro.exe` | Windows-Build (benötigt installierte Export-Vorlagen) |
 

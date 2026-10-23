@@ -10,6 +10,9 @@ extends Node
 ##   ... -- 3 --items [--runs 200]                 -> Wirkung der Tier-III/IV-Items auf Siegquote und Wellen
 ##   ... -- 0 --try kerze max_hp:4 armor:2       -> Buff-Varianten (stat:delta[:f|p|g]) auf Spannung 0 und 3 testen
 ##   ... -- 0 --trace <charakter-id>               -> ein Run Welle für Welle (Schaden, Treffer, Heilung, HP)
+##   ... -- 0 --endless [--runs 100] [hp_growth=0.12 ...] -> erreichte Endlos-Welle je Charakter (Median = Ø Build,
+##                                                     90. Perzentil = starker Build); key=value setzt EndlessConfig-Werte
+##                                                     nur für diesen Lauf (nichts wird gespeichert)
 
 const WAVE_DIR: String = "res://data/waves"
 const WEAPON_DIR: String = "res://data/weapons"
@@ -21,6 +24,11 @@ const ITEMS_FLAG: String = "--items"
 const ABLATE_FLAG: String = "--ablate"
 const RUNS_FLAG: String = "--runs"
 const TRY_FLAG: String = "--try"
+const ENDLESS_FLAG: String = "--endless"
+## Perzentile für "durchschnittlicher" und "starker" Build unter den Siegern.
+const AVERAGE_PERCENTILE: float = 0.5
+const STRONG_PERCENTILE: float = 0.9
+const WEAK_PERCENTILE: float = 0.1
 ## Spannungsstufen, auf denen --try Varianten vergleicht.
 const TRY_LEVELS: Array[int] = [0, 3]
 const KIND_CODES: Dictionary[String, StatModifier.Kind] = {"f": StatModifier.Kind.FLAT, "p": StatModifier.Kind.PERCENT, "g": StatModifier.Kind.GAIN_PERCENT}
@@ -53,7 +61,9 @@ func _ready() -> void:
 		var character: CharacterData = load("res://data/characters/%s.tres" % args[args.find("--trace") + 1])
 		var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 		rng.seed = SEED
-		print(sim.simulate_run(character, difficulty, rng, {"trace": true}))
+		print(sim.simulate_run(character, difficulty, rng, {"trace": true, "endless": ENDLESS_FLAG in args}))
+	elif ENDLESS_FLAG in args:
+		await _endless(difficulty, runs, args.slice(args.find(ENDLESS_FLAG) + 1))
 	elif TRY_FLAG in args:
 		await _try_variant(args.slice(args.find(TRY_FLAG) + 1), runs)
 	elif CHARACTERS_FLAG in args:
@@ -65,6 +75,67 @@ func _ready() -> void:
 	else:
 		_waves(level, difficulty, APPLY_FLAG in args)
 	get_tree().quit()
+
+
+# --- Endlos-Modus ---
+
+## Je Charakter: Siegquote und erreichte Endlos-Stufe der Sieger (10./50./90. Perzentil), Anteil Tod in Bosswellen.
+func _endless(difficulty: DifficultyData, runs: int, overrides: PackedStringArray) -> void:
+	var config: EndlessConfig = EndlessRules.config
+	for pair: String in overrides:
+		if "=" in pair:
+			config.set(pair.get_slice("=", 0), float(pair.get_slice("=", 1)))
+			print("Override: %s" % pair)
+	var sim: CharacterSim = CharacterSim.new(self)
+	print("BULBRO Endlos-Simulation – Spannung %d, %d Runs je Charakter" % [difficulty.level, runs])
+	print("| Charakter | Siegquote | schwach (P10) | Ø Build (Median) | stark (P90) | Tod in Bosswelle |")
+	print("|---|---|---|---|---|---|")
+	var pooled: Array[int] = []
+	for character: CharacterData in Unlocks.all_characters():
+		var result: Dictionary = sim.run_many(character, difficulty, runs, SEED, {"endless": true})
+		var levels: Array[int] = []
+		levels.assign(result["endless"])
+		pooled.append_array(levels)
+		print("| %s | %d %% | %s | %s | %s | %s |" % [tr(character.name_key), roundi(result["win_rate"] * 100.0),
+			_percentile_text(levels, WEAK_PERCENTILE), _percentile_text(levels, AVERAGE_PERCENTILE),
+			_percentile_text(levels, STRONG_PERCENTILE), _boss_death_text(levels)])
+		await get_tree().process_frame
+	pooled.sort()
+	print("Alle Sieger (%d Runs): P10 %s, Median %s, P90 %s, Tod in Bosswelle %s" % [pooled.size(),
+		_percentile_text(pooled, WEAK_PERCENTILE), _percentile_text(pooled, AVERAGE_PERCENTILE),
+		_percentile_text(pooled, STRONG_PERCENTILE), _boss_death_text(pooled)])
+	var reached: PackedStringArray = []
+	for level: int in [config.boss_cycle_waves, config.boss_cycle_waves * 2, config.boss_cycle_waves * 3]:
+		reached.append("Endlos %d: %d %%" % [level, roundi(_share_reaching(pooled, level + 1) * 100.0)])
+	print("Bosswelle überlebt: " + ", ".join(reached))
+	var deaths: Dictionary[int, int] = {}
+	for level: int in pooled:
+		deaths[level] = deaths.get(level, 0) + 1
+	var common: Array[int] = deaths.keys()
+	common.sort_custom(func(a: int, b: int) -> bool: return deaths[a] > deaths[b])
+	var common_text: PackedStringArray = []
+	for level: int in common.slice(0, 5):
+		common_text.append("Endlos %d: %d %%" % [level, roundi(deaths[level] * 100.0 / pooled.size())])
+	print("Häufigste Todesstufen: " + ", ".join(common_text))
+
+
+func _percentile_text(sorted: Array[int], percentile: float) -> String:
+	if sorted.is_empty():
+		return "-"
+	var level: int = sorted[clampi(floori(percentile * (sorted.size() - 1) + 0.5), 0, sorted.size() - 1)]
+	return "%d (W%d)" % [level, CharacterSim.BOSS_WAVE + level]
+
+
+func _boss_death_text(levels: Array[int]) -> String:
+	if levels.is_empty():
+		return "-"
+	return "%d %%" % roundi(levels.filter(func(l: int) -> bool: return EndlessRules.is_boss_level(l)).size() * 100.0 / levels.size())
+
+
+func _share_reaching(sorted: Array[int], level: int) -> float:
+	if sorted.is_empty():
+		return 0.0
+	return sorted.filter(func(l: int) -> bool: return l >= level).size() / float(sorted.size())
 
 
 # --- Charaktere ---

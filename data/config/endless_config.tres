@@ -23,3 +23,5 @@ boss_legendary_crates = 1
 boss_banner_time = 2.0
 special_wave_offset = 5
 horde_chance = 0.4
+horde_factor = 2.0
+elite_hp_factor = 1.0

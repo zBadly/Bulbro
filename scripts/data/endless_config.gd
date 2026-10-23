@@ -44,3 +44,6 @@ extends Resource
 @export var special_wave_offset: int = 0
 ## Anteil Hordewellen (sonst Elite).
 @export var horde_chance: float = 0.0
+## Hordewelle: Gruppengröße x horde_factor. Elite: Anteil der vollen HP.
+@export var horde_factor: float = 1.0
+@export var elite_hp_factor: float = 1.0

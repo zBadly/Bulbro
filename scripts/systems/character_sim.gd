@@ -20,6 +20,8 @@ const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 const PERCENT: float = 100.0
 const RUN_WAVES: int = 19
 const BOSS_WAVE: int = 20
+## Endlos-Modus (Option "endless"): höchstens so viele Endloswellen simulieren.
+const MAX_ENDLESS: int = 100
 
 # --- Build-Entwicklung ---
 ## Waffenzahl wächst wie im BalanceModel (bei 6 Slots: +1 alle 3 Wellen), bei mehr/weniger Slots anteilig.
@@ -114,11 +116,16 @@ func run_many(character: CharacterData, difficulty: DifficultyData, runs: int, s
 	var fail_counts: Dictionary[int, int] = {}
 	var wave_sum: float = 0.0
 	var shares: Dictionary[String, float] = {}
+	var endless: Array[int] = []
+	var endless_deaths: Dictionary[int, int] = {}
 	for i in runs:
 		rng.seed = seed_value + i * 7919
 		var result: Dictionary = simulate_run(character, difficulty, rng, options)
 		if result["won"]:
 			wins += 1
+			if options.get("endless", false):
+				endless.append(result["endless"])
+				endless_deaths[result["endless"]] = endless_deaths.get(result["endless"], 0) + 1
 		else:
 			fail_counts[result["wave"]] = fail_counts.get(result["wave"], 0) + 1
 		wave_sum += result["wave"] + (1.0 if result["won"] else 0.0)
@@ -128,7 +135,9 @@ func run_many(character: CharacterData, difficulty: DifficultyData, runs: int, s
 	for wave: int in fail_counts:
 		if typical_fail == 0 or fail_counts[wave] > fail_counts[typical_fail]:
 			typical_fail = wave
-	return {"win_rate": float(wins) / runs, "fail_wave": typical_fail, "avg_wave": wave_sum / runs, "shares": shares}
+	endless.sort()
+	return {"win_rate": float(wins) / runs, "fail_wave": typical_fail, "avg_wave": wave_sum / runs, "shares": shares,
+		"endless": endless, "endless_deaths": endless_deaths}
 
 
 func simulate_run(character: CharacterData, difficulty: DifficultyData, rng: RandomNumberGenerator, options: Dictionary = {}) -> Dictionary:
@@ -151,7 +160,7 @@ func simulate_run(character: CharacterData, difficulty: DifficultyData, rng: Ran
 	var state: Dictionary = {"hp": player.get_max_hp(), "xp": 0.0, "level": 0, "kills": 0.0, "overheal_dps": 0.0,
 		"weapon_ids": [start], "shares": {}, "trace": options.get("trace", false)}
 	var elite_wave: int = _elite_wave(difficulty, rng)
-	var result: Dictionary = {"won": false, "wave": BOSS_WAVE, "shares": {}}
+	var result: Dictionary = {"won": false, "wave": BOSS_WAVE, "shares": {}, "endless": 0}
 	for wave: WaveData in waves:
 		if wave.wave_number > RUN_WAVES:
 			break
@@ -163,8 +172,45 @@ func simulate_run(character: CharacterData, difficulty: DifficultyData, rng: Ran
 			_finish(player, state, result)
 			return result
 	result["won"] = _play_boss(player, difficulty, rng, state)
+	if result["won"] and options.get("endless", false):
+		result["endless"] = _play_endless(player, difficulty, rng, state, start, pool, luck)
 	_finish(player, state, result)
 	return result
+
+
+## Endloswellen nach dem Sieg bis zum Tod; Rückgabe = erreichte Endlos-Stufe (wie "Endlos-Welle n erreicht").
+## Skalierung wie im Spiel über EndlessRules; die Aufladung wird schwächer (weniger Items).
+func _play_endless(player: Player, difficulty: DifficultyData, rng: RandomNumberGenerator, state: Dictionary,
+		start: WeaponData, pool: Array[WeaponData], luck: float) -> int:
+	var config: EndlessConfig = EndlessRules.config
+	var template: WaveData = waves[clampi(config.template_wave, 1, waves.size()) - 1]
+	for level: int in range(1, MAX_ENDLESS + 1):
+		var number: int = BOSS_WAVE + level
+		_grow(player, number, start, luck, state, EndlessRules.harvest_factor(level))
+		_update_weapons(player, number, start, pool, rng, state)
+		var scale: Dictionary = {"hp": EndlessRules.hp_factor(level), "damage": EndlessRules.damage_factor(level),
+			"speed": EndlessRules.speed_factor(level), "density": EndlessRules.density_factor(level)}
+		var alive: bool = true
+		if EndlessRules.is_boss_level(level):
+			var cycle: int = EndlessRules.boss_cycle(level)
+			scale["boss_hp"] = EndlessRules.boss_hp_bonus(cycle)
+			scale["boss_damage"] = EndlessRules.boss_damage_bonus(cycle)
+			alive = _play_boss(player, difficulty, rng, state, number, scale)
+		else:
+			var wave: WaveData = template.duplicate()
+			wave.wave_number = number
+			wave.duration = config.wave_duration
+			var with_elite: bool = false
+			if EndlessRules.is_special_level(level):
+				if rng.randf() < config.horde_chance:
+					scale["horde"] = config.horde_factor
+				else:
+					with_elite = true
+					scale["elite_hp"] = config.elite_hp_factor
+			alive = _play_wave(player, wave, difficulty, rng, state, with_elite, scale)
+		if not alive:
+			return level
+	return MAX_ENDLESS
 
 
 func _finish(player: Player, state: Dictionary, result: Dictionary) -> void:
@@ -208,11 +254,11 @@ func _update_weapons(player: Player, wave_number: int, start: WeaponData, pool: 
 
 
 ## Stat-Zuwachs der Welle als Run-Modifikatoren (damit "X-Modifikationen" wirken).
-func _grow(player: Player, wave_number: int, start: WeaponData, luck: float, state: Dictionary) -> void:
+func _grow(player: Player, wave_number: int, start: WeaponData, luck: float, state: Dictionary, harvest_factor: float = 1.0) -> void:
 	if wave_number <= 1:
 		return
 	var stats: StatSystem = player.stats
-	var items: float = (1.0 + stats.get_stat(Stats.KILL_SPARK_PCT) / PERCENT + maxf(0.0, stats.get_stat(Stats.HARVESTING)) / SPARKS_PER_WAVE_REF) \
+	var items: float = (1.0 + stats.get_stat(Stats.KILL_SPARK_PCT) / PERCENT + maxf(0.0, stats.get_stat(Stats.HARVESTING)) * harvest_factor / SPARKS_PER_WAVE_REF) \
 		/ maxf(0.3, 1.0 + stats.get_stat(Stats.ITEM_PRICE_PCT) / PERCENT) * (1.0 + LUCK_ITEM_PER_100 * stats.get_stat(Stats.LUCK) / PERCENT)
 	var levels: float = maxf(0.0, 1.0 + stats.get_stat(Stats.XP_GAIN_PCT) / PERCENT)
 	var factor: float = luck * (ITEM_SHARE * items + (1.0 - ITEM_SHARE) * levels)
@@ -273,14 +319,17 @@ func _has_effect(player: Player, class_name_text: String) -> bool:
 
 # --- Welle ---
 
-func _play_wave(player: Player, wave: WaveData, difficulty: DifficultyData, rng: RandomNumberGenerator, state: Dictionary, with_elite: bool) -> bool:
+## `scale` (Endlos-Modus): "hp", "damage", "speed", "density", "horde" (Faktor auf die Anzahl), "elite_hp".
+func _play_wave(player: Player, wave: WaveData, difficulty: DifficultyData, rng: RandomNumberGenerator, state: Dictionary, with_elite: bool,
+		scale: Dictionary = {}) -> bool:
 	var stats: StatSystem = player.stats
 	var load_info: Dictionary = BalanceModel.wave_load(wave, difficulty)
-	var enemy_factor: float = maxf(0.0, 1.0 + stats.get_stat(Stats.ENEMIES_PCT) / PERCENT)
+	var enemy_factor: float = maxf(0.0, 1.0 + stats.get_stat(Stats.ENEMIES_PCT) / PERCENT) * scale.get("density", 1.0) * scale.get("horde", 1.0)
+	var hp_scale: float = scale.get("hp", 1.0)
 	var duration: float = wave.duration
-	var required: float = load_info["required_dps"] * enemy_factor
+	var required: float = load_info["required_dps"] * enemy_factor * hp_scale
 	if with_elite:
-		required += elite.hp_for_wave(wave.wave_number) * ELITE_HP_FACTOR * _hp_factor(difficulty) / duration
+		required += elite.hp_for_wave(wave.wave_number) * scale.get("elite_hp", ELITE_HP_FACTOR) * hp_scale * _hp_factor(difficulty) / duration
 	var count: float = load_info["count"] * enemy_factor
 	var spawn_rate: float = count / duration
 	var offense: Dictionary = _offense(player, state, spawn_rate)
@@ -292,8 +341,8 @@ func _play_wave(player: Player, wave: WaveData, difficulty: DifficultyData, rng:
 	for key: String in offense["parts"]:
 		state["shares"][key] = state["shares"].get(key, 0.0) + offense["parts"][key] * duration
 
-	var pressure: float = clampf(pow(1.0 / maxf(ratio, 0.01), PRESSURE_EXPONENT), PRESSURE_MIN, PRESSURE_MAX)
-	var hit_damage: float = _average_enemy_damage(wave, difficulty)
+	var pressure: float = clampf(pow(1.0 / maxf(ratio, 0.01), PRESSURE_EXPONENT), PRESSURE_MIN, PRESSURE_MAX) * scale.get("speed", 1.0)
+	var hit_damage: float = _average_enemy_damage(wave, difficulty) * scale.get("damage", 1.0)
 	var noise: float = exp(rng.randfn(0.0, WAVE_NOISE_SD))
 	var flows: Dictionary = _defense(player, offense, kills, pressure * noise, hit_damage)
 	state["landed"] = flows["landed"]
@@ -322,13 +371,20 @@ func _apply_hp(player: Player, state: Dictionary, flows: Dictionary, duration: f
 	return true
 
 
-func _play_boss(player: Player, difficulty: DifficultyData, rng: RandomNumberGenerator, state: Dictionary) -> bool:
+## Ohne `scale`: Welle 20 (ein Boss, bei Spannung 5 beide mit reduzierten HP).
+## Mit `scale` (Endlos-Bosswelle): alle Bosse mit vollen HP, Endlos-Faktor und Zyklus-Bonus ("boss_hp", "boss_damage").
+func _play_boss(player: Player, difficulty: DifficultyData, rng: RandomNumberGenerator, state: Dictionary,
+		wave_number: int = BOSS_WAVE, scale: Dictionary = {}) -> bool:
 	var boss_hp: float = 0.0
 	for boss: EnemyData in bosses:
-		boss_hp += boss.hp_for_wave(BOSS_WAVE)
-	boss_hp = boss_hp / bosses.size() * _hp_factor(difficulty)
-	if difficulty != null and difficulty.level >= 5:
-		boss_hp *= 2.0 * ELITE_HP_FACTOR
+		boss_hp += boss.hp_for_wave(wave_number)
+	if scale.is_empty():
+		boss_hp = boss_hp / bosses.size() * _hp_factor(difficulty)
+		if difficulty != null and difficulty.level >= 5:
+			boss_hp *= 2.0 * ELITE_HP_FACTOR
+	else:
+		boss_hp *= _hp_factor(difficulty) * scale["hp"] * scale["boss_hp"]
+	var damage_scale: float = scale.get("damage", 1.0)
 	var offense: Dictionary = _offense(player, state, 1.0)
 	var time: float = boss_hp / maxf(offense["single"] + state["overheal_dps"], 0.01)
 	if time > BOSS_MAX_TIME:
@@ -337,10 +393,15 @@ func _play_boss(player: Player, difficulty: DifficultyData, rng: RandomNumberGen
 	var boss: EnemyData = bosses[0]
 	var noise: float = exp(rng.randfn(0.0, WAVE_NOISE_SD))
 	var add_time: float = minf(time, BOSS_ADD_TIME)
-	var add_flows: Dictionary = _defense(player, offense, 1.0, BOSS_ADD_PRESSURE * noise, _average_enemy_damage(waves[RUN_WAVES - 1], difficulty))
-	var boss_flows: Dictionary = _defense(player, offense, 0.0, BOSS_HIT_RATE / HIT_COEF * noise, boss.damage_for_wave(BOSS_WAVE) * damage_factor)
+	var add_flows: Dictionary = _defense(player, offense, 1.0, BOSS_ADD_PRESSURE * noise * scale.get("speed", 1.0),
+		_average_enemy_damage(waves[RUN_WAVES - 1], difficulty) * damage_scale)
+	var boss_damage: float = boss.damage_for_wave(wave_number) * damage_factor * damage_scale * scale.get("boss_damage", 1.0)
+	# Endlos: alle Bosse greifen gleichzeitig an.
+	var boss_count: float = float(bosses.size()) if not scale.is_empty() else 1.0
+	var boss_flows: Dictionary = _defense(player, offense, 0.0, BOSS_HIT_RATE / HIT_COEF * noise * boss_count, boss_damage)
 	var hp: float = float(state["hp"]) + (add_flows["heal"] - add_flows["damage"]) * add_time - boss_flows["damage"] * time
 	hp += boss_flows["heal"] * (time - add_time)
+	state["hp"] = clampf(hp, 0.0, player.get_max_hp())
 	if state.get("trace", false):
 		print("Boss: %.0f HP, Einzelziel %.1f DPS -> %.0f s; Adds %.2f HP/s, Boss %.2f HP/s, Heilung %.2f -> HP %.1f" % [
 			boss_hp, offense["single"], time, add_flows["damage"], boss_flows["damage"], boss_flows["heal"], hp])
