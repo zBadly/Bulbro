@@ -281,7 +281,7 @@ OPT_ENEMY_HP,Gegner-HP,Enemy HP
 OPT_ENEMY_DAMAGE,Gegner-Schaden,Enemy damage
 OPT_ENEMY_SPEED,Gegner-Tempo,Enemy speed
 ENDLESS_CONTINUE,Endlos weiterspielen,Continue endlessly
-HUD_WAVE_ENDLESS,Welle %d (Endlos),Wave %d (endless)
+HUD_WAVE_ENDLESS,Endlos %d (Welle %d),Endless %d (wave %d)
 STAT_BURN_DMG_PCT,Brandschaden %,Burn Damage %
 STAT_KILL_SPARK_PCT,Funken aus Kills %,Sparks from Kills %
 STRUCTURE_LICHTRANKE,Lichtranke,Light Vine
@@ -684,8 +684,8 @@ LEX_TOPIC_DIFFICULTY_TEXT,"Vor jedem Run wählst du die Spannung. Jede Stufe mac
 LORE_TOPIC_DIFFICULTY,"Mehr Spannung, mehr Spaß – bis die Sicherung fliegt.","More tension, more fun – until the fuse blows."
 LEX_TOPIC_HARVEST,Aufladung,Harvesting
 LEX_TOPIC_HARVEST_TEXT,"Aufladung ist dein Sparkonto: Am Ende jeder Welle bekommst du so viele Funken und XP, wie der Wert beträgt. Danach wächst sie von allein um %s %% (aufgerundet), aber nur, solange sie positiv ist. Je früher du sie steigerst, desto länger arbeiten die Zinsen für dich.
-Im Endlos-Modus zahlt sie nur %s %% aus.","Harvesting is your savings account: at the end of each wave you gain as many sparks and XP as its value. Afterwards it grows on its own by %s %% (rounded up), but only while it's positive. The earlier you raise it, the longer the interest works for you.
-In endless mode it only pays out %s %%."
+Im Endlos-Modus zahlt sie zuerst nur %s %% aus, danach je Welle %s Prozentpunkte weniger (mindestens %s %%).","Harvesting is your savings account: at the end of each wave you gain as many sparks and XP as its value. Afterwards it grows on its own by %s %% (rounded up), but only while it's positive. The earlier you raise it, the longer the interest works for you.
+In endless mode it first pays out only %s %%, then %s percentage points less per wave (at least %s %%)."
 LORE_TOPIC_HARVEST,"Strom, der von allein mehr wird. Leider nur im Spiel.",Power that grows on its own. Sadly only in games.
 LEX_TOPIC_CRATES,Kartons und Drops,Crates and Drops
 LEX_TOPIC_CRATES_TEXT,"Besiegte Gegner lassen mit %s %% Chance einen Verbrauchsgegenstand fallen: meist eine Batterie, die %s HP heilt, anfangs in %s %% der Fälle einen Ersatzteil-Karton. Jeder weitere Karton in derselben Welle wird seltener, Glück macht beides häufiger.
@@ -795,7 +795,7 @@ STAT_LIMIT_SPEED,Keine Obergrenze. Bei -100 % oder weniger stehst du still.,No c
 STAT_FORMULA_LUCK,Batterie-Chance pro Kill = {battery_base} % x (1 + Glück/100). Davon wird mit {crate_base} % x (1 + Glück/100) / (1 + Kartons dieser Welle) ein Karton. Die Chancen auf Tier II bis IV wachsen ebenfalls x (1 + Glück/100).,"Battery chance per kill = {battery_base}% x (1 + Luck/100). Of those, {crate_base}% x (1 + Luck/100) / (1 + crates this wave) become a crate. The chances for tiers II to IV also grow x (1 + Luck/100)."
 STAT_EXAMPLE_LUCK,"100 Glück = {battery_100} % Batterie-Chance statt {battery_base} %, und höhere Tiers erscheinen doppelt so oft.","100 Luck = {battery_100}% battery chance instead of {battery_base}%, and higher tiers appear twice as often."
 STAT_LIMIT_LUCK,Tier-Chancen höchstens {tier_caps} % (Tier II/III/IV). Bei -100 Glück oder weniger gibt es keine Batterien und Kartons mehr.,Tier chances at most {tier_caps}% (tier II/III/IV). At -100 Luck or below there are no batteries or crates.
-STAT_FORMULA_HARVESTING,"Danach wächst die Aufladung um {harvest_growth} % (aufgerundet), solange sie positiv ist. Im Endlos-Modus bringt sie nur {harvest_endless} % der Funken.",Afterwards Harvesting grows by {harvest_growth}% (rounded up) as long as it is positive. In endless mode it only gives {harvest_endless}% of the sparks.
+STAT_FORMULA_HARVESTING,"Danach wächst die Aufladung um {harvest_growth} % (aufgerundet), solange sie positiv ist. Im Endlos-Modus bringt sie zuerst nur {harvest_endless} % der Funken und wird jede Welle schwächer (mindestens {harvest_endless_min} %).",Afterwards Harvesting grows by {harvest_growth}% (rounded up) as long as it is positive. In endless mode it first gives only {harvest_endless}% of the sparks and gets weaker every wave (at least {harvest_endless_min}%).
 STAT_EXAMPLE_HARVESTING,"20 Aufladung = +20 Funken und XP nach der Welle, danach hast du {harvest_next} Aufladung.","20 Harvesting = +20 sparks and XP after the wave, then you have {harvest_next} Harvesting."
 STAT_LIMIT_HARVESTING,Keine Obergrenze. Negative Aufladung zieht dir am Wellenende Funken ab (nie unter 0) und wächst nicht.,No cap. Negative Harvesting takes sparks away at the end of a wave (never below 0) and doesn't grow.
 STAT_FORMULA_XP_GAIN_PCT,XP = Funkenwert x (1 + XP %/100).,XP = spark value x (1 + XP %/100).
@@ -977,3 +977,18 @@ RUN_STATS_CHART_TITLE,Schaden pro Welle,Damage per wave
 RUN_STATS_CHART_MAX,max. %s,max %s
 RUN_STATS_THOUSANDS,.,","
 RUN_STATS_DECIMAL,",",.
+ENDLESS_BOSSES_DEFEATED,Bosse besiegt! Zyklus %d geschafft,Bosses defeated! Cycle %d cleared
+SHOP_NEXT_BOSSES,Nächste Welle: Bosse,Next wave: bosses
+SHOP_NEXT_BOSS,Nächste Welle: Boss,Next wave: boss
+RUN_STATS_BOSS_CYCLES,Besiegte Boss-Zyklen,Boss cycles defeated
+ENDLESS_BEST,Höchste Endlos-Welle: %s,Highest endless wave: %s
+ENDLESS_BEST_NONE,Höchste Endlos-Welle: –,Highest endless wave: –
+ENDLESS_BEST_VALUE,Endlos %d (Welle %d),Endless %d (wave %d)
+LEX_ENDLESS_BEST,Höchste Endlos-Welle,Highest endless wave
+LEX_TOPIC_ENDLESS,Endlos-Modus,Endless mode
+LEX_TOPIC_ENDLESS_TEXT,"Nach dem Sieg in Welle 20 kannst du endlos weiterspielen. Jede Endloswelle dauert %s s. Mit jeder Welle werden Gegner stärker, der Zuwachs stapelt sich (Zinseszins): +%s %% HP und +%s %% Schaden. Gruppen erscheinen um %s %% pro Welle häufiger (höchstens +%s %%), Gegner werden um %s %% pro Welle schneller (höchstens +%s %%). Mehr als 100 Gegner gleichzeitig gibt es trotzdem nie.
+Alle %d Wellen (zuerst in Welle %d) kommen alle Bosse gleichzeitig. Jeder Boss-Zyklus gibt ihnen zusätzlich +%s %% HP und +%s %% Schaden. Die Welle endet, wenn alle Bosse besiegt sind; jeder Boss lässt %d legendären Karton fallen.
+In der Mitte jedes 10er-Blocks (zuerst Welle %d) wartet eine Elite- oder Hordewelle (%s %% Horde). Die Aufladung zahlt anfangs nur %s %% aus und wird jede Welle schwächer.","After winning wave 20 you can keep playing endlessly. Every endless wave lasts %s s. Enemies get stronger with every wave and the growth stacks (compound): +%s %% HP and +%s %% damage. Groups appear %s %% more often per wave (at most +%s %%), enemies get %s %% faster per wave (at most +%s %%). There are still never more than 100 enemies at once.
+Every %d waves (first in wave %d) all bosses arrive together. Each boss cycle gives them an extra +%s %% HP and +%s %% damage. The wave ends when all bosses are defeated; each boss drops %d legendary crate.
+In the middle of every block of 10 (first wave %d) an elite or horde wave awaits (%s %% horde). Harvesting only pays out %s %% at first and gets weaker every wave."
+LORE_TOPIC_ENDLESS,"Eine Glühbirne, die nicht ausgeht, ist kein Wunder, sondern eine Herausforderung.",A bulb that never burns out is not a miracle. It is a challenge.

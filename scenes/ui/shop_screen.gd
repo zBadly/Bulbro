@@ -61,6 +61,10 @@ func _build(focus_hint: String) -> void:
 	next.pressed.connect(_on_next_wave)
 	header.add_child(next)
 	_focus_targets["next"] = next
+	if _boss_wave_numbers().has(_ctx.wave + 1):
+		var warning: Label = UiStyle.make_label(SECTION_SIZE, UiStyle.HP_COLOR)
+		warning.text = tr("SHOP_NEXT_BOSSES") if GameState.endless else tr("SHOP_NEXT_BOSS")
+		left.add_child(warning)
 
 	# Angebote
 	var offers_row: HBoxContainer = HBoxContainer.new()
@@ -194,20 +198,38 @@ func _build_set_bonuses(parent: HBoxContainer) -> void:
 func _build_preview(parent: VBoxContainer) -> void:
 	var label: Label = UiStyle.make_label(SMALL_SIZE, UiStyle.HP_COLOR)
 	var specials: PackedStringArray = []
-	var waves: Array[Resource] = DataRegistry.get_all(WAVE_CATEGORY)
-	waves.sort_custom(func(a: Resource, b: Resource) -> bool: return (a as WaveData).wave_number < (b as WaveData).wave_number)
-	for res: Resource in waves:
-		var wave: WaveData = res as WaveData
-		if wave.wave_number <= _ctx.wave:
+	var bosses: Array[int] = _boss_wave_numbers()
+	var numbers: Array[int] = bosses.duplicate()
+	for number: int in GameState.special_waves:
+		if number not in numbers:
+			numbers.append(number)
+	numbers.sort()
+	for number: int in numbers:
+		if number <= _ctx.wave:
 			continue
-		if wave.is_boss:
-			specials.append(tr("PREVIEW_BOSS") % wave.wave_number)
-		elif GameState.special_waves.get(wave.wave_number, "") == WaveManager.SPECIAL_ELITE:
-			specials.append(tr("PREVIEW_ELITE") % wave.wave_number)
-		elif GameState.special_waves.get(wave.wave_number, "") == WaveManager.SPECIAL_HORDE:
-			specials.append(tr("PREVIEW_HORDE") % wave.wave_number)
+		if number in bosses:
+			specials.append(tr("PREVIEW_BOSS") % number)
+		elif GameState.special_waves[number] == WaveManager.SPECIAL_ELITE:
+			specials.append(tr("PREVIEW_ELITE") % number)
+		elif GameState.special_waves[number] == WaveManager.SPECIAL_HORDE:
+			specials.append(tr("PREVIEW_HORDE") % number)
 	label.text = tr("PREVIEW_TITLE") % (", ".join(specials) if not specials.is_empty() else tr("PREVIEW_NONE"))
 	parent.add_child(label)
+
+
+## Bosswellen in Reichweite der Vorschau: die letzte reguläre Welle, im Endlos-Modus die nächste Bosswelle.
+func _boss_wave_numbers() -> Array[int]:
+	var result: Array[int] = []
+	if GameState.endless:
+		var cycle: int = EndlessRules.CONFIG.boss_cycle_waves
+		for number: int in range(_ctx.wave + 1, _ctx.wave + cycle + 1):
+			if EndlessRules.is_boss_level(number - GameState.endless_start_wave):
+				result.append(number)
+		return result
+	for res: Resource in DataRegistry.get_all(WAVE_CATEGORY):
+		if (res as WaveData).is_boss:
+			result.append((res as WaveData).wave_number)
+	return result
 
 
 func _weapon_recycle_value(weapon: Weapon) -> int:

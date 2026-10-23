@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="EndlessConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/endless_config.gd" id="1_endless"]
+
+[resource]
+script = ExtResource("1_endless")
+template_wave = 19
+wave_duration = 60.0
+boss_template_wave = 20
+hp_growth = 0.15
+damage_growth = 0.1
+speed_growth = 0.03
+speed_max = 0.6
+density_growth = 0.02
+density_max = 1.0
+harvest_start = 0.5
+harvest_decay = 0.04
+harvest_min = 0.1
+boss_cycle_waves = 10
+boss_cycle_hp_bonus = 0.4
+boss_cycle_damage_bonus = 0.15
+boss_legendary_crates = 1
+boss_banner_time = 2.0
+special_wave_offset = 5
+horde_chance = 0.4

@@ -18,6 +18,10 @@ const BOSS_NAME_SIZE: int = 24
 const BOSS_COLOR: Color = Color("#9B59B6")
 const ADMIN_BADGE_SIZE: int = 20
 const ADMIN_BADGE_COLOR: Color = Color("#E74C3C")
+## Banner "Bosse besiegt!" im Endlos-Modus: Gold, springt aus dieser Größe auf normal.
+const CYCLE_BANNER_COLOR: Color = Color("#F5A623")
+const CYCLE_BANNER_POP_SCALE: float = 1.4
+const CYCLE_BANNER_POP_TIME: float = 0.25
 
 var _hp_bar: ProgressBar
 var _hp_label: Label
@@ -34,6 +38,7 @@ var _boss_box: VBoxContainer
 var _boss_bars: Dictionary[Enemy, ProgressBar] = {}
 ## Kleines Abzeichen, sobald im Run eine Admin-Aktion ausgeführt wurde.
 var _admin_badge: Label
+var _banner_tween: Tween
 
 
 func _ready() -> void:
@@ -88,12 +93,15 @@ func _ready() -> void:
 	_banner.grow_vertical = Control.GROW_DIRECTION_BOTH
 	_banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_banner.hide()
+	# Sprung-Animation um die Mitte; die Größe folgt dem Text.
+	_banner.resized.connect(func() -> void: _banner.pivot_offset = _banner.size / 2.0)
 	add_child(_banner)
 
 	Events.sparks_changed.connect(_on_sparks_changed)
 	Events.xp_changed.connect(set_xp)
 	Events.run_phase_changed.connect(_on_phase_changed)
 	Events.boss_spawned.connect(_on_boss_spawned)
+	Events.endless_bosses_defeated.connect(_on_endless_bosses_defeated)
 	_on_sparks_changed(GameState.sparks, GameState.bag)
 	set_xp(GameState.xp, GameState.xp_needed(), GameState.level)
 
@@ -169,13 +177,34 @@ func _on_hp_changed(current: float, maximum: float) -> void:
 
 
 func _on_wave_started(number: int) -> void:
-	_wave_label.text = tr("HUD_WAVE_ENDLESS") % number if GameState.endless else tr("HUD_WAVE") % number
+	if GameState.endless:
+		_wave_label.text = tr("HUD_WAVE_ENDLESS") % [GameState.endless_level(), number]
+	else:
+		_wave_label.text = tr("HUD_WAVE") % number
 	_banner.hide()
 
 
 func _on_wave_ended(number: int) -> void:
 	_timer_label.text = ""
-	_banner.text = tr("WAVE_CLEARED") % number
+	_show_banner(tr("WAVE_CLEARED") % number, Color.WHITE)
+
+
+## Endlos-Bosse besiegt: goldenes Banner mit kleinem Sprung, verschwindet nach boss_banner_time.
+func _on_endless_bosses_defeated(cycle: int) -> void:
+	_show_banner(tr("ENDLESS_BOSSES_DEFEATED") % cycle, CYCLE_BANNER_COLOR)
+	_banner.scale = Vector2.ONE * CYCLE_BANNER_POP_SCALE
+	_banner_tween = create_tween()
+	_banner_tween.tween_property(_banner, "scale", Vector2.ONE, CYCLE_BANNER_POP_TIME) 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_banner_tween.tween_interval(maxf(0.0, EndlessRules.CONFIG.boss_banner_time - CYCLE_BANNER_POP_TIME))
+	_banner_tween.tween_callback(_banner.hide)
+
+
+func _show_banner(text: String, color: Color) -> void:
+	if _banner_tween != null:
+		_banner_tween.kill()
+	_banner.scale = Vector2.ONE
+	_banner.modulate = color
+	_banner.text = text
 	_banner.show()
 
 

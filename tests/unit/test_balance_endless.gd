@@ -1,7 +1,7 @@
 extends GutTest
 ## Tests für das Balancing-Modell und den Endlos-Modus (Phase 13).
 
-const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
+const ENDLESS: EndlessConfig = preload("res://data/config/endless_config.tres")
 const PLAYER_SCENE: PackedScene = preload("res://scenes/player/player.tscn")
 const MARKER_SCENE: PackedScene = preload("res://scenes/world/spawn_marker.tscn")
 
@@ -47,14 +47,12 @@ func test_rating_and_interval_suggestion() -> void:
 
 
 # --- Endlos-Modus ---
-func test_endless_factor_grows_per_wave() -> void:
-	assert_eq(GameState.endless_factor(0.15), 1.0, "vor dem Endlos-Modus neutral")
+func test_endless_level_counts_waves_after_victory() -> void:
+	assert_eq(GameState.endless_level(), 0, "vor dem Endlos-Modus neutral")
 	GameState.endless = true
 	GameState.endless_start_wave = 20
 	GameState.current_wave = 22
-	assert_almost_eq(GameState.endless_factor(0.15), 1.15 * 1.15, 0.0001)
-	GameState.current_wave = 60
-	assert_almost_eq(GameState.endless_factor(WAVES.endless_speed_growth, WAVES.endless_speed_max), 1.0 + WAVES.endless_speed_max, 0.0001)
+	assert_eq(GameState.endless_level(), 2)
 
 
 func test_endless_waves_use_template() -> void:
@@ -73,7 +71,7 @@ func test_endless_waves_use_template() -> void:
 	GameState.endless_start_wave = 20
 	manager.start_next_wave()
 	assert_eq(manager.get_wave_number(), 21)
-	assert_eq(manager.time_left, WAVES.endless_wave_duration)
+	assert_eq(manager.time_left, ENDLESS.wave_duration)
 	assert_eq(GameState.current_wave, 21)
 	manager.call("_end_wave")
 	assert_eq(manager.state, WaveManager.State.INTERMISSION, "Endloswellen führen weiter zum Shop")
@@ -91,7 +89,7 @@ func test_endless_enemies_are_stronger() -> void:
 	GameState.endless_start_wave = 20
 	GameState.current_wave = 21
 	enemy.activate(21, Vector2(500, 0), player, Rect2(), player.rng)
-	assert_almost_eq(enemy.max_hp, normal * (1.0 + WAVES.endless_hp_growth), 0.01)
+	assert_almost_eq(enemy.max_hp, normal * (1.0 + ENDLESS.hp_growth), 0.01)
 
 
 func test_run_is_reported_only_once() -> void:

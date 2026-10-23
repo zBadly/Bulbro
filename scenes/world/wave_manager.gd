@@ -44,6 +44,8 @@ var _active: Array[Enemy] = []
 var _enemy_pools: Dictionary[StringName, ObjectPool] = {}
 ## Elites und Bosse der aktuellen Welle.
 var _bosses: Array[Enemy] = []
+## Endlos-Modus: Gruppen erscheinen um diesen Faktor häufiger.
+var _density: float = 1.0
 
 
 func start(p_player: Player, rect: Rect2, container: Node2D) -> void:
@@ -127,8 +129,11 @@ func start_next_wave() -> void:
 
 
 func start_wave(number: int) -> void:
-	_wave = _waves[number - 1] if number <= _waves.size() else _make_endless_wave(number)
 	GameState.current_wave = number
+	_wave = _waves[number - 1] if number <= _waves.size() else _make_endless_wave(number)
+	_density = EndlessRules.density_factor(GameState.endless_level())
+	if GameState.endless:
+		roll_endless_specials(number + EndlessRules.CONFIG.boss_cycle_waves)
 	time_left = _wave.duration
 	_wave_time = 0.0
 	_next_group_time.clear()
@@ -173,7 +178,7 @@ func _update_groups() -> void:
 			continue
 		while _wave_time >= _next_group_time[i]:
 			_queue_group(group)
-			_next_group_time[i] += group.interval
+			_next_group_time[i] += group.interval / _density
 
 
 func _update_pending(delta: float) -> void:
@@ -205,11 +210,12 @@ func _queue_group(group: SpawnGroupData) -> void:
 
 
 ## Erzeugt sofort einen Gegner. Beim Erreichen des Limits verschwindet vorher ein zufälliger normaler Gegner.
-func spawn_enemy(data: EnemyData, spawn_position: Vector2, hp_multiplier: float = 1.0) -> Enemy:
+func spawn_enemy(data: EnemyData, spawn_position: Vector2, hp_multiplier: float = 1.0, damage_multiplier: float = 1.0) -> Enemy:
 	if _active.size() >= CONFIG.max_enemies:
 		_despawn_random()
 	var enemy: Enemy = _get_pool(data).acquire() as Enemy
 	enemy.hp_multiplier = hp_multiplier
+	enemy.damage_multiplier = damage_multiplier
 	enemy.activate(get_wave_number(), spawn_position, player, arena_rect, GameState.rng)
 	_active.append(enemy)
 	return enemy
@@ -234,6 +240,9 @@ func _end_wave() -> void:
 	var number: int = _wave.wave_number
 	Events.wave_ended.emit(number)
 	wave_ended.emit(number)
+	if _wave.is_boss and GameState.endless:
+		GameState.run_stats.boss_cycles += 1
+		Events.endless_bosses_defeated.emit(EndlessRules.boss_cycle(GameState.endless_level()))
 	if number == _waves.size() and not GameState.endless:
 		state = State.FINISHED
 		run_won.emit()
@@ -241,14 +250,30 @@ func _end_wave() -> void:
 		state = State.INTERMISSION
 
 
-## Endloswelle: Gegnergruppen der Vorlagewelle, feste Dauer; Stärke wächst über GameState.endless_factor.
+## Endloswelle: Gegnergruppen der Vorlagewelle, feste Dauer; Stärke wächst über EndlessRules.
+## Alle boss_cycle_waves Wellen eine Bosswelle nach Vorlage der letzten Welle (Begleitgegner, Dauer der Gruppen).
 func _make_endless_wave(number: int) -> WaveData:
-	var template: WaveData = _waves[clampi(CONFIG.endless_template_wave, 1, _waves.size()) - 1]
+	var config: EndlessConfig = EndlessRules.CONFIG
+	var boss: bool = EndlessRules.is_boss_level(number - GameState.endless_start_wave)
+	var template_number: int = config.boss_template_wave if boss else config.template_wave
+	var template: WaveData = _waves[clampi(template_number, 1, _waves.size()) - 1]
 	var wave: WaveData = template.duplicate()
 	wave.wave_number = number
-	wave.duration = CONFIG.endless_wave_duration
-	wave.is_boss = false
+	wave.is_boss = boss
+	if not boss:
+		wave.duration = config.wave_duration
 	return wave
+
+
+## Würfelt die Endlos-Sonderwellen (Elite oder Horde) bis einschließlich Welle `up_to` aus, falls noch offen.
+## Sie landen in GameState.special_waves (Shop-Vorschau, Fortsetzen).
+func roll_endless_specials(up_to: int) -> void:
+	var config: EndlessConfig = EndlessRules.CONFIG
+	for number: int in range(GameState.endless_start_wave + 1, up_to + 1):
+		if GameState.special_waves.has(number) or not EndlessRules.is_special_level(number - GameState.endless_start_wave):
+			continue
+		var horde: bool = GameState.rng.randf() < config.horde_chance
+		GameState.special_waves[number] = SPECIAL_HORDE if horde else SPECIAL_ELITE
 
 
 func _get_pool(data: EnemyData) -> ObjectPool:
@@ -325,9 +350,15 @@ func _spawn_elite() -> void:
 
 
 ## Welle 20: ein zufälliger Boss, bei Spannung 5 beide mit reduzierten HP.
+## Endlos-Bosswellen: alle Bosse mit vollen HP plus Zyklus-Bonus auf HP und Schaden.
 func _spawn_bosses() -> void:
 	var bosses: Array[EnemyData] = _enemies_where(func(e: EnemyData) -> bool: return e.is_boss)
 	if bosses.is_empty():
+		return
+	if GameState.endless:
+		var cycle: int = EndlessRules.boss_cycle(GameState.endless_level())
+		for data: EnemyData in bosses:
+			_bosses.append(spawn_enemy(data, pick_spawn_point(), EndlessRules.boss_hp_bonus(cycle), EndlessRules.boss_damage_bonus(cycle)))
 		return
 	var difficulty: DifficultyData = GameState.difficulty
 	if difficulty != null and difficulty.double_boss:

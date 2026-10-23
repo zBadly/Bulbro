@@ -24,6 +24,7 @@ const RARITY: RarityConfig = preload("res://data/config/rarity_config.tres")
 const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
+const ENDLESS: EndlessConfig = preload("res://data/config/endless_config.tres")
 const TOWER: StructureData = preload("res://data/structures/lampenturm.tres")
 ## Teile einer Stat-Erklärung nach der Wirkung (LEX_STAT_<TEIL> als Überschrift, STAT_<TEIL>_<STAT> als Text).
 const STAT_PARTS: PackedStringArray = ["FORMULA", "EXAMPLE", "LIMIT"]
@@ -118,7 +119,14 @@ static func character_entry(character: CharacterData) -> LexiconEntry:
 	entry.add_text(t("LEX_UNLOCK"), entry.lock_text)
 	var win_item: ItemData = win_item_for(character)
 	entry.add_text(t("LEX_WIN_ITEM"), t(win_item.name_key) if win_item != null else t("LEX_NONE"))
+	var endless_best: int = SaveManager.get_endless_best(character.id)
+	entry.add_text(t("LEX_ENDLESS_BEST"), t("ENDLESS_BEST_VALUE") % [endless_best, endless_wave(endless_best)] if endless_best > 0 else t("LEX_NONE"))
 	return entry
+
+
+## Wellennummer einer Endlos-Stufe (nach der Bosswelle).
+static func endless_wave(level: int) -> int:
+	return _boss_wave() + level
 
 
 ## Item, das ein Sieg mit diesem Charakter im Shop freischaltet.
@@ -577,7 +585,14 @@ static func topic_text(key: String) -> String:
 			args = [Economy.XP_LEVEL_OFFSET, TextFormat.number(PLAYER.max_hp_per_level), SHOP.upgrade_card_count,
 				RARITY.guaranteed_tier_2_level, "/".join(tier_3), RARITY.guaranteed_tier_4_from_level, RARITY.guaranteed_tier_4_every]
 		"LEX_TOPIC_HARVEST_TEXT":
-			args = [_percent(Economy.HARVESTING_GROWTH), _percent(WAVES.endless_harvest_factor)]
+			args = [_percent(Economy.HARVESTING_GROWTH), _percent(ENDLESS.harvest_start), _percent(ENDLESS.harvest_decay),
+				_percent(ENDLESS.harvest_min)]
+		"LEX_TOPIC_ENDLESS_TEXT":
+			args = [TextFormat.number(ENDLESS.wave_duration), _percent(ENDLESS.hp_growth), _percent(ENDLESS.damage_growth),
+				_percent(ENDLESS.density_growth), _percent(ENDLESS.density_max), _percent(ENDLESS.speed_growth),
+				_percent(ENDLESS.speed_max), ENDLESS.boss_cycle_waves, endless_wave(ENDLESS.boss_cycle_waves),
+				_percent(ENDLESS.boss_cycle_hp_bonus), _percent(ENDLESS.boss_cycle_damage_bonus), ENDLESS.boss_legendary_crates,
+				endless_wave(ENDLESS.special_wave_offset), _percent(ENDLESS.horde_chance), _percent(ENDLESS.harvest_start)]
 		"LEX_TOPIC_CRATES_TEXT":
 			args = [_percent(DROPS.consumable_base_chance), TextFormat.number(DROPS.battery_heal), _percent(DROPS.crate_base_chance),
 				TextFormat.number(DROPS.crate_heal), _percent(SHOP.recycle_share), TextFormat.number(DROPS.crystal_first_spawn),
@@ -660,7 +675,8 @@ static func stat_values() -> Dictionary:
 		"crate_base": _percent(DROPS.crate_base_chance),
 		"tier_caps": "/".join(tier_caps),
 		"harvest_growth": _percent(Economy.HARVESTING_GROWTH),
-		"harvest_endless": _percent(WAVES.endless_harvest_factor),
+		"harvest_endless": _percent(ENDLESS.harvest_start),
+		"harvest_endless_min": _percent(ENDLESS.harvest_min),
 		"harvest_next": roundi(EXAMPLE_DAMAGE * 2.0) + Economy.harvesting_growth(EXAMPLE_DAMAGE * 2.0),
 		"xp_example": TextFormat.number(Economy.xp_gain(1.0, EXAMPLE_PCT)),
 		"pickup_base": TextFormat.number(PLAYER.pickup_radius),

@@ -163,6 +163,8 @@ func _build_summary(run: RunStats) -> void:
 		["RUN_STATS_REROLLS", str(run.rerolls)],
 		["RUN_STATS_TOTAL_DAMAGE", RunReport.format_int(run.total_damage())],
 	]
+	if GameState.endless:
+		entries.append(["RUN_STATS_BOSS_CYCLES", str(run.boss_cycles)])
 	for entry: Array in entries:
 		var cell: VBoxContainer = VBoxContainer.new()
 		cell.custom_minimum_size = Vector2(SUMMARY_CELL_WIDTH, 0.0)

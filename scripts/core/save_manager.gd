@@ -133,7 +133,7 @@ func _defaults() -> Dictionary:
 	return {
 		"version": SAVE_VERSION,
 		"options": {},
-		"progress": {"characters": [], "items": [], "challenges": [], "won_difficulties": {}, "challenge_best": {}},
+		"progress": {"characters": [], "items": [], "challenges": [], "won_difficulties": {}, "challenge_best": {}, "endless_best": {}},
 		"stats": {STAT_TOTAL_SPARKS: 0, STAT_KILLS: 0, STAT_RUNS: 0, STAT_WINS: 0},
 		"run": {},
 		"run_history": [],
@@ -282,6 +282,17 @@ func get_won_difficulties(character_id: StringName) -> Array[int]:
 
 func get_wins(character_id: StringName) -> int:
 	return get_won_difficulties(character_id).size()
+
+
+## Höchste erreichte Endlos-Welle (Endlos-Stufe) je Charakter; 0 = noch keine.
+func get_endless_best(character_id: StringName) -> int:
+	return int(_data["progress"]["endless_best"].get(String(character_id), 0))
+
+
+## Gespeichert wird mit dem nächsten save_game() (spätestens im Shop). Admin-Runs prüft der Aufrufer.
+func record_endless_best(character_id: StringName, level: int) -> void:
+	if level > get_endless_best(character_id):
+		_data["progress"]["endless_best"][String(character_id)] = level
 
 
 # --- Statistiken ---

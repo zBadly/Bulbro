@@ -15,7 +15,6 @@ const TINT_PARAM: StringName = &"tint_color"
 const NO_TINT: Color = Color(1.0, 1.0, 1.0, 0.0)
 
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
-const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
 ## Gruppe der gerade verfluchten Gegner (Zähler für die Schwarzlicht-Freischaltung).
 const CURSED_GROUP: StringName = &"cursed_enemies"
@@ -39,6 +38,8 @@ var speed_factor: float = 1.0
 var is_buffed: bool = false
 ## Zusätzlicher HP-Faktor für diesen Spawn (z. B. Elites auf Welle 11/12, doppelter Boss).
 var hp_multiplier: float = 1.0
+## Faktor auf Kontakt- und Projektilschaden (Endlos-Bosse je Zyklus), beim Spawn gesetzt.
+var damage_multiplier: float = 1.0
 var curse: CurseStatus = CurseStatus.new()
 var slow: SlowStatus = SlowStatus.new()
 
@@ -120,13 +121,14 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	var difficulty: DifficultyData = GameState.difficulty
 	var hp_factor: float = 1.0 + (difficulty.enemy_hp_pct / CombatMath.PERCENT if difficulty != null else 0.0)
 	var damage_factor: float = 1.0 + (difficulty.enemy_damage_pct / CombatMath.PERCENT if difficulty != null else 0.0)
-	hp_factor *= GameState.endless_factor(WAVES.endless_hp_growth)
-	damage_factor *= GameState.endless_factor(WAVES.endless_damage_growth)
+	var endless_level: int = GameState.endless_level()
+	hp_factor *= EndlessRules.hp_factor(endless_level)
+	damage_factor *= EndlessRules.damage_factor(endless_level) * damage_multiplier
 	max_hp = data.hp_for_wave(wave) * hp_factor * hp_multiplier * GameState.assist_hp
 	hp = max_hp
 	damage = data.damage_for_wave(wave) * damage_factor * GameState.assist_damage
 	projectile_damage = data.projectile_damage_for_wave(wave) * damage_factor * GameState.assist_damage
-	speed_factor = maxf(0.0, 1.0 + p_player.stats.get_stat(Stats.ENEMY_SPEED_PCT) / CombatMath.PERCENT) * GameState.assist_speed * GameState.endless_factor(WAVES.endless_speed_growth, WAVES.endless_speed_max)
+	speed_factor = maxf(0.0, 1.0 + p_player.stats.get_stat(Stats.ENEMY_SPEED_PCT) / CombatMath.PERCENT) * GameState.assist_speed * EndlessRules.speed_factor(endless_level)
 	speed = rng.randf_range(data.speed_min, data.speed_max) * speed_factor
 	is_buffed = false
 	_sprite.material = _flash_material

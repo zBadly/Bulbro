@@ -156,11 +156,6 @@ func endless_level() -> int:
 	return maxi(0, current_wave - endless_start_wave) if endless else 0
 
 
-## Gegner-Faktor im Endlos-Modus: (1 + Zuwachs)^Endloswelle, optional gedeckelt.
-func endless_factor(growth: float, cap: float = INF) -> float:
-	return minf(pow(1.0 + growth, endless_level()), 1.0 + cap)
-
-
 func set_run_setup(p_character: CharacterData, p_weapon: WeaponData, p_difficulty: DifficultyData) -> void:
 	character = p_character
 	starting_weapon = p_weapon

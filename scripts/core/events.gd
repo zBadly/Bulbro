@@ -17,6 +17,9 @@ signal pause_toggled(is_paused: bool)
 signal player_died
 @warning_ignore("unused_signal")
 signal boss_spawned(enemy: Enemy)
+## Endlos-Modus: alle Bosse einer Bosswelle besiegt (Zyklus 1 = Welle 30).
+@warning_ignore("unused_signal")
+signal endless_bosses_defeated(cycle: int)
 @warning_ignore("unused_signal")
 signal options_changed
 @warning_ignore("unused_signal")

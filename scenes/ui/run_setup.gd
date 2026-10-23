@@ -174,8 +174,8 @@ func _select_character(character: CharacterData) -> void:
 		var weapons: PackedStringArray = []
 		for weapon: WeaponData in character.starting_weapons:
 			weapons.append(tr(weapon.name_key))
-		text.text = "%s\n\n%s: %s\n%s" % [TextFormat.describe_character(character), tr("RUN_END_WEAPONS"),
-			", ".join(weapons), _wins_text(character)]
+		text.text = "%s\n\n%s: %s\n%s\n%s" % [TextFormat.describe_character(character), tr("RUN_END_WEAPONS"),
+			", ".join(weapons), _wins_text(character), _endless_best_text(character)]
 	else:
 		var progress: String = Unlocks.progress_text(character)
 		text.text = Unlocks.condition_text(character) + ("\n" + tr("CHALLENGE_PROGRESS") % progress if progress != "" else "")
@@ -190,6 +190,14 @@ func _wins_text(character: CharacterData) -> String:
 	if levels.is_empty():
 		return tr("WINS_NONE")
 	return tr("WINS_LEVELS") % ", ".join(levels.map(func(l: int) -> String: return str(l)))
+
+
+## "Höchste Endlos-Welle: Endlos 12 (Welle 32)" oder "Höchste Endlos-Welle: –".
+func _endless_best_text(character: CharacterData) -> String:
+	var best: int = SaveManager.get_endless_best(character.id)
+	if best <= 0:
+		return tr("ENDLESS_BEST_NONE")
+	return tr("ENDLESS_BEST") % (tr("ENDLESS_BEST_VALUE") % [best, Lexicon.endless_wave(best)])
 
 
 func _confirm_character() -> void:

@@ -4,13 +4,14 @@ Ergänzt [GDD.md](GDD.md) und [ART_STYLE.md](ART_STYLE.md). Hier stehen der Stan
 
 ## Nächste Sitzung
 
-Stand 22.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
+Stand 23.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 
 - **Erledigt:** Paket 1 (Crash nach Bosssieg, `a4c51cb`, Nacharbeit typisierte Literale `89833f1`) und Paket 2 (Lexikon-Erweiterungen, `55bf4bc`).
 - **Crash-Fix im echten Spiel bestätigt:** Bosssieg mit LED-Schütze auf Spannung 0. „Glasfaser“ wurde freigeschaltet, Sieg, Challenge und Statistik sind gespeichert, der Fortsetzen-Stand wurde gelöscht.
 - **Erledigt 22.10.:** Spielstand-Trennung für Headless-Checks/Tests (`38855c5`), Paket 3 (Admin-Modus, `7211a38`), Paket 4 (HUD und Tooltips, `5d3fadf`) und Paket 5 (Run-Statistiken und Run-Ende, inkl. der beiden Zusatzpunkte: Schadenszahlen verschwinden, „Nochmal“ bleibt).
-- **Als Nächstes:** Paket 6 (Endlos-Modus überarbeiten), danach die Pakete 7 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
-- **Für Paket 6 schon vorhanden:** Die Run-Historie speichert je Run `endless_wave`; der Bestwert „Höchste Endlos-Welle je Charakter“ kann daraus oder separat entstehen (Admin-Sperre beachten). Das Diagramm „Schaden pro Welle“ färbt Endloswellen lila.
+- **Erledigt 22./23.10.:** Audio-Leak beim Beenden (`35963db`) und Paket 6 (Endlos-Modus, Punkte 1–6 inkl. der Ergänzungen Boss-Kartons und Banner „Bosse besiegt!“ mit Zähler „Besiegte Boss-Zyklen“).
+- **Offen in Paket 6:** Punkt 7, Simulator-Auswertung der Endlos-Schwierigkeit. Tabelle und Wertvorschläge werden dem Spieler gezeigt; Werte in `endless_config.tres` erst nach seinem OK ändern.
+- **Als Nächstes:** danach die Pakete 7 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
 - **Für Paket 9 schon vorhanden:** `SaveManager.get_run_history()` liefert die letzten 20 Runs (neueste zuerst) mit Charakter, Spannung, Ergebnis, Welle, Endlos-Welle, Datum, Kampfzeit, Level, Kills und Top-3-Quellen. Siehe Abschnitt „Run-Statistik und Run-Ende“.
 
 Offene Punkte:
@@ -63,6 +64,7 @@ Bosse testen: F10 → Run → Welle 20 starten; bei Spannung 5 erscheinen beide 
 | 14c-2 | 5 neue Startwaffen: Seelenlaterne, Feuerzeugwerfer, Kristallstab, Voodoo-Nadel, Dornenranke (auch im Shop) |
 | 15-3 | Admin-Modus (F10, Optionen → Erweitert): Admin-Menü mit 6 Reitern, Admin-Runs zählen nicht, `Player.rebuild()` mit Regressionstest für alle 22 Charaktere |
 | 15-4 | HUD und Tooltips: HP-Leisten unter normalen Gegnern (Option Immer/Nur bei Schaden/Aus), Tooltips für Waffen, Items, Set-Boni und Stats in Shop, Pause und Run-Ende (Maus und Gamepad, nie abgeschnitten), Stat-Panel mit Farben und Obergrenzen, Leiste „Aktive Set-Boni“, Tier-Kontur der schwebenden Waffen, Kills/Schaden je Waffe/Item/Effekt |
+| 15-6 | Endlos-Modus überarbeitet: eigene `EndlessConfig` und `EndlessRules`, Dichte-Zuwachs, schwindende Aufladung, Doppelboss alle 10 Wellen mit linearem Zyklus-Bonus und legendären Kartons, Elite-/Hordewellen in Welle 25/35/…, Banner „Bosse besiegt! Zyklus n geschafft“, Zähler „Besiegte Boss-Zyklen“ (Run-Statistik und Historie), HUD „Endlos 7 (Welle 27)“, Shop-Hinweis „Nächste Welle: Bosse“, Bestwert „Höchste Endlos-Welle“ je Charakter (Charakterauswahl, Lexikon), Lexikon-Thema „Endlos-Modus“ |
 | 15-5 | Run-Statistiken und Run-Ende: Reiter „Übersicht“/„Statistiken“ (Q/E, LB/RB), Zusammenfassung (Kampfzeit, Welle, Level, Kills, Funken gesammelt/ausgegeben, erlittener Schaden, geheilte HP, Ausweichen, Rerolls), Tabelle je Quelle mit Kills, Schaden, Anteil und DPS seit dem ersten Treffer, sortierbar (Spaltenkopf, R/X), MVP-Abzeichen, Diagramm „Schaden pro Welle“, Run-Historie der letzten 20 Runs, Schadenszahlen verschwinden beim Run-Ende |
 | 14c-5 | Charakter-Simulator; Balancing in zwei Runden: neue Charaktere und Waffen, schwache alte Charaktere (Kerze, Taschenlampe, Discokugel, Nachtlicht), Drohnenleuchte |
 | 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
@@ -74,6 +76,7 @@ Bosse testen: F10 → Run → Welle 20 starten; bei Spannung 5 erscheinen beide 
 Leistung (Radeon RX 590, 1080p, VSync 144 Hz): 100 Gegner aller Typen mit 6 Tier-IV-Fernwaffen min. 118 FPS; 100 Gegner + 300 Projektile konstant 144 FPS.
 100 Gegner + 8 Verbündete + Spiegelbild mit 6 Waffen (Welle 14): mit VSync Ø 143, min. 137 FPS; ohne VSync Ø 311, min. 214 FPS.
 Paket 4 (neue Partikel und Status-Grafiken, Welle 14, 100 Gegner, VSync): Kronleuchter mit 6 Kristallstäben T4 Ø 138, min. 122 FPS; Spiegelkugel mit 6 Fernwaffen T4 Ø 140, min. 123 FPS.
+Phase 15, Paket 6 (Endlos-Welle 49 und Bosswelle 50 per Admin, Arena ständig auf 100 Gegner aufgefüllt, 6 Fernwaffen T4, Standardbirne, zwei Läufe): Welle 49 mit VSync Ø 144–146, min. 117–124 FPS, ohne VSync Ø 451–548, min. 360–414; Welle 50 (beide Bosse + Begleiter) mit VSync Ø 145–148, min. 141–144, ohne VSync Ø 477–547, min. 403–491. Die stärkeren Gegner kosten nichts; das Limit von 100 Gegnern bleibt die Obergrenze.
 Phase 15, Paket 4 (HP-Leisten unter Gegnern, Welle 14, 100 Gegner ständig aufgefüllt, 6 Fernwaffen T4, zwei Läufe): Leisten „Immer“ (100 sichtbar) mit VSync Ø 142–143, min. 113–128 FPS, ohne VSync Ø 346–390, min. 235–355; Leisten „Aus“ mit VSync Ø 144, min. 143–144, ohne VSync Ø 315–373, min. 218–266. Die Leisten kosten messbar nichts; die Minima mit VSync fallen in den ersten Messblock direkt nach dem Wellensprung.
 
 ## Entscheidungen und Startwerte
@@ -208,9 +211,17 @@ Grundlage: `--characters`, `--weapons`, `--items` (200 Runs, Vergleichswerte).
 - Startwerte in `data/config/run_stats_config.tres`: Historie 20, Top-Quellen 3, DPS-Mindestzeit 1 s.
 - Schadenszahlen: Arena gibt den Pool beim Sieg und nach der Todesverzögerung frei, bevor der Bildschirm erscheint.
 
-### Endlos-Modus
+### Endlos-Modus (Phase 13, überarbeitet in Phase 15, Paket 6)
+- Alle Werte in `data/config/endless_config.tres` (`EndlessConfig`), gerechnet in `EndlessRules` (Spiel, Shop, Lexikon und Simulator nutzen dieselben Formeln). „Endlos-Stufe“ = Wellen seit dem Sieg (Welle 21 = 1).
 - Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.
-- Pro Endloswelle (Zinseszins): Gegner-HP +15 %, Schaden +10 %, Tempo +3 % (höchstens +60 %). Aufladung zahlt nur 50 % aus.
+- Pro Endloswelle (Zinseszins): Gegner-HP +15 %, Schaden +10 %, Tempo +3 % (höchstens +60 %), Gruppen erscheinen um 2 % häufiger (höchstens +100 %, Intervall geteilt durch den Faktor). Das Limit von 100 Gegnern bleibt; die Schwierigkeit kommt aus stärkeren, nicht aus mehr Gegnern.
+- Aufladung: Stufe 1 zahlt 50 % aus, danach je Welle 4 Prozentpunkte weniger, mindestens 10 %.
+- Bosswellen: Stufe 10, 20, 30 … (Welle 30, 40, 50 …) nach Vorlage von Welle 20 (Begleitgruppen in den ersten 90 s). Beide Bosse mit vollen HP (keine 75 % wie bei Spannung 5), Endlos-Faktor plus linearer Zyklus-Bonus: Zyklus n = +40 % · n HP und +15 % · n Schaden (`Enemy.damage_multiplier`). Die Welle endet erst mit dem Tod aller Bosse, danach Kartons, Level-ups und Shop wie gewohnt; kein Sieg-Bildschirm.
+- Jeder Endlos-Boss lässt 1 legendären Karton fallen (`boss_legendary_crates`).
+- Nach dem Bosssieg: goldenes Banner „Bosse besiegt! Zyklus n geschafft“ (2 s, kleiner Sprung) mit Level-up-Klang, Partikeln, goldenem Ring und leichtem Bildschirmwackeln. `RunStats.boss_cycles` zählt mit (Run-Statistik nur im Endlos-Modus, Run-Historie `boss_cycles`, Fortsetzen-Stand).
+- Sonderwellen auf jeder Spannung: Stufe 5, 15, 25 … (Welle 25, 35 …) ist Elite- oder Hordewelle, 40 % Horde. Ausgewürfelt mit dem Run-RNG jeweils für den nächsten 10er-Block (beim Weiterspielen und bei jedem Wellenstart), gespeichert in `GameState.special_waves`.
+- HUD: „Endlos 7 (Welle 27)“. Shop: Vorschau mit Endlos-Boss- und Sonderwellen, vor jeder Bosswelle „Nächste Welle: Bosse“ (Welle 20: „Nächste Welle: Boss“).
+- Bestwert „Höchste Endlos-Welle“ je Charakter (`progress.endless_best`, kein Versionssprung): zählt beim Erreichen einer Endloswelle (wie „Endlos-Welle n erreicht“ am Run-Ende), nicht in Admin-Runs. Angezeigt im Infopanel der Charakterauswahl und im Lexikon-Eintrag des Charakters.
 - Ein Run wird in der Gesamtstatistik nur einmal gezählt; Funken und Kills nur als Zuwachs.
 
 ## Werkzeuge

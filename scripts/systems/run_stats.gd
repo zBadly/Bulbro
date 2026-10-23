@@ -37,6 +37,8 @@ var dodges: int = 0
 var sparks_spent: int = 0
 ## Rerolls im Shop und bei Level-ups.
 var rerolls: int = 0
+## Besiegte Boss-Zyklen im Endlos-Modus (Paket 6).
+var boss_cycles: int = 0
 ## Kampfzeit je abgeschlossener Welle (s); Shop und Pausen zählen nicht.
 var wave_times: Array[float] = []
 ## Schaden je abgeschlossener Welle: Zuwachs der Summe von source_damage (kein eigener Zähler).
@@ -126,7 +128,7 @@ func to_dict() -> Dictionary:
 		"max_same_weapons": max_same_weapons, "dodge_item_taken": dodge_item_taken, "current_turrets": current_turrets,
 		"source_kills": _to_plain(source_kills), "source_damage": _to_plain(source_damage),
 		"first_hit_time": _to_plain_float(first_hit_time), "damage_taken": damage_taken, "dodges": dodges,
-		"sparks_spent": sparks_spent, "rerolls": rerolls, "wave_times": wave_times.duplicate(),
+		"sparks_spent": sparks_spent, "rerolls": rerolls, "boss_cycles": boss_cycles, "wave_times": wave_times.duplicate(),
 		"wave_damage": wave_damage.duplicate()}
 
 
@@ -158,6 +160,7 @@ static func from_dict(data: Dictionary) -> RunStats:
 	run.dodges = int(data.get("dodges", 0))
 	run.sparks_spent = int(data.get("sparks_spent", 0))
 	run.rerolls = int(data.get("rerolls", 0))
+	run.boss_cycles = int(data.get("boss_cycles", 0))
 	for seconds: Variant in data.get("wave_times", []):
 		run.wave_times.append(float(seconds))
 	for amount: Variant in data.get("wave_damage", []):

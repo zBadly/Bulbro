@@ -21,6 +21,7 @@
 - Gegner-HP und -Schaden = Basiswert + Zuwachs pro Welle nach Welle 1 (linear). Tempo skaliert nicht.
 - Spannung (Schwierigkeit) 0-5: Spannung 2-3 = eine Elite-/Horde-Welle (Welle 11 oder 12); Spannung 4-5 = drei (11/12, 14/15, 17/18; die letzte ist immer Elite). Zufall: 40 % Horde, 60 % Elite. Höhere Spannung = mehr Gegnertypen und bis +40 % HP/Schaden.
 - Wellendefinitionen (welche Gegner, Gruppengröße, Intervall) als WaveData-Resources.
+- Endlos-Modus nach dem Sieg: 60-s-Wellen, Gegner-HP, -Schaden, -Tempo und Spawn-Dichte wachsen pro Welle (Zinseszins), die Aufladung wird schwächer. Alle 10 Wellen (30, 40, …) erscheinen alle Bosse gleichzeitig, mit jedem Zyklus stärker; die Welle endet mit ihrem Tod. In Welle 25, 35, … wartet eine Elite- oder Hordewelle. Das Gegnerlimit bleibt bei 100. Werte in `EndlessConfig`.
 
 ## 3. Arena und Kamera
 - Rechteckige Arena ca. 2000 x 1300 px (Startwert), sichtbarer Rand, Spieler kann nicht hinaus.

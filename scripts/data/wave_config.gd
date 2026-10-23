@@ -19,15 +19,3 @@ extends Resource
 @export var enemy_projectile_pool_size: int = 0
 @export var spawn_marker_pool_size: int = 0
 
-@export_group("Endlos-Modus")
-## Vorlage für Endloswellen (Gegnergruppen) und deren Dauer.
-@export var endless_template_wave: int = 0
-@export var endless_wave_duration: float = 0.0
-## Zuwachs pro Endloswelle (mit Zinseszins) auf Gegner-HP, -Schaden und -Tempo.
-@export var endless_hp_growth: float = 0.0
-@export var endless_damage_growth: float = 0.0
-@export var endless_speed_growth: float = 0.0
-## Obergrenze für den Tempo-Zuwachs (z. B. 0,6 = höchstens +60 %).
-@export var endless_speed_max: float = 0.0
-## Aufladung zahlt im Endlos-Modus nur diesen Anteil aus.
-@export var endless_harvest_factor: float = 1.0

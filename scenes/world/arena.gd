@@ -202,6 +202,7 @@ func _setup_camera(rect: Rect2) -> void:
 
 ## Zu Beginn jeder Welle baut jede Waffe mit Struktur (Schraubenzieher) einen Lampenturm in der Nähe.
 func _on_wave_started(_wave_number: int) -> void:
+	_record_endless_best()
 	_clear_structures()
 	GameState.run_stats.current_turrets = 0
 	var rng: RandomNumberGenerator = GameState.rng
@@ -285,10 +286,17 @@ func _on_run_won() -> void:
 	_game_over.show_result(true, wave_manager.get_wave_number(), player)
 
 
+## Bestwert "Höchste Endlos-Welle" je Charakter: zählt beim Erreichen der Welle, nie in Admin-Runs.
+func _record_endless_best() -> void:
+	if GameState.endless and not GameState.admin.used and GameState.character != null:
+		SaveManager.record_endless_best(GameState.character.id, GameState.endless_level())
+
+
 ## Nach dem Sieg weiterspielen: Kartons, Level-ups und Shop wie gewohnt, dann Endloswellen.
 func _continue_endless() -> void:
 	GameState.endless = true
 	GameState.endless_start_wave = wave_manager.get_wave_count()
+	wave_manager.roll_endless_specials(GameState.endless_start_wave + EndlessRules.CONFIG.boss_cycle_waves)
 	GameState.is_run_active = true
 	_pause_menu.enabled = true
 	get_tree().paused = true

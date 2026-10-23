@@ -4,7 +4,6 @@ extends Node
 ## liegengebliebene Funken in den Beutel, Kartons einsammeln, Batterien entfernen, Aufladung auszahlen.
 
 const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
-const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const DOUBLE_SPARK_VALUE: int = 2
 
 var player: Player
@@ -30,6 +29,9 @@ func _on_enemy_killed(data: EnemyData, position: Vector2, info: DamageInfo) -> v
 	_spawn_sparks(sparks, position)
 	if data.legendary_crate:
 		_spawn_pickup(Pickup.Kind.LEGENDARY_CRATE, 1, position)
+	if data.is_boss and GameState.endless:
+		for i in EndlessRules.CONFIG.boss_legendary_crates:
+			_spawn_pickup(Pickup.Kind.LEGENDARY_CRATE, 1, position)
 	if data.guaranteed_crate:
 		_spawn_crate(position)
 	elif rng.randf() < Economy.battery_chance(DROPS.consumable_base_chance, _luck()):
@@ -106,7 +108,7 @@ func _harvest() -> void:
 	var harvesting: float = player.stats.get_stat(Stats.HARVESTING)
 	if harvesting == 0.0:
 		return
-	var factor: float = WAVES.endless_harvest_factor if GameState.endless else 1.0
+	var factor: float = EndlessRules.harvest_factor(GameState.endless_level())
 	var amount: int = roundi(harvesting * factor)
 	GameState.add_sparks(amount)
 	if amount > 0:

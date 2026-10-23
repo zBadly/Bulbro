@@ -5,6 +5,10 @@ extends Node
 const SPLAT_GROUP: StringName = &"pool_splats"
 const BOSS_WARNING_COOLDOWN: float = 1.5
 const HURT_TRAUMA: float = 0.55
+## Endlos-Bosse besiegt: goldener Ring um den Spieler.
+const CYCLE_PULSE_RADIUS: float = 260.0
+const CYCLE_PULSE_COLOR: Color = Color("#F5A623")
+const CYCLE_TRAUMA: float = 0.4
 
 var player: Player:
 	set(value):
@@ -20,6 +24,7 @@ func _ready() -> void:
 	Events.level_up.connect(_on_level_up)
 	Events.boss_spawned.connect(_on_boss_spawned)
 	Events.wave_ended.connect(func(_n: int) -> void: AudioManager.play(&"wave_clear"))
+	Events.endless_bosses_defeated.connect(_on_endless_bosses_defeated)
 
 
 func _on_enemy_killed(data: EnemyData, position: Vector2, _info: DamageInfo) -> void:
@@ -48,6 +53,15 @@ func _on_boss_spawned(_enemy: Enemy) -> void:
 	if now - _last_boss_warning >= BOSS_WARNING_COOLDOWN:
 		_last_boss_warning = now
 		AudioManager.play(&"boss_warning")
+
+
+func _on_endless_bosses_defeated(_cycle: int) -> void:
+	if player == null:
+		return
+	AudioManager.play(&"level_up")
+	Fx.particles(get_tree(), ParticleFx.Kind.LEVEL_UP, player.get_center())
+	Fx.pulse(get_tree(), player.get_center(), CYCLE_PULSE_RADIUS, CYCLE_PULSE_COLOR)
+	Fx.shake(get_tree(), CYCLE_TRAUMA)
 
 
 func _on_player_damaged(_amount: int) -> void:

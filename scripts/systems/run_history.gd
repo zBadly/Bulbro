@@ -22,6 +22,7 @@ static func make_entry(victory: bool) -> Dictionary:
 		"result": RESULT_VICTORY if victory or GameState.endless else RESULT_DEFEAT,
 		"wave": GameState.current_wave,
 		"endless_wave": GameState.endless_level(),
+		"boss_cycles": run.boss_cycles,
 		"date": int(Time.get_unix_time_from_system()),
 		"time": snappedf(run.combat_time(), TIME_STEP),
 		"level": GameState.level,

@@ -169,7 +169,7 @@ func test_spawn_bosses_clear_and_endless_wave() -> void:
 	manager.admin_jump_to_wave(23)
 	assert_true(GameState.endless, "Welle über 20 = Endlos")
 	assert_eq(manager.get_wave_number(), 23)
-	assert_eq(manager.time_left, WAVES.endless_wave_duration)
+	assert_eq(manager.time_left, EndlessRules.CONFIG.wave_duration)
 	manager.admin_jump_to_wave(5)
 	assert_false(GameState.endless, "zurück zu regulären Wellen")
 	GameState.admin.time_frozen = true
