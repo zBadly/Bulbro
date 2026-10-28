@@ -18,6 +18,7 @@ projectile_texture = ExtResource("3_75v76")
 [sub_resource type="Resource" id="Resource_ptxi4"]
 script = ExtResource("1_0o5cb")
 description_key = "PHASE_ENEMY_KOLBENGOLEM_1"
+name_key = "PHASE_NAME_ENEMY_KOLBENGOLEM_1"
 next_at_hp = 0.6
 max_duration = 25.0
 movement = 3
@@ -37,6 +38,8 @@ projectile_texture = ExtResource("3_75v76")
 [sub_resource type="Resource" id="Resource_yvc74"]
 script = ExtResource("1_0o5cb")
 description_key = "PHASE_ENEMY_KOLBENGOLEM_2"
+name_key = "PHASE_NAME_ENEMY_KOLBENGOLEM_2"
+aura_color = Color(0.94902, 0.54902, 0.219608, 1)
 movement = 3
 speed_multiplier = 1.1
 charge_interval = 1.3

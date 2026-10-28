@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <!-- Sortierpfeil absteigend: helles Dreieck mit Kontur (Farbe kommt per Modulate/Icon-Farbe) -->
+  <path d="M4 7 H16 L10 14 Z" fill="#F4F0EA" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+</svg>

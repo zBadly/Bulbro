@@ -442,7 +442,7 @@ static func _phases_text(phased: PhasedData) -> String:
 	var lines: PackedStringArray = []
 	for index: int in phased.phases.size():
 		var phase: BossPhaseData = phased.phases[index]
-		var line: String = t("LEX_PHASE") % [index + 1, t(phase.description_key)]
+		var line: String = t("LEX_PHASE") % [index + 1, t(phase.name_key), t(phase.description_key)]
 		if phase.next_at_hp > 0.0 and phase.max_duration > 0.0:
 			line += " " + t("LEX_PHASE_UNTIL_HP_TIME") % [roundi(phase.next_at_hp * PERCENT), TextFormat.number(phase.max_duration)]
 		elif phase.next_at_hp > 0.0:

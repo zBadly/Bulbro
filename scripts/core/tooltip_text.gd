@@ -102,7 +102,7 @@ static func set_bonus_text(set_bonus: SetBonusData, count: int, factor: float = 
 		var mods: Array[StatModifier] = scaled(set_bonus.modifiers_for(level), factor)
 		var line: String = TextFormat.t("TIP_SET_LEVEL") % [level, Lexicon.strip_bbcode(mods_inline(mods))]
 		var color: String = ACTIVE_COLOR if level == active_level else MUTED_COLOR
-		lines.append("[color=%s]%s%s[/color]" % [color, "▶ " if level == active_level else "   ", line])
+		lines.append("[color=%s]%s%s[/color]" % [color, "» " if level == active_level else "   ", line])
 	return "\n".join(lines)
 
 

@@ -421,7 +421,7 @@ LEX_DROP_CRATE,Garantiert ein Karton,Guaranteed crate
 LEX_DROP_LEGENDARY,Legendärer Karton (Tier IV),Legendary crate (tier IV)
 LEX_DROP_SPAWN,Setzt beim Tod %dx %s frei,Releases %dx %s on death
 LEX_DROP_CONSUMABLE,%s %% Chance auf Batterie oder Karton,%s %% chance of a battery or crate
-LEX_PHASE,Phase %d: %s,Phase %d: %s
+LEX_PHASE,Phase %d „%s“: %s,"Phase %d ""%s"": %s"
 LEX_PHASE_UNTIL_HP,(bis %d %% HP),(until %d %% HP)
 LEX_PHASE_UNTIL_HP_TIME,(bis %d %% HP oder %s s),(until %d %% HP or %s s)
 LEX_WEAPON_COUNT,Waffen: %d,Weapons: %d
@@ -992,3 +992,18 @@ In der Mitte jedes 10er-Blocks (zuerst Welle %d) wartet eine Elite- oder Hordewe
 Every %d waves (first in wave %d) all bosses arrive together. Each boss cycle gives them an extra +%s %% HP and +%s %% damage. The wave ends when all bosses are defeated; each boss drops %d legendary crate.
 In the middle of every block of 10 (first wave %d) an elite or horde wave awaits (%s %% horde). Harvesting only pays out %s %% at first and gets weaker every wave."
 LORE_TOPIC_ENDLESS,"Eine Glühbirne, die nicht ausgeht, ist kein Wunder, sondern eine Herausforderung.",A bulb that never burns out is not a miracle. It is a challenge.
+PHASE_NAME_ENEMY_DIMMER_1,Jagd,Hunt
+PHASE_NAME_ENEMY_DIMMER_2,Sturm,Storm
+PHASE_NAME_ENEMY_FINSTERNIS_1,Schatten,Shadow
+PHASE_NAME_ENEMY_FINSTERNIS_2,Ausbreitung,Spread
+PHASE_NAME_ENEMY_FINSTERNIS_3,Raserei,Frenzy
+PHASE_NAME_ENEMY_KOLBENGOLEM_1,Anlauf,Run-up
+PHASE_NAME_ENEMY_KOLBENGOLEM_2,Überdruck,Overpressure
+PHASE_NAME_ENEMY_RUSSMUTTER_1,Klingentanz,Blade Dance
+PHASE_NAME_ENEMY_RUSSMUTTER_2,Brut,Brood
+PHASE_NAME_ENEMY_SCHATTENWEBER_1,Gespinst,Web
+PHASE_NAME_ENEMY_SCHATTENWEBER_2,Spirale,Spiral
+HUD_BOSS_PHASE,Phase %d/%d: %s,Phase %d/%d: %s
+HUD_PHASE_TIMER,%d s,%d s
+PHASE_BANNER,Phase %d: %s,Phase %d: %s
+IMMUNE_TEXT,Immun,Immune

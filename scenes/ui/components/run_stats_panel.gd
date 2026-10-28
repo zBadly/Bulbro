@@ -38,8 +38,9 @@ const SORT_CYCLE: Array[RunReport.Column] = [
 ]
 ## Text-Spalten sortieren zuerst aufsteigend, Zahlen absteigend.
 const ASCENDING_FIRST: Array[RunReport.Column] = [RunReport.Column.NAME, RunReport.Column.KIND]
-const SORT_DOWN: String = " ▼"
-const SORT_UP: String = " ▲"
+## Sortierpfeile als Icon (die Spielschrift hat keine Pfeil-Glyphen).
+const SORT_DOWN: Texture2D = preload("res://art/ui/sort_down.svg")
+const SORT_UP: Texture2D = preload("res://art/ui/sort_up.svg")
 const CAPTION_COLOR: Color = Color("#C9C3D6")
 const MUTED_COLOR: Color = Color("#8A8A8A")
 const MVP_COLOR: Color = Color("#FFD43B")
@@ -187,6 +188,7 @@ func _build_header() -> HBoxContainer:
 		if column == RunReport.Column.NAME:
 			button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT if column in ASCENDING_FIRST else HORIZONTAL_ALIGNMENT_RIGHT
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		button.pressed.connect(sort_by.bind(column))
 		if COLUMN_TIPS.has(column):
 			GameTooltip.attach(button, func() -> String: return tr(COLUMN_TIPS[column]))
@@ -201,8 +203,11 @@ func _update_header() -> void:
 	for column: RunReport.Column in _header_buttons:
 		var button: Button = _header_buttons[column]
 		var active: bool = column == sort_column
-		button.text = tr(COLUMN_KEYS[column]) + ((SORT_DOWN if descending else SORT_UP) if active else "")
+		button.text = tr(COLUMN_KEYS[column])
+		button.icon = (SORT_DOWN if descending else SORT_UP) if active else null
 		var color: Color = MVP_COLOR if active else UiStyle.TEXT_COLOR
+		for state: String in ["icon_normal_color", "icon_hover_color", "icon_focus_color", "icon_pressed_color"]:
+			button.add_theme_color_override(state, color)
 		button.add_theme_color_override("font_color", color)
 		button.add_theme_color_override("font_hover_color", color)
 		button.add_theme_color_override("font_focus_color", color)

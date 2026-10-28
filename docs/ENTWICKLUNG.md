@@ -12,7 +12,8 @@ Stand 28.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 - **Erledigt 22./23.10.:** Audio-Leak beim Beenden (`35963db`) und Paket 6 (Endlos-Modus, Punkte 1–6 inkl. der Ergänzungen Boss-Kartons und Banner „Bosse besiegt!“ mit Zähler „Besiegte Boss-Zyklen“).
 - **Erledigt 23.–28.10.:** Paket 6 Punkt 7, Simulator-Auswertung (`3219a3d`) und Balancing des Endlos-Modus nach OK des Spielers (Commit „Balancing: Endlos-Modus“). Werte und Simulator-Tabelle im Abschnitt „Endlos-Modus“.
 - Falle: Zugriffe wie `CONFIG.wert` auf eine `const`-Resource wertet GDScript beim Kompilieren aus; Laufzeit-Änderungen (Simulator-Overrides) sehen nur Zugriffe über eine Variable (`EndlessRules.config`).
-- **Als Nächstes:** Paket 7 (Boss-Phasen sichtbar), danach die Pakete 8 und 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
+- **Erledigt 28.10.:** Paket 7 (Boss-Phasen sichtbar, Commit „Feature: Boss-Phasen sichtbar (Phase 15, Paket 7)“) inkl. der Ergänzungen: Uhr-Icon statt Emoji, graues „Immun“, Prüfung aller UI-Zeichen gegen die Schrift (Pfeile ersetzt, neuer Test `test_font_glyphs.gd`), Fix Fehlermeldung `zone_attack.gd` beim Verlassen eines Bosskampfs. Details im Abschnitt „Boss-Phasen“.
+- **Als Nächstes:** Paket 8 (Neue Inhalte), danach Paket 9, jeweils mit Commit, Push und Eintrag hier.
 - **Für Paket 9 schon vorhanden:** `SaveManager.get_run_history()` liefert die letzten 20 Runs (neueste zuerst) mit Charakter, Spannung, Ergebnis, Welle, Endlos-Welle, Datum, Kampfzeit, Level, Kills und Top-3-Quellen. Siehe Abschnitt „Run-Statistik und Run-Ende“.
 
 Offene Punkte:
@@ -68,6 +69,7 @@ Bosse testen: F10 → Run → Welle 20 starten; bei Spannung 5 erscheinen beide 
 | 15-4 | HUD und Tooltips: HP-Leisten unter normalen Gegnern (Option Immer/Nur bei Schaden/Aus), Tooltips für Waffen, Items, Set-Boni und Stats in Shop, Pause und Run-Ende (Maus und Gamepad, nie abgeschnitten), Stat-Panel mit Farben und Obergrenzen, Leiste „Aktive Set-Boni“, Tier-Kontur der schwebenden Waffen, Kills/Schaden je Waffe/Item/Effekt |
 | 15-6 | Endlos-Modus überarbeitet: eigene `EndlessConfig` und `EndlessRules`, Dichte-Zuwachs, schwindende Aufladung, Doppelboss alle 10 Wellen mit linearem Zyklus-Bonus und legendären Kartons, Elite-/Hordewellen in Welle 25/35/…, Banner „Bosse besiegt! Zyklus n geschafft“, Zähler „Besiegte Boss-Zyklen“ (Run-Statistik und Historie), HUD „Endlos 7 (Welle 27)“, Shop-Hinweis „Nächste Welle: Bosse“, Bestwert „Höchste Endlos-Welle“ je Charakter (Charakterauswahl, Lexikon), Lexikon-Thema „Endlos-Modus“ |
 | 15-5 | Run-Statistiken und Run-Ende: Reiter „Übersicht“/„Statistiken“ (Q/E, LB/RB), Zusammenfassung (Kampfzeit, Welle, Level, Kills, Funken gesammelt/ausgegeben, erlittener Schaden, geheilte HP, Ausweichen, Rerolls), Tabelle je Quelle mit Kills, Schaden, Anteil und DPS seit dem ersten Treffer, sortierbar (Spaltenkopf, R/X), MVP-Abzeichen, Diagramm „Schaden pro Welle“, Run-Historie der letzten 20 Runs, Schadenszahlen verschwinden beim Run-Ende |
+| 15-7 | Boss-Phasen sichtbar: Phasennamen in den Daten, HP-Leiste mit Markierungen an den HP-Schwellen, „Phase 2/3: Name“ und Uhr mit Restzeit bei Zeitwechsel, kompakte Doppelleiste bei zwei Bossen, Banner beim Wechsel, Aura in Phasenfarbe, Screenshake (Option), 0,5 s Unverwundbarkeit mit Schimmern und grauem „Immun“; Lexikon mit Phasennamen; alle UI-Zeichen in der Schrift (Test) |
 | 14c-5 | Charakter-Simulator; Balancing in zwei Runden: neue Charaktere und Waffen, schwache alte Charaktere (Kerze, Taschenlampe, Discokugel, Nachtlicht), Drohnenleuchte |
 | 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
 | 6 (Lexikon) | Hauptmenüpunkt „Lexikon“ mit 6 Reitern (Charaktere, Waffen, Items, Gegner, Waffenklassen, Spielmechaniken), Suche über alle Reiter, Filter, Sprüche (`lore_text`) für alle Einträge |
@@ -262,6 +264,15 @@ Je Charakter mit den neuen Werten, Spannung 0 (Siegquote = Anteil der Runs, die 
 | Spiegelkugel | 75 % | 5 (W25) | 10 (W30) | 15 (W35) | 43 % |
 
 Getestete Alternativen (20 Runs, Spannung 0): HP 8 %/Schaden 6 % → Median 8, P90 14, Welle 25 weiter eine Wand (30 % der Tode); HP 5 %/Schaden 4 % mit milderen Sonderwellen → Median 10, P90 28; Zyklus-Bonus 30 % statt 40 % ändert Welle 30 kaum (34 % statt 32 % überleben). Die Zahlen sind Vergleichswerte: Wie Builds nach Welle 20 weiterwachsen, schätzt der Simulator.
+
+### Boss-Phasen (Phase 15, Paket 7)
+- Namen und Aura je Phase in `BossPhaseData` (`name_key`, `aura_color`; Phase 1 ohne Aura, dann Orange `#F28C38`, dann Rot `#E74C3C`). Dimmer: Jagd, Sturm. Finsternis: Schatten, Ausbreitung, Raserei. Kolbengolem: Anlauf, Überdruck. Rußmutter: Klingentanz, Brut. Schattenweber: Gespinst, Spirale.
+- Ablauf: `PhasedBehavior` wechselt wie bisher (HP-Schwelle oder Zeit), ruft `Enemy.begin_phase` (Unverwundbarkeit, Aura, Zusammendrücken) und sendet `Events.boss_phase_changed`. Das HUD zeigt das Banner, `JuiceHooks` spielt den Warnton (gemeinsame Abklingzeit mit dem Boss-Spawn) und wackelt über `Fx.shake`, das die Option „Screenshake“ respektiert.
+- Während der Unverwundbarkeit prüft der Gegner keinen weiteren Wechsel. Ein großer Treffer über zwei Schwellen (Finsternis 75 % und 40 %) zeigt so jede Phase mindestens 0,5 s. Treffer in dieser Zeit verursachen keinen Schaden (auch Brand nicht) und zeigen höchstens alle 0,3 s ein graues „Immun“ je Gegner.
+- Erkennbar ohne Farbe: Phasennummer und -name stehen in der Leiste und im Banner, die Markierungen erreichter Schwellen werden blasser. Bei Elites, die nach Zeit wechseln, wird die Markierung blass, sobald die Phase gewechselt hat, auch wenn die HP noch darüber liegen.
+- HP-Leiste (`BossBar`): 720×26, Schrift 24; ab zwei Leisten kompakt 640×18, Schrift 20 (Doppelboss auf Spannung 5 und Endlos-Bosswellen; beide passen in 1280×720). Uhr-Symbol `art/ui/clock.svg` mit „24 s“, solange die Phase ein Zeitlimit hat.
+- Startwerte in `data/config/boss_phase_config.tres`: Unverwundbarkeit 0,5 s, Schimmern 8/s mit 75 %, Trauma Boss 0,5/Elite 0,3, Aura 5 px; Banner Boss 56 px/1,8 s, Elite 38 px/1,2 s, 250 px über der Bildmitte; „Immun“ alle 0,3 s in `#9E9EA8`.
+- Schrift: LilitaOne hat keine Pfeile (→ ▲ ▼ ▶) und keine Emoji. Ersetzt durch » (Stat-Vorschau, aktive Set-Stufe) und Icons `art/ui/sort_down.svg`/`sort_up.svg` (Sortierung der Run-Statistik). `tests/unit/test_font_glyphs.gd` prüft alle Übersetzungen und String-Literale im Code gegen die Schrift.
 
 ## Werkzeuge
 

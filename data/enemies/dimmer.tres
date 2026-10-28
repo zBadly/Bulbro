@@ -21,6 +21,7 @@ cooldown = 0.25
 [sub_resource type="Resource" id="Resource_cx384"]
 script = ExtResource("1_on0j7")
 description_key = "PHASE_ENEMY_DIMMER_1"
+name_key = "PHASE_NAME_ENEMY_DIMMER_1"
 next_at_hp = 0.5
 movement = 3
 charge_interval = 3.0
@@ -50,6 +51,8 @@ cooldown = 0.2
 [sub_resource type="Resource" id="Resource_iu1gx"]
 script = ExtResource("1_on0j7")
 description_key = "PHASE_ENEMY_DIMMER_2"
+name_key = "PHASE_NAME_ENEMY_DIMMER_2"
+aura_color = Color(0.94902, 0.54902, 0.219608, 1)
 speed_multiplier = 0.7
 attacks = Array[ExtResource("2_rwb8f")]([SubResource("Resource_4mpex"), SubResource("Resource_50bvy")])
 

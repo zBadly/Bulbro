@@ -17,6 +17,9 @@ signal pause_toggled(is_paused: bool)
 signal player_died
 @warning_ignore("unused_signal")
 signal boss_spawned(enemy: Enemy)
+## Elite oder Boss wechselt in eine neue Phase (Index ab 0; Phase 15, Paket 7).
+@warning_ignore("unused_signal")
+signal boss_phase_changed(enemy: Enemy, phase_index: int)
 ## Endlos-Modus: alle Bosse einer Bosswelle besiegt (Zyklus 1 = Welle 30).
 @warning_ignore("unused_signal")
 signal endless_bosses_defeated(cycle: int)

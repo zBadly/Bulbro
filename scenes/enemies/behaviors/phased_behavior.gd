@@ -4,8 +4,6 @@ extends EnemyBehavior
 
 enum ChargeState { MOVE, WINDUP, CHARGE }
 
-const PHASE_TELEGRAPH_TIME: float = 0.4
-
 var config: PhasedData
 var phase_index: int = 0
 
@@ -19,10 +17,30 @@ var _charge_direction: Vector2 = Vector2.ZERO
 
 func reset() -> void:
 	_enter_phase(0)
+	enemy.set_phase_aura(current_phase().aura_color)
 
 
 func current_phase() -> BossPhaseData:
 	return config.phases[phase_index]
+
+
+func phase_count() -> int:
+	return config.phases.size()
+
+
+## Sekunden bis zum Zeitwechsel der aktuellen Phase; -1 ohne Zeitlimit oder in der letzten Phase.
+func time_to_next() -> float:
+	if phase_index >= config.phases.size() - 1 or current_phase().max_duration <= 0.0:
+		return -1.0
+	return maxf(0.0, current_phase().max_duration - _phase_time)
+
+
+## HP-Schwellen (0..1) der Phasenwechsel, Index = Phase, die an der Schwelle endet; 0 = kein HP-Wechsel.
+func hp_thresholds() -> Array[float]:
+	var result: Array[float] = []
+	for index: int in config.phases.size() - 1:
+		result.append(config.phases[index].next_at_hp)
+	return result
 
 
 func get_velocity(delta: float) -> Vector2:
@@ -71,15 +89,18 @@ func _charge_velocity(phase: BossPhaseData, speed: float, delta: float) -> Vecto
 			return _charge_direction * phase.charge_speed
 
 
+## Während der Unverwundbarkeit nach einem Wechsel kein weiterer: Ein großer Treffer über zwei Schwellen
+## zeigt jede Phase (Banner, Aura) mindestens so lange.
 func _check_transition() -> void:
-	if phase_index >= config.phases.size() - 1:
+	if phase_index >= config.phases.size() - 1 or enemy.is_invulnerable():
 		return
 	var phase: BossPhaseData = current_phase()
 	var by_hp: bool = phase.next_at_hp > 0.0 and enemy.hp <= enemy.max_hp * phase.next_at_hp
 	var by_time: bool = phase.max_duration > 0.0 and _phase_time >= phase.max_duration
 	if by_hp or by_time:
 		_enter_phase(phase_index + 1)
-		Juice.telegraph(enemy.visual, PHASE_TELEGRAPH_TIME)
+		enemy.begin_phase(current_phase().aura_color)
+		Events.boss_phase_changed.emit(enemy, phase_index)
 
 
 func _enter_phase(index: int) -> void:

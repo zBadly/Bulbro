@@ -3,6 +3,7 @@ extends Node2D
 ## Gepoolte Schadenszahl: steigt auf und verblasst. Krits sind gelb und größer.
 
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
+const PHASES: BossPhaseConfig = preload("res://data/config/boss_phase_config.tres")
 const FONT: Font = preload("res://assets/fonts/LilitaOne-Regular.ttf")
 
 var pool: ObjectPool
@@ -11,6 +12,7 @@ var _tween: Tween
 ## Einmal pro Typ erzeugt: LabelSettings sind deutlich günstiger als Theme-Overrides pro Treffer.
 static var _normal_settings: LabelSettings
 static var _crit_settings: LabelSettings
+static var _immune_settings: LabelSettings
 
 @onready var _label: Label = $Label
 
@@ -20,6 +22,7 @@ func _ready() -> void:
 	if _normal_settings == null:
 		_normal_settings = _make_settings(COMBAT.damage_number_font_size, COMBAT.damage_number_color)
 		_crit_settings = _make_settings(COMBAT.damage_number_crit_font_size, COMBAT.damage_number_crit_color)
+		_immune_settings = _make_settings(COMBAT.damage_number_font_size, PHASES.immune_text_color)
 
 
 static func _make_settings(font_size: int, color: Color) -> LabelSettings:
@@ -33,8 +36,17 @@ static func _make_settings(font_size: int, color: Color) -> LabelSettings:
 
 
 func show_damage(amount: int, is_crit: bool, world_position: Vector2) -> void:
-	_label.text = str(amount)
-	_label.label_settings = _crit_settings if is_crit else _normal_settings
+	_show(str(amount), _crit_settings if is_crit else _normal_settings, world_position)
+
+
+## Graues "Immun": Treffer während der Unverwundbarkeit nach einem Phasenwechsel.
+func show_immune(world_position: Vector2) -> void:
+	_show(tr("IMMUNE_TEXT"), _immune_settings, world_position)
+
+
+func _show(text: String, settings: LabelSettings, world_position: Vector2) -> void:
+	_label.text = text
+	_label.label_settings = settings
 	_label.reset_size()
 	_label.position = -_label.size * 0.5
 	# Kosmetischer Versatz, bewusst nicht über den Run-RNG, damit Runs reproduzierbar bleiben.

@@ -16,6 +16,8 @@ const NO_TINT: Color = Color(1.0, 1.0, 1.0, 0.0)
 
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
+const PHASES: BossPhaseConfig = preload("res://data/config/boss_phase_config.tres")
+const OUTLINE_WIDTH_PARAM: StringName = &"outline_width"
 ## Gruppe der gerade verfluchten Gegner (Zähler für die Schwarzlicht-Freischaltung).
 const CURSED_GROUP: StringName = &"cursed_enemies"
 const BURN_TEXTURE: Texture2D = preload("res://art/fx/burn_flames.svg")
@@ -56,6 +58,11 @@ var _burn_origin: StringName = &""
 var _curse_origin: StringName = &""
 var _flash_material: ShaderMaterial
 var _buff_material: ShaderMaterial
+## Phasen-Aura der Elites und Bosse (Kontur in der Farbe der aktuellen Phase), erst bei Bedarf erzeugt.
+var _aura_material: ShaderMaterial
+## Unverwundbar nach einem Phasenwechsel (s); Treffer zeigen dann gedrosselt "Immun".
+var _invulnerable_left: float = 0.0
+var _immune_text_cooldown: float = 0.0
 var _root_immune_left: float = 0.0
 var _curse_marker: CurseMarker
 ## Flammen auf brennenden Gegnern und Eis/Ranken an den Füßen (eingefroren/festgehalten).
@@ -132,6 +139,9 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	speed = rng.randf_range(data.speed_min, data.speed_max) * speed_factor
 	is_buffed = false
 	_sprite.material = _flash_material
+	_invulnerable_left = 0.0
+	_immune_text_cooldown = 0.0
+	_flash_material.set_shader_parameter(Juice.FLASH_PARAM, 0.0)
 	knockback_velocity = Vector2.ZERO
 	_last_hit = null
 	_burn_ticks_left = 0
@@ -161,6 +171,9 @@ func distance_to_player() -> float:
 
 func take_damage(info: DamageInfo) -> void:
 	if not _alive:
+		return
+	if _invulnerable_left > 0.0:
+		_show_immune()
 		return
 	var amount: int = info.amount
 	if GameState.admin.damage_factor != 1.0:
@@ -245,6 +258,58 @@ func apply_buff(hp_mult: float, damage_mult: float, speed_mult: float) -> void:
 	speed *= speed_mult
 	speed_factor *= speed_mult
 	_sprite.material = _buff_material
+
+
+## Phasen-Verhalten der Elites und Bosse (null bei normalen Gegnern).
+func phased_behavior() -> PhasedBehavior:
+	return _behavior as PhasedBehavior
+
+
+func is_invulnerable() -> bool:
+	return _invulnerable_left > 0.0
+
+
+## Phasenwechsel eines Elites/Bosses: kurz unverwundbar mit Schimmern und Zusammendrücken, danach Aura in Phasenfarbe.
+func begin_phase(aura: Color) -> void:
+	_invulnerable_left = PHASES.invulnerable_time
+	set_phase_aura(aura)
+	Juice.telegraph(visual, PHASES.invulnerable_time)
+
+
+## Aura (Kontur) in Phasenfarbe; Alpha 0 = keine Aura. Die rote Verstärker-Kontur hat Vorrang.
+func set_phase_aura(color: Color) -> void:
+	if is_buffed:
+		return
+	if color.a <= 0.0:
+		_sprite.material = _flash_material
+		return
+	if _aura_material == null:
+		_aura_material = ShaderMaterial.new()
+		_aura_material.shader = OUTLINE_SHADER
+		_aura_material.set_shader_parameter(OUTLINE_WIDTH_PARAM, PHASES.aura_width)
+	_aura_material.set_shader_parameter(BUFF_OUTLINE_PARAM, color)
+	_sprite.material = _aura_material
+
+
+func _show_immune() -> void:
+	if _immune_text_cooldown > 0.0:
+		return
+	_immune_text_cooldown = PHASES.immune_text_interval
+	Pools.spawn_immune_text(get_tree(), get_hit_position())
+
+
+## Schimmern während der Unverwundbarkeit; endet mit flash_amount 0.
+func _update_invulnerability(delta: float) -> void:
+	_immune_text_cooldown = maxf(0.0, _immune_text_cooldown - delta)
+	if _invulnerable_left <= 0.0:
+		return
+	_invulnerable_left = maxf(0.0, _invulnerable_left - delta)
+	var mat: ShaderMaterial = _sprite.material as ShaderMaterial
+	if mat == null:
+		return
+	var wave_t: float = (PHASES.invulnerable_time - _invulnerable_left) * PHASES.shimmer_rate * TAU
+	var amount: float = PHASES.shimmer_strength * (0.5 - 0.5 * cos(wave_t)) if _invulnerable_left > 0.0 else 0.0
+	mat.set_shader_parameter(Juice.FLASH_PARAM, amount)
 
 
 func _update_hp_bar() -> void:
@@ -432,7 +497,7 @@ func _update_tint() -> void:
 		tint = COMBAT.burn_tint
 	elif curse.is_active():
 		tint = STATUS.curse_tint
-	for mat: ShaderMaterial in [_flash_material, _buff_material]:
+	for mat: ShaderMaterial in [_flash_material, _buff_material, _aura_material]:
 		if mat != null:
 			mat.set_shader_parameter(TINT_PARAM, tint)
 
@@ -442,6 +507,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_update_burn(delta)
 	_update_statuses(delta)
+	_update_invulnerability(delta)
 	if not _alive:
 		return
 	if _burn_fx.visible:

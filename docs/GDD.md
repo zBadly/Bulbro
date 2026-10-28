@@ -221,12 +221,13 @@ Format: Name | Verhalten | HP (+pro Welle) | Tempo | Schaden (+pro Welle) | Funk
 - Rußschütze | kreist um Spieler, schießt nahe Projektile | 5 (+5) | 350 | 1 (+1,0) | 1 | 14
 - Verstärker | flieht, bufft andere Gegner (+150 % HP, +25 % Schaden, +50 % Tempo, rote Kontur) | 20 (+3) | 150 | 1 (+0,6) | 2 | 16
 Elites (Spannung 2+), HP-Basis 1 (+750 pro Welle), auf Welle 11/12 nur 75 % HP, droppen legendären Karton; je 2 Mutationsphasen (Wechsel bei 60 % HP oder nach 25 s):
-- Kolbengolem: Sturmangriff alle 2 s mit Seitenprojektilen -> Phase 2: alle 1,3 s, kürzer, zusätzliche Projektile.
-- Rußmutter: 4-fache Schnittwelle alle 1,4 s -> Phase 2: flieht, Doppelschnitte, spawnt Schattenlinge.
-- Schattenweber: Projektilkreise um sich -> Phase 2: Spiralmuster auf den Spieler.
+- Kolbengolem: „Anlauf“: Sturmangriff alle 2 s mit Seitenprojektilen -> „Überdruck“: alle 1,3 s, kürzer, zusätzliche Projektile.
+- Rußmutter: „Klingentanz“: 4-fache Schnittwelle alle 1,4 s -> „Brut“: flieht, Doppelschnitte, spawnt Schattenlinge.
+- Schattenweber: „Gespinst“: Projektilkreise um sich -> „Spirale“: Spiralmuster auf den Spieler.
 Bosse (Welle 20, zufällig einer; bei Spannung 5 beide mit 75 % HP), ca. 29.000 HP, Kontaktschaden 30, Projektile 23:
-- Der Dimmer: verfolgt, dasht, kreisende Projektile -> ab 50 % HP: kein Dash, Projektilsalven in alle Richtungen.
-- Die Finsternis: markiert Zonen um den Spieler, die nach 1 s Projektile erzeugen -> ab 75 %: größere Zonen -> ab 40 %: +150 % Tempo, Projektilkreise.
+- Der Dimmer: „Jagd“: verfolgt, dasht, kreisende Projektile -> ab 50 % HP „Sturm“: kein Dash, Projektilsalven in alle Richtungen.
+- Die Finsternis: „Schatten“: markiert Zonen um den Spieler, die nach 1 s Projektile erzeugen -> ab 75 % „Ausbreitung“: größere Zonen -> ab 40 % „Raserei“: +150 % Tempo, Projektilkreise.
+Phasenwechsel (Elites und Bosse): Banner „Phase 2: Raserei“, Aura in Phasenfarbe, Screenshake, 0,5 s unverwundbar („Immun“). HP-Leiste oben mit Markierungen an den Schwellen, Phasenname und bei Zeitwechsel Restzeit.
 
 ## 12. Grafikstil (an Brotato angelehnt, eigene Motive)
 - Niedlicher Cartoon-Look, flache Farben, dicke dunkle Outline 3-4 px (#2A1E2E), ein Glanzlicht und ein Schattenton pro Form, keine Verläufe außer Glow.

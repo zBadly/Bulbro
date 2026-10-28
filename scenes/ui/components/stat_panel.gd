@@ -9,7 +9,7 @@ const PLAYER: PlayerConfig = preload("res://data/config/player_config.tres")
 const PANEL_WIDTH: float = 360.0
 const TITLE_SIZE: int = 28
 const TEXT_SIZE: int = 19
-const ARROW: String = " → "
+const ARROW: String = " » "
 const SECTION_GAP: float = 10.0
 
 var _stats: StatSystem

@@ -18,9 +18,12 @@ func execute(enemy: Enemy, _cast: int) -> void:
 		if enemy.arena_bounds.has_area():
 			center = center.clamp(enemy.arena_bounds.position, enemy.arena_bounds.end)
 		Fx.zone_warning(enemy.get_tree(), center, zone_radius, warning_time)
-		enemy.get_tree().create_timer(warning_time, false).timeout.connect(_detonate.bind(enemy, center))
+		enemy.get_tree().create_timer(warning_time, false).timeout.connect(_detonate.bind(enemy.get_instance_id(), center))
 
 
-func _detonate(enemy: Enemy, center: Vector2) -> void:
-	if is_instance_valid(enemy) and enemy.is_alive():
+## Über die Instanz-ID gebunden: Endet die Run-Szene vor der Detonation, ist der Gegner schon freigegeben und
+## ließe sich nicht mehr an einen typisierten Parameter übergeben.
+func _detonate(enemy_id: int, center: Vector2) -> void:
+	var enemy: Enemy = instance_from_id(enemy_id) as Enemy
+	if enemy != null and enemy.is_alive():
 		burst.fire_from(enemy, center, enemy.rng.randf() * TAU)

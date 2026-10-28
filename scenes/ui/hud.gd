@@ -13,9 +13,7 @@ const SPARK_ICON: Texture2D = preload("res://art/pickups/spark.svg")
 const SPARK_TEXT_SIZE: int = 30
 const BAG_TEXT_SIZE: int = 20
 const BAG_COLOR: Color = Color("#FFD43B")
-const BOSS_BAR_SIZE: Vector2 = Vector2(720, 26)
-const BOSS_NAME_SIZE: int = 24
-const BOSS_COLOR: Color = Color("#9B59B6")
+const PHASES: BossPhaseConfig = preload("res://data/config/boss_phase_config.tres")
 const ADMIN_BADGE_SIZE: int = 20
 const ADMIN_BADGE_COLOR: Color = Color("#E74C3C")
 ## Banner "Bosse besiegt!" im Endlos-Modus: Gold, springt aus dieser Größe auf normal.
@@ -34,8 +32,13 @@ var _spark_label: Label
 var _bag_label: Label
 var _wave_manager: WaveManager
 var _boss_box: VBoxContainer
-## Elite/Boss -> eigener HP-Balken.
-var _boss_bars: Dictionary[Enemy, ProgressBar] = {}
+## Elite/Boss -> eigene HP-Leiste mit Phasenanzeige.
+var _boss_bars: Dictionary[Enemy, BossBar] = {}
+## Phasenwechsel: Gegnername klein, darunter groß "Phase 2: Raserei" (oberhalb der Bildmitte).
+var _phase_banner: VBoxContainer
+var _phase_banner_name: Label
+var _phase_banner_text: Label
+var _phase_banner_tween: Tween
 ## Kleines Abzeichen, sobald im Run eine Admin-Aktion ausgeführt wurde.
 var _admin_badge: Label
 var _banner_tween: Tween
@@ -96,11 +99,13 @@ func _ready() -> void:
 	# Sprung-Animation um die Mitte; die Größe folgt dem Text.
 	_banner.resized.connect(func() -> void: _banner.pivot_offset = _banner.size / 2.0)
 	add_child(_banner)
+	_build_phase_banner()
 
 	Events.sparks_changed.connect(_on_sparks_changed)
 	Events.xp_changed.connect(set_xp)
 	Events.run_phase_changed.connect(_on_phase_changed)
 	Events.boss_spawned.connect(_on_boss_spawned)
+	Events.boss_phase_changed.connect(_on_boss_phase_changed)
 	Events.endless_bosses_defeated.connect(_on_endless_bosses_defeated)
 	_on_sparks_changed(GameState.sparks, GameState.bag)
 	set_xp(GameState.xp, GameState.xp_needed(), GameState.level)
@@ -131,27 +136,78 @@ func _process(_delta: float) -> void:
 
 
 func _on_boss_spawned(enemy: Enemy) -> void:
-	var name_label: Label = UiStyle.make_label(BOSS_NAME_SIZE, BOSS_COLOR)
-	name_label.text = tr(enemy.data.name_key)
-	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_boss_box.add_child(name_label)
-	var bar: ProgressBar = UiStyle.make_bar(UiStyle.HP_COLOR, BOSS_BAR_SIZE)
-	bar.max_value = 1.0
-	bar.value = 1.0
-	bar.set_meta(&"label", name_label)
+	var bar: BossBar = BossBar.new()
+	bar.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_boss_box.add_child(bar)
+	bar.setup(enemy)
 	_boss_bars[enemy] = bar
+	_update_boss_bars()
 
 
+## Leisten aktualisieren, besiegte entfernen; ab compact_from Leisten kompakt.
 func _update_boss_bars() -> void:
 	for enemy: Enemy in _boss_bars.keys():
-		var bar: ProgressBar = _boss_bars[enemy]
+		var bar: BossBar = _boss_bars[enemy]
 		if not is_instance_valid(enemy) or not enemy.is_alive():
-			(bar.get_meta(&"label") as Label).queue_free()
 			bar.queue_free()
 			_boss_bars.erase(enemy)
-		else:
-			bar.value = enemy.hp / enemy.max_hp
+	var compact: bool = _boss_bars.size() >= PHASES.compact_from
+	for bar: BossBar in _boss_bars.values():
+		bar.set_compact(compact)
+		bar.refresh()
+
+
+func boss_bars() -> Array[BossBar]:
+	var result: Array[BossBar] = []
+	result.assign(_boss_bars.values())
+	return result
+
+
+func _build_phase_banner() -> void:
+	_phase_banner = VBoxContainer.new()
+	_phase_banner.alignment = BoxContainer.ALIGNMENT_CENTER
+	_phase_banner.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	_phase_banner.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	_phase_banner.grow_vertical = Control.GROW_DIRECTION_BOTH
+	_phase_banner.position.y -= PHASES.banner_offset_y
+	_phase_banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_phase_banner_name = UiStyle.make_label(PHASES.name_size)
+	_phase_banner_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_phase_banner.add_child(_phase_banner_name)
+	_phase_banner_text = UiStyle.make_label(PHASES.boss_banner_size)
+	_phase_banner_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_phase_banner.add_child(_phase_banner_text)
+	_phase_banner.resized.connect(func() -> void: _phase_banner.pivot_offset = _phase_banner.size / 2.0)
+	_phase_banner.hide()
+	add_child(_phase_banner)
+
+
+## Phasenwechsel: Banner (Elites kleiner und kürzer) in Phasenfarbe, Leiste blitzt auf.
+func _on_boss_phase_changed(enemy: Enemy, phase_index: int) -> void:
+	if _boss_bars.has(enemy):
+		_boss_bars[enemy].refresh()
+		_boss_bars[enemy].flash()
+	var phase: BossPhaseData = enemy.phased_behavior().current_phase()
+	var boss: bool = enemy.data.is_boss
+	_phase_banner_name.text = tr(enemy.data.name_key)
+	_phase_banner_text.text = tr("PHASE_BANNER") % [phase_index + 1, tr(phase.name_key)]
+	_phase_banner_text.add_theme_font_size_override("font_size", PHASES.boss_banner_size if boss else PHASES.elite_banner_size)
+	_phase_banner_text.add_theme_color_override("font_color", phase.aura_color if phase.aura_color.a > 0.0 else UiStyle.TEXT_COLOR)
+	_phase_banner.reset_size()
+	_phase_banner.set_anchors_and_offsets_preset(Control.PRESET_CENTER, Control.PRESET_MODE_MINSIZE)
+	_phase_banner.position.y -= PHASES.banner_offset_y
+	_phase_banner.show()
+	if _phase_banner_tween != null:
+		_phase_banner_tween.kill()
+	_phase_banner.scale = Vector2.ONE * PHASES.banner_pop_scale
+	_phase_banner_tween = create_tween()
+	_phase_banner_tween.tween_property(_phase_banner, "scale", Vector2.ONE, PHASES.banner_pop_time) 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_phase_banner_tween.tween_interval(maxf(0.0, (PHASES.boss_banner_time if boss else PHASES.elite_banner_time) - PHASES.banner_pop_time))
+	_phase_banner_tween.tween_callback(_phase_banner.hide)
+
+
+func phase_banner_text() -> String:
+	return _phase_banner_text.text if _phase_banner.visible else ""
 
 
 func _bar_label(bar: ProgressBar) -> Label:

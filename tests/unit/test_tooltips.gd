@@ -131,7 +131,7 @@ func test_set_bonus_text_highlights_current_level() -> void:
 	assert_eq(top, 6)
 	assert_string_contains(text, "3/6 %s" % TextFormat.t("CLASS_BLADE"))
 	assert_string_contains(text, TextFormat.t("TIP_SET_NEXT") % 4)
-	assert_string_contains(text, "[color=%s]▶ %s" % [TooltipText.ACTIVE_COLOR, TextFormat.t("TIP_SET_LEVEL") % [3, ""]])
+	assert_string_contains(text, "[color=%s]» %s" % [TooltipText.ACTIVE_COLOR, TextFormat.t("TIP_SET_LEVEL") % [3, ""]])
 	for level: int in range(2, top + 1):
 		assert_string_contains(text, TextFormat.t("TIP_SET_LEVEL") % [level, ""])
 

@@ -9,6 +9,7 @@ const HURT_TRAUMA: float = 0.55
 const CYCLE_PULSE_RADIUS: float = 260.0
 const CYCLE_PULSE_COLOR: Color = Color("#F5A623")
 const CYCLE_TRAUMA: float = 0.4
+const PHASES: BossPhaseConfig = preload("res://data/config/boss_phase_config.tres")
 
 var player: Player:
 	set(value):
@@ -23,6 +24,7 @@ func _ready() -> void:
 	Events.spark_collected.connect(_on_spark_collected)
 	Events.level_up.connect(_on_level_up)
 	Events.boss_spawned.connect(_on_boss_spawned)
+	Events.boss_phase_changed.connect(_on_boss_phase_changed)
 	Events.wave_ended.connect(func(_n: int) -> void: AudioManager.play(&"wave_clear"))
 	Events.endless_bosses_defeated.connect(_on_endless_bosses_defeated)
 
@@ -49,10 +51,21 @@ func _on_level_up(_level: int) -> void:
 
 
 func _on_boss_spawned(_enemy: Enemy) -> void:
+	_play_boss_warning()
+
+
+## Warnton mit Abklingzeit (Doppelboss und gleichzeitige Phasenwechsel nicht doppelt).
+func _play_boss_warning() -> void:
 	var now: float = Time.get_ticks_msec() / 1000.0
 	if now - _last_boss_warning >= BOSS_WARNING_COOLDOWN:
 		_last_boss_warning = now
 		AudioManager.play(&"boss_warning")
+
+
+## Phasenwechsel: Warnton und Screenshake (Elites schwächer); Fx.shake respektiert die Option "Screenshake".
+func _on_boss_phase_changed(enemy: Enemy, _phase_index: int) -> void:
+	_play_boss_warning()
+	Fx.shake(get_tree(), PHASES.boss_trauma if enemy.data.is_boss else PHASES.elite_trauma)
 
 
 func _on_endless_bosses_defeated(_cycle: int) -> void:

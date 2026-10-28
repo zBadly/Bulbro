@@ -29,6 +29,7 @@ cooldown = 3.0
 [sub_resource type="Resource" id="Resource_1emgk"]
 script = ExtResource("1_tghap")
 description_key = "PHASE_ENEMY_FINSTERNIS_1"
+name_key = "PHASE_NAME_ENEMY_FINSTERNIS_1"
 next_at_hp = 0.75
 attacks = Array[ExtResource("2_fbrqp")]([SubResource("Resource_ci8yg")])
 
@@ -52,6 +53,8 @@ cooldown = 2.6
 [sub_resource type="Resource" id="Resource_haseg"]
 script = ExtResource("1_tghap")
 description_key = "PHASE_ENEMY_FINSTERNIS_2"
+name_key = "PHASE_NAME_ENEMY_FINSTERNIS_2"
+aura_color = Color(0.94902, 0.54902, 0.219608, 1)
 next_at_hp = 0.4
 attacks = Array[ExtResource("2_fbrqp")]([SubResource("Resource_agte2")])
 
@@ -68,6 +71,8 @@ cooldown = 2.0
 [sub_resource type="Resource" id="Resource_uqa6g"]
 script = ExtResource("1_tghap")
 description_key = "PHASE_ENEMY_FINSTERNIS_3"
+name_key = "PHASE_NAME_ENEMY_FINSTERNIS_3"
+aura_color = Color(0.905882, 0.298039, 0.235294, 1)
 speed_multiplier = 2.5
 attacks = Array[ExtResource("2_fbrqp")]([SubResource("Resource_agte2"), SubResource("Resource_pcepg")])
 

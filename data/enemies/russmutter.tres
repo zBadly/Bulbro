@@ -21,6 +21,7 @@ cooldown = 1.4
 [sub_resource type="Resource" id="Resource_i32wc"]
 script = ExtResource("1_vvxl4")
 description_key = "PHASE_ENEMY_RUSSMUTTER_1"
+name_key = "PHASE_NAME_ENEMY_RUSSMUTTER_1"
 next_at_hp = 0.6
 max_duration = 25.0
 attacks = Array[ExtResource("2_gflbd")]([SubResource("Resource_l1qur")])
@@ -42,6 +43,8 @@ cooldown = 5.0
 [sub_resource type="Resource" id="Resource_pqqil"]
 script = ExtResource("1_vvxl4")
 description_key = "PHASE_ENEMY_RUSSMUTTER_2"
+name_key = "PHASE_NAME_ENEMY_RUSSMUTTER_2"
+aura_color = Color(0.94902, 0.54902, 0.219608, 1)
 movement = 1
 speed_multiplier = 1.2
 attacks = Array[ExtResource("2_gflbd")]([SubResource("Resource_phu3d"), SubResource("Resource_8pfmc")])
