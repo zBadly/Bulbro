@@ -105,6 +105,33 @@ func test_specials_are_rolled_for_the_next_block() -> void:
 	assert_false(GameState.special_waves.has(special + ENDLESS.boss_cycle_waves), "nächster Block noch offen")
 
 
+func test_endless_elite_uses_elite_hp_factor() -> void:
+	var manager: WaveManager = _manager_after(REGULAR_WAVES)
+	var special: int = REGULAR_WAVES + ENDLESS.special_wave_offset
+	GameState.special_waves[special] = WaveManager.SPECIAL_ELITE
+	manager.start_wave(special)
+	var elites: Array[Enemy] = []
+	elites.assign(manager.get("_bosses"))
+	assert_eq(elites.size(), 1, "Elite-Welle bringt einen Elite")
+	assert_true(elites[0].data.is_elite)
+	assert_almost_eq(elites[0].hp_multiplier, ENDLESS.elite_hp_factor, 0.0001)
+
+
+func test_endless_horde_uses_horde_factor() -> void:
+	var manager: WaveManager = _manager_after(REGULAR_WAVES)
+	var special: int = REGULAR_WAVES + ENDLESS.special_wave_offset
+	GameState.special_waves[special] = WaveManager.SPECIAL_HORDE
+	manager.start_wave(special)
+	manager.clear_enemies()
+	var group: SpawnGroupData = SpawnGroupData.new()
+	group.enemy = load("res://data/enemies/schattenling.tres")
+	group.group_min = 4
+	group.group_max = 4
+	manager.call("_queue_group", group)
+	var pending: Array = manager.get("_pending")
+	assert_eq(pending.size(), roundi(4 * ENDLESS.horde_factor), "Gruppengröße x horde_factor")
+
+
 func test_endless_boss_wave_spawns_all_bosses_with_cycle_bonus() -> void:
 	var boss_wave: int = REGULAR_WAVES + ENDLESS.boss_cycle_waves
 	var manager: WaveManager = _manager_after(REGULAR_WAVES)

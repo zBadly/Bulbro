@@ -4,18 +4,19 @@ Ergänzt [GDD.md](GDD.md) und [ART_STYLE.md](ART_STYLE.md). Hier stehen der Stan
 
 ## Nächste Sitzung
 
-Stand 23.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
+Stand 28.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 
 - **Erledigt:** Paket 1 (Crash nach Bosssieg, `a4c51cb`, Nacharbeit typisierte Literale `89833f1`) und Paket 2 (Lexikon-Erweiterungen, `55bf4bc`).
 - **Crash-Fix im echten Spiel bestätigt:** Bosssieg mit LED-Schütze auf Spannung 0. „Glasfaser“ wurde freigeschaltet, Sieg, Challenge und Statistik sind gespeichert, der Fortsetzen-Stand wurde gelöscht.
 - **Erledigt 22.10.:** Spielstand-Trennung für Headless-Checks/Tests (`38855c5`), Paket 3 (Admin-Modus, `7211a38`), Paket 4 (HUD und Tooltips, `5d3fadf`) und Paket 5 (Run-Statistiken und Run-Ende, inkl. der beiden Zusatzpunkte: Schadenszahlen verschwinden, „Nochmal“ bleibt).
 - **Erledigt 22./23.10.:** Audio-Leak beim Beenden (`35963db`) und Paket 6 (Endlos-Modus, Punkte 1–6 inkl. der Ergänzungen Boss-Kartons und Banner „Bosse besiegt!“ mit Zähler „Besiegte Boss-Zyklen“).
-- **Offen in Paket 6:** Punkt 7. Simulator-Auswertung liegt vor (`--endless`, 23.10.): Mit den Startwerten sterben Sieger auf Spannung 0 im Median in Endlos 5 (Welle 25), 40 % an der ersten Elite-/Hordewelle, nur 5 % überleben den ersten Doppelboss. Vorschlag an den Spieler: `hp_growth` 0,06, `damage_growth` 0,05, `density_growth` 0,01, `harvest_decay` 0,02, `horde_factor` 1,5, `elite_hp_factor` 0,75 (Boss-Zyklus unverändert) → Median Endlos 10, P90 Endlos 20, 29 % überleben Welle 30. Werte erst nach seinem OK in `endless_config.tres` übernehmen.
+- **Erledigt 23.–28.10.:** Paket 6 Punkt 7, Simulator-Auswertung (`3219a3d`) und Balancing des Endlos-Modus nach OK des Spielers (Commit „Balancing: Endlos-Modus“). Werte und Simulator-Tabelle im Abschnitt „Endlos-Modus“.
 - Falle: Zugriffe wie `CONFIG.wert` auf eine `const`-Resource wertet GDScript beim Kompilieren aus; Laufzeit-Änderungen (Simulator-Overrides) sehen nur Zugriffe über eine Variable (`EndlessRules.config`).
-- **Als Nächstes:** danach die Pakete 7 bis 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
+- **Als Nächstes:** Paket 7 (Boss-Phasen sichtbar), danach die Pakete 8 und 9 der Reihe nach, jeweils mit Commit, Push und Eintrag hier.
 - **Für Paket 9 schon vorhanden:** `SaveManager.get_run_history()` liefert die letzten 20 Runs (neueste zuerst) mit Charakter, Spannung, Ergebnis, Welle, Endlos-Welle, Datum, Kampfzeit, Level, Kills und Top-3-Quellen. Siehe Abschnitt „Run-Statistik und Run-Ende“.
 
 Offene Punkte:
+- Echter Endlos-Run zur Bestätigung von Welle 25 und 30 steht aus.
 - `stats.runs` = 2 im echten Spielstand ist geklärt (22.10.): Die 6.014 Kills übersteigen, was ein einzelner Run auf Spannung 0 liefern kann (rund 4.850 Gegner in den Wellen 1–19 plus Bosswelle). Es sind also zwei echte Runs mit Kills zu Ende gegangen, vermutlich der in der Sicherung vom 21.10. gespeicherte, unterbrochene Run (per „Fortsetzen“) und der Sieg mit dem LED-Schützen. Headless-Check und Tests können seit dem 22.10. ohnehin nicht mehr in den echten Spielstand schreiben.
 - Runs, die zwischen dem 21.10. 14:10 (Fehler eingeführt) und dem Fix endeten, fehlen in der Statistik und lassen sich nicht nachtragen.
 - `piercing_dmg_pct` und `boss_dmg_pct` wirken seit Paket 2, aber noch kein Item gibt diese Stats (Kandidaten für Paket 8).
@@ -215,15 +216,52 @@ Grundlage: `--characters`, `--weapons`, `--items` (200 Runs, Vergleichswerte).
 ### Endlos-Modus (Phase 13, überarbeitet in Phase 15, Paket 6)
 - Alle Werte in `data/config/endless_config.tres` (`EndlessConfig`), gerechnet in `EndlessRules` (Spiel, Shop, Lexikon und Simulator nutzen dieselben Formeln). „Endlos-Stufe“ = Wellen seit dem Sieg (Welle 21 = 1).
 - Nach dem Sieg in Welle 20: „Endlos weiterspielen“. Endloswellen dauern 60 s und nutzen die Gegnergruppen von Welle 19.
-- Pro Endloswelle (Zinseszins): Gegner-HP +15 %, Schaden +10 %, Tempo +3 % (höchstens +60 %), Gruppen erscheinen um 2 % häufiger (höchstens +100 %, Intervall geteilt durch den Faktor). Das Limit von 100 Gegnern bleibt; die Schwierigkeit kommt aus stärkeren, nicht aus mehr Gegnern.
-- Aufladung: Stufe 1 zahlt 50 % aus, danach je Welle 4 Prozentpunkte weniger, mindestens 10 %.
+- Pro Endloswelle (Zinseszins): Gegner-HP +6 %, Schaden +5 %, Tempo +3 % (höchstens +60 %), Gruppen erscheinen um 1 % häufiger (höchstens +100 %, Intervall geteilt durch den Faktor). Zusätzlich wachsen HP und Schaden weiter linear mit der Wellennummer wie in Welle 1–20. Das Limit von 100 Gegnern bleibt; die Schwierigkeit kommt aus stärkeren, nicht aus mehr Gegnern.
+- Aufladung: Stufe 1 zahlt 50 % aus, danach je Welle 2 Prozentpunkte weniger, mindestens 10 %.
 - Bosswellen: Stufe 10, 20, 30 … (Welle 30, 40, 50 …) nach Vorlage von Welle 20 (Begleitgruppen in den ersten 90 s). Beide Bosse mit vollen HP (keine 75 % wie bei Spannung 5), Endlos-Faktor plus linearer Zyklus-Bonus: Zyklus n = +40 % · n HP und +15 % · n Schaden (`Enemy.damage_multiplier`). Die Welle endet erst mit dem Tod aller Bosse, danach Kartons, Level-ups und Shop wie gewohnt; kein Sieg-Bildschirm.
 - Jeder Endlos-Boss lässt 1 legendären Karton fallen (`boss_legendary_crates`).
 - Nach dem Bosssieg: goldenes Banner „Bosse besiegt! Zyklus n geschafft“ (2 s, kleiner Sprung) mit Level-up-Klang, Partikeln, goldenem Ring und leichtem Bildschirmwackeln. `RunStats.boss_cycles` zählt mit (Run-Statistik nur im Endlos-Modus, Run-Historie `boss_cycles`, Fortsetzen-Stand).
-- Sonderwellen auf jeder Spannung: Stufe 5, 15, 25 … (Welle 25, 35 …) ist Elite- oder Hordewelle, 40 % Horde. Ausgewürfelt mit dem Run-RNG jeweils für den nächsten 10er-Block (beim Weiterspielen und bei jedem Wellenstart), gespeichert in `GameState.special_waves`.
+- Sonderwellen auf jeder Spannung: Stufe 5, 15, 25 … (Welle 25, 35 …) ist Elite- oder Hordewelle, 40 % Horde. Hordewelle: Gruppen x1,5 (`horde_factor`; im normalen Run x2), Elite mit 75 % HP (`elite_hp_factor`). Ausgewürfelt mit dem Run-RNG jeweils für den nächsten 10er-Block (beim Weiterspielen und bei jedem Wellenstart), gespeichert in `GameState.special_waves`.
 - HUD: „Endlos 7 (Welle 27)“. Shop: Vorschau mit Endlos-Boss- und Sonderwellen, vor jeder Bosswelle „Nächste Welle: Bosse“ (Welle 20: „Nächste Welle: Boss“).
 - Bestwert „Höchste Endlos-Welle“ je Charakter (`progress.endless_best`, kein Versionssprung): zählt beim Erreichen einer Endloswelle (wie „Endlos-Welle n erreicht“ am Run-Ende), nicht in Admin-Runs. Angezeigt im Infopanel der Charakterauswahl und im Lexikon-Eintrag des Charakters.
 - Ein Run wird in der Gesamtstatistik nur einmal gezählt; Funken und Kills nur als Zuwachs.
+- Balancing 28.10. (Simulator `--endless`, 40 Runs je Charakter, Seed 4242): Die Startwerte (HP +15 %, Schaden +10 %, Dichte +2 %, Aufladung −4 Punkte, Horde x2, Elite 100 %) waren viel zu steil. Die benötigte DPS stieg ab Welle 21 um etwa 22 % pro Welle, der Build nur um etwa 5 %; Sieger starben im Median in Endlos 5 (Welle 25), 40 % an der ersten Elite-/Hordewelle, nur 5 % überlebten Welle 30. Ziel: Ø Build etwa Endlos 8–12, starke Builds etwa 20–30, der erste Doppelboss als echte Hürde.
+
+| Alle Sieger | schwach (P10) | Ø Build (Median) | stark (P90) | überleben Welle 30 / 40 / 50 | häufigster Tod |
+|---|---|---|---|---|---|
+| Startwerte, Spannung 0 | Endlos 3 | Endlos 5 | Endlos 9 | 5 % / 0 % / 0 % | Endlos 5: 40 % |
+| Startwerte, Spannung 3 | Endlos 2 | Endlos 5 | Endlos 7 | 3 % / 0 % / 0 % | Endlos 5: 33 % |
+| **Neu, Spannung 0** | Endlos 5 | Endlos 10 | Endlos 20 | 29 % / 9 % / 3 % | Endlos 10: 28 %, Endlos 5: 16 % |
+| **Neu, Spannung 3** | Endlos 3 | Endlos 7 | Endlos 15 | 23 % / 4 % / 2 % | Endlos 5: 21 %, Endlos 10: 19 % |
+
+Je Charakter mit den neuen Werten, Spannung 0 (Siegquote = Anteil der Runs, die Welle 20 gewinnen; Endlos-Werte nur über die Sieger):
+
+| Charakter | Siegquote | schwach (P10) | Ø Build (Median) | stark (P90) | Tod in Bosswelle |
+|---|---|---|---|---|---|
+| Standardbirne | 80 % | 5 (W25) | 9 (W29) | 15 (W35) | 22 % |
+| Glühfaden-Boxer | 98 % | 5 (W25) | 10 (W30) | 15 (W35) | 36 % |
+| Neonröhre | 80 % | 5 (W25) | 10 (W30) | 13 (W33) | 38 % |
+| LED-Schütze | 78 % | 7 (W27) | 10 (W30) | 20 (W40) | 61 % |
+| Lavalampe | 90 % | 9 (W29) | 10 (W30) | 28 (W48) | 50 % |
+| Taschenlampe | 60 % | 2 (W22) | 6 (W26) | 10 (W30) | 13 % |
+| Discokugel | 50 % | 4 (W24) | 5 (W25) | 10 (W30) | 20 % |
+| Lichterkette | 85 % | 5 (W25) | 11 (W31) | 25 (W45) | 29 % |
+| Halogenstrahler | 75 % | 3 (W23) | 6 (W26) | 11 (W31) | 17 % |
+| Nachtlicht | 100 % | 2 (W22) | 6 (W26) | 12 (W32) | 3 % |
+| Blitzlicht | 85 % | 5 (W25) | 9 (W29) | 15 (W35) | 24 % |
+| Kerze | 90 % | 4 (W24) | 6 (W26) | 10 (W30) | 8 % |
+| Irrlicht | 73 % | 5 (W25) | 10 (W30) | 20 (W40) | 41 % |
+| Zündkerze | 90 % | 10 (W30) | 25 (W45) | 35 (W55) | 28 % |
+| Kronleuchter | 85 % | 10 (W30) | 10 (W30) | 23 (W43) | 50 % |
+| Schwarzlicht | 88 % | 9 (W29) | 10 (W30) | 23 (W43) | 46 % |
+| Gewächshauslampe | 88 % | 5 (W25) | 8 (W28) | 12 (W32) | 17 % |
+| Smartbulb | 85 % | 5 (W25) | 10 (W30) | 24 (W44) | 32 % |
+| Drohnenleuchte | 90 % | 4 (W24) | 7 (W27) | 10 (W30) | 22 % |
+| Stroboskop | 85 % | 5 (W25) | 10 (W30) | 15 (W35) | 24 % |
+| Vampirbirne | 90 % | 5 (W25) | 10 (W30) | 14 (W34) | 25 % |
+| Spiegelkugel | 75 % | 5 (W25) | 10 (W30) | 15 (W35) | 43 % |
+
+Getestete Alternativen (20 Runs, Spannung 0): HP 8 %/Schaden 6 % → Median 8, P90 14, Welle 25 weiter eine Wand (30 % der Tode); HP 5 %/Schaden 4 % mit milderen Sonderwellen → Median 10, P90 28; Zyklus-Bonus 30 % statt 40 % ändert Welle 30 kaum (34 % statt 32 % überleben). Die Zahlen sind Vergleichswerte: Wie Builds nach Welle 20 weiterwachsen, schätzt der Simulator.
 
 ## Werkzeuge
 
