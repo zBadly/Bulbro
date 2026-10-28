@@ -10,11 +10,13 @@ const CYCLE_PULSE_RADIUS: float = 260.0
 const CYCLE_PULSE_COLOR: Color = Color("#F5A623")
 const CYCLE_TRAUMA: float = 0.4
 const PHASES: BossPhaseConfig = preload("res://data/config/boss_phase_config.tres")
+const HUD: HudConfig = preload("res://data/config/hud_config.tres")
 
 var player: Player:
 	set(value):
 		player = value
 		player.damaged.connect(_on_player_damaged)
+		player.lethal_hit_survived.connect(_on_lethal_hit_survived)
 
 var _last_boss_warning: float = -INF
 
@@ -48,6 +50,17 @@ func _on_level_up(_level: int) -> void:
 		return
 	AudioManager.play(&"level_up")
 	Fx.particles(get_tree(), ParticleFx.Kind.LEVEL_UP, player.get_center())
+
+
+## Reservebatterie: "Gerettet!" über dem Spieler, Blitz (abgeschwächt bei "Blitzeffekte reduzieren"), Ring und Ton.
+func _on_lethal_hit_survived(_origin: StringName) -> void:
+	var tree: SceneTree = get_tree()
+	Pools.spawn_text(tree, tr("RESCUE_TEXT"), HUD.rescue_text_color, HUD.rescue_text_size, player.get_center())
+	Fx.screen_flash(tree)
+	Fx.pulse(tree, player.get_center(), HUD.rescue_pulse_radius, HUD.rescue_text_color)
+	Fx.shake(tree, HUD.rescue_trauma)
+	player.effect_flash()
+	AudioManager.play(&"heal")
 
 
 func _on_boss_spawned(_enemy: Enemy) -> void:

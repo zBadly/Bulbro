@@ -17,6 +17,9 @@ var rest_position: Vector2 = Vector2.ZERO
 ## Spiegelbild-Kopie: weniger Schaden, kein Lebensraub, löst keine Angriffs-Effekte aus.
 var is_clone: bool = false
 var damage_factor: float = 1.0
+## Verstärkung nur für den nächsten Angriff (Kondensator); der Zusatzschaden zählt für `_bonus_origin`.
+var _bonus_factor: float = 1.0
+var _bonus_origin: StringName = &""
 
 var _cooldown_left: float = 0.0
 var _retarget_left: float = 0.0
@@ -117,6 +120,19 @@ func _physics_process(delta: float) -> void:
 			_fire()
 		else:
 			_melee()
+		_bonus_factor = 1.0
+		_bonus_origin = &""
+
+
+## Der nächste Angriff macht `factor`-fachen Schaden (wird im selben Frame vor dem Angriff gesetzt).
+func charge_next_attack(factor: float, origin: StringName) -> void:
+	_bonus_factor = factor
+	_bonus_origin = origin
+	Juice.effect_flash(_sprite)
+
+
+func is_charged() -> bool:
+	return _bonus_factor != 1.0
 
 
 func _is_valid_target(enemy: Damageable) -> bool:
@@ -157,7 +173,12 @@ func _roll_damage() -> DamageInfo:
 		base, CombatMath.scaling_bonus(t.scalings, s), s.get_stat(Stats.DAMAGE_PCT), t.crit_multiplier if crit else 1.0)
 	if damage_factor != 1.0:
 		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * damage_factor))
+	if _bonus_factor != 1.0:
+		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * _bonus_factor))
 	var info: DamageInfo = DamageInfo.create(amount, crit, t.knockback + s.get_stat(Stats.KNOCKBACK), self, DamageSource.weapon(data.id))
+	if _bonus_factor > 1.0:
+		info.bonus_origin = _bonus_origin
+		info.bonus_share = 1.0 - 1.0 / _bonus_factor
 	info.burn_damage = t.burn_damage
 	info.burn_ticks = t.burn_ticks
 	info.burn_chance = t.burn_chance

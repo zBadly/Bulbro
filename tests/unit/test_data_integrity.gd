@@ -3,7 +3,7 @@ extends GutTest
 
 const DATA_ROOT: String = "res://data"
 const EXPECTED_WEAPONS: int = 22
-const EXPECTED_ITEMS: int = 44
+const EXPECTED_ITEMS: int = 54
 
 
 func _all_resource_paths(dir_path: String) -> PackedStringArray:
@@ -86,7 +86,8 @@ func _check_item(i: ItemData) -> PackedStringArray:
 	if String(i.id) == "": p.append("id fehlt")
 	if not _translated(i.name_key): p.append("Name nicht übersetzt")
 	if i.icon == null: p.append("Icon fehlt")
-	if i.tier < 1 or i.tier > 4: p.append("Tier ungültig")
+	if i.tier < 1 or i.tier > ItemData.UNIQUE_TIER: p.append("Tier ungültig")
+	if i.is_unique() and i.limit != 1: p.append("Einzigartig ohne Limit 1")
 	if i.price <= 0: p.append("Preis fehlt")
 	if i.effects.is_empty(): p.append("keine Effekte")
 	var text: String = i.get_description()
@@ -94,6 +95,10 @@ func _check_item(i: ItemData) -> PackedStringArray:
 		p.append("Beschreibung leer oder unübersetzt: " + text)
 	for mod: StatModifier in i.get_modifiers():
 		if not Stats.is_valid(mod.stat): p.append("unbekannter Stat " + mod.stat)
+	for effect: ItemEffect in i.effects:
+		var conversion: StatConversionEffect = effect as StatConversionEffect
+		if conversion != null and (not Stats.is_valid(conversion.to_stat) or not (Stats.is_valid(conversion.from_stat) or Stats.is_source(conversion.from_stat)) or conversion.per <= 0.0):
+			p.append("Umrechnung ungültig")
 	return p
 
 

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_5u8w4"]
+[ext_resource type="Script" path="res://scripts/data/effects/stat_conversion_effect.gd" id="2_48go2"]
+[ext_resource type="Texture2D" path="res://art/items/schwungrad.svg" id="3_0mqmk"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="4_c1e2v"]
+
+[sub_resource type="Resource" id="Resource_5gaud"]
+script = ExtResource("2_48go2")
+from_stat = &"speed"
+to_stat = &"melee_dmg"
+per = 3.0
+
+[resource]
+script = ExtResource("4_c1e2v")
+id = &"schwungrad"
+name_key = "ITEM_SCHWUNGRAD"
+tier = 5
+icon = ExtResource("3_0mqmk")
+price = 105
+limit = 1
+tags = Array[StringName]([&"speed", &"melee"])
+effects = Array[ExtResource("1_5u8w4")]([SubResource("Resource_5gaud")])
+lore_text = "LORE_ITEM_SCHWUNGRAD"

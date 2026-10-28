@@ -14,3 +14,9 @@ extends Resource
 ## Gewichtungsfaktor für Items mit bevorzugten Tags des Charakters.
 @export var preferred_tag_weight: float = 0.0
 @export var upgrade_card_count: int = 0
+## Einzigartige Items: Chance je neu gezogenem Angebotsplatz, frühestens ab dieser Welle, höchstens eins pro Angebot.
+@export var unique_min_wave: int = 0
+@export var unique_chance: float = 0.0
+## Glück erhöht die Chance leicht: x (1 + Glück / 100 x Faktor), gedeckelt.
+@export var unique_luck_factor: float = 0.0
+@export var unique_max_chance: float = 0.0

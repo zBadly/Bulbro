@@ -13,6 +13,8 @@ signal weapon_attacked(weapon: Weapon, target: Damageable)
 signal enemy_hit(target: Damageable, info: DamageInfo)
 ## Heilung über Max HP hinaus (Vampirbirne).
 signal overhealed(amount: float)
+## Ein Effekt hat einen tödlichen Treffer abgefangen (Reservebatterie); `origin` = Herkunft des Effekts.
+signal lethal_hit_survived(origin: StringName)
 
 ## Sonderregeln, die Charakter-Effekte setzen (PlayerRuleEffect).
 enum Rule { NO_REGEN, NO_CRIT }
@@ -52,6 +54,9 @@ var character: CharacterData
 var class_bonuses: Array[ClassBonusEffect] = []
 var per_weapon_effects: Array[PerWeaponStatEffect] = []
 var standing_still_modifiers: Array[StatModifier] = []
+## Boni unter einer HP-Schwelle (Thermosicherung); aktive stehen in `_low_hp_active`.
+var low_hp_effects: Array[LowHpStatEffect] = []
+var _low_hp_active: Array[LowHpStatEffect] = []
 
 ## Modifikatoren aus dem Run (Level-up-Wahl, Max HP pro Level, Aufladungs-Wachstum) – für Fortsetzen gespeichert.
 var run_modifiers: Array[StatModifier] = []
@@ -79,6 +84,7 @@ func _ready() -> void:
 	if rng == null:
 		rng = GameState.rng
 	stats = StatSystem.new(config.base_stats)
+	_seed_sources()
 	stats.stats_changed.connect(_on_stats_changed)
 	_known_max_hp = get_max_hp()
 	current_hp = _known_max_hp
@@ -93,6 +99,9 @@ func _ready() -> void:
 	Juice.idle_bob(_visual)
 	Events.level_up.connect(_on_level_up)
 	Events.wave_ended.connect(_on_wave_ended)
+	Events.sparks_changed.connect(func(sparks: int, _bag: int) -> void: stats.set_source(Stats.SOURCE_SPARKS, sparks))
+	Events.xp_changed.connect(func(_xp: float, _needed: float, level: int) -> void: stats.set_source(Stats.SOURCE_LEVEL, level))
+	hp_changed.connect(func(_current: float, _maximum: float) -> void: update_low_hp())
 	manual_aim = SaveManager.get_option(SaveManager.MANUAL_AIM_KEY, false)
 	hp_changed.emit(current_hp, _known_max_hp)
 
@@ -177,11 +186,28 @@ func take_hit(raw_damage: float) -> int:
 		current_hp = maxf(0.0, current_hp - amount)
 	_invulnerable_left = config.invulnerability_time
 	Juice.hit_flash(_sprite)
+	if current_hp <= 0.0:
+		_prevent_death()
 	damaged.emit(amount)
 	hp_changed.emit(current_hp, get_max_hp())
 	if current_hp <= 0.0:
 		_die()
 	return amount
+
+
+## Fragt die Trigger-Effekte, ob einer den tödlichen Treffer abfängt (setzt dann selbst die HP).
+func _prevent_death() -> void:
+	var ctx: EffectContext = EffectContext.create(self)
+	for entry: TriggerEntry in triggers:
+		ctx.origin = entry.origin
+		if entry.effect.on_lethal_hit(ctx, entry):
+			lethal_hit_survived.emit(entry.origin)
+			return
+
+
+## Herkunft der Effekte, die gerade angewendet werden (für Umrechnungen und Trigger).
+func applying_origin() -> StringName:
+	return _applying_origin
 
 
 func apply_item(item: ItemData) -> void:
@@ -221,10 +247,13 @@ func rebuild() -> void:
 	triggers.clear()
 	stats.stats_changed.disconnect(_on_stats_changed)
 	stats = StatSystem.new(config.base_stats)
+	_seed_sources()
 	class_bonuses.clear()
 	per_weapon_effects.clear()
 	standing_still_modifiers.clear()
 	_still_active = false
+	low_hp_effects.clear()
+	_low_hp_active.clear()
 	rules.clear()
 	lifesteal_interval_factor = 1.0
 	set_bonus_multiplier.clear()
@@ -241,6 +270,12 @@ func rebuild() -> void:
 	_known_max_hp = get_max_hp()
 	current_hp = minf(hp, _known_max_hp)
 	hp_changed.emit(current_hp, _known_max_hp)
+
+
+## Quellen der Umrechnungen (Level, Funken) aus dem Run übernehmen.
+func _seed_sources() -> void:
+	stats.set_source(Stats.SOURCE_LEVEL, GameState.level)
+	stats.set_source(Stats.SOURCE_SPARKS, GameState.sparks)
 
 
 ## Neu registrierte Trigger übernehmen den Zustand ihres Vorgängers (gleiche Effekt-Resource, gleiche Reihenfolge).
@@ -453,6 +488,27 @@ func _update_standing_still() -> void:
 		stats.remove_modifiers(standing_still_modifiers)
 
 
+## Thermosicherung: Boni gelten, solange die HP unter der Schwelle des Effekts liegen.
+func update_low_hp() -> void:
+	if low_hp_effects.is_empty():
+		return
+	var share: float = current_hp / maxf(get_max_hp(), 1.0) * CombatMath.PERCENT
+	for effect: LowHpStatEffect in low_hp_effects:
+		var active: bool = not is_dead and share < effect.hp_below_pct
+		if active == (effect in _low_hp_active):
+			continue
+		if active:
+			_low_hp_active.append(effect)
+			stats.add_modifiers(effect.modifiers)
+		else:
+			_low_hp_active.erase(effect)
+			stats.remove_modifiers(effect.modifiers)
+
+
+func is_low_hp_active(effect: LowHpStatEffect) -> bool:
+	return effect in _low_hp_active
+
+
 ## Werte für Freischaltungen mitschreiben (höchster Schaden-%, Tempo-%, verschiedene Waffen, nur Primitiv).
 func _track_run() -> void:
 	var run: RunStats = GameState.run_stats
@@ -494,7 +550,8 @@ func _on_wave_ended(_wave_number: int) -> void:
 
 
 ## Jedes Level-up gibt sofort Max HP; die Upgrade-Auswahl folgt am Wellenende.
-func _on_level_up(_new_level: int) -> void:
+func _on_level_up(new_level: int) -> void:
+	stats.set_source(Stats.SOURCE_LEVEL, new_level)
 	add_run_modifier(StatModifier.create(Stats.MAX_HP, config.max_hp_per_level))
 
 

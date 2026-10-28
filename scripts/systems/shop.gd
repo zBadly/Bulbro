@@ -121,11 +121,37 @@ func _fill(ctx: ShopContext) -> void:
 		if offer.item != null:
 			counts[offer.item.id] = counts.get(offer.item.id, 0) + 1
 	offers = kept
+	var has_unique: bool = kept.any(func(o: ShopOffer) -> bool: return o.item != null and o.item.is_unique())
 	while offers.size() < CONFIG.offer_count:
-		var offer: ShopOffer = generate_offer(ctx, counts)
+		var offer: ShopOffer = null
+		if not has_unique and ctx.wave >= CONFIG.unique_min_wave and ctx.rng.randf() < unique_chance(ctx.luck):
+			offer = generate_unique_offer(ctx, counts)
+			has_unique = offer != null
+		if offer == null:
+			offer = generate_offer(ctx, counts)
 		if offer.item != null:
 			counts[offer.item.id] = counts.get(offer.item.id, 0) + 1
 		offers.append(offer)
+
+
+## Chance je Angebotsplatz auf ein einzigartiges Item (ab CONFIG.unique_min_wave); Glück erhöht sie leicht.
+static func unique_chance(luck: float) -> float:
+	return clampf(CONFIG.unique_chance * (1.0 + luck / Rarity.PERCENT * CONFIG.unique_luck_factor), 0.0, CONFIG.unique_max_chance)
+
+
+## Ein einzigartiges Item, das weder besessen noch schon angeboten ist; null, wenn keins mehr übrig ist.
+func generate_unique_offer(ctx: ShopContext, counts: Dictionary[StringName, int]) -> ShopOffer:
+	var pool: Array[ItemData] = []
+	for item: ItemData in items:
+		if item.is_unique() and not item.is_at_limit(counts.get(item.id, 0)) and counts.get(item.id, 0) == 0:
+			pool.append(item)
+	if pool.is_empty():
+		return null
+	var offer: ShopOffer = ShopOffer.new()
+	offer.item = pool[ctx.rng.randi_range(0, pool.size() - 1)]
+	offer.tier = offer.item.tier
+	offer.price = Economy.inflated_price(offer.item.price, ctx.wave, ctx.item_price_pct)
+	return offer
 
 
 ## Ein zufälliges Angebot. `counts` enthält Besitz plus bereits angebotene Items (für Limits).

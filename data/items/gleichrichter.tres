@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_gkbw7"]
+[ext_resource type="Script" path="res://scripts/data/effects/stat_conversion_effect.gd" id="2_flmif"]
+[ext_resource type="Texture2D" path="res://art/items/gleichrichter.svg" id="3_hxkrs"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="4_xiy3x"]
+
+[sub_resource type="Resource" id="Resource_q0hgn"]
+script = ExtResource("2_flmif")
+from_stat = &"attack_speed"
+to_stat = &"elemental_dmg"
+per = 5.0
+
+[resource]
+script = ExtResource("4_xiy3x")
+id = &"gleichrichter"
+name_key = "ITEM_GLEICHRICHTER"
+tier = 5
+icon = ExtResource("3_hxkrs")
+price = 105
+limit = 1
+tags = Array[StringName]([&"attack_speed", &"elemental"])
+effects = Array[ExtResource("1_gkbw7")]([SubResource("Resource_q0hgn")])
+lore_text = "LORE_ITEM_GLEICHRICHTER"

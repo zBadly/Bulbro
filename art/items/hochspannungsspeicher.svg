@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Speichertank mit Herz und Blitz (Max HP -> Schaden, weniger Regeneration) -->
+  <defs>
+    <clipPath id="c"><rect x="12" y="12" width="40" height="48" rx="8"/></clipPath>
+  </defs>
+  <rect x="24" y="5" width="16" height="8" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3"/>
+  <rect x="12" y="12" width="40" height="48" rx="8" fill="#3A2A5C"/>
+  <rect x="10" y="10" width="40" height="48" rx="8" fill="#5B3F8C" clip-path="url(#c)"/>
+  <path d="M32 49 C22 42 18 37 18 31 C18 26 22 23 26 23 C29 23 31 25 32 27 C33 25 35 23 38 23 C42 23 46 26 46 31 C46 37 42 42 32 49 Z" fill="#E74C3C" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M34 26 L28 36 L33 36 L30 45 L38 33 L33 33 Z" fill="#FFD43B" stroke="#2A1E2E" stroke-width="2" stroke-linejoin="round"/>
+  <ellipse cx="18" cy="19" rx="3" ry="4" fill="#8A6BC0"/>
+  <rect x="12" y="12" width="40" height="48" rx="8" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+</svg>

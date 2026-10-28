@@ -82,6 +82,6 @@ func _make_row(stat: StringName) -> RichTextLabel:
 	row.add_theme_font_override("normal_font", UiStyle.FONT)
 	row.add_theme_font_size_override("normal_font_size", TEXT_SIZE)
 	# Nur Maus: per Gamepad würde der Fokus sonst durch rund 30 Zeilen wandern.
-	GameTooltip.attach(row, TooltipText.stat.bind(stat, cap_of(stat)), true, false)
+	GameTooltip.attach(row, func() -> String: return TooltipText.stat(stat, cap_of(stat), _stats), true, false)
 	_rows[stat] = row
 	return row

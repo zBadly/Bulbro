@@ -18,6 +18,10 @@ const MIN_DESC_SIZE: int = 12
 const BUTTON_SIZE: int = 22
 const SIDE_BUTTON_SIZE: int = 18
 const BORDER_WIDTH: int = 4
+## Einzigartige Karten: dickere Goldkontur mit leichtem Schein.
+const UNIQUE_EXTRA_BORDER: int = 2
+const UNIQUE_GLOW_SIZE: int = 10
+const UNIQUE_GLOW_ALPHA: float = 0.45
 const GAP: int = 8
 
 ## Beliebige Nutzdaten des Aufrufers (z. B. ItemData oder UpgradeData).
@@ -99,6 +103,11 @@ func configure(icon: Texture2D, title: String, tier: int, description_bbcode: St
 	var style: StyleBoxFlat = UiStyle.panel_style()
 	style.border_color = color
 	style.set_border_width_all(BORDER_WIDTH)
+	if tier == ItemData.UNIQUE_TIER:
+		style.bg_color = style.bg_color.lerp(color, UiStyle.UNIQUE_CARD_TINT)
+		style.set_border_width_all(BORDER_WIDTH + UNIQUE_EXTRA_BORDER)
+		style.shadow_color = Color(color, UNIQUE_GLOW_ALPHA)
+		style.shadow_size = UNIQUE_GLOW_SIZE
 	add_theme_stylebox_override("panel", style)
 
 

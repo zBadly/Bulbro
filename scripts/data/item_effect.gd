@@ -67,3 +67,13 @@ func on_burning_enemy_killed(_ctx: EffectContext, _entry: TriggerEntry, _positio
 ## Heilung über Max HP hinaus (`amount` = überschüssige HP).
 func on_overheal(_ctx: EffectContext, _entry: TriggerEntry, _amount: float) -> void:
 	pass
+
+
+## Ein Treffer würde den Spieler töten (HP schon auf 0). true = abgefangen; der Effekt setzt dann die HP.
+func on_lethal_hit(_ctx: EffectContext, _entry: TriggerEntry) -> bool:
+	return false
+
+
+## Anzeige im HUD: Füllstand 0..1 (1 = bereit bzw. verfügbar), negativ = keine Anzeige.
+func hud_charge(_entry: TriggerEntry) -> float:
+	return -1.0

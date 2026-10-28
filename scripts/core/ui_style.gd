@@ -17,8 +17,10 @@ const BORDER_WIDTH: int = 3
 const BUTTON_COLOR: Color = Color("#2E2E3D")
 const BUTTON_FOCUS_COLOR: Color = Color("#4A90E2")
 const SPARK_COLOR: Color = Color("#FFD43B")
-## Tier-Farben I-IV (GDD 12).
-const TIER_COLORS: Array[Color] = [Color("#8A8A8A"), Color("#4A90E2"), Color("#9B59B6"), Color("#E74C3C")]
+## Tier-Farben I-IV (GDD 12) und an fünfter Stelle Gold für "Einzigartig" (ItemData.UNIQUE_TIER).
+const TIER_COLORS: Array[Color] = [Color("#8A8A8A"), Color("#4A90E2"), Color("#9B59B6"), Color("#E74C3C"), Color("#F5A623")]
+## Einzigartige Angebotskarten: Hintergrund leicht in Gold getönt.
+const UNIQUE_CARD_TINT: float = 0.14
 
 
 static func tier_color(tier: int) -> Color:

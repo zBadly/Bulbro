@@ -11,3 +11,7 @@ reroll_increment_factor = 0.5
 recycle_share = 0.25
 preferred_tag_weight = 2.0
 upgrade_card_count = 4
+unique_min_wave = 5
+unique_chance = 0.04
+unique_luck_factor = 0.5
+unique_max_chance = 0.08

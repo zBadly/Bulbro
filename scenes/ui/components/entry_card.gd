@@ -11,7 +11,7 @@ const ICON_SIZE: Vector2 = Vector2(96, 96)
 const NAME_SIZE: int = 19
 const NAME_LINES: int = 2
 ## Kleinste Schriftgröße, damit lange Namen nicht mitten im Wort umbrechen.
-const MIN_NAME_SIZE: int = 13
+const MIN_NAME_SIZE: int = 12
 const BORDER_WIDTH: int = 3
 const FOCUS_BORDER_WIDTH: int = 5
 const GAP: int = 6

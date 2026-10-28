@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_oknk7"]
+[ext_resource type="Script" path="res://scripts/data/effects/stat_conversion_effect.gd" id="2_dmfa0"]
+[ext_resource type="Texture2D" path="res://art/items/leuchtturm.svg" id="3_6fi0n"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="4_uaryn"]
+
+[sub_resource type="Resource" id="Resource_0msbg"]
+script = ExtResource("2_dmfa0")
+from_stat = &"run_level"
+to_stat = &"range"
+gain = 3.0
+
+[resource]
+script = ExtResource("4_uaryn")
+id = &"leuchtturm"
+name_key = "ITEM_LEUCHTTURM"
+tier = 5
+icon = ExtResource("3_6fi0n")
+price = 90
+limit = 1
+tags = Array[StringName]([&"range"])
+effects = Array[ExtResource("1_oknk7")]([SubResource("Resource_0msbg")])
+lore_text = "LORE_ITEM_LEUCHTTURM"

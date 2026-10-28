@@ -18,3 +18,14 @@ extends Resource
 @export var weapon_outline_width: float = 2.5
 ## Deckkraft der Kontur (dezent, aber bei 100 Gegnern erkennbar).
 @export_range(0.0, 1.0) var weapon_outline_alpha: float = 0.9
+## Effekt-Anzeigen im HUD (Reservebatterie, Kondensator): Icongröße und Deckkraft, wenn verbraucht.
+@export var effect_icon_size: float = 44.0
+@export_range(0.0, 1.0) var effect_used_alpha: float = 0.3
+@export var effect_bar_height: float = 10.0
+@export var effect_ready_color: Color = Color("#F5A623")
+@export var effect_charge_color: Color = Color("#8FE3FF")
+## "Gerettet!" (tödlicher Treffer abgefangen): Textfarbe, Schriftgröße, Ring um den Spieler, Screenshake.
+@export var rescue_text_color: Color = Color("#F5A623")
+@export var rescue_text_size: int = 40
+@export var rescue_pulse_radius: float = 180.0
+@export var rescue_trauma: float = 0.35

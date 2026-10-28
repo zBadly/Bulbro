@@ -86,6 +86,12 @@ const BOSS_HIT_RATE: float = 0.05
 const BOSS_ADD_PRESSURE: float = 0.5
 const BOSS_MAX_TIME: float = 240.0
 
+# --- Einzigartige Items (Paket 15-8) ---
+## Funken im Besitz während einer Welle (Sparlampe); die meisten Funken werden im Shop ausgegeben.
+const SPARKS_HELD: float = 60.0
+## Anteil der Kampfzeit unter der HP-Schwelle (Thermosicherung), als Bruchteil der Boni gerechnet.
+const LOW_HP_UPTIME: float = 0.2
+
 var host: Node
 var waves: Array[WaveData] = []
 var weapons: Array[WeaponData] = []
@@ -273,6 +279,9 @@ func _grow(player: Player, wave_number: int, start: WeaponData, luck: float, sta
 	for i in level - int(state["level"]):
 		player.add_run_modifier(StatModifier.create(Stats.MAX_HP, player.config.max_hp_per_level))
 	state["level"] = level
+	# Quellen für Umrechnungen (Leuchtturm: Level, Sparlampe: Funken im Besitz)
+	player.stats.set_source(Stats.SOURCE_LEVEL, level)
+	player.stats.set_source(Stats.SOURCE_SPARKS, SPARKS_HELD)
 
 
 func _apply_items(player: Player, wave_number: int, options: Dictionary) -> void:
@@ -332,6 +341,7 @@ func _play_wave(player: Player, wave: WaveData, difficulty: DifficultyData, rng:
 		required += elite.hp_for_wave(wave.wave_number) * scale.get("elite_hp", ELITE_HP_FACTOR) * hp_scale * _hp_factor(difficulty) / duration
 	var count: float = load_info["count"] * enemy_factor
 	var spawn_rate: float = count / duration
+	var low_hp: Array[StatModifier] = _add_low_hp_bonus(player)
 	var offense: Dictionary = _offense(player, state, spawn_rate)
 	var total: float = offense["total"] + state["overheal_dps"]
 	var ratio: float = total / maxf(required, 0.01)
@@ -346,6 +356,7 @@ func _play_wave(player: Player, wave: WaveData, difficulty: DifficultyData, rng:
 	var noise: float = exp(rng.randfn(0.0, WAVE_NOISE_SD))
 	var flows: Dictionary = _defense(player, offense, kills, pressure * noise, hit_damage)
 	state["landed"] = flows["landed"]
+	player.stats.remove_modifiers(low_hp)
 	var alive: bool = _apply_hp(player, state, flows, duration)
 	if state.get("trace", false):
 		print("W%2d dps %6.1f nötig %6.1f R %.2f | Treffer %.2f/s x %.1f -> %.2f HP/s, Heilung %.2f HP/s | HP %.1f / %.1f" % [
@@ -356,7 +367,7 @@ func _play_wave(player: Player, wave: WaveData, difficulty: DifficultyData, rng:
 ## HP über die Welle: Treffer gegen Heilung; HP-Verlust (Vampirbirne) tötet nie. Überschuss bei vollen HP
 ## wird bei Überheilungs-Effekten zu Schaden in der nächsten Welle.
 func _apply_hp(player: Player, state: Dictionary, flows: Dictionary, duration: float) -> bool:
-	var hp: float = float(state["hp"]) + (flows["heal"] - flows["damage"]) * duration
+	var hp: float = _survive_lethal(player, float(state["hp"]) + (flows["heal"] - flows["damage"]) * duration, flows["per_hit"])
 	if hp <= 0.0:
 		state["hp"] = 0.0
 		return false
@@ -385,6 +396,7 @@ func _play_boss(player: Player, difficulty: DifficultyData, rng: RandomNumberGen
 	else:
 		boss_hp *= _hp_factor(difficulty) * scale["hp"] * scale["boss_hp"]
 	var damage_scale: float = scale.get("damage", 1.0)
+	var low_hp: Array[StatModifier] = _add_low_hp_bonus(player)
 	var offense: Dictionary = _offense(player, state, 1.0)
 	var time: float = boss_hp / maxf(offense["single"] + state["overheal_dps"], 0.01)
 	if time > BOSS_MAX_TIME:
@@ -399,13 +411,36 @@ func _play_boss(player: Player, difficulty: DifficultyData, rng: RandomNumberGen
 	# Endlos: alle Bosse greifen gleichzeitig an.
 	var boss_count: float = float(bosses.size()) if not scale.is_empty() else 1.0
 	var boss_flows: Dictionary = _defense(player, offense, 0.0, BOSS_HIT_RATE / HIT_COEF * noise * boss_count, boss_damage)
+	player.stats.remove_modifiers(low_hp)
 	var hp: float = float(state["hp"]) + (add_flows["heal"] - add_flows["damage"]) * add_time - boss_flows["damage"] * time
 	hp += boss_flows["heal"] * (time - add_time)
+	hp = _survive_lethal(player, hp, boss_flows["per_hit"])
 	state["hp"] = clampf(hp, 0.0, player.get_max_hp())
 	if state.get("trace", false):
 		print("Boss: %.0f HP, Einzelziel %.1f DPS -> %.0f s; Adds %.2f HP/s, Boss %.2f HP/s, Heilung %.2f -> HP %.1f" % [
 			boss_hp, offense["single"], time, add_flows["damage"], boss_flows["damage"], boss_flows["heal"], hp])
 	return hp > 0.0
+
+
+## Reservebatterie: jede Ladung fängt einen tödlichen Treffer ab, wirkt also wie ein Treffer mehr Puffer.
+func _survive_lethal(player: Player, hp: float, per_hit: float) -> float:
+	if hp > 0.0:
+		return hp
+	for entry: TriggerEntry in player.triggers:
+		if entry.effect is SurviveLethalEffect:
+			var survive: SurviveLethalEffect = entry.effect
+			hp += survive.charges_per_wave * (per_hit + survive.survive_hp)
+	return hp
+
+
+## Thermosicherung: Boni unter der HP-Schwelle anteilig (LOW_HP_UPTIME) für die Welle; Rückgabe zum Entfernen.
+func _add_low_hp_bonus(player: Player) -> Array[StatModifier]:
+	var mods: Array[StatModifier] = []
+	for effect: LowHpStatEffect in player.low_hp_effects:
+		for mod: StatModifier in effect.modifiers:
+			mods.append(StatModifier.create(mod.stat, mod.value * LOW_HP_UPTIME, mod.kind))
+	player.stats.add_modifiers(mods)
+	return mods
 
 
 func _hp_factor(difficulty: DifficultyData) -> float:
@@ -449,6 +484,9 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 		if entry.effect is MirrorCloneEffect:
 			mirror_factor += (entry.effect as MirrorCloneEffect).damage_factor
 	var structures: float = 0.0
+	# Schaden eines Angriffs aller Waffen zusammen (Kondensator verstärkt je einen Angriff pro Waffe)
+	var volley: float = 0.0
+	var volley_single: float = 0.0
 	for weapon: Weapon in player.weapon_slots.get_weapons():
 		var t: WeaponTierStats = weapon.get_tier_stats()
 		var base: float = t.base_damage + weapon.data.damage_per_same_weapon * (player.weapon_slots.count_of(weapon.data.id) - 1)
@@ -461,6 +499,8 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 			burn_sources.append(Vector3(rate * targets * t.burn_chance, t.burn_damage * burn_mult, t.burn_ticks))
 		weapon_dps += per_hit * rate * targets
 		single += per_hit * rate
+		volley += per_hit * targets
+		volley_single += per_hit
 		hits_per_second += rate * targets
 		attacks_per_second += rate
 		root_stop += rate * targets * t.root_chance * t.root_duration
@@ -551,6 +591,12 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 			var on_hit: OnHitTakenEffect = effect
 			var value: Dictionary = _action_value(on_hit.action, ctx)
 			_add(parts, "Bei Treffer", float(state.get("landed", 0.0)) * on_hit.chance * value["damage"])
+		elif effect is KillChargeEffect:
+			var charge: KillChargeEffect = effect
+			var charges: float = kills / maxf(1.0, charge.kills_needed)
+			var bonus: float = charge.damage_factor - 1.0
+			_add(parts, "Kondensator", minf(charges * bonus * volley, bonus * weapon_dps))
+			single += minf(charges * bonus * volley_single, bonus * weapon_dps)
 		elif effect is OrbitingDroneEffect:
 			var drone: OrbitingDroneEffect = effect
 			var count: int = drone.base_count

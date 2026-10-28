@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_umjt3"]
+[ext_resource type="Script" path="res://scripts/data/effects/stat_conversion_effect.gd" id="2_00eld"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="3_5adtq"]
+[ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="4_87gly"]
+[ext_resource type="Texture2D" path="res://art/items/hochspannungsspeicher.svg" id="5_rb653"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="6_plq0i"]
+
+[sub_resource type="Resource" id="Resource_fqutr"]
+script = ExtResource("2_00eld")
+from_stat = &"max_hp"
+to_stat = &"damage_pct"
+per = 4.0
+
+[sub_resource type="Resource" id="Resource_h50ak"]
+script = ExtResource("3_5adtq")
+stat = &"hp_regen"
+value = -2.0
+
+[sub_resource type="Resource" id="Resource_44h7y"]
+script = ExtResource("4_87gly")
+modifiers = Array[ExtResource("3_5adtq")]([SubResource("Resource_h50ak")])
+
+[resource]
+script = ExtResource("6_plq0i")
+id = &"hochspannungsspeicher"
+name_key = "ITEM_HOCHSPANNUNGSSPEICHER"
+tier = 5
+icon = ExtResource("5_rb653")
+price = 115
+limit = 1
+tags = Array[StringName]([&"hp", &"damage"])
+effects = Array[ExtResource("1_umjt3")]([SubResource("Resource_fqutr"), SubResource("Resource_44h7y")])
+lore_text = "LORE_ITEM_HOCHSPANNUNGSSPEICHER"

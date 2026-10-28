@@ -2,9 +2,13 @@ class_name ItemData
 extends Resource
 ## Ein Item (GDD Abschnitt 9): Tier, Preis, optionales Limit, Tags und eine Liste von Effekten.
 
+## Seltenheit "Einzigartig" (Paket 15-8): eigene Stufe über Tier IV, aber nie Teil der Tier-Würfe
+## (Kartons, Level-ups, normale Shop-Angebote). Höchstens 1 pro Run, im Shop über einen eigenen Wurf.
+const UNIQUE_TIER: int = 5
+
 @export var id: StringName
 @export var name_key: String = ""
-@export_range(1, 4) var tier: int = 1
+@export_range(1, 5) var tier: int = 1
 @export var icon: Texture2D
 @export var price: int = 0
 ## Höchstanzahl pro Run (0 = unbegrenzt).
@@ -29,6 +33,10 @@ func get_description() -> String:
 	for effect: ItemEffect in effects:
 		lines.append_array(effect.describe())
 	return "\n".join(lines).strip_edges()
+
+
+func is_unique() -> bool:
+	return tier == UNIQUE_TIER
 
 
 func is_at_limit(owned_count: int) -> bool:

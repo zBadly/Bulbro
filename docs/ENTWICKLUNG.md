@@ -14,7 +14,8 @@ Stand 28.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 - Falle: Zugriffe wie `CONFIG.wert` auf eine `const`-Resource wertet GDScript beim Kompilieren aus; Laufzeit-Änderungen (Simulator-Overrides) sehen nur Zugriffe über eine Variable (`EndlessRules.config`).
 - **Erledigt 28.10.:** Paket 7 (Boss-Phasen sichtbar, Commit „Feature: Boss-Phasen sichtbar (Phase 15, Paket 7)“) inkl. der Ergänzungen: Uhr-Icon statt Emoji, graues „Immun“, Prüfung aller UI-Zeichen gegen die Schrift (Pfeile ersetzt, neuer Test `test_font_glyphs.gd`), Fix Fehlermeldung `zone_attack.gd` beim Verlassen eines Bosskampfs. Details im Abschnitt „Boss-Phasen“.
 - **Erledigt 28.10.:** Stummer Start für Läufe mit Fenster: `-- --mute` oder `BULBRO_MUTE=1` schaltet nur den Master-Bus stumm (`SaveManager.force_mute`), gespeicherte Lautstärken bleiben; Regel in CLAUDE.md, Test `test_mute_start.gd`.
-- **Als Nächstes:** Paket 8 (Neue Inhalte), danach Paket 9, jeweils mit Commit, Push und Eintrag hier.
+- **Erledigt 28.10.:** Paket 8, Teil „Einzigartige Items“ (Commit „Feature: Einzigartige Items (Phase 15, Paket 8)“): Seltenheit Einzigartig (Tier 5, Gold), 10 Items, vier neue allgemeine Effekttypen, HUD-Anzeigen, Simulator-Auswertung. Details und geprüfte Tier-Stellen im Abschnitt „Einzigartige Items“.
+- **Als Nächstes:** Paket 8, Teile Pets und Türme; Balancing der Einzigartigen gesammelt in Paket 8d (Simulator-Tabelle im Abschnitt „Einzigartige Items“, noch nichts geändert). Danach Paket 9.
 - **Für Paket 9 schon vorhanden:** `SaveManager.get_run_history()` liefert die letzten 20 Runs (neueste zuerst) mit Charakter, Spannung, Ergebnis, Welle, Endlos-Welle, Datum, Kampfzeit, Level, Kills und Top-3-Quellen. Siehe Abschnitt „Run-Statistik und Run-Ende“.
 
 Offene Punkte:
@@ -71,6 +72,7 @@ Bosse testen: F10 → Run → Welle 20 starten; bei Spannung 5 erscheinen beide 
 | 15-4 | HUD und Tooltips: HP-Leisten unter normalen Gegnern (Option Immer/Nur bei Schaden/Aus), Tooltips für Waffen, Items, Set-Boni und Stats in Shop, Pause und Run-Ende (Maus und Gamepad, nie abgeschnitten), Stat-Panel mit Farben und Obergrenzen, Leiste „Aktive Set-Boni“, Tier-Kontur der schwebenden Waffen, Kills/Schaden je Waffe/Item/Effekt |
 | 15-6 | Endlos-Modus überarbeitet: eigene `EndlessConfig` und `EndlessRules`, Dichte-Zuwachs, schwindende Aufladung, Doppelboss alle 10 Wellen mit linearem Zyklus-Bonus und legendären Kartons, Elite-/Hordewellen in Welle 25/35/…, Banner „Bosse besiegt! Zyklus n geschafft“, Zähler „Besiegte Boss-Zyklen“ (Run-Statistik und Historie), HUD „Endlos 7 (Welle 27)“, Shop-Hinweis „Nächste Welle: Bosse“, Bestwert „Höchste Endlos-Welle“ je Charakter (Charakterauswahl, Lexikon), Lexikon-Thema „Endlos-Modus“ |
 | 15-5 | Run-Statistiken und Run-Ende: Reiter „Übersicht“/„Statistiken“ (Q/E, LB/RB), Zusammenfassung (Kampfzeit, Welle, Level, Kills, Funken gesammelt/ausgegeben, erlittener Schaden, geheilte HP, Ausweichen, Rerolls), Tabelle je Quelle mit Kills, Schaden, Anteil und DPS seit dem ersten Treffer, sortierbar (Spaltenkopf, R/X), MVP-Abzeichen, Diagramm „Schaden pro Welle“, Run-Historie der letzten 20 Runs, Schadenszahlen verschwinden beim Run-Ende |
+| 15-8a | Einzigartige Items: Seltenheit „Einzigartig“ (Tier 5, Gold `#F5A623`, eigene Kartenfarbe und Kontur, Lexikon-Filter), max. 1 pro Run, eigener Shop-Wurf ab Welle 5, nie in Kartons; 10 Items mit Icons und Sprüchen; Effekttypen Stat pro Stat/Level/Funken (live, Obergrenze, Herkunft im Stat-Tooltip), Bonus unter X % HP, tödlichen Treffer überleben, verstärkter Angriff nach N Kills; HUD-Anzeigen Reservebatterie/Kondensator, „Gerettet!“ |
 | 15-7 | Boss-Phasen sichtbar: Phasennamen in den Daten, HP-Leiste mit Markierungen an den HP-Schwellen, „Phase 2/3: Name“ und Uhr mit Restzeit bei Zeitwechsel, kompakte Doppelleiste bei zwei Bossen, Banner beim Wechsel, Aura in Phasenfarbe, Screenshake (Option), 0,5 s Unverwundbarkeit mit Schimmern und grauem „Immun“; Lexikon mit Phasennamen; alle UI-Zeichen in der Schrift (Test) |
 | 14c-5 | Charakter-Simulator; Balancing in zwei Runden: neue Charaktere und Waffen, schwache alte Charaktere (Kerze, Taschenlampe, Discokugel, Nachtlicht), Drohnenleuchte |
 | 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
@@ -276,6 +278,43 @@ Getestete Alternativen (20 Runs, Spannung 0): HP 8 %/Schaden 6 % → Median 8, P
 - Startwerte in `data/config/boss_phase_config.tres`: Unverwundbarkeit 0,5 s, Schimmern 8/s mit 75 %, Trauma Boss 0,5/Elite 0,3, Aura 5 px; Banner Boss 56 px/1,8 s, Elite 38 px/1,2 s, 250 px über der Bildmitte; „Immun“ alle 0,3 s in `#9E9EA8`.
 - Schrift: LilitaOne hat keine Pfeile (→ ▲ ▼ ▶) und keine Emoji. Ersetzt durch » (Stat-Vorschau, aktive Set-Stufe) und Icons `art/ui/sort_down.svg`/`sort_up.svg` (Sortierung der Run-Statistik). `tests/unit/test_font_glyphs.gd` prüft alle Übersetzungen und String-Literale im Code gegen die Schrift.
 
+### Einzigartige Items (Phase 15, Paket 8)
+- Seltenheit: `ItemData.UNIQUE_TIER = 5`, Anzeige überall „Einzigartig“ (`TIER_5`), Farbe Gold `#F5A623` als fünfte Tier-Farbe. Angebotskarten: dickere Goldkontur (6 px), leicht goldener Hintergrund (14 %), Schein. Lexikon: Filter „Tier“ bietet „Einzigartig“, Einträge mit Abschnitt „Einzigartig“ (Regeln).
+- Shop (`data/config/shop_config.tres`): pro neu gezogenem Angebotsplatz ab Welle 5 ein eigener Wurf, Chance 4 % × (1 + Glück/100 × 0,5), höchstens 8 %, nie unter 0. Höchstens ein Einzigartiges pro Angebot (gesperrte zählen mit), nur Items, die weder besessen noch schon angeboten sind (`limit = 1`). Preis wie alle Items über `Economy.inflated_price`.
+- Items (Startwerte, Preise vor Inflation): Panzerglas 110 (+1 Schaden % pro 1 Rüstung), Schwungrad 105 (+1 Nah pro 3 % Tempo), Glücksfassung 95 (+1 % Krit pro 10 Glück), Hochspannungsspeicher 115 (+1 Schaden % pro 4 Max HP, -2 HP-Regen), Gleichrichter 105 (+1 Strom pro 5 % Angriffstempo), Leuchtturm 90 (+3 Reichweite pro Level), Reservebatterie 115 (einmal pro Welle tödlichen Treffer mit 1 HP überleben), Thermosicherung 95 (unter 30 % HP +40 % Angriffstempo, +20 % Tempo), Kondensator 120 (nach je 15 Kills doppelter Schaden für den nächsten Angriff jeder Waffe), Sparlampe 85 (+1 Schaden % pro 20 Funken im Besitz, max. +30, Item-Preise +10 %).
+- Effekttypen (allgemein, für spätere Items): `StatConversionEffect` (erweitert: Quelle auch `Stats.SOURCE_LEVEL`/`SOURCE_SPARKS`, `max_gain`, Herkunft), `LowHpStatEffect` (Bonus unter X % HP), `SurviveLethalEffect` (Ladungen pro Welle, Rest-HP; Hook `ItemEffect.on_lethal_hit`), `KillChargeEffect` (nach N Kills Faktor für den nächsten Angriff jeder Waffe). HUD-Anzeige über `ItemEffect.hud_charge` (0..1, negativ = keine).
+- Umrechnungen rechnen live im `StatSystem`: `floor(Ausgang / per) × gain`, mit kleinem Zuschlag gegen Rundungsfehler (9 Tempo / 3 = 3), negative Ausgangswerte zählen als 0. Der Stat-Tooltip zeigt jede Umrechnung: „+12 Schaden % durch Panzerglas (aus 12 Rüstung)“. Level und Funken setzt der Spieler über `Events.xp_changed`/`level_up`/`sparks_changed` und beim Aufbau (`rebuild`).
+- Reservebatterie: „Gerettet!“ in Gold über dem Spieler, Bildschirmblitz (gedämpft mit „Effekte reduzieren“), goldener Ring, Screenshake, Ton `heal`. HUD (unter den Funken): Icon voll = verfügbar, blass = in dieser Welle verbraucht. Kondensator: Icon mit Ladeleiste (Kills/15, hellblau), gold und voll, solange noch Waffen geladen sind; die Waffe blitzt beim verstärkten Angriff.
+- Run-Statistik: Der Zusatzschaden eines verstärkten Angriffs zählt für den Kondensator, der Grundschaden für die Waffe. Tötet erst der Zusatzschaden, zählt der Kill für den Kondensator. Die anderen neun Items machen keinen eigenen Schaden.
+- Geprüfte Tier-Stellen (grep nach „tier“), damit Tier 5 nirgends als „höheres Tier IV“ gilt:
+  - Anzeige: `TextFormat.tier_name` (Shop-Karte, Tooltip-Titel, Lexikon-Untertitel und Filter, Admin-Listen) liefert „Einzigartig“, nie „Tier V“; `UiStyle.tier_color` (Karten, Build-Icons, Lexikon-Rahmen) liefert Gold. Test.
+  - Kartons und legendäre Kartons: `Rarity.roll_tier` würfelt nur Tier 1–4, `Loot.pick_item` weicht nur innerhalb 1–4 aus; Einzigartige kommen nie aus Kartons, auch wenn alle Tier-IV-Items am Limit sind. Test.
+  - Level-up-Seltenheit: `Rarity.roll_tier`/`guaranteed_tier` bleiben bei höchstens IV, Upgrades haben 4 Tier-Werte. Test.
+  - Glücks-Tabellen: `RarityConfig` (Freischaltung, Zuwachs, Obergrenze je Tier) und die Lexikon-Tabelle haben nur 4 Einträge; Einzigartige nutzen eigene Werte in der ShopConfig.
+  - Kombinieren: nur Waffen, Obergrenze `WeaponData.MAX_TIER` (IV); Items werden nie kombiniert. Test.
+  - Recycling: Items lassen sich nur aus Kartons recyceln, Einzigartige kommen dort nie vor; Waffen-Recycling nutzt das Waffen-Tier (I–IV).
+  - Inflation: nutzt den Item-Preis aus den Daten, nicht das Tier. Test.
+  - Waffen-Kontur (`Weapon.tier_outline_material`), Strukturen, Admin-Waffen-Tier (1–4): betreffen nur Waffen.
+  - Datenprüfung: Items Tier 1–5, Einzigartige müssen `limit = 1` haben, Umrechnungen nur mit gültigen Stats/Quellen.
+- Simulator: `… -- 3 --items --uniques` (Kauf in Welle 8, Spannung 3, 200 Runs je Referenzcharakter) mit Spalte „Einzigartig“ und Ausreißern (mehr als 1,5 Standardabweichungen vom Schnitt der Einzigartigen). Modellierung im `CharacterSim`: Umrechnungen über echte Spieler-Stats (Level aus dem XP-Modell, 60 Funken im Besitz), Thermosicherung mit 20 % Zeitanteil unter der Schwelle, Reservebatterie als ein zusätzlicher Treffer Puffer pro Ladung, Kondensator als Zusatzschaden je Waffenangriff nach Kill-Rate.
+
+Simulator-Ergebnis 28.10. (`-- 3 --items --uniques`, Referenz ohne Item: Siegquote 67 %, Ø Welle 18,8; Wertung = Δ Ø Welle + Δ Siegquote/10). Noch nichts geändert, Entscheidungen in Paket 8d:
+
+| Item | Preis | Δ Siegquote | Δ Ø Welle | Δ je 100 Funken | Befund |
+|---|---|---|---|---|---|
+| Reservebatterie | 115 | +12 | +0,36 | +1,35 | **Ausreißer stark** (+2,1 SD) |
+| Thermosicherung | 95 | +5 | +0,33 | +0,86 | |
+| Kondensator | 120 | +5 | +0,52 | +0,82 | |
+| Schwungrad | 105 | +1 | +0,10 | +0,20 | schwach |
+| Panzerglas | 110 | +1 | +0,06 | +0,16 | schwach |
+| Gleichrichter | 105 | +1 | +0,05 | +0,14 | schwach |
+| Glücksfassung | 95 | 0 | 0,00 | 0,00 | nicht bewertbar: Simulator-Builds haben kein Glück |
+| Leuchtturm | 90 | 0 | 0,00 | 0,00 | nicht bewertbar: Reichweite wirkt im Simulator nicht (kein Raum) |
+| Sparlampe | 85 | -3 | -0,02 | -0,32 | schwach (+3 % Schaden bei 60 Funken, Preise +10 %) |
+| Hochspannungsspeicher | 115 | -3 | -0,30 | -0,50 | schwach, negativ: -2 HP-Regen wiegt mehr als +5–8 Schaden % |
+
+Schnitt der Einzigartigen: Wertung +0,31 (Streuung 0,60), je 100 Funken +0,27. Zum Vergleich die Tier-III-Sieg-Items aus `--items` (gleicher Lauf, Tier IV wurde wegen des 20-Minuten-Limits nicht erreicht): Wertung im Schnitt +0,43. Die Einzigartigen sind also im Schnitt schwächer als die billigeren Tier-III-Sieg-Items; nur Reservebatterie, Thermosicherung und Kondensator liegen darüber. Die „Stat pro Stat“-Items hängen am Ausgangs-Stat: Die Simulator-Builds haben wenig Rüstung, Tempo und Glück, ein gezielter Build bekäme mehr heraus.
+
 ## Werkzeuge
 
 | Befehl | Zweck |
@@ -283,7 +322,7 @@ Getestete Alternativen (20 Runs, Spannung 0): HP 8 %/Schaden 6 % → Median 8, P
 | `godot --headless --path . res://tools/balance_sim.tscn -- <Spannung>` | Balancing-Tabelle: Gegner-HP pro Welle gegen DPS von drei Builds (Fern, Nah, Strom) |
 | `… -- <Spannung> --apply` | Vorgeschlagene Intervall-Faktoren in die Wellen-`.tres` schreiben |
 | `… -- <Spannung> --characters [--runs 200] [--ablate]` | Run-Simulation je Charakter: Siegquote, Ø Welle, Scheiter-Welle, Schadensanteile, stärkster Effekt (Ablation) |
-| `… -- 0 --weapons` / `… -- 3 --items` | DPS aller Waffen gegen die eigene Klasse / Wirkung der Tier-III/IV-Items auf Siegquote |
+| `… -- 0 --weapons` / `… -- 3 --items [--uniques]` | DPS aller Waffen gegen die eigene Klasse / Wirkung der Tier-III/IV-Items und Einzigartigen auf Siegquote (mit `--uniques` nur die Einzigartigen, Ausreißer markiert). Etwa 80 s pro Item; der volle Lauf braucht über 40 Minuten |
 | `… -- <Spannung> --trace <charakter-id>` | Einen Run Welle für Welle ausgeben (Kalibrierung) |
 | `… -- <Spannung> --endless [--runs 40] [key=wert …]` | Endlos-Modus: Sieger spielen weiter bis zum Tod; je Charakter P10/Median/P90 der erreichten Endlos-Stufe, Anteil Tod in Bosswellen, häufigste Todesstufen. `key=wert` setzt `EndlessConfig`-Werte nur für diesen Lauf (z. B. `hp_growth=0.06`). Mit `--trace <id> --endless` auch Welle für Welle |
 | `python tools/make_portraits.py` | Charakter-Porträts aus den Spielsprites erzeugen |

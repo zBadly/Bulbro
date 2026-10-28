@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Schwungrad mit Speichen und Bewegungsbögen (Tempo -> Nah) -->
+  <defs>
+    <clipPath id="c"><circle cx="34" cy="34" r="22"/></clipPath>
+  </defs>
+  <path d="M6 22 A28 28 0 0 1 22 6" fill="none" stroke="#F28C38" stroke-width="3" stroke-linecap="round"/>
+  <path d="M58 44 A28 28 0 0 1 44 58" fill="none" stroke="#F28C38" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="34" cy="34" r="22" fill="#6F757C"/>
+  <circle cx="32" cy="32" r="22" fill="#9AA0A6" clip-path="url(#c)"/>
+  <circle cx="34" cy="34" r="13" fill="#2B2F3A"/>
+  <path d="M34 21 L34 47 M21 34 L47 34 M25 25 L43 43 M43 25 L25 43" stroke="#C9CED3" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="34" cy="34" r="5" fill="#F28C38" stroke="#2A1E2E" stroke-width="3"/>
+  <ellipse cx="22" cy="19" rx="4" ry="2.5" fill="#C9CED3" transform="rotate(-35 22 19)"/>
+  <circle cx="34" cy="34" r="13" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <circle cx="34" cy="34" r="22" fill="none" stroke="#2A1E2E" stroke-width="4"/>
+</svg>

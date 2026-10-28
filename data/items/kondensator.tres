@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_ud8br"]
+[ext_resource type="Script" path="res://scripts/data/effects/kill_charge_effect.gd" id="2_twd14"]
+[ext_resource type="Texture2D" path="res://art/items/kondensator.svg" id="3_qhdc1"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="4_iqwbh"]
+
+[sub_resource type="Resource" id="Resource_yy5ij"]
+script = ExtResource("2_twd14")
+kills_needed = 15
+damage_factor = 2.0
+
+[resource]
+script = ExtResource("4_iqwbh")
+id = &"kondensator"
+name_key = "ITEM_KONDENSATOR"
+tier = 5
+icon = ExtResource("3_qhdc1")
+price = 120
+limit = 1
+tags = Array[StringName]([&"damage"])
+effects = Array[ExtResource("1_ud8br")]([SubResource("Resource_yy5ij")])
+lore_text = "LORE_ITEM_KONDENSATOR"

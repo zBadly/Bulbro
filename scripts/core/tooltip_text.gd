@@ -166,10 +166,24 @@ static func cap_suffix(stat: StringName, cap: float) -> String:
 
 
 ## Tooltip eines Stats: Name, Wirkung und bei Stats mit Obergrenze die Erklärung der Grenze (Lexikon-Texte).
-static func stat(stat_name: StringName, cap: float) -> String:
+## Mit `stats` zusätzlich die Beiträge aus Umrechnungen ("+12 Schaden % durch Panzerglas").
+static func stat(stat_name: StringName, cap: float, stats: StatSystem = null) -> String:
 	var values: Dictionary = Lexicon.stat_values()
 	var lines: PackedStringArray = ["[font_size=%d]%s[/font_size]" % [TITLE_SIZE, TextFormat.t(Stats.label_key(stat_name))],
 		Lexicon.stat_text(stat_name, Lexicon.STAT_INFO_PART, values)]
 	if cap != INF:
 		lines.append(Lexicon.stat_heading_line(stat_name, Lexicon.STAT_LIMIT_PART, values))
+	if stats != null:
+		lines.append_array(conversion_lines(stat_name, stats))
 	return "\n".join(lines)
+
+
+## Je Umrechnung eine Zeile "+12 Schaden % durch Panzerglas (aus 12 Rüstung)".
+static func conversion_lines(stat_name: StringName, stats: StatSystem) -> PackedStringArray:
+	var lines: PackedStringArray = []
+	for part: Dictionary in stats.get_conversion_parts(stat_name):
+		var from: StringName = part["from"]
+		var amount: float = stats.get_source(from) if Stats.is_source(from) else stats.get_stat(from)
+		lines.append(TextFormat.t("STAT_SOURCE_LINE") % [TextFormat.modifier_line(StatModifier.create(stat_name, part["value"])),
+			RunReport.source_name(part["origin"]), TextFormat.stat_value(from, floorf(maxf(0.0, amount))), TextFormat.t(Stats.label_key(from))])
+	return lines

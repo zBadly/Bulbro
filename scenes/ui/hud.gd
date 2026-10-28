@@ -14,6 +14,7 @@ const SPARK_TEXT_SIZE: int = 30
 const BAG_TEXT_SIZE: int = 20
 const BAG_COLOR: Color = Color("#FFD43B")
 const PHASES: BossPhaseConfig = preload("res://data/config/boss_phase_config.tres")
+const HUD_CONFIG: HudConfig = preload("res://data/config/hud_config.tres")
 const ADMIN_BADGE_SIZE: int = 20
 const ADMIN_BADGE_COLOR: Color = Color("#E74C3C")
 ## Banner "Bosse besiegt!" im Endlos-Modus: Gold, springt aus dieser Größe auf normal.
@@ -42,6 +43,10 @@ var _phase_banner_tween: Tween
 ## Kleines Abzeichen, sobald im Run eine Admin-Aktion ausgeführt wurde.
 var _admin_badge: Label
 var _banner_tween: Tween
+var _player: Player
+## Effekt-Anzeigen (Reservebatterie verfügbar/verbraucht, Ladung des Kondensators): eine pro Trigger mit hud_charge.
+var _effect_row: HBoxContainer
+var _effect_widgets: Dictionary[TriggerEntry, Control] = {}
 
 
 func _ready() -> void:
@@ -69,6 +74,9 @@ func _ready() -> void:
 	_bag_label = UiStyle.make_label(BAG_TEXT_SIZE, BAG_COLOR)
 	_bag_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	spark_row.add_child(_bag_label)
+	_effect_row = HBoxContainer.new()
+	_effect_row.add_theme_constant_override("separation", ROW_GAP)
+	left.add_child(_effect_row)
 	_admin_badge = UiStyle.make_label(ADMIN_BADGE_SIZE, ADMIN_BADGE_COLOR)
 	_admin_badge.text = tr("ADMIN_BADGE")
 	_admin_badge.hide()
@@ -112,6 +120,7 @@ func _ready() -> void:
 
 
 func bind(player: Player, wave_manager: WaveManager) -> void:
+	_player = player
 	_wave_manager = wave_manager
 	player.hp_changed.connect(_on_hp_changed)
 	_on_hp_changed(player.current_hp, player.get_max_hp())
@@ -132,7 +141,62 @@ func _process(_delta: float) -> void:
 	if _wave_manager != null and _wave_manager.state == WaveManager.State.WAVE:
 		_timer_label.text = str(ceili(_wave_manager.time_left))
 	_update_boss_bars()
+	_update_effects()
 	_admin_badge.visible = GameState.admin.used
+
+
+## Effekt-Anzeigen abgleichen: neue Trigger bekommen ein Icon, weggefallene verschwinden.
+## Füllstand 1 = bereit (Icon voll, Leiste gold), darunter blasser mit Ladeleiste.
+func _update_effects() -> void:
+	if _player == null or not is_instance_valid(_player):
+		return
+	var seen: Array[TriggerEntry] = []
+	for entry: TriggerEntry in _player.triggers:
+		var charge: float = entry.effect.hud_charge(entry)
+		if charge < 0.0:
+			continue
+		seen.append(entry)
+		if not _effect_widgets.has(entry):
+			_effect_widgets[entry] = _make_effect_widget(entry)
+		_show_effect_charge(_effect_widgets[entry], charge)
+	for entry: TriggerEntry in _effect_widgets.keys():
+		if entry not in seen:
+			_effect_widgets[entry].queue_free()
+			_effect_widgets.erase(entry)
+
+
+func _make_effect_widget(entry: TriggerEntry) -> Control:
+	var box: VBoxContainer = VBoxContainer.new()
+	box.add_theme_constant_override("separation", 2)
+	var icon: TextureRect = TextureRect.new()
+	icon.texture = RunReport.source_icon(entry.origin)
+	icon.custom_minimum_size = Vector2.ONE * HUD_CONFIG.effect_icon_size
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	box.add_child(icon)
+	var bar: ProgressBar = UiStyle.make_bar(HUD_CONFIG.effect_charge_color, Vector2(HUD_CONFIG.effect_icon_size, HUD_CONFIG.effect_bar_height))
+	bar.max_value = 1.0
+	box.add_child(bar)
+	box.tooltip_text = RunReport.source_name(entry.origin)
+	_effect_row.add_child(box)
+	return box
+
+
+func _show_effect_charge(widget: Control, charge: float) -> void:
+	var icon: TextureRect = widget.get_child(0) as TextureRect
+	var bar: ProgressBar = widget.get_child(1) as ProgressBar
+	icon.modulate.a = lerpf(HUD_CONFIG.effect_used_alpha, 1.0, charge)
+	bar.value = charge
+	var fill: StyleBoxFlat = bar.get_theme_stylebox("fill") as StyleBoxFlat
+	if fill != null:
+		fill.bg_color = HUD_CONFIG.effect_ready_color if charge >= 1.0 else HUD_CONFIG.effect_charge_color
+
+
+func effect_charges() -> Array[float]:
+	var result: Array[float] = []
+	for widget: Control in _effect_widgets.values():
+		result.append((widget.get_child(1) as ProgressBar).value)
+	return result
 
 
 func _on_boss_spawned(enemy: Enemy) -> void:

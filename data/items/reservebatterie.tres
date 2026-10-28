@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_u3o7i"]
+[ext_resource type="Script" path="res://scripts/data/effects/survive_lethal_effect.gd" id="2_58dhj"]
+[ext_resource type="Texture2D" path="res://art/items/reservebatterie.svg" id="3_q4508"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="4_2uqha"]
+
+[sub_resource type="Resource" id="Resource_mqwvp"]
+script = ExtResource("2_58dhj")
+charges_per_wave = 1
+survive_hp = 1.0
+
+[resource]
+script = ExtResource("4_2uqha")
+id = &"reservebatterie"
+name_key = "ITEM_RESERVEBATTERIE"
+tier = 5
+icon = ExtResource("3_q4508")
+price = 115
+limit = 1
+tags = Array[StringName]([&"hp"])
+effects = Array[ExtResource("1_u3o7i")]([SubResource("Resource_mqwvp")])
+lore_text = "LORE_ITEM_RESERVEBATTERIE"

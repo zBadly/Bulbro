@@ -1007,3 +1007,35 @@ HUD_BOSS_PHASE,Phase %d/%d: %s,Phase %d/%d: %s
 HUD_PHASE_TIMER,%d s,%d s
 PHASE_BANNER,Phase %d: %s,Phase %d: %s
 IMMUNE_TEXT,Immun,Immune
+TIER_5,Einzigartig,Unique
+ITEM_PANZERGLAS,Panzerglas,Armored Glass
+ITEM_SCHWUNGRAD,Schwungrad,Flywheel
+ITEM_GLUECKSFASSUNG,Glücksfassung,Lucky Socket
+ITEM_HOCHSPANNUNGSSPEICHER,Hochspannungsspeicher,High-Voltage Storage
+ITEM_GLEICHRICHTER,Gleichrichter,Rectifier
+ITEM_LEUCHTTURM,Leuchtturm,Lighthouse
+ITEM_RESERVEBATTERIE,Reservebatterie,Backup Battery
+ITEM_THERMOSICHERUNG,Thermosicherung,Thermal Fuse
+ITEM_KONDENSATOR,Kondensator,Capacitor
+ITEM_SPARLAMPE,Sparlampe,Energy Saver
+LORE_ITEM_PANZERGLAS,"Bruchsicher, und das lässt es dich spüren.","Shatterproof, and it wants you to know."
+LORE_ITEM_SCHWUNGRAD,"Was einmal dreht, haut auch zu.","What spins, swings."
+LORE_ITEM_GLUECKSFASSUNG,"Vier Blätter, eine Fassung, null Zufall.","Four leaves, one socket, zero coincidence."
+LORE_ITEM_HOCHSPANNUNGSSPEICHER,"Viel Saft, wenig Geduld.","Lots of juice, little patience."
+LORE_ITEM_GLEICHRICHTER,Bringt den Strom auf Linie. Schnell.,Gets the current in line. Fast.
+LORE_ITEM_LEUCHTTURM,"Je älter, desto weiter der Blick.","The older it gets, the farther it sees."
+LORE_ITEM_RESERVEBATTERIE,"Für den Moment, in dem alles dunkel wird.",For the moment everything goes dark.
+LORE_ITEM_THERMOSICHERUNG,Brennt nicht durch. Dreht nur auf.,Doesn't blow. Just cranks up.
+LORE_ITEM_KONDENSATOR,Sammelt still. Entlädt laut.,Charges quietly. Discharges loudly.
+LORE_ITEM_SPARLAMPE,"Spart Strom, aber nicht beim Zuschlagen.","Saves energy, not punches."
+EFFECT_CONVERSION_MAX,(max. %s),(max %s)
+EFFECT_LOW_HP,Unter %s %% HP: %s,Below %s %% HP: %s
+EFFECT_SURVIVE_LETHAL_ONCE,Einmal pro Welle einen tödlichen Treffer mit %s HP überleben,"Once per wave, survive a lethal hit with %s HP"
+EFFECT_SURVIVE_LETHAL,%d-mal pro Welle einen tödlichen Treffer mit %s HP überleben,"%d times per wave, survive a lethal hit with %s HP"
+EFFECT_KILL_CHARGE,Nach je %d Kills: nächster Angriff jeder Waffe macht %s-fachen Schaden,Every %d kills: the next attack of each weapon deals %sx damage
+STAT_SOURCE_LINE,%s durch %s (aus %s %s),%s from %s (%s %s)
+STAT_RUN_LEVEL,Level,Level
+STAT_SPARKS_HELD,Funken im Besitz,Sparks held
+RESCUE_TEXT,Gerettet!,Saved!
+LEX_UNIQUE,Einzigartig,Unique
+LEX_UNIQUE_TEXT,"Höchstens 1 pro Run. Erscheint im Shop ab Welle %d, höchstens eins pro Angebot, nie in Kartons.","At most 1 per run. Appears in the shop from wave %d, at most one per offer, never in crates."

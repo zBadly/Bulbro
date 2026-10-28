@@ -7,7 +7,8 @@ extends Node
 ##   godot --headless --path . res://tools/balance_sim.tscn -- 0 --apply    -> Vorschläge in die Wellen-.tres schreiben
 ##   ... -- 0 --characters [--runs 200] [--ablate]  -> Siegquote, Scheiter-Welle und stärkster Effekt je Charakter
 ##   ... -- 0 --weapons                            -> DPS aller Waffen (Tier I und IV) im Vergleich zur eigenen Klasse
-##   ... -- 3 --items [--runs 200]                 -> Wirkung der Tier-III/IV-Items auf Siegquote und Wellen
+##   ... -- 3 --items [--runs 200]                 -> Wirkung der Tier-III/IV-Items und Einzigartigen auf Siegquote und Wellen
+##   ... -- 3 --items --uniques                    -> nur die Einzigartigen, Ausreißer gegenüber ihrem Schnitt
 ##   ... -- 0 --try kerze max_hp:4 armor:2       -> Buff-Varianten (stat:delta[:f|p|g]) auf Spannung 0 und 3 testen
 ##   ... -- 0 --trace <charakter-id>               -> ein Run Welle für Welle (Schaden, Treffer, Heilung, HP)
 ##   ... -- 0 --endless [--runs 100] [hp_growth=0.12 ...] -> erreichte Endlos-Welle je Charakter (Median = Ø Build,
@@ -22,6 +23,9 @@ const CHARACTERS_FLAG: String = "--characters"
 const WEAPONS_FLAG: String = "--weapons"
 const ITEMS_FLAG: String = "--items"
 const ABLATE_FLAG: String = "--ablate"
+const UNIQUES_FLAG: String = "--uniques"
+## Ausreißer unter den Einzigartigen: Wertung weicht um mehr als so viele Standardabweichungen vom Schnitt ab.
+const OUTLIER_SD: float = 1.5
 const RUNS_FLAG: String = "--runs"
 const TRY_FLAG: String = "--try"
 const ENDLESS_FLAG: String = "--endless"
@@ -71,7 +75,7 @@ func _ready() -> void:
 	elif WEAPONS_FLAG in args:
 		_weapons()
 	elif ITEMS_FLAG in args:
-		await _items(difficulty, runs)
+		await _items(difficulty, runs, UNIQUES_FLAG in args)
 	else:
 		_waves(level, difficulty, APPLY_FLAG in args)
 	get_tree().quit()
@@ -294,7 +298,7 @@ func _weapon_dps(weapon: WeaponData, tier: int, wave: int) -> float:
 
 # --- Items ---
 
-func _items(difficulty: DifficultyData, runs: int) -> void:
+func _items(difficulty: DifficultyData, runs: int, uniques_only: bool = false) -> void:
 	var sim: CharacterSim = CharacterSim.new(self)
 	var characters: Array[CharacterData] = []
 	for id: StringName in ITEM_TEST_CHARACTERS:
@@ -306,20 +310,54 @@ func _items(difficulty: DifficultyData, runs: int) -> void:
 			victory_items[challenge.reward_item] = String(challenge.id)
 	print("BULBRO Item-Vergleich – Spannung %d, Kauf in Welle %d, Charaktere: %s; ohne Item: Siegquote %d %%, Ø Welle %.1f" % [
 		difficulty.level, ITEM_WAVE, ", ".join(ITEM_TEST_CHARACTERS), roundi(base["win_rate"] * 100.0), base["avg_wave"]])
-	print("| Item | Tier | Preis | Δ Siegquote | Δ Ø Welle | Δ je 100 Funken | Sieg-Item |")
-	print("|---|---|---|---|---|---|---|")
+	print("| Item | Tier | Preis | Δ Siegquote | Δ Ø Welle | Δ je 100 Funken | Sieg-Item | Einzigartig |")
+	print("|---|---|---|---|---|---|---|---|")
 	var items: Array[ItemData] = []
 	for res: Resource in DataRegistry.get_all("items"):
 		var item: ItemData = res as ItemData
-		if item.tier >= ITEM_MIN_TIER:
+		if item.tier >= ITEM_MIN_TIER and (item.is_unique() or not uniques_only):
 			items.append(item)
+	# Wertung je Item (Δ Ø Welle + Δ Siegquote / 10) für die Ausreißer unter den Einzigartigen
+	var scores: Dictionary[ItemData, Vector2] = {}
 	items.sort_custom(func(a: ItemData, b: ItemData) -> bool: return a.tier < b.tier or (a.tier == b.tier and String(a.id) < String(b.id)))
 	for item: ItemData in items:
 		var result: Dictionary = await _item_result(sim, characters, difficulty, runs, item)
 		var delta_win: float = (result["win_rate"] - base["win_rate"]) * 100.0
 		var delta_wave: float = result["avg_wave"] - base["avg_wave"]
-		print("| %s | %d | %d | %+.0f | %+.2f | %+.2f | %s |" % [tr(item.name_key), item.tier, item.price, delta_win, delta_wave,
-			(delta_wave + delta_win / 10.0) / maxf(1.0, item.price) * 100.0, "ja" if victory_items.has(item) else ""])
+		var score: float = delta_wave + delta_win / 10.0
+		scores[item] = Vector2(score, score / maxf(1.0, item.price) * 100.0)
+		print("| %s | %s | %d | %+.0f | %+.2f | %+.2f | %s | %s |" % [tr(item.name_key), TextFormat.tier_name(item.tier), item.price, delta_win, delta_wave,
+			scores[item].y, "ja" if victory_items.has(item) else "", "ja" if item.is_unique() else ""])
+	_print_outliers(scores, victory_items)
+
+
+## Ausreißer unter den Einzigartigen (Wertung und Wertung je 100 Funken) gegenüber deren Schnitt;
+## zum Vergleich der Schnitt der Sieg-Items. Ändert nichts an den Daten.
+func _print_outliers(scores: Dictionary[ItemData, Vector2], victory_items: Dictionary[ItemData, String]) -> void:
+	var uniques: Array[ItemData] = []
+	for item: ItemData in scores:
+		if item.is_unique():
+			uniques.append(item)
+	if uniques.size() < 2:
+		return
+	for axis: int in 2:
+		var values: Array[float] = []
+		for item: ItemData in uniques:
+			values.append(scores[item][axis])
+		var mean: float = values.reduce(func(s: float, v: float) -> float: return s + v, 0.0) / values.size()
+		var variance: float = values.reduce(func(s: float, v: float) -> float: return s + (v - mean) * (v - mean), 0.0) / values.size()
+		var sd: float = sqrt(variance)
+		var label: String = "Wertung" if axis == 0 else "Wertung je 100 Funken"
+		var victory: Array[float] = []
+		for item: ItemData in victory_items:
+			if scores.has(item):
+				victory.append(scores[item][axis])
+		var victory_text: String = ", Sieg-Items %+.2f" % (victory.reduce(func(s: float, v: float) -> float: return s + v, 0.0) / victory.size()) if not victory.is_empty() else ""
+		print("Einzigartige, %s: Schnitt %+.2f, Streuung %.2f%s" % [label, mean, sd, victory_text])
+		for item: ItemData in uniques:
+			var z: float = (scores[item][axis] - mean) / maxf(sd, 0.0001)
+			if absf(z) > OUTLIER_SD:
+				print("  Ausreißer %s: %s %+.2f (%+.1f SD)" % ["stark" if z > 0.0 else "schwach", tr(item.name_key), scores[item][axis], z])
 
 
 func _item_result(sim: CharacterSim, characters: Array[CharacterData], difficulty: DifficultyData, runs: int, item: ItemData) -> Dictionary:

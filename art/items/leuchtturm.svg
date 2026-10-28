@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Leuchtturm mit Lichtkegeln (Reichweite pro Level) -->
+  <path d="M34 20 L62 8 L62 30 Z" fill="#FFE066" opacity="0.55"/>
+  <path d="M30 20 L2 8 L2 30 Z" fill="#FFE066" opacity="0.35"/>
+  <path d="M24 26 L40 26 L44 58 L20 58 Z" fill="#E74C3C"/>
+  <path d="M23 36 L41 36 L42 45 L22 45 Z" fill="#FFFFFF"/>
+  <path d="M35 26 L40 26 L44 58 L38 58 Z" fill="#2A1E2E" opacity="0.18"/>
+  <rect x="25" y="14" width="14" height="12" rx="2" fill="#FFE066"/>
+  <circle cx="31" cy="19" r="2.5" fill="#FFFFFF"/>
+  <path d="M22 14 L32 6 L42 14 Z" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="25" y="14" width="14" height="12" rx="2" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <path d="M24 26 L40 26 L44 58 L20 58 Z" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M16 58 L48 58" stroke="#2A1E2E" stroke-width="4" stroke-linecap="round"/>
+</svg>

@@ -44,6 +44,11 @@ func show_immune(world_position: Vector2) -> void:
 	_show(tr("IMMUNE_TEXT"), _immune_settings, world_position)
 
 
+## Freier Text in eigener Farbe und Größe (selten, daher eigene LabelSettings pro Aufruf).
+func show_text(text: String, color: Color, font_size: int, world_position: Vector2) -> void:
+	_show(text, _make_settings(font_size, color), world_position)
+
+
 func _show(text: String, settings: LabelSettings, world_position: Vector2) -> void:
 	_label.text = text
 	_label.label_settings = settings

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Lampenfassung mit vierblättrigem Kleeblatt (Glück -> Krit) -->
+  <defs>
+    <clipPath id="b"><rect x="20" y="36" width="24" height="20" rx="3"/></clipPath>
+  </defs>
+  <rect x="20" y="36" width="24" height="20" rx="3" fill="#6F757C"/>
+  <rect x="18" y="34" width="24" height="20" rx="3" fill="#9AA0A6" clip-path="url(#b)"/>
+  <path d="M22 42 L42 42 M22 48 L42 48" stroke="#5A5F66" stroke-width="3" stroke-linecap="round"/>
+  <path d="M27 56 L37 56 L35 60 L29 60 Z" fill="#5A5F66" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="20" y="36" width="24" height="20" rx="3" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M32 24 L32 36" stroke="#2A1E2E" stroke-width="4" stroke-linecap="round"/>
+  <g stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round">
+    <circle cx="25" cy="15" r="8" fill="#7ED957"/>
+    <circle cx="39" cy="15" r="8" fill="#7ED957"/>
+    <circle cx="25" cy="27" r="7" fill="#55A838"/>
+    <circle cx="39" cy="27" r="7" fill="#55A838"/>
+  </g>
+  <ellipse cx="22" cy="12" rx="3" ry="2" fill="#C9F2A8"/>
+  <ellipse cx="36" cy="12" rx="3" ry="2" fill="#C9F2A8"/>
+</svg>

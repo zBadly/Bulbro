@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Gepanzerte Glasscheibe in Schildform mit Metallrahmen (Rüstung -> Schaden) -->
+  <defs>
+    <clipPath id="c"><path d="M32 6 L54 14 L54 32 C54 46 44 54 32 59 C20 54 10 46 10 32 L10 14 Z"/></clipPath>
+    <clipPath id="g"><path d="M32 14 L46 19 L46 32 C46 41 40 46 32 50 C24 46 18 41 18 32 L18 19 Z"/></clipPath>
+  </defs>
+  <path d="M32 6 L54 14 L54 32 C54 46 44 54 32 59 C20 54 10 46 10 32 L10 14 Z" fill="#6F757C"/>
+  <path d="M30 4 L52 12 L52 30 C52 44 42 52 30 57 C18 52 8 44 8 30 L8 12 Z" fill="#9AA0A6" clip-path="url(#c)"/>
+  <path d="M32 14 L46 19 L46 32 C46 41 40 46 32 50 C24 46 18 41 18 32 L18 19 Z" fill="#7FC8E8"/>
+  <path d="M30 13 L44 18 L44 30 C44 39 38 44 30 48 C22 44 16 39 16 30 L16 18 Z" fill="#BFEFFF" clip-path="url(#g)"/>
+  <path d="M24 25 L30 30 L27 38 M30 30 L38 27" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="23" cy="21" rx="3" ry="2" fill="#FFFFFF"/>
+  <ellipse cx="17" cy="15" rx="3" ry="1.5" fill="#C9CED3"/>
+  <path d="M32 14 L46 19 L46 32 C46 41 40 46 32 50 C24 46 18 41 18 32 L18 19 Z" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M32 6 L54 14 L54 32 C54 46 44 54 32 59 C20 54 10 46 10 32 L10 14 Z" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

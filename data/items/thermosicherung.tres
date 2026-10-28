@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_jta0g"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="2_cvoek"]
+[ext_resource type="Script" path="res://scripts/data/effects/low_hp_stat_effect.gd" id="3_yco20"]
+[ext_resource type="Texture2D" path="res://art/items/thermosicherung.svg" id="4_4jaa0"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_4xkic"]
+
+[sub_resource type="Resource" id="Resource_o6khp"]
+script = ExtResource("2_cvoek")
+stat = &"attack_speed"
+value = 40.0
+
+[sub_resource type="Resource" id="Resource_604xs"]
+script = ExtResource("2_cvoek")
+stat = &"speed"
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_m2ii5"]
+script = ExtResource("3_yco20")
+hp_below_pct = 30.0
+modifiers = Array[ExtResource("2_cvoek")]([SubResource("Resource_o6khp"), SubResource("Resource_604xs")])
+
+[resource]
+script = ExtResource("5_4xkic")
+id = &"thermosicherung"
+name_key = "ITEM_THERMOSICHERUNG"
+tier = 5
+icon = ExtResource("4_4jaa0")
+price = 95
+limit = 1
+tags = Array[StringName]([&"attack_speed", &"speed"])
+effects = Array[ExtResource("1_jta0g")]([SubResource("Resource_m2ii5")])
+lore_text = "LORE_ITEM_THERMOSICHERUNG"

@@ -9,9 +9,11 @@ const SCHATTENLING: EnemyData = preload("res://data/enemies/schattenling.tres")
 const WEAPON_POOL: Array[String] = ["glasscherbe", "glasscherbe", "funkenpistole", "prisma", "kabelpeitsche",
 	"ast", "loetkolben", "blitzwerfer", "schraubenzieher", "heilstrahl"]
 const WEAPON_COUNT: int = 5
-## Items mit Stats, X-Modifikationen, Trigger-, Pro-Waffe- und Umwandlungseffekten.
+## Items mit Stats, X-Modifikationen, Trigger-, Pro-Waffe- und Umwandlungseffekten, dazu Einzigartige
+## (Stat pro Stat/Level/Funken, Bonus unter X % HP, tödlichen Treffer überleben, nach N Kills).
 const ITEMS: Array[String] = ["ersatzsicherung", "kupferdraht", "schmierfett", "glasfaser", "tesla_spule",
-	"werkstattkoffer", "dynamo", "ersatzsicherung", "spiegelscherbe", "ladestation"]
+	"werkstattkoffer", "dynamo", "ersatzsicherung", "spiegelscherbe", "ladestation",
+	"panzerglas", "leuchtturm", "sparlampe", "thermosicherung", "reservebatterie", "kondensator"]
 const COMPARE_TOLERANCE: float = 0.0001
 
 ## Eigener Elternknoten pro Test: Effekte hängen Drohnen/Spiegelbild an den Elternknoten des Spielers.

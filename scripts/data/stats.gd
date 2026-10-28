@@ -48,6 +48,13 @@ const BURN_DMG_PCT: StringName = &"burn_dmg_pct"
 ## Mehr Funken aus Kills in % (Smartbulb).
 const KILL_SPARK_PCT: StringName = &"kill_spark_pct"
 
+# Quellen außerhalb der Stats, aus denen Umrechnungen ableiten können (StatConversionEffect).
+## Aktuelles Level des Runs.
+const SOURCE_LEVEL: StringName = &"run_level"
+## Funken im Besitz (ohne Beutel).
+const SOURCE_SPARKS: StringName = &"sparks_held"
+const SOURCES: Array[StringName] = [SOURCE_LEVEL, SOURCE_SPARKS]
+
 const PRIMARY: Array[StringName] = [
 	MAX_HP, HP_REGEN, LIFESTEAL, DAMAGE_PCT, MELEE_DMG, RANGED_DMG, ELEMENTAL_DMG, ATTACK_SPEED,
 	CRIT_CHANCE, ENGINEERING, RANGE, ARMOR, DODGE, SPEED, LUCK, HARVESTING,
@@ -68,6 +75,10 @@ static func all() -> Array[StringName]:
 
 static func is_valid(stat: StringName) -> bool:
 	return stat in PRIMARY or stat in SECONDARY
+
+
+static func is_source(stat: StringName) -> bool:
+	return stat in SOURCES
 
 
 ## Übersetzungsschlüssel für die Anzeige, z. B. STAT_MAX_HP.

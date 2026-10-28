@@ -240,6 +240,8 @@ static func item_entry(item: ItemData) -> LexiconEntry:
 	entry.add_text(t("LEX_EFFECTS"), item.get_description())
 	entry.add_text(t("LEX_PRICE"), t("LEX_PRICE_TEXT") % [item.price, EXAMPLE_WAVE, Economy.inflated_price(item.price, EXAMPLE_WAVE, 0.0)])
 	entry.add_text(t("LEX_LIMIT"), str(item.limit) if item.limit > 0 else t("LEX_NO_LIMIT"))
+	if item.is_unique():
+		entry.add_text(t("LEX_UNIQUE"), t("LEX_UNIQUE_TEXT") % SHOP.unique_min_wave)
 	var tags: PackedStringArray = []
 	for tag: StringName in item.tags:
 		tags.append(t(tag_key(tag)))

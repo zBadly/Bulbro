@@ -22,6 +22,14 @@ static func spawn_damage_number(tree: SceneTree, amount: int, is_crit: bool, wor
 	number.show_damage(amount, is_crit, world_position)
 
 
+## Freier Text über einer Position (z. B. "Gerettet!" der Reservebatterie).
+static func spawn_text(tree: SceneTree, text: String, color: Color, font_size: int, world_position: Vector2) -> void:
+	var pool: ObjectPool = get_pool(tree, DAMAGE_NUMBERS)
+	if pool == null:
+		return
+	(pool.acquire() as DamageNumber).show_text(text, color, font_size, world_position)
+
+
 ## Graues "Immun" statt einer Schadenszahl (Elite/Boss kurz nach dem Phasenwechsel).
 static func spawn_immune_text(tree: SceneTree, world_position: Vector2) -> void:
 	var pool: ObjectPool = get_pool(tree, DAMAGE_NUMBERS)

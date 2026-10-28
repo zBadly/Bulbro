@@ -181,9 +181,18 @@ func take_damage(info: DamageInfo) -> void:
 	if curse.is_active():
 		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * curse.damage_taken_factor()))
 	# Gezählt wird nur der Schaden, den der Gegner wirklich verliert (kein Overkill).
-	Events.enemy_damaged.emit(info.origin, mini(amount, ceili(hp)))
-	hp -= amount
+	var dealt: int = mini(amount, ceili(hp))
 	_last_hit = info
+	if info.bonus_origin.is_empty():
+		Events.enemy_damaged.emit(info.origin, dealt)
+	else:
+		# Verstärkter Angriff: Zusatzschaden für das Item; tötet erst der Zusatz, zählt auch der Kill dafür.
+		var bonus: int = roundi(dealt * info.bonus_share)
+		Events.enemy_damaged.emit(info.origin, dealt - bonus)
+		Events.enemy_damaged.emit(info.bonus_origin, bonus)
+		if float(amount - roundi(amount * info.bonus_share)) < hp and amount >= hp:
+			_last_hit = info.with_origin(info.bonus_origin)
+	hp -= amount
 	_update_hp_bar()
 	Juice.hit_flash(_sprite)
 	AudioManager.play(&"hit_crit" if info.is_crit else &"hit")
