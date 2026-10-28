@@ -71,6 +71,8 @@ GODOT="/d/Game/Tools/Godot/Godot_v4.7.2-stable_win64_console.exe"
 "$GODOT" --headless --path . --export-release "Windows Desktop" build/windows/Bulbro.exe
 ```
 
+**Alle Läufe von Claude mit Fenster immer mit --mute starten.** Beispiel: `"$GODOT" --path . -s skript.gd -- --mute --save=user://shot_save.json` (alternativ Umgebungsvariable `BULBRO_MUTE=1`). Das schaltet nur den Master-Bus stumm und ändert keine gespeicherten Lautstärken; ein normaler Spielstart hat weiter Ton.
+
 Spielstände: Ohne Bildschirm (Headless-Check, GUT) nutzt das Spiel automatisch einen frischen eigenen Spielstand (`user://headless_save.json`), GUT zusätzlich `user://test_save.json`. Werkzeuge und Screenshot-Skripte mit Bildschirm setzen `-- --save=user://<name>.json` oder die Umgebungsvariable `BULBRO_SAVE`. Der echte Spielstand (`user://save.json`) wird nur bei einem normalen Spielstart verwendet.
 
 Der Headless-Modus kompiliert keine Shader. Nach Shader-Änderungen die betroffene Szene einmal mit echtem Renderer starten (ohne `--headless`) und die Ausgabe auf Fehler prüfen.

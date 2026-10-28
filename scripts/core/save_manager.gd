@@ -53,15 +53,23 @@ const SAVE_ENV: String = "BULBRO_SAVE"
 ## Ohne Angabe nutzt ein Start ohne Bildschirm (Headless-Check, GUT) immer diesen frischen Spielstand.
 const HEADLESS_SAVE_PATH: String = "user://headless_save.json"
 const HEADLESS_DISPLAY: String = "headless"
+## Stummer Start für Test-, Screenshot- und Messläufe: godot ... -- --mute oder BULBRO_MUTE=1.
+## Schaltet nur den Master-Bus stumm, die gespeicherten Lautstärken bleiben unverändert.
+const MUTE_ARG: String = "--mute"
+const MUTE_ENV: String = "BULBRO_MUTE"
+const MASTER_BUS: String = "Master"
 
 ## Pfad der Spielstanddatei (Tests setzen über use_path einen eigenen).
 var save_path: String = SAVE_PATH
+## Per Kommandozeile/Umgebungsvariable stumm gestartet (gilt für den ganzen Programmlauf).
+var force_mute: bool = false
 
 var _data: Dictionary = {}
 
 
 func _ready() -> void:
 	save_path = resolve_path(OS.get_cmdline_user_args(), OS.get_environment(SAVE_ENV), DisplayServer.get_name() == HEADLESS_DISPLAY)
+	force_mute = resolve_mute(OS.get_cmdline_user_args(), OS.get_environment(MUTE_ENV))
 	if save_path == HEADLESS_SAVE_PATH:
 		# Headless-Checks starten immer leer, damit Ergebnisse nicht von früheren Läufen abhängen
 		reset()
@@ -78,6 +86,11 @@ static func resolve_path(user_args: PackedStringArray, env_value: String, headle
 	if env_value != "":
 		return env_value
 	return HEADLESS_SAVE_PATH if headless else SAVE_PATH
+
+
+## Stumm starten: Argument "--mute" oder Umgebungsvariable BULBRO_MUTE=1.
+static func resolve_mute(user_args: PackedStringArray, env_value: String) -> bool:
+	return MUTE_ARG in user_args or env_value == "1"
 
 
 ## Läuft auf dem echten Spielstand des Spielers.
@@ -223,7 +236,7 @@ func _apply_volume(bus_name: String, linear: float) -> void:
 	var index: int = AudioServer.get_bus_index(bus_name)
 	if index >= 0:
 		AudioServer.set_bus_volume_db(index, linear_to_db(maxf(linear, MIN_LINEAR_VOLUME)))
-		AudioServer.set_bus_mute(index, linear <= 0.0)
+		AudioServer.set_bus_mute(index, linear <= 0.0 or (force_mute and bus_name == MASTER_BUS))
 
 
 # --- Freischaltungen ---

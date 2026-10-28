@@ -13,6 +13,7 @@ Stand 28.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 - **Erledigt 23.–28.10.:** Paket 6 Punkt 7, Simulator-Auswertung (`3219a3d`) und Balancing des Endlos-Modus nach OK des Spielers (Commit „Balancing: Endlos-Modus“). Werte und Simulator-Tabelle im Abschnitt „Endlos-Modus“.
 - Falle: Zugriffe wie `CONFIG.wert` auf eine `const`-Resource wertet GDScript beim Kompilieren aus; Laufzeit-Änderungen (Simulator-Overrides) sehen nur Zugriffe über eine Variable (`EndlessRules.config`).
 - **Erledigt 28.10.:** Paket 7 (Boss-Phasen sichtbar, Commit „Feature: Boss-Phasen sichtbar (Phase 15, Paket 7)“) inkl. der Ergänzungen: Uhr-Icon statt Emoji, graues „Immun“, Prüfung aller UI-Zeichen gegen die Schrift (Pfeile ersetzt, neuer Test `test_font_glyphs.gd`), Fix Fehlermeldung `zone_attack.gd` beim Verlassen eines Bosskampfs. Details im Abschnitt „Boss-Phasen“.
+- **Erledigt 28.10.:** Stummer Start für Läufe mit Fenster: `-- --mute` oder `BULBRO_MUTE=1` schaltet nur den Master-Bus stumm (`SaveManager.force_mute`), gespeicherte Lautstärken bleiben; Regel in CLAUDE.md, Test `test_mute_start.gd`.
 - **Als Nächstes:** Paket 8 (Neue Inhalte), danach Paket 9, jeweils mit Commit, Push und Eintrag hier.
 - **Für Paket 9 schon vorhanden:** `SaveManager.get_run_history()` liefert die letzten 20 Runs (neueste zuerst) mit Charakter, Spannung, Ergebnis, Welle, Endlos-Welle, Datum, Kampfzeit, Level, Kills und Top-3-Quellen. Siehe Abschnitt „Run-Statistik und Run-Ende“.
 
@@ -28,6 +29,7 @@ Hinweise für den Neustart:
 - Admin-Modus: `GameState.admin.used` sperrt `Unlocks.check` und `Unlocks.evaluate_run_end`. Neue Zähler (Achievements in Paket 9, Endlos-Bestwert in Paket 6) müssen dieselbe Sperre beachten.
 - `Player.rebuild()` baut alle Werte neu auf (Charakter, Items, Run-Modifikatoren, Set-Boni); `test_player_rebuild.gd` vergleicht das für alle 22 Charaktere mit dem normalen Aufbau. Neue Effekt-Arten müssen dort weiter exakt gleich herauskommen.
 - Der echte Spielstand liegt unter `%APPDATA%\Godot\app_userdata\Bulbro\save.json` (Sicherung `save.backup_2026-10-21.json`). Nie ohne OK des Spielers ändern. Tests nutzen `test_save.json` (`tests/pre_run_hook.gd`), Screenshot-Skripte sollen `SaveManager.use_path("user://shot_save.json")` setzen.
+- Läufe mit Fenster (Screenshots, Messungen) immer mit `-- --mute` starten (Regel in CLAUDE.md).
 - Spielstand-Trennung (22.10.): Ohne Bildschirm nutzt das Spiel automatisch `user://headless_save.json` (frisch bei jedem Start), Tests zusätzlich `test_save.json`. Skripte mit Bildschirm setzen `-- --save=user://<name>.json` oder `BULBRO_SAVE`. Abgesichert durch `tests/unit/test_save_isolation.gd`.
 - Leere Literale `{}`/`[]` nie in Ternär-Ausdrücken an typisierte Variablen geben; `tests/unit/test_typed_literals.gd` schlägt sonst fehl.
 - Screenshots in echter Größe 1920×1080 gehen nur im Vollbild, gesetzt im Skript (`DisplayServer.window_set_mode`). `--resolution` allein ergibt wegen der Taskleiste 1920×1061.
