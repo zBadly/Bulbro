@@ -45,7 +45,7 @@ Für echte Musik CC0-Tracks (z. B. kenney.nl, opengameart.org; Lizenz prüfen) n
 ## Debug-Tasten
 
 - **F3**: Debug-Overlay mit allen Stats
-- **F10**: Admin-Menü (nur wenn in den Optionen unter „Erweitert“ der Admin-Modus an ist, auch im Release-Build): Welle/Endlos, Zeit, Geschwindigkeit, Hitboxen, Charakter, Level, Funken, Unverwundbar/Unendlich HP/Schaden x10, Gegner spawnen/entfernen/Arena füllen, Waffen und Items geben/entfernen, Shop kostenlos/Reroll gratis/Angebot platzieren, alle Charaktere freischalten. Ein Run mit einer Admin-Aktion zählt nicht für Freischaltungen und Statistiken.
+- **F10**: Admin-Menü (nur wenn in den Optionen unter „Erweitert“ der Admin-Modus an ist, auch im Release-Build): Welle/Endlos, Zeit, Geschwindigkeit, Hitboxen, Charakter, Level, Funken, Unverwundbar/Unendlich HP/Schaden x10, Gegner spawnen/entfernen/Arena füllen, Waffen, Items und Begleiter geben/entfernen, Shop kostenlos/Reroll gratis/Angebot platzieren, alle Charaktere freischalten. Ein Run mit einer Admin-Aktion zählt nicht für Freischaltungen und Statistiken.
 - **Esc**: Pause
 
 ## Godot aufrufen

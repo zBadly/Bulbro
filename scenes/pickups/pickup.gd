@@ -63,6 +63,21 @@ func _physics_process(delta: float) -> void:
 		collect()
 
 
+## Kann ein Begleiter (Funkenspatz) diesen Funken zum Spieler ziehen?
+func can_attract() -> bool:
+	return _active and not _homing and kind == Kind.SPARK
+
+
+## Zieht das Pickup sofort zum Spieler, als wäre es im Aufsammelradius.
+func attract() -> void:
+	if not _active or _homing:
+		return
+	_homing = true
+	_speed = DROPS.magnet_start_speed
+	if _tween != null and _tween.is_valid():
+		_tween.kill()
+
+
 ## Wendet den Effekt an und gibt das Pickup an den Pool zurück.
 func collect() -> void:
 	if not _active:

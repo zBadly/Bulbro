@@ -1,6 +1,6 @@
 class_name LexiconScreen
 extends Control
-## Lexikon (Hauptmenü): Reiter für Charaktere, Waffen, Items, Gegner, Waffenklassen und Spielmechaniken.
+## Lexikon (Hauptmenü): Reiter für Charaktere, Waffen, Items, Begleiter, Gegner, Waffenklassen und Spielmechaniken.
 ## Feste Bereiche wie in der Charakterauswahl: Raster links, Detailpanel rechts; nichts springt beim Auswählen.
 ## Reiter: Maus, Q/E bzw. LB/RB. Das Suchfeld filtert alle Reiter, die Trefferzahl steht im Reitertitel.
 ## "Alles anzeigen" (F bzw. Y) deckt gesperrte Einträge vollständig auf; die Einstellung wird gespeichert.
@@ -15,7 +15,7 @@ const TITLE_SIZE: int = 52
 const TEXT_SIZE: int = 22
 const HINT_SIZE: int = 18
 const SEARCH_WIDTH: float = 560.0
-const TAB_WIDTH: float = 236.0
+const TAB_WIDTH: float = 206.0
 const ROW_HEIGHT: float = 52.0
 const FILTER_WIDTH: float = 260.0
 const SHOW_ALL_WIDTH: float = 260.0

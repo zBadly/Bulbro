@@ -13,6 +13,9 @@ static func capture(player: Player) -> Dictionary:
 	var weapons: Array = []
 	for weapon: Weapon in player.weapon_slots.get_weapons():
 		weapons.append([String(weapon.data.id), weapon.tier])
+	var pets: Array = []
+	for pet: Pet in player.pet_slots.get_pets():
+		pets.append([String(pet.data.id), pet.tier])
 	var items: Array = []
 	for item: ItemData in GameState.items:
 		items.append(String(item.id))
@@ -41,6 +44,7 @@ static func capture(player: Player) -> Dictionary:
 		"special_waves": specials,
 		"items": items,
 		"weapons": weapons,
+		"pets": pets,
 		"run_modifiers": modifiers,
 		"hp": player.current_hp,
 		"run_stats": run.to_dict(),
@@ -96,11 +100,15 @@ static func restore_state(data: Dictionary) -> void:
 			GameState.reported_totals[key] = int(totals[key])
 
 
-## Baut den Spieler nach: Charakter, Waffen, Items (inkl. Trigger), Run-Modifikatoren, HP.
+## Baut den Spieler nach: Charakter, Waffen, Begleiter, Items (inkl. Trigger), Run-Modifikatoren, HP.
 static func apply_to_player(data: Dictionary, player: Player) -> void:
 	player.apply_character(GameState.character)
 	for entry: Array in data["weapons"]:
 		player.weapon_slots.add_weapon(find("weapons", entry[0]) as WeaponData, int(entry[1]))
+	for entry: Array in data.get("pets", []):
+		var pet: PetData = find("pets", entry[0]) as PetData
+		if pet != null:
+			player.pet_slots.add_pet(pet, int(entry[1]))
 	for item_id: String in data["items"]:
 		var item: ItemData = find("items", item_id) as ItemData
 		GameState.items.append(item)

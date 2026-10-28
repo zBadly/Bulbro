@@ -136,6 +136,20 @@ static func item(data: ItemData, count: int) -> String:
 	return "\n".join(lines)
 
 
+# --- Begleiter ---
+
+## Begleiter mit Wirkung im Tier, aktuellen Werten (Schaden mit allen Stats, Zähler) und Run-Werten.
+static func pet(p: Pet) -> String:
+	var lines: PackedStringArray = [title(TextFormat.t(p.data.name_key), p.tier), p.data.get_description(p.tier)]
+	var status: PackedStringArray = p.data.behavior.status_lines(p)
+	if not status.is_empty():
+		lines.append(SECTION_GAP)
+		lines.append_array(status)
+	lines.append(SECTION_GAP)
+	lines.append(run_line(p.get_origin(), 1))
+	return "\n".join(lines)
+
+
 # --- Run-Werte ---
 
 ## "In diesem Run: 34 Kills, 1234 Schaden" (bei mehreren gleichen: Summe aller).

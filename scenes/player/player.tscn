@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_player"]
 [ext_resource type="Resource" path="res://data/config/player_config.tres" id="2_config"]
 [ext_resource type="Texture2D" path="res://art/player/bulbro.svg" id="3_bulbro"]
 [ext_resource type="Shader" path="res://art/shaders/hit_flash.gdshader" id="4_flash"]
 [ext_resource type="Script" path="res://scenes/player/weapon_slots.gd" id="5_slots"]
+[ext_resource type="Script" path="res://scenes/player/pet_slots.gd" id="6_pets"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_flash"]
 shader = ExtResource("4_flash")
@@ -49,3 +50,6 @@ shape = SubResource("CircleShape2D_body")
 [node name="WeaponSlots" type="Node2D" parent="."]
 position = Vector2(0, -36)
 script = ExtResource("5_slots")
+
+[node name="PetSlots" type="Node" parent="."]
+script = ExtResource("6_pets")

@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="PetData" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/pet_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/data/pet_tier_stats.gd" id="2_tier"]
+[ext_resource type="Script" path="res://scripts/data/pets/pet_weapon_copy_behavior.gd" id="3_behavior"]
+[ext_resource type="Texture2D" path="res://art/pets/mini_birne.svg" id="4_tex"]
+
+[sub_resource type="Resource" id="Tier_1"]
+script = ExtResource("2_tier")
+damage_factor = 0.25
+price = 40
+
+[sub_resource type="Resource" id="Tier_2"]
+script = ExtResource("2_tier")
+damage_factor = 0.35
+price = 80
+
+[sub_resource type="Resource" id="Tier_3"]
+script = ExtResource("2_tier")
+damage_factor = 0.5
+price = 144
+
+[sub_resource type="Resource" id="Tier_4"]
+script = ExtResource("2_tier")
+damage_factor = 0.7
+price = 260
+
+[sub_resource type="Resource" id="Behavior"]
+script = ExtResource("3_behavior")
+weapon_offset = 22.0
+
+[resource]
+script = ExtResource("1_data")
+id = &"mini_birne"
+name_key = "PET_MINI_BIRNE"
+texture = ExtResource("4_tex")
+tiers = Array[ExtResource("2_tier")]([SubResource("Tier_1"), SubResource("Tier_2"), SubResource("Tier_3"), SubResource("Tier_4")])
+behavior = SubResource("Behavior")
+tags = Array[StringName]([&"damage"])
+lore_text = "LORE_PET_MINI_BIRNE"

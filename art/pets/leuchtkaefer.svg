@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="48" viewBox="0 0 52 48">
+  <!-- Leuchtkäfer (Begleiter): kleiner Käfer mit leuchtendem Hinterleib und durchsichtigen Flügeln -->
+  <defs><radialGradient id="kglow"><stop offset="0" stop-color="#E8F05A" stop-opacity="0.7"/><stop offset="1" stop-color="#E8F05A" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="26" cy="34" r="15" fill="url(#kglow)"/>
+  <ellipse cx="14" cy="16" rx="11" ry="7" fill="#E6FAFF" fill-opacity="0.75" stroke="#2A1E2E" stroke-width="2.5" transform="rotate(-25 14 16)"/>
+  <ellipse cx="38" cy="16" rx="11" ry="7" fill="#E6FAFF" fill-opacity="0.75" stroke="#2A1E2E" stroke-width="2.5" transform="rotate(25 38 16)"/>
+  <path d="M12,15 L19,18 M40,15 L33,18" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.9"/>
+  <ellipse cx="26" cy="34" rx="9" ry="10" fill="#C9D63A"/>
+  <ellipse cx="25" cy="33" rx="8" ry="9" fill="#E8F05A"/>
+  <ellipse cx="22.5" cy="30" rx="2.6" ry="1.6" fill="#FFFFFF" transform="rotate(-30 22.5 30)"/>
+  <path d="M18.5,36 Q26,39 33.5,36" stroke="#C9D63A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <ellipse cx="26" cy="34" rx="9" ry="10" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <circle cx="26" cy="20" r="9" fill="#4A3B57"/>
+  <circle cx="25" cy="19" r="8" fill="#6B5A7B"/>
+  <ellipse cx="22" cy="16" rx="2.4" ry="1.4" fill="#9C8BAD" transform="rotate(-35 22 16)"/>
+  <circle cx="26" cy="20" r="9" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <path d="M22,12 Q19,5 15,4 M30,12 Q33,5 37,4" stroke="#2A1E2E" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <circle cx="15" cy="4" r="2.2" fill="#E8F05A" stroke="#2A1E2E" stroke-width="1.6"/>
+  <circle cx="37" cy="4" r="2.2" fill="#E8F05A" stroke="#2A1E2E" stroke-width="1.6"/>
+  <ellipse cx="22.5" cy="20" rx="2.4" ry="3" fill="#F7F0FF"/><ellipse cx="29.5" cy="20" rx="2.4" ry="3" fill="#F7F0FF"/>
+  <circle cx="23" cy="20.6" r="1.4" fill="#2A1E2E"/><circle cx="30" cy="20.6" r="1.4" fill="#2A1E2E"/>
+</svg>

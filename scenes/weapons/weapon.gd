@@ -17,6 +17,8 @@ var rest_position: Vector2 = Vector2.ZERO
 ## Spiegelbild-Kopie: weniger Schaden, kein Lebensraub, löst keine Angriffs-Effekte aus.
 var is_clone: bool = false
 var damage_factor: float = 1.0
+## Herkunft für die Run-Statistik statt der Waffe (Kopie in der Hand eines Begleiters); leer = die Waffe selbst.
+var origin_override: StringName = &""
 ## Verstärkung nur für den nächsten Angriff (Kondensator); der Zusatzschaden zählt für `_bonus_origin`.
 var _bonus_factor: float = 1.0
 var _bonus_origin: StringName = &""
@@ -124,6 +126,10 @@ func _physics_process(delta: float) -> void:
 		_bonus_origin = &""
 
 
+func get_origin() -> StringName:
+	return origin_override if origin_override != &"" else DamageSource.weapon(data.id)
+
+
 ## Der nächste Angriff macht `factor`-fachen Schaden (wird im selben Frame vor dem Angriff gesetzt).
 func charge_next_attack(factor: float, origin: StringName) -> void:
 	_bonus_factor = factor
@@ -175,7 +181,7 @@ func _roll_damage() -> DamageInfo:
 		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * damage_factor))
 	if _bonus_factor != 1.0:
 		amount = maxi(CombatMath.MIN_DAMAGE, roundi(amount * _bonus_factor))
-	var info: DamageInfo = DamageInfo.create(amount, crit, t.knockback + s.get_stat(Stats.KNOCKBACK), self, DamageSource.weapon(data.id))
+	var info: DamageInfo = DamageInfo.create(amount, crit, t.knockback + s.get_stat(Stats.KNOCKBACK), self, get_origin())
 	if _bonus_factor > 1.0:
 		info.bonus_origin = _bonus_origin
 		info.bonus_share = 1.0 - 1.0 / _bonus_factor

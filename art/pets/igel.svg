@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="48" viewBox="0 0 52 48">
+  <!-- Batterie-Igel (Begleiter): runder Igel mit Stachel-Kranz und Batterie-Bauchband, rollt auf Gegner -->
+  <path d="M26,3 L30,10 L36,5 L37,12 L44,10 L42,17 L49,18 L45,24 L50,29 L44,32 L46,39 L39,38 L37,45 L31,40 L26,46 L21,40 L15,45 L13,38 L6,39 L8,32 L2,29 L7,24 L3,18 L10,17 L8,10 L15,12 L16,5 L22,10 Z"
+    fill="#734B28" stroke="#2A1E2E" stroke-width="2.6" stroke-linejoin="round"/>
+  <circle cx="26" cy="25" r="15" fill="#C08A57"/>
+  <circle cx="25" cy="24" r="14" fill="#E3B884"/>
+  <rect x="12" y="27" width="28" height="9" rx="3" fill="#6CCB4A" stroke="#2A1E2E" stroke-width="2.2"/>
+  <rect x="12" y="27" width="11" height="9" rx="3" fill="#E8E04A"/>
+  <rect x="12" y="27" width="28" height="9" rx="3" fill="none" stroke="#2A1E2E" stroke-width="2.2"/>
+  <path d="M31,31.5 L35,31.5 M33,29.5 L33,33.5" stroke="#2A1E2E" stroke-width="1.8" stroke-linecap="round"/>
+  <ellipse cx="20" cy="16" rx="3.4" ry="2" fill="#F3D3A8" transform="rotate(-30 20 16)"/>
+  <circle cx="26" cy="25" r="15" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <ellipse cx="21" cy="21" rx="2.3" ry="2.9" fill="#F7F0FF"/><ellipse cx="31" cy="21" rx="2.3" ry="2.9" fill="#F7F0FF"/>
+  <circle cx="21.4" cy="21.6" r="1.4" fill="#2A1E2E"/><circle cx="31.4" cy="21.6" r="1.4" fill="#2A1E2E"/>
+  <circle cx="26" cy="24.5" r="1.8" fill="#2A1E2E"/>
+  <ellipse cx="17" cy="25" rx="2.2" ry="1.2" fill="#FF9E7A" fill-opacity="0.6"/>
+  <ellipse cx="35" cy="25" rx="2.2" ry="1.2" fill="#FF9E7A" fill-opacity="0.6"/>
+</svg>

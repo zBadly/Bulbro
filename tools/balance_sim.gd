@@ -9,6 +9,8 @@ extends Node
 ##   ... -- 0 --weapons                            -> DPS aller Waffen (Tier I und IV) im Vergleich zur eigenen Klasse
 ##   ... -- 3 --items [--runs 200]                 -> Wirkung der Tier-III/IV-Items und Einzigartigen auf Siegquote und Wellen
 ##   ... -- 3 --items --uniques                    -> nur die Einzigartigen, Ausreißer gegenüber ihrem Schnitt
+##   ... -- 3 --pets [--runs 150]                  -> Wirkung der Begleiter (Kauf in Welle 8, Tier wächst wie bei Waffen),
+##                                                     Ausreißer gegenüber ihrem Schnitt; ändert nichts an den Daten
 ##   ... -- 0 --try kerze max_hp:4 armor:2       -> Buff-Varianten (stat:delta[:f|p|g]) auf Spannung 0 und 3 testen
 ##   ... -- 0 --trace <charakter-id>               -> ein Run Welle für Welle (Schaden, Treffer, Heilung, HP)
 ##   ... -- 0 --endless [--runs 100] [hp_growth=0.12 ...] -> erreichte Endlos-Welle je Charakter (Median = Ø Build,
@@ -24,6 +26,9 @@ const WEAPONS_FLAG: String = "--weapons"
 const ITEMS_FLAG: String = "--items"
 const ABLATE_FLAG: String = "--ablate"
 const UNIQUES_FLAG: String = "--uniques"
+const PETS_FLAG: String = "--pets"
+## Begleiter-Vergleich: weniger Runs als beim Item-Vergleich, damit der Lauf unter 10 Minuten bleibt.
+const PET_RUNS: int = 150
 ## Ausreißer unter den Einzigartigen: Wertung weicht um mehr als so viele Standardabweichungen vom Schnitt ab.
 const OUTLIER_SD: float = 1.5
 const RUNS_FLAG: String = "--runs"
@@ -74,6 +79,8 @@ func _ready() -> void:
 		await _characters(difficulty, runs, ABLATE_FLAG in args)
 	elif WEAPONS_FLAG in args:
 		_weapons()
+	elif PETS_FLAG in args:
+		await _pets(difficulty, runs if runs_index >= 0 else PET_RUNS)
 	elif ITEMS_FLAG in args:
 		await _items(difficulty, runs, UNIQUES_FLAG in args)
 	else:
@@ -360,18 +367,66 @@ func _print_outliers(scores: Dictionary[ItemData, Vector2], victory_items: Dicti
 				print("  Ausreißer %s: %s %+.2f (%+.1f SD)" % ["stark" if z > 0.0 else "schwach", tr(item.name_key), scores[item][axis], z])
 
 
-func _item_result(sim: CharacterSim, characters: Array[CharacterData], difficulty: DifficultyData, runs: int, item: ItemData) -> Dictionary:
+func _item_result(sim: CharacterSim, characters: Array[CharacterData], difficulty: DifficultyData, runs: int, item: ItemData,
+		pet: PetData = null) -> Dictionary:
 	var win: float = 0.0
 	var wave: float = 0.0
 	for character: CharacterData in characters:
 		var options: Dictionary = {}
 		if item != null:
 			options["items"] = [[item, ITEM_WAVE]]
+		if pet != null:
+			options["pets"] = [[pet, ITEM_WAVE]]
 		var result: Dictionary = sim.run_many(character, difficulty, runs, SEED, options)
 		await get_tree().process_frame
 		win += result["win_rate"] / characters.size()
 		wave += result["avg_wave"] / characters.size()
 	return {"win_rate": win, "avg_wave": wave}
+
+
+# --- Begleiter ---
+
+## Je Begleiter: Kauf in ITEM_WAVE, danach wächst sein Tier wie das Waffen-Tier (Kombinieren eingerechnet).
+## Wertung wie bei Items (Δ Ø Welle + Δ Siegquote / 10), je 100 Funken mit dem Preis des Tiers beim Kauf.
+## Ausreißer: Wertung weicht um mehr als OUTLIER_SD Standardabweichungen vom Schnitt der Begleiter ab.
+func _pets(difficulty: DifficultyData, runs: int) -> void:
+	var started: int = Time.get_ticks_msec()
+	var sim: CharacterSim = CharacterSim.new(self)
+	var characters: Array[CharacterData] = []
+	for id: StringName in ITEM_TEST_CHARACTERS:
+		characters.append(load("res://data/characters/%s.tres" % id))
+	var base: Dictionary = await _item_result(sim, characters, difficulty, runs, null)
+	var buy_tier: int = clampi(1 + (ITEM_WAVE - 1) / BalanceModel.WAVES_PER_TIER, WeaponData.MIN_TIER, WeaponData.MAX_TIER)
+	print("BULBRO Begleiter-Vergleich – Spannung %d, Kauf in Welle %d (%s), %d Runs je Charakter: %s; ohne Begleiter: Siegquote %d %%, Ø Welle %.1f" % [
+		difficulty.level, ITEM_WAVE, TextFormat.tier_name(buy_tier), runs, ", ".join(ITEM_TEST_CHARACTERS), roundi(base["win_rate"] * 100.0), base["avg_wave"]])
+	print("| Begleiter | Preis beim Kauf | Δ Siegquote | Δ Ø Welle | Wertung | je 100 Funken |")
+	print("|---|---|---|---|---|---|")
+	var pets: Array[PetData] = []
+	for res: Resource in DataRegistry.get_all("pets"):
+		pets.append(res as PetData)
+	pets.sort_custom(func(a: PetData, b: PetData) -> bool: return String(a.id) < String(b.id))
+	var scores: Dictionary[PetData, Vector2] = {}
+	for pet: PetData in pets:
+		var result: Dictionary = await _item_result(sim, characters, difficulty, runs, null, pet)
+		var delta_win: float = (result["win_rate"] - base["win_rate"]) * 100.0
+		var delta_wave: float = result["avg_wave"] - base["avg_wave"]
+		var score: float = delta_wave + delta_win / 10.0
+		var price: int = pet.get_tier(buy_tier).price
+		scores[pet] = Vector2(score, score / maxf(1.0, price) * 100.0)
+		print("| %s | %d | %+.0f | %+.2f | %+.2f | %+.2f |" % [tr(pet.name_key), price, delta_win, delta_wave, score, scores[pet].y])
+	for axis: int in 2:
+		var values: Array[float] = []
+		for pet: PetData in pets:
+			values.append(scores[pet][axis])
+		var mean: float = values.reduce(func(s: float, v: float) -> float: return s + v, 0.0) / values.size()
+		var variance: float = values.reduce(func(s: float, v: float) -> float: return s + (v - mean) * (v - mean), 0.0) / values.size()
+		var sd: float = sqrt(variance)
+		print("Begleiter, %s: Schnitt %+.2f, Streuung %.2f" % ["Wertung" if axis == 0 else "Wertung je 100 Funken", mean, sd])
+		for pet: PetData in pets:
+			var z: float = (scores[pet][axis] - mean) / maxf(sd, 0.0001)
+			if absf(z) > OUTLIER_SD:
+				print("  Ausreißer %s: %s %+.2f (%+.1f SD)" % ["stark" if z > 0.0 else "schwach", tr(pet.name_key), scores[pet][axis], z])
+	print("Laufzeit: %d s" % ((Time.get_ticks_msec() - started) / 1000))
 
 
 # --- Wellen ---

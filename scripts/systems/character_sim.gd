@@ -92,6 +92,18 @@ const SPARKS_HELD: float = 60.0
 ## Anteil der Kampfzeit unter der HP-Schwelle (Thermosicherung), als Bruchteil der Boni gerechnet.
 const LOW_HP_UPTIME: float = 0.2
 
+# --- Begleiter (Paket 15-8) ---
+## Der Igel rollt erst zum Ziel und nur auf Gegner nahe dem Spieler: Anteil der Zeit, in der er rammt.
+const PET_ROLL_UPTIME: float = 0.6
+## Funkenspatz: Funken gehen ohne ihn nicht verloren (Beutel), er spart Laufwege in die Gegner.
+## Weniger Treffer je 100 px Sammelradius.
+const PET_COLLECT_HIT_RELIEF_PER_100: float = 0.015
+## Schildkröte: so viele der Bosstreffer sind Projektile (Rest Kontakt).
+const BOSS_PROJECTILE_SHARE: float = 0.7
+## Schildkröte: Sie blockt das nächste Projektil im Umkreis, nicht unbedingt eins, das getroffen hätte (Salven,
+## Vorbeiflieger). Anteil der Blocks, die wirklich einen Treffer verhindern.
+const PET_BLOCK_HIT_SHARE: float = 0.35
+
 var host: Node
 var waves: Array[WaveData] = []
 var weapons: Array[WeaponData] = []
@@ -115,7 +127,8 @@ func _init(p_host: Node) -> void:
 
 
 ## Viele Runs: Siegquote, typische Scheiter-Welle, Durchschnittswelle und Schadensanteile.
-## options: "items" = Array von [ItemData, Welle], "weapon" = feste Startwaffe, "effects" = Effektliste statt der des Charakters.
+## options: "items" = Array von [ItemData, Welle], "pets" = Array von [PetData, Welle] (Tier wächst danach wie das
+## Waffen-Tier), "weapon" = feste Startwaffe, "effects" = Effektliste statt der des Charakters.
 func run_many(character: CharacterData, difficulty: DifficultyData, runs: int, seed_value: int, options: Dictionary = {}) -> Dictionary:
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	var wins: int = 0
@@ -173,13 +186,14 @@ func simulate_run(character: CharacterData, difficulty: DifficultyData, rng: Ran
 		_grow(player, wave.wave_number, start, luck, state)
 		_apply_items(player, wave.wave_number, options)
 		_update_weapons(player, wave.wave_number, start, pool, rng, state)
+		_update_pets(wave.wave_number, options, state)
 		if not _play_wave(player, wave, difficulty, rng, state, wave.wave_number == elite_wave):
 			result["wave"] = wave.wave_number
 			_finish(player, state, result)
 			return result
 	result["won"] = _play_boss(player, difficulty, rng, state)
 	if result["won"] and options.get("endless", false):
-		result["endless"] = _play_endless(player, difficulty, rng, state, start, pool, luck)
+		result["endless"] = _play_endless(player, difficulty, rng, state, start, pool, luck, options)
 	_finish(player, state, result)
 	return result
 
@@ -187,13 +201,14 @@ func simulate_run(character: CharacterData, difficulty: DifficultyData, rng: Ran
 ## Endloswellen nach dem Sieg bis zum Tod; Rückgabe = erreichte Endlos-Stufe (wie "Endlos-Welle n erreicht").
 ## Skalierung wie im Spiel über EndlessRules; die Aufladung wird schwächer (weniger Items).
 func _play_endless(player: Player, difficulty: DifficultyData, rng: RandomNumberGenerator, state: Dictionary,
-		start: WeaponData, pool: Array[WeaponData], luck: float) -> int:
+		start: WeaponData, pool: Array[WeaponData], luck: float, options: Dictionary = {}) -> int:
 	var config: EndlessConfig = EndlessRules.config
 	var template: WaveData = waves[clampi(config.template_wave, 1, waves.size()) - 1]
 	for level: int in range(1, MAX_ENDLESS + 1):
 		var number: int = BOSS_WAVE + level
 		_grow(player, number, start, luck, state, EndlessRules.harvest_factor(level))
 		_update_weapons(player, number, start, pool, rng, state)
+		_update_pets(number, options, state)
 		var scale: Dictionary = {"hp": EndlessRules.hp_factor(level), "damage": EndlessRules.damage_factor(level),
 			"speed": EndlessRules.speed_factor(level), "density": EndlessRules.density_factor(level)}
 		var alive: bool = true
@@ -290,6 +305,16 @@ func _apply_items(player: Player, wave_number: int, options: Dictionary) -> void
 			player.apply_item(entry[0])
 
 
+## Gekaufte Begleiter mit ihrem Tier in dieser Welle (wächst wie das Waffen-Tier, Kombinieren eingerechnet).
+func _update_pets(wave_number: int, options: Dictionary, state: Dictionary) -> void:
+	var active: Array = []
+	var tier: int = clampi(1 + (wave_number - 1) / BalanceModel.WAVES_PER_TIER, WeaponData.MIN_TIER, WeaponData.MAX_TIER)
+	for entry: Array in options.get("pets", []):
+		if wave_number >= int(entry[1]):
+			active.append([entry[0], tier])
+	state["pets"] = active
+
+
 func _main_stat(weapon: WeaponData) -> StringName:
 	var best: StringName = Stats.RANGED_DMG
 	var best_value: float = -1.0
@@ -353,8 +378,9 @@ func _play_wave(player: Player, wave: WaveData, difficulty: DifficultyData, rng:
 
 	var pressure: float = clampf(pow(1.0 / maxf(ratio, 0.01), PRESSURE_EXPONENT), PRESSURE_MIN, PRESSURE_MAX) * scale.get("speed", 1.0)
 	var hit_damage: float = _average_enemy_damage(wave, difficulty) * scale.get("damage", 1.0)
+	state["projectile_share"] = _projectile_share(wave, difficulty)
 	var noise: float = exp(rng.randfn(0.0, WAVE_NOISE_SD))
-	var flows: Dictionary = _defense(player, offense, kills, pressure * noise, hit_damage)
+	var flows: Dictionary = _defense(player, offense, kills, pressure * noise, hit_damage, state)
 	state["landed"] = flows["landed"]
 	player.stats.remove_modifiers(low_hp)
 	var alive: bool = _apply_hp(player, state, flows, duration)
@@ -405,12 +431,14 @@ func _play_boss(player: Player, difficulty: DifficultyData, rng: RandomNumberGen
 	var boss: EnemyData = bosses[0]
 	var noise: float = exp(rng.randfn(0.0, WAVE_NOISE_SD))
 	var add_time: float = minf(time, BOSS_ADD_TIME)
+	state["projectile_share"] = _projectile_share(waves[RUN_WAVES - 1], difficulty)
 	var add_flows: Dictionary = _defense(player, offense, 1.0, BOSS_ADD_PRESSURE * noise * scale.get("speed", 1.0),
-		_average_enemy_damage(waves[RUN_WAVES - 1], difficulty) * damage_scale)
+		_average_enemy_damage(waves[RUN_WAVES - 1], difficulty) * damage_scale, state)
 	var boss_damage: float = boss.damage_for_wave(wave_number) * damage_factor * damage_scale * scale.get("boss_damage", 1.0)
 	# Endlos: alle Bosse greifen gleichzeitig an.
 	var boss_count: float = float(bosses.size()) if not scale.is_empty() else 1.0
-	var boss_flows: Dictionary = _defense(player, offense, 0.0, BOSS_HIT_RATE / HIT_COEF * noise * boss_count, boss_damage)
+	state["projectile_share"] = BOSS_PROJECTILE_SHARE
+	var boss_flows: Dictionary = _defense(player, offense, 0.0, BOSS_HIT_RATE / HIT_COEF * noise * boss_count, boss_damage, state)
 	player.stats.remove_modifiers(low_hp)
 	var hp: float = float(state["hp"]) + (add_flows["heal"] - add_flows["damage"]) * add_time - boss_flows["damage"] * time
 	hp += boss_flows["heal"] * (time - add_time)
@@ -465,6 +493,21 @@ func _average_enemy_damage(wave: WaveData, difficulty: DifficultyData) -> float:
 	return total / maxf(weight, 0.001) * _damage_factor(difficulty)
 
 
+## Anteil der Gegner der Welle, die Projektile schießen (nach Anzahl gewichtet; Schildkröte).
+func _projectile_share(wave: WaveData, difficulty: DifficultyData) -> float:
+	var level: int = difficulty.level if difficulty != null else 0
+	var shooters: float = 0.0
+	var weight: float = 0.0
+	for group: SpawnGroupData in wave.groups:
+		if group.min_difficulty > level:
+			continue
+		var n: float = (group.group_min + group.group_max) * 0.5 / maxf(group.interval, 0.1)
+		if group.enemy.projectile_damage_for_wave(wave.wave_number) > 0.0:
+			shooters += n
+		weight += n
+	return shooters / maxf(weight, 0.001)
+
+
 # --- Schaden ---
 
 ## Gesamt-DPS (mit Mehrfachtreffern), Einzelziel-DPS (Boss) und Anteile je Quelle.
@@ -487,6 +530,9 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 	# Schaden eines Angriffs aller Waffen zusammen (Kondensator verstärkt je einen Angriff pro Waffe)
 	var volley: float = 0.0
 	var volley_single: float = 0.0
+	# Erste Waffe (Mini-Birne kopiert sie): Gesamt- und Einzelziel-DPS
+	var first_dps: float = -1.0
+	var first_single: float = 0.0
 	for weapon: Weapon in player.weapon_slots.get_weapons():
 		var t: WeaponTierStats = weapon.get_tier_stats()
 		var base: float = t.base_damage + weapon.data.damage_per_same_weapon * (player.weapon_slots.count_of(weapon.data.id) - 1)
@@ -498,6 +544,9 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 		if t.burn_damage > 0.0 and t.burn_ticks > 0:
 			burn_sources.append(Vector3(rate * targets * t.burn_chance, t.burn_damage * burn_mult, t.burn_ticks))
 		weapon_dps += per_hit * rate * targets
+		if first_dps < 0.0:
+			first_dps = per_hit * rate * targets
+			first_single = per_hit * rate
 		single += per_hit * rate
 		volley += per_hit * targets
 		volley_single += per_hit
@@ -513,6 +562,23 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 	if structures > 0.0:
 		parts["Türme"] = structures
 		single += structures
+	for entry: Array in state.get("pets", []):
+		var pet: PetData = entry[0]
+		var stats_tier: PetTierStats = pet.get_tier(entry[1])
+		var pet_dps: float = 0.0
+		var pet_single: float = 0.0
+		if pet.behavior is PetShootBehavior:
+			pet_dps = PetBehavior.damage(stats_tier, stats) / maxf(stats_tier.cooldown, 0.1)
+			pet_single = pet_dps
+		elif pet.behavior is PetRollBehavior:
+			pet_dps = PetBehavior.damage(stats_tier, stats) / maxf(stats_tier.cooldown, 0.1) * PET_ROLL_UPTIME
+			pet_single = pet_dps
+		elif pet.behavior is PetWeaponCopyBehavior and first_dps > 0.0:
+			pet_dps = first_dps * stats_tier.damage_factor
+			pet_single = first_single * stats_tier.damage_factor
+		if pet_dps > 0.0:
+			_add(parts, "Begleiter", pet_dps)
+			single += pet_single
 
 	var alive: float = ALIVE_BASE
 	var curse_amp: float = 1.0
@@ -680,7 +746,7 @@ func _overheal_damage(player: Player) -> float:
 
 # --- Eingesteckter Schaden und Heilung ---
 
-func _defense(player: Player, offense: Dictionary, kills: float, pressure: float, hit_damage: float) -> Dictionary:
+func _defense(player: Player, offense: Dictionary, kills: float, pressure: float, hit_damage: float, state: Dictionary = {}) -> Dictionary:
 	var stats: StatSystem = player.stats
 	var melee_share: float = 0.0
 	var weapons_now: Array[Weapon] = player.weapon_slots.get_weapons()
@@ -691,6 +757,13 @@ func _defense(player: Player, offense: Dictionary, kills: float, pressure: float
 	var attempts: float = HIT_COEF * pressure * lerpf(1.0, MELEE_HIT_FACTOR, melee_share) * (1.0 - speed_relief)
 	attempts *= (1.0 - offense["freeze"]) * (1.0 - offense["stop"]) * (1.0 - offense["slow"] * SLOW_DEFENSE_SHARE)
 	attempts = minf(attempts, MAX_HITS_PER_SECOND)
+	for entry: Array in state.get("pets", []):
+		var pet: PetData = entry[0]
+		var stats_tier: PetTierStats = pet.get_tier(entry[1])
+		if pet.behavior is PetBlockBehavior:
+			attempts -= minf(attempts * float(state.get("projectile_share", 0.0)), PET_BLOCK_HIT_SHARE / maxf(stats_tier.cooldown, 0.1))
+		elif pet.behavior is PetCollectBehavior:
+			attempts *= 1.0 - minf(0.5, PET_COLLECT_HIT_RELIEF_PER_100 * stats_tier.radius / 100.0)
 	var dodge: float = CombatMath.dodge_chance(stats.get_stat(Stats.DODGE), player.config.dodge_cap)
 	var landed: float = attempts * (1.0 - dodge)
 	var per_hit: float = maxf(CombatMath.MIN_DAMAGE, hit_damage * CombatMath.armor_multiplier(stats.get_stat(Stats.ARMOR)))

@@ -27,6 +27,7 @@ var shop_screen: ShopScreen
 var _characters: Array[CharacterData] = []
 var _items: Array[ItemData] = []
 var _weapons: Array[WeaponData] = []
+var _pets: Array[PetData] = []
 var _enemies: Array[EnemyData] = []
 var _paused_by_menu: bool = false
 var _mouse_world: Vector2 = Vector2.ZERO
@@ -34,6 +35,7 @@ var _mouse_world: Vector2 = Vector2.ZERO
 var _wave_only: Array[BaseButton] = []
 var _owned_weapons: OptionButton
 var _owned_items: OptionButton
+var _owned_pets: OptionButton
 var _status: Label
 var _first_focus: Control
 var _toggles: Dictionary[StringName, CheckButton] = {}
@@ -48,6 +50,9 @@ func _ready() -> void:
 	for res: Resource in DataRegistry.get_all("weapons"):
 		_weapons.append(res as WeaponData)
 	_weapons.sort_custom(func(a: WeaponData, b: WeaponData) -> bool: return tr(a.name_key) < tr(b.name_key))
+	for res: Resource in DataRegistry.get_all("pets"):
+		_pets.append(res as PetData)
+	_pets.sort_custom(func(a: PetData, b: PetData) -> bool: return tr(a.name_key) < tr(b.name_key))
 	for res: Resource in DataRegistry.get_all("enemies"):
 		_enemies.append(res as EnemyData)
 	_enemies.sort_custom(func(a: EnemyData, b: EnemyData) -> bool: return tr(a.name_key) < tr(b.name_key))
@@ -209,6 +214,14 @@ func _build_inventory(box: VBoxContainer) -> void:
 		_fill_owned()))
 	_owned_items = _option(box, [])
 	_button(box, tr("ADMIN_REMOVE_ITEM"), func() -> void: act(_remove_item))
+	var pet: OptionButton = _option(box, _pets.map(func(p: PetData) -> String: return tr(p.name_key)))
+	var pet_tier_row: HBoxContainer = _row(box, "ADMIN_TIER")
+	var pet_tier: SpinBox = _spin(pet_tier_row, WeaponData.MIN_TIER, WeaponData.MAX_TIER, WeaponData.MIN_TIER)
+	_button(pet_tier_row, tr("ADMIN_GIVE_PET"), func() -> void: act(func() -> void:
+		player.pet_slots.add_or_combine(_pets[pet.selected], roundi(pet_tier.value))
+		_fill_owned()))
+	_owned_pets = _option(box, [])
+	_button(box, tr("ADMIN_REMOVE_PET"), func() -> void: act(_remove_pet))
 	_fill_owned()
 
 
@@ -224,6 +237,8 @@ func _build_shop(box: VBoxContainer) -> void:
 		labels.append(tr("ADMIN_OFFER_ITEM") % tr(item.name_key))
 	for weapon: WeaponData in _weapons:
 		labels.append(tr("ADMIN_OFFER_WEAPON") % tr(weapon.name_key))
+	for pet: PetData in _pets:
+		labels.append(tr("ADMIN_OFFER_PET") % tr(pet.name_key))
 	var offer: OptionButton = _option(box, labels)
 	var row: HBoxContainer = _row(box, "ADMIN_SHOP_SLOT")
 	var slot: SpinBox = _spin(row, 1, SHOP_SLOTS, 1)
@@ -255,6 +270,13 @@ func _remove_weapon() -> void:
 	_fill_owned()
 
 
+func _remove_pet() -> void:
+	var pets: Array[Pet] = player.pet_slots.get_pets()
+	if _owned_pets.selected >= 0 and _owned_pets.selected < pets.size():
+		player.pet_slots.remove_pet(pets[_owned_pets.selected])
+	_fill_owned()
+
+
 ## Items lassen sich nicht einzeln rückgängig machen: Item entfernen und Spieler neu aufbauen.
 func _remove_item() -> void:
 	var index: int = _owned_items.selected
@@ -268,8 +290,10 @@ func _place_offer(choice: int, slot: int, tier: int) -> void:
 	var ctx: ShopContext = ShopContext.from_run(player)
 	if choice < _items.size():
 		GameState.shop.place_offer(slot, _items[choice], null, tier, ctx)
-	else:
+	elif choice < _items.size() + _weapons.size():
 		GameState.shop.place_offer(slot, null, _weapons[choice - _items.size()], tier, ctx)
+	else:
+		GameState.shop.place_offer(slot, null, null, tier, ctx, _pets[choice - _items.size() - _weapons.size()])
 	shop_screen.refresh()
 
 
@@ -282,6 +306,9 @@ func _fill_owned() -> void:
 	_owned_items.clear()
 	for item: ItemData in GameState.items:
 		_owned_items.add_item(tr(item.name_key))
+	_owned_pets.clear()
+	for pet: Pet in player.pet_slots.get_pets():
+		_owned_pets.add_item("%s (%s)" % [tr(pet.data.name_key), TextFormat.tier_name(pet.tier)])
 
 
 func _refresh_state() -> void:

@@ -1,10 +1,12 @@
 class_name ShopScreen
 extends FlowScreen
-## Shop zwischen den Wellen (GDD 7): 4 Angebote, Kaufen, Sperren, Reroll, Waffeninventar mit Kombinieren
-## und Recyceln, Item-Übersicht, aktive Set-Boni, Stat-Panel mit Vorher/Nachher-Vorschau und Sonderwellen-Vorschau.
-## Besessene Waffen, Items und Set-Boni zeigen Tooltips (Maus und Gamepad-Fokus).
+## Shop zwischen den Wellen (GDD 7): 4 Angebote, Kaufen, Sperren, Reroll, Waffen- und Begleiterinventar mit
+## Kombinieren und Recyceln, Item-Übersicht, aktive Set-Boni, Stat-Panel mit Vorher/Nachher-Vorschau und
+## Sonderwellen-Vorschau. Besessene Waffen, Begleiter, Items und Set-Boni zeigen Tooltips (Maus und Gamepad-Fokus).
+## Sind alle Begleiter-Plätze belegt, fragt der Shop beim Kauf, welcher Begleiter ersetzt wird.
 
 const CONFIG: ShopConfig = preload("res://data/config/shop_config.tres")
+const PETS: PetConfig = preload("res://data/config/pet_config.tres")
 const WAVE_CATEGORY: String = "waves"
 const HEADER_SIZE: int = 40
 const SECTION_SIZE: int = 26
@@ -14,11 +16,15 @@ const ITEM_ICON: Vector2 = Vector2(48, 48)
 const MINI_BORDER: int = 3
 const SECTION_GAP: int = 14
 const SET_CHIP_GAP: int = 8
+const INVENTORY_GAP: int = 48
+const DIALOG_PADDING: int = 28
 
 var _ctx: ShopContext
 var _stat_panel: StatPanel
 ## Fokus-Ziele nach Namen, damit der Fokus nach einem Neuaufbau (Kauf, Reroll) erhalten bleibt.
 var _focus_targets: Dictionary[String, Control] = {}
+## Rückfrage "Welchen Begleiter ersetzen?" (null, solange keine offen ist).
+var _replace_dialog: Control
 
 
 func open() -> void:
@@ -73,7 +79,15 @@ func _build(focus_hint: String) -> void:
 	for i in shop.offers.size():
 		offers_row.add_child(_offer_card(i, shop.offers[i]))
 
-	_build_weapons(left)
+	var inventory: HBoxContainer = HBoxContainer.new()
+	inventory.add_theme_constant_override("separation", INVENTORY_GAP)
+	left.add_child(inventory)
+	var weapons_box: VBoxContainer = VBoxContainer.new()
+	inventory.add_child(weapons_box)
+	_build_weapons(weapons_box)
+	var pets_box: VBoxContainer = VBoxContainer.new()
+	inventory.add_child(pets_box)
+	_build_pets(pets_box)
 	_build_items(left)
 	_build_preview(left)
 	_focus_later(_focus_targets.get(focus_hint, _focus_targets.get("next")))
@@ -84,6 +98,8 @@ func _offer_card(index: int, offer: ShopOffer) -> OfferCard:
 	if offer.is_weapon():
 		card.configure(offer.weapon.texture, tr(offer.weapon.name_key), offer.tier,
 			TextFormat.describe_weapon(offer.weapon, offer.tier))
+	elif offer.is_pet():
+		card.configure(offer.pet.texture, tr(offer.pet.name_key), offer.tier, offer.pet.get_description(offer.tier))
 	else:
 		card.configure(offer.item.icon, tr(offer.item.name_key), offer.tier,
 			offer.item.get_description())
@@ -147,6 +163,55 @@ func _build_weapons(parent: VBoxContainer) -> void:
 		GameTooltip.attach(recycle, tooltip, false, true)
 		box.add_child(recycle)
 		_focus_targets["recycle_%d" % i] = recycle
+
+
+## Begleiter (x/2) mit Tier, Kombinieren und Recyceln, wie die Waffen.
+func _build_pets(parent: VBoxContainer) -> void:
+	var pets: Array[Pet] = player.pet_slots.get_pets()
+	var label: Label = UiStyle.make_label(SECTION_SIZE)
+	label.text = tr("SHOP_PETS") % [pets.size(), PETS.max_pets]
+	parent.add_child(label)
+	var row: HBoxContainer = HBoxContainer.new()
+	row.add_theme_constant_override("separation", GAP)
+	parent.add_child(row)
+	if pets.is_empty():
+		var none: Label = UiStyle.make_label(SMALL_SIZE, UiStyle.TIER_COLORS[0])
+		none.text = tr("SHOP_PETS_NONE")
+		row.add_child(none)
+		return
+	for i in pets.size():
+		var pet: Pet = pets[i]
+		var panel: PanelContainer = PanelContainer.new()
+		var style: StyleBoxFlat = UiStyle.panel_style()
+		style.border_color = UiStyle.tier_color(pet.tier)
+		style.set_border_width_all(MINI_BORDER)
+		panel.add_theme_stylebox_override("panel", style)
+		row.add_child(panel)
+		var box: VBoxContainer = VBoxContainer.new()
+		panel.add_child(box)
+		var icon: TextureRect = TextureRect.new()
+		icon.texture = pet.data.texture
+		icon.custom_minimum_size = WEAPON_ICON
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		var tooltip: Callable = TooltipText.pet.bind(pet)
+		GameTooltip.attach(icon, tooltip, true, false)
+		box.add_child(icon)
+		var tier_label: Label = UiStyle.make_label(SMALL_SIZE, UiStyle.tier_color(pet.tier))
+		tier_label.text = TextFormat.tier_name(pet.tier)
+		tier_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		box.add_child(tier_label)
+		if player.pet_slots.find_combine_partner(pet.data, pet.tier, pet) != null:
+			var combine: Button = UiStyle.make_button(tr("COMBINE"), SMALL_SIZE)
+			combine.pressed.connect(_on_combine_pet.bind(pet))
+			GameTooltip.attach(combine, tooltip, false, true)
+			box.add_child(combine)
+			_focus_targets["combine_pet_%d" % i] = combine
+		var recycle: Button = UiStyle.make_button(tr("RECYCLE") % pet_recycle_value(pet), SMALL_SIZE)
+		recycle.pressed.connect(_on_recycle_pet.bind(pet))
+		GameTooltip.attach(recycle, tooltip, false, true)
+		box.add_child(recycle)
+		_focus_targets["recycle_pet_%d" % i] = recycle
 
 
 func _build_items(parent: VBoxContainer) -> void:
@@ -237,6 +302,12 @@ func _weapon_recycle_value(weapon: Weapon) -> int:
 	return Economy.recycle_value(price, CONFIG.recycle_share, player.stats.get_stat(Stats.RECYCLE_PCT))
 
 
+## Rückgabe beim Recyceln oder Ersetzen eines Begleiters (wie bei Waffen: Anteil des aktuellen Preises).
+func pet_recycle_value(pet: Pet) -> int:
+	var price: int = Economy.inflated_price(pet.get_tier_stats().price, _ctx.wave, _ctx.item_price_pct)
+	return Economy.recycle_value(price, PETS.recycle_share, player.stats.get_stat(Stats.RECYCLE_PCT))
+
+
 func _refresh_context() -> void:
 	var rng: RandomNumberGenerator = _ctx.rng
 	_ctx = ShopContext.from_run(player)
@@ -247,10 +318,16 @@ func _on_buy(index: int) -> void:
 	var offer: ShopOffer = GameState.shop.offers[index]
 	if offer.is_weapon() and not player.weapon_slots.can_accept(offer.weapon, offer.tier):
 		return
+	if offer.is_pet() and not player.pet_slots.can_accept(offer.pet, offer.tier):
+		if _offer_price(offer) <= GameState.sparks:
+			_ask_replace(index)
+		return
 	if not GameState.spend(_offer_price(offer)):
 		return
 	if offer.is_weapon():
 		player.weapon_slots.add_or_combine(offer.weapon, offer.tier)
+	elif offer.is_pet():
+		player.pet_slots.add_or_combine(offer.pet, offer.tier)
 	else:
 		GameState.add_item(offer.item)
 		player.apply_item(offer.item)
@@ -287,6 +364,103 @@ func _on_recycle_weapon(weapon: Weapon) -> void:
 	player.weapon_slots.remove_weapon(weapon)
 	_refresh_context()
 	_build.call_deferred("next")
+
+
+func _on_combine_pet(pet: Pet) -> void:
+	AudioManager.play(&"buy")
+	player.pet_slots.combine(pet)
+	_build.call_deferred("next")
+
+
+func _on_recycle_pet(pet: Pet) -> void:
+	AudioManager.play(&"ui_click")
+	GameState.add_sparks(pet_recycle_value(pet))
+	player.pet_slots.remove_pet(pet)
+	_build.call_deferred("next")
+
+
+## Rückfrage bei vollen Begleiter-Plätzen: je Begleiter "X ersetzen (+N Funken)" und "Abbrechen".
+func _ask_replace(index: int) -> void:
+	close_replace_dialog()
+	var offer: ShopOffer = GameState.shop.offers[index]
+	_replace_dialog = Control.new()
+	_replace_dialog.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_replace_dialog.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(_replace_dialog)
+	var dim: ColorRect = ColorRect.new()
+	dim.color = DIM_COLOR
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_replace_dialog.add_child(dim)
+	var center: CenterContainer = CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_replace_dialog.add_child(center)
+	var panel: PanelContainer = PanelContainer.new()
+	var style: StyleBoxFlat = UiStyle.panel_style()
+	style.border_color = UiStyle.tier_color(offer.tier)
+	style.set_border_width_all(MINI_BORDER)
+	style.set_content_margin_all(DIALOG_PADDING)
+	panel.add_theme_stylebox_override("panel", style)
+	center.add_child(panel)
+	var box: VBoxContainer = VBoxContainer.new()
+	box.add_theme_constant_override("separation", GAP)
+	panel.add_child(box)
+	var title: Label = UiStyle.make_label(SECTION_SIZE)
+	title.text = tr("SHOP_PET_REPLACE_TITLE") % [PETS.max_pets, tr(offer.pet.name_key), TextFormat.tier_name(offer.tier)]
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(title)
+	var first: Button = null
+	for pet: Pet in player.pet_slots.get_pets():
+		var button: Button = UiStyle.make_button(tr("SHOP_PET_REPLACE") % [tr(pet.data.name_key), TextFormat.tier_name(pet.tier),
+			pet_recycle_value(pet)], OfferCard.BUTTON_SIZE)
+		button.pressed.connect(_on_replace.bind(index, pet))
+		GameTooltip.attach(button, TooltipText.pet.bind(pet), false, true)
+		box.add_child(button)
+		if first == null:
+			first = button
+	var cancel: Button = UiStyle.make_button(tr("SHOP_PET_KEEP"), OfferCard.BUTTON_SIZE)
+	cancel.pressed.connect(_on_replace_cancel.bind(index))
+	box.add_child(cancel)
+	_focus_later(first)
+
+
+func _on_replace(index: int, old: Pet) -> void:
+	var offer: ShopOffer = GameState.shop.offers[index]
+	close_replace_dialog()
+	if not GameState.spend(_offer_price(offer)):
+		return
+	GameState.add_sparks(pet_recycle_value(old))
+	player.pet_slots.replace(old, offer.pet, offer.tier)
+	AudioManager.play(&"buy")
+	GameState.shop.mark_sold(index)
+	_refresh_context()
+	_build.call_deferred("lock_%d" % index)
+
+
+func _on_replace_cancel(index: int) -> void:
+	close_replace_dialog()
+	_build.call_deferred("buy_%d" % index)
+
+
+func close_replace_dialog() -> void:
+	if _replace_dialog != null:
+		_replace_dialog.queue_free()
+		_replace_dialog = null
+
+
+func is_replace_dialog_open() -> bool:
+	return _replace_dialog != null
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if _replace_dialog != null and event.is_action_pressed(&"ui_cancel"):
+		get_viewport().set_input_as_handled()
+		close_replace_dialog()
+		_build.call_deferred("next")
+
+
+func close() -> void:
+	close_replace_dialog()
+	super.close()
 
 
 func _on_next_wave() -> void:

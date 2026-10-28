@@ -1039,3 +1039,39 @@ STAT_SPARKS_HELD,Funken im Besitz,Sparks held
 RESCUE_TEXT,Gerettet!,Saved!
 LEX_UNIQUE,Einzigartig,Unique
 LEX_UNIQUE_TEXT,"Höchstens 1 pro Run. Erscheint im Shop ab Welle %d, höchstens eins pro Angebot, nie in Kartons.","At most 1 per run. Appears in the shop from wave %d, at most one per offer, never in crates."
+PET_LEUCHTKAEFER,Leuchtkäfer,Firefly
+PET_FUNKENSPATZ,Funkenspatz,Spark Sparrow
+PET_SCHILDKROETE,Lampenschirm-Schildkröte,Lampshade Turtle
+PET_IGEL,Batterie-Igel,Battery Hedgehog
+PET_MINI_BIRNE,Mini-Birne,Mini Bulb
+LORE_PET_LEUCHTKAEFER,"Leuchtet hinten, denkt vorne. Meistens.","Glows at the back, thinks at the front. Mostly."
+LORE_PET_FUNKENSPATZ,Pfeift auf Ersparnisse und bringt dir trotzdem jeden Funken.,"Doesn't care about savings, still brings you every spark."
+LORE_PET_SCHILDKROETE,"Langsam, aber ihr Schirm ist schneller als jedes Geschoss.","Slow, but her shade is faster than any bullet."
+LORE_PET_IGEL,Voll geladen und stachelig. Bitte nicht kurzschließen.,Fully charged and prickly. Please do not short-circuit.
+LORE_PET_MINI_BIRNE,"Macht alles nach, was du machst. Nur kleiner.",Copies everything you do. Just smaller.
+PET_CATEGORY,Begleiter,Companion
+PET_RULE,"Begleiter: folgt dir, unverwundbar, höchstens %d","Companion: follows you, invulnerable, at most %d"
+PET_SHOOT_DESC,Kreist um dich und schießt für %s alle %s s (Reichweite %s),Circles around you and shoots for %s every %s s (range %s)
+PET_COLLECT_DESC,Sammelt Funken im Umkreis von %s px um sich ein,Collects sparks within %s px around itself
+PET_BLOCK_DESC,Blockt alle %s s ein gegnerisches Projektil im Umkreis von %s px um dich,"Every %s s, blocks an enemy projectile within %s px of you"
+PET_ROLL_DESC,"Rollt auf Gegner: %s Schaden alle %s s, bis %s px um dich, Rückstoß %s","Rolls into enemies: %s damage every %s s, up to %s px around you, knockback %s"
+PET_COPY_DESC,Trägt eine Kopie deiner ersten Waffe mit %d %% Schaden,Carries a copy of your first weapon with %d %% damage
+TIP_PET_DAMAGE,Schaden jetzt: %d,Current damage: %d
+TIP_PET_SPARKS,Eingesammelte Funken in diesem Run: %d,Sparks collected this run: %d
+TIP_PET_BLOCKED,Geblockte Projektile in diesem Run: %d,Projectiles blocked this run: %d
+TIP_PET_COPY,Kopiert gerade: %s (%s),Currently copying: %s (%s)
+TIP_PET_COPY_NONE,Keine Waffe zum Kopieren,No weapon to copy
+SHOP_PETS,Begleiter (%d/%d),Companions (%d/%d)
+SHOP_PETS_NONE,Noch keine,None yet
+SHOP_PET_REPLACE_TITLE,Höchstens %d Begleiter. Wen ersetzt %s (%s)?,At most %d companions. Who does %s (%s) replace?
+SHOP_PET_REPLACE,"%s (%s) ersetzen, +%d Funken zurück","Replace %s (%s), +%d sparks back"
+SHOP_PET_KEEP,Abbrechen,Cancel
+RUN_END_PETS,Begleiter,Companions
+RUN_STATS_KIND_PET,Begleiter,Companion
+LEX_TAB_PETS,Begleiter,Companions
+LEX_PET_PRICES,"Tier I bis IV: %s Funken, steigt jede Welle","Tier I to IV: %s sparks, rises every wave"
+LEX_PET_RULES,Regeln,Rules
+LEX_PET_RULES_TEXT,"Höchstens %d Begleiter gleichzeitig. Sie folgen dir, sind unverwundbar und zählen nicht zum Gegnerlimit. Zwei gleiche gleichen Tiers lassen sich im Shop kombinieren. Bei vollen Plätzen fragt der Shop, wer ersetzt wird; der ersetzte bringt %d %% seines Preises zurück.","At most %d companions at once. They follow you, are invulnerable and do not count towards the enemy limit. Two identical ones of the same tier can be combined in the shop. When all places are taken, the shop asks which one to replace; the replaced one returns %d %% of its price."
+ADMIN_GIVE_PET,Begleiter geben,Give companion
+ADMIN_REMOVE_PET,Begleiter entfernen,Remove companion
+ADMIN_OFFER_PET,Begleiter: %s,Companion: %s

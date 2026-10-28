@@ -5,6 +5,7 @@ extends RefCounted
 
 const CONFIG: RunStatsConfig = preload("res://data/config/run_stats_config.tres")
 const STRUCTURE_PATH: String = "res://data/structures/%s.tres"
+const PET_CATEGORY: String = "pets"
 const SECONDS_PER_MINUTE: int = 60
 const DIGIT_GROUP: int = 3
 ## Ab diesem DPS-Wert ohne Nachkommastelle.
@@ -12,13 +13,14 @@ const DPS_DECIMALS_BELOW: float = 100.0
 const PERCENT_SUFFIX: String = " %"
 ## Anzeigereihenfolge der Arten (Sortierung nach Art).
 const KIND_ORDER: Array[String] = [
-	DamageSource.WEAPON, DamageSource.ITEM, DamageSource.CHARACTER, DamageSource.ALLY, DamageSource.STRUCTURE]
+	DamageSource.WEAPON, DamageSource.ITEM, DamageSource.CHARACTER, DamageSource.ALLY, DamageSource.STRUCTURE, DamageSource.PET]
 const KIND_KEYS: Dictionary[String, String] = {
 	DamageSource.WEAPON: "RUN_STATS_KIND_WEAPON",
 	DamageSource.ITEM: "RUN_STATS_KIND_ITEM",
 	DamageSource.CHARACTER: "RUN_STATS_KIND_CHARACTER",
 	DamageSource.ALLY: "RUN_STATS_KIND_ALLY",
 	DamageSource.STRUCTURE: "RUN_STATS_KIND_STRUCTURE",
+	DamageSource.PET: "RUN_STATS_KIND_PET",
 }
 
 ## Sortierbare Spalten der Tabelle.
@@ -108,7 +110,7 @@ static func kind_name(kind: String) -> String:
 	return TextFormat.t(KIND_KEYS.get(kind, kind))
 
 
-## Anzeigename einer Herkunft (Waffe, Item, Charakter, Verbündete, Struktur).
+## Anzeigename einer Herkunft (Waffe, Item, Charakter, Verbündete, Struktur, Begleiter).
 static func source_name(origin: StringName) -> String:
 	var data: Resource = source_data(origin)
 	if data != null and String(data.get("name_key")) != "":
@@ -139,6 +141,8 @@ static func source_data(origin: StringName) -> Resource:
 			return RunSave.find("items", id)
 		DamageSource.CHARACTER:
 			return RunSave.find(Unlocks.CHARACTER_CATEGORY, id)
+		DamageSource.PET:
+			return RunSave.find(PET_CATEGORY, id)
 		DamageSource.STRUCTURE:
 			var path: String = STRUCTURE_PATH % id
 			return load(path) if ResourceLoader.exists(path) else null

@@ -80,7 +80,7 @@ func _on_enemy_killed(_data: EnemyData, _position: Vector2, info: DamageInfo) ->
 	if info.is_burn:
 		run_stats.burn_kills += 1
 	var weapon: Weapon = info.source as Weapon if is_instance_valid(info.source) else null
-	if weapon != null and weapon.data != null:
+	if weapon != null and weapon.data != null and weapon.origin_override == &"":
 		run_stats.weapon_kills[weapon.data.id] = run_stats.weapon_kills.get(weapon.data.id, 0) + 1
 
 

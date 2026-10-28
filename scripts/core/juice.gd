@@ -39,7 +39,27 @@ const SWING_WOBBLE_FREQ: float = 9.0
 ## Kurzes Aufleuchten bei einem Effekt (Stroboskop-Blitz).
 const EFFECT_FLASH_TIME: float = 0.18
 
+## Flattern (Leuchtkäfer): schneller Flügelschlag als Squash, dazu langsames Schweben und Pendeln.
+const FLUTTER_PERIOD: float = 0.12
+const FLUTTER_SQUASH: Vector2 = Vector2(1.12, 0.9)
+const FLUTTER_HOVER: float = 5.0
+const FLUTTER_HOVER_PERIOD: float = 0.9
+const FLUTTER_WOBBLE_DEG: float = 7.0
+## Rollen (Batterie-Igel): Drehung pro Pixel Weg; im Stand richtet er sich wieder auf.
+const ROLL_RADIUS: float = 16.0
+const ROLL_SETTLE_SPEED: float = 10.0
+## Ducken (Schildkröte beim Blocken): flach drücken, halten, aufrichten.
+const DUCK_SQUASH: Vector2 = Vector2(1.18, 0.62)
+const DUCK_DOWN_TIME: float = 0.06
+const DUCK_HOLD_TIME: float = 0.22
+const DUCK_UP_TIME: float = 0.16
+## Kleiner Hüpfer (Funkenspatz beim Einsammeln).
+const HOP_HEIGHT: float = 10.0
+const HOP_TIME: float = 0.18
+
 const META_BASE_SCALE: StringName = &"juice_base_scale"
+const META_FLUTTER: StringName = &"juice_flutter_tween"
+const META_ACTION: StringName = &"juice_action_tween"
 const META_BOB: StringName = &"juice_bob_tween"
 const META_TILT: StringName = &"juice_tilt_tween"
 const META_TILT_TARGET: StringName = &"juice_tilt_target"
@@ -83,6 +103,7 @@ static func walk_tilt(node: Node2D, velocity: Vector2) -> void:
 ## Tod: zusammendrücken, kurz aufploppen, verschwinden. Der Aufrufer wartet auf finished und gibt den Node frei.
 static func squash_pop(node: Node2D) -> Tween:
 	_kill(node, META_BOB)
+	_kill(node, META_FLUTTER)
 	var base: Vector2 = _base_scale(node)
 	var tween: Tween = node.create_tween()
 	tween.tween_property(node, "scale", base * DEATH_SQUASH, DEATH_SQUASH_TIME).set_ease(Tween.EASE_OUT)
@@ -182,9 +203,72 @@ static func effect_flash(item: CanvasItem) -> Tween:
 	return tween
 
 
+## Flattern in Endlosschleife: schneller Flügel-Squash plus langsames Schweben mit leichtem Pendeln.
+## Ersetzt idle_bob (gleicher Schlüssel); squash_pop bricht es ab.
+static func flutter(node: Node2D) -> Tween:
+	_kill(node, META_BOB)
+	_kill(node, META_FLUTTER)
+	var base: Vector2 = _base_scale(node)
+	var flap: Tween = node.create_tween().set_loops().set_trans(Tween.TRANS_SINE)
+	flap.tween_property(node, "scale", base * FLUTTER_SQUASH, FLUTTER_PERIOD * 0.5)
+	flap.tween_property(node, "scale", base, FLUTTER_PERIOD * 0.5)
+	node.set_meta(META_BOB, flap)
+	var rest: float = node.position.y
+	var drift: Tween = node.create_tween().set_loops().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	drift.tween_property(node, "position:y", rest - FLUTTER_HOVER, FLUTTER_HOVER_PERIOD * 0.5)
+	drift.parallel().tween_property(node, "rotation", deg_to_rad(FLUTTER_WOBBLE_DEG), FLUTTER_HOVER_PERIOD * 0.5)
+	drift.tween_property(node, "position:y", rest, FLUTTER_HOVER_PERIOD * 0.5)
+	drift.parallel().tween_property(node, "rotation", -deg_to_rad(FLUTTER_WOBBLE_DEG), FLUTTER_HOVER_PERIOD * 0.5)
+	node.set_meta(META_FLUTTER, drift)
+	return flap
+
+
+## Jeden Frame aufrufen: dreht den Node entlang der Bewegung wie eine rollende Kugel; im Stand richtet er sich auf.
+static func roll(node: Node2D, velocity: Vector2, delta: float) -> void:
+	if velocity.length() > WALK_MIN_SPEED:
+		node.rotation = wrapf(node.rotation + velocity.length() * signf(velocity.x if velocity.x != 0.0 else 1.0) / ROLL_RADIUS * delta, -PI, PI)
+	else:
+		node.rotation = lerp_angle(node.rotation, 0.0, minf(1.0, ROLL_SETTLE_SPEED * delta))
+
+
+## Ducken: flach drücken, kurz halten, wieder aufrichten. Läuft über ein laufendes idle_bob hinweg.
+static func duck(node: Node2D) -> Tween:
+	_kill(node, META_ACTION)
+	var base: Vector2 = _base_scale(node)
+	var bob: Tween = _get_tween(node, META_BOB)
+	if bob != null:
+		bob.pause()
+	var tween: Tween = node.create_tween()
+	tween.tween_property(node, "scale", base * DUCK_SQUASH, DUCK_DOWN_TIME).set_ease(Tween.EASE_OUT)
+	tween.tween_interval(DUCK_HOLD_TIME)
+	tween.tween_property(node, "scale", base, DUCK_UP_TIME).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.finished.connect(func() -> void: _resume_bob(node), CONNECT_ONE_SHOT)
+	node.set_meta(META_ACTION, tween)
+	return tween
+
+
+static func _resume_bob(node: Node2D) -> void:
+	var bob: Tween = _get_tween(node, META_BOB)
+	if bob != null:
+		bob.play()
+
+
+## Kleiner Hüpfer nach oben und zurück (unabhängig vom Squash des idle_bob).
+static func hop(node: Node2D) -> Tween:
+	if _get_tween(node, META_ACTION) != null:
+		return null
+	var rest: float = node.position.y
+	var tween: Tween = node.create_tween().set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(node, "position:y", rest - HOP_HEIGHT, HOP_TIME * 0.5).set_ease(Tween.EASE_OUT)
+	tween.tween_property(node, "position:y", rest, HOP_TIME * 0.5).set_ease(Tween.EASE_IN)
+	node.set_meta(META_ACTION, tween)
+	return tween
+
+
 ## Endlos-Animation (Hüpfen/Schweben) beenden und Lage zurücksetzen, z. B. vor einem Charakterwechsel.
 static func stop_idle(node: Node2D) -> void:
 	_kill(node, META_BOB)
+	_kill(node, META_FLUTTER)
 	node.position.y = 0.0
 	node.scale = _base_scale(node)
 

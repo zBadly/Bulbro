@@ -1,6 +1,6 @@
 class_name BuildOverview
 extends VBoxContainer
-## Waffen und Items des Runs als Icons mit Tooltips (Pause-Menü und Run-Ende).
+## Waffen, Begleiter und Items des Runs als Icons mit Tooltips (Pause-Menü und Run-Ende).
 
 const SECTION_SIZE: int = 22
 const GAP: int = 10
@@ -16,6 +16,12 @@ func _init(player: Player, centered: bool = true) -> void:
 	var weapons: HFlowContainer = _flow(centered)
 	for weapon: Weapon in player.weapon_slots.get_weapons():
 		_add(weapons, BuildIcon.new(weapon.data.texture, weapon.tier, 1, TooltipText.weapon.bind(weapon)))
+	var pets: Array[Pet] = player.pet_slots.get_pets()
+	if not pets.is_empty():
+		_section(tr("RUN_END_PETS"), centered)
+		var pet_flow: HFlowContainer = _flow(centered)
+		for pet: Pet in pets:
+			_add(pet_flow, BuildIcon.new(pet.data.texture, pet.tier, 1, TooltipText.pet.bind(pet)))
 	_section(tr("RUN_END_ITEMS"), centered)
 	var items: HFlowContainer = _flow(centered)
 	for entry: Dictionary in item_stacks():

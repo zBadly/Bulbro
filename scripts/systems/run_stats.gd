@@ -29,6 +29,8 @@ var current_turrets: int = 0
 ## Grundlage für Tooltips und die Run-Statistik.
 var source_kills: Dictionary[StringName, int] = {}
 var source_damage: Dictionary[StringName, int] = {}
+## Sonderzähler der Begleiter je Herkunft (geblockte Projektile, eingesammelte Funken).
+var pet_events: Dictionary[StringName, int] = {}
 ## Kampfzeit (Summe der Wellenzeiten) beim ersten Treffer je Herkunft: DPS zählt erst ab da (Paket 5).
 var first_hit_time: Dictionary[StringName, float] = {}
 ## Run-Ende-Statistik (Phase 15, Paket 5).
@@ -117,6 +119,14 @@ func damage_of(origin: StringName) -> int:
 	return source_damage.get(origin, 0)
 
 
+func record_pet_event(origin: StringName, amount: int) -> void:
+	pet_events[origin] = pet_events.get(origin, 0) + amount
+
+
+func pet_events_of(origin: StringName) -> int:
+	return pet_events.get(origin, 0)
+
+
 func to_dict() -> Dictionary:
 	var kills: Dictionary = {}
 	for weapon_id: StringName in weapon_kills:
@@ -129,7 +139,7 @@ func to_dict() -> Dictionary:
 		"source_kills": _to_plain(source_kills), "source_damage": _to_plain(source_damage),
 		"first_hit_time": _to_plain_float(first_hit_time), "damage_taken": damage_taken, "dodges": dodges,
 		"sparks_spent": sparks_spent, "rerolls": rerolls, "boss_cycles": boss_cycles, "wave_times": wave_times.duplicate(),
-		"wave_damage": wave_damage.duplicate()}
+		"wave_damage": wave_damage.duplicate(), "pet_events": _to_plain(pet_events)}
 
 
 static func from_dict(data: Dictionary) -> RunStats:
@@ -153,6 +163,7 @@ static func from_dict(data: Dictionary) -> RunStats:
 	run.current_turrets = int(data.get("current_turrets", 0))
 	_from_plain(data.get("source_kills", {}), run.source_kills)
 	_from_plain(data.get("source_damage", {}), run.source_damage)
+	_from_plain(data.get("pet_events", {}), run.pet_events)
 	var first_hits: Dictionary = data.get("first_hit_time", {})
 	for key: String in first_hits:
 		run.first_hit_time[StringName(key)] = float(first_hits[key])

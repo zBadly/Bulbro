@@ -76,6 +76,8 @@ var _swing: Sprite2D
 @onready var _sprite: Sprite2D = $Visual/Sprite
 @onready var _light: PointLight2D = $Light
 @onready var weapon_slots: WeaponSlots = $WeaponSlots
+## Begleiter (Phase 15, Paket 8); rebuild() lässt sie unverändert.
+@onready var pet_slots: PetSlots = $PetSlots
 @onready var _collision: CollisionShape2D = $CollisionShape
 
 
@@ -96,6 +98,8 @@ func _ready() -> void:
 	weapon_slots.orbit_radius = config.weapon_orbit_radius
 	weapon_slots.weapons_changed.connect(update_weapon_modifiers)
 	weapon_slots.weapons_changed.connect(_track_run)
+	pet_slots.player = self
+	weapon_slots.weapons_changed.connect(pet_slots.refresh_weapons)
 	Juice.idle_bob(_visual)
 	Events.level_up.connect(_on_level_up)
 	Events.wave_ended.connect(_on_wave_ended)

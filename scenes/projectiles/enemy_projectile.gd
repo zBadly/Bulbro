@@ -48,6 +48,16 @@ func _on_body_entered(body: Node2D) -> void:
 	_finish()
 
 
+func is_active() -> bool:
+	return _active
+
+
+## Von einem Begleiter abgefangen (Lampenschirm-Schildkröte): verschwindet ohne Treffer.
+func block() -> void:
+	if _active:
+		_finish()
+
+
 func _finish() -> void:
 	_active = false
 	if pool != null:

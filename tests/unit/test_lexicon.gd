@@ -6,9 +6,10 @@ const LEXICON_SCENE: PackedScene = preload("res://scenes/ui/lexicon.tscn")
 ## Kategorie der DataRegistry je Reiter.
 const TAB_CATEGORIES: Dictionary[int, String] = {
 	Lexicon.Tab.CHARACTERS: "characters", Lexicon.Tab.WEAPONS: "weapons", Lexicon.Tab.ITEMS: "items",
+	Lexicon.Tab.PETS: "pets",
 	Lexicon.Tab.ENEMIES: "enemies", Lexicon.Tab.CLASSES: "sets", Lexicon.Tab.MECHANICS: "lexicon",
 }
-const LORE_CATEGORIES: PackedStringArray = ["characters", "weapons", "items", "enemies", "sets", "difficulties", "lexicon"]
+const LORE_CATEGORIES: PackedStringArray = ["characters", "weapons", "items", "pets", "enemies", "sets", "difficulties", "lexicon"]
 ## Unübersetzter Schlüssel (z. B. LORE_ITEM_LUPE) oder nicht gefüllter Platzhalter.
 const KEY_PATTERN: String = "\\b[A-Z][A-Z0-9]*_[A-Z0-9_]+\\b"
 const PLACEHOLDER_PATTERN: String = "%[sd]"

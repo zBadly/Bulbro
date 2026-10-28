@@ -1,13 +1,14 @@
 class_name DamageSource
 extends RefCounted
 ## Herkunft eines Treffers als Schlüssel "art/id" (z. B. "weapon/funkenpistole", "item/supernova").
-## Damit zählt RunStats Kills und Schaden je Waffe, Item, Charakter-Effekt, Verbündete und Struktur.
+## Damit zählt RunStats Kills und Schaden je Waffe, Item, Charakter-Effekt, Verbündete, Struktur und Begleiter.
 
 const WEAPON: String = "weapon"
 const ITEM: String = "item"
 const CHARACTER: String = "character"
 const ALLY: String = "ally"
 const STRUCTURE: String = "structure"
+const PET: String = "pet"
 const SEPARATOR: String = "/"
 
 
@@ -29,6 +30,10 @@ static func ally() -> StringName:
 
 static func structure(id: StringName) -> StringName:
 	return make(STRUCTURE, id)
+
+
+static func pet(id: StringName) -> StringName:
+	return make(PET, id)
 
 
 static func make(kind: String, id: StringName) -> StringName:

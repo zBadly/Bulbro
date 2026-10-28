@@ -3,11 +3,11 @@ extends RefCounted
 ## Baut die Lexikon-Einträge aller Reiter aus den Resources der DataRegistry (keine handgeschriebenen Listen).
 ## Effekttexte kommen aus denselben Funktionen wie die Shop-Tooltips (TextFormat, ItemData.get_description).
 
-enum Tab { CHARACTERS, WEAPONS, ITEMS, ENEMIES, CLASSES, MECHANICS }
+enum Tab { CHARACTERS, WEAPONS, ITEMS, PETS, ENEMIES, CLASSES, MECHANICS }
 enum EnemyKind { NORMAL, ELITE, BOSS }
 
 const TAB_KEYS: PackedStringArray = [
-	"LEX_TAB_CHARACTERS", "LEX_TAB_WEAPONS", "LEX_TAB_ITEMS", "LEX_TAB_ENEMIES", "LEX_TAB_CLASSES", "LEX_TAB_MECHANICS",
+	"LEX_TAB_CHARACTERS", "LEX_TAB_WEAPONS", "LEX_TAB_ITEMS", "LEX_TAB_PETS", "LEX_TAB_ENEMIES", "LEX_TAB_CLASSES", "LEX_TAB_MECHANICS",
 ]
 const ENEMY_KIND_KEYS: PackedStringArray = ["LEX_ENEMY_NORMAL", "LEX_ENEMY_ELITE", "LEX_ENEMY_BOSS"]
 ## Welle, für die Gegnerwerte und Item-Preise im Lexikon als Beispiel berechnet werden.
@@ -20,6 +20,7 @@ const PERCENT: float = 100.0
 const DROPS: DropConfig = preload("res://data/config/drop_config.tres")
 const PLAYER: PlayerConfig = preload("res://data/config/player_config.tres")
 const SHOP: ShopConfig = preload("res://data/config/shop_config.tres")
+const PETS: PetConfig = preload("res://data/config/pet_config.tres")
 const RARITY: RarityConfig = preload("res://data/config/rarity_config.tres")
 const STATUS: StatusConfig = preload("res://data/config/status_config.tres")
 const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
@@ -59,6 +60,8 @@ static func entries(tab: int) -> Array[LexiconEntry]:
 			return weapon_entries()
 		Tab.ITEMS:
 			return item_entries()
+		Tab.PETS:
+			return pet_entries()
 		Tab.ENEMIES:
 			return enemy_entries()
 		Tab.CLASSES:
@@ -247,6 +250,31 @@ static func item_entry(item: ItemData) -> LexiconEntry:
 		tags.append(t(tag_key(tag)))
 	entry.add_text(t("LEX_TAGS"), _or_none(", ".join(tags)))
 	entry.add_text(t("LEX_UNLOCK"), entry.lock_text)
+	return entry
+
+
+# --- Begleiter ---
+
+static func pet_entries() -> Array[LexiconEntry]:
+	var result: Array[LexiconEntry] = []
+	for res: Resource in DataRegistry.get_all("pets"):
+		result.append(pet_entry(res as PetData))
+	result.sort_custom(_by_title)
+	return result
+
+
+## Wirkung und Preis je Tier, dazu die gemeinsamen Regeln (Plätze, Kombinieren, Ersetzen).
+static func pet_entry(pet: PetData) -> LexiconEntry:
+	var entry: LexiconEntry = _base(Tab.PETS, pet, pet.id, pet.name_key, pet.texture)
+	entry.subtitle = t("PET_CATEGORY")
+	var blocks: PackedStringArray = []
+	var prices: PackedStringArray = []
+	for tier: int in range(WeaponData.MIN_TIER, WeaponData.MAX_TIER + 1):
+		blocks.append("%s: %s" % [TextFormat.tier_name(tier), " ".join(pet.behavior.describe(pet.get_tier(tier)))])
+		prices.append(str(pet.get_tier(tier).price))
+	entry.add_text(t("LEX_EFFECTS"), "\n".join(blocks))
+	entry.add_text(t("LEX_PRICE"), t("LEX_PET_PRICES") % " / ".join(prices))
+	entry.add_text(t("LEX_PET_RULES"), t("LEX_PET_RULES_TEXT") % [PETS.max_pets, roundi(PETS.recycle_share * PERCENT)])
 	return entry
 
 

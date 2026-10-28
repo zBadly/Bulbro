@@ -29,12 +29,21 @@ func _player() -> Player:
 	return player
 
 
+## Grundpreis vor Inflation: Item, Waffe oder Begleiter im Tier des Angebots.
+func _base_price(offer: ShopOffer) -> int:
+	if offer.item != null:
+		return offer.item.price
+	if offer.is_pet():
+		return offer.pet.get_tier(offer.tier).price
+	return offer.weapon.get_tier(offer.tier).price
+
+
 # Preise
 func test_offer_prices_include_inflation() -> void:
 	var ctx: ShopContext = _ctx(5)
 	_shop.open_shop(ctx)
 	for offer: ShopOffer in _shop.offers:
-		var base: int = offer.item.price if offer.item != null else offer.weapon.get_tier(offer.tier).price
+		var base: int = _base_price(offer)
 		assert_eq(offer.price, Economy.inflated_price(base, 5, 0.0))
 
 
@@ -43,7 +52,7 @@ func test_price_stat_reduces_prices() -> void:
 	ctx.item_price_pct = -50.0
 	_shop.open_shop(ctx)
 	var offer: ShopOffer = _shop.offers[0]
-	var base: int = offer.item.price if offer.item != null else offer.weapon.get_tier(offer.tier).price
+	var base: int = _base_price(offer)
 	assert_eq(offer.price, Economy.inflated_price(base, 5, -50.0))
 	assert_lt(offer.price, Economy.inflated_price(base, 5, 0.0))
 

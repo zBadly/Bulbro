@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PetConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/pet_config.gd" id="1_petcfg"]
+
+[resource]
+script = ExtResource("1_petcfg")
+max_pets = 2
+offer_chance = 0.08
+recycle_share = 0.25
+follow_offsets = Array[Vector2]([Vector2(-105, 55), Vector2(105, 55)])
+follow_sharpness = 5.0
+separation_distance = 60.0
+contact_distance = 36.0
+scan_interval = 0.1

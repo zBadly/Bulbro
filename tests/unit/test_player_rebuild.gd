@@ -1,6 +1,7 @@
 extends GutTest
 ## Regression Paket 3 (Admin-Modus): Player.rebuild() muss exakt dieselben Werte ergeben wie der normale Aufbau
 ## im Run, darf Effekt-Knoten nicht doppelt erzeugen und laufende Run-Werte (Seelen, Trigger-Zustand) behalten.
+## Seit Paket 8 auch Begleiter: gleiche Begleiter, keine doppelten Knoten, Mini-Birne mit genau einer Kopie.
 
 const PLAYER_SCENE: PackedScene = preload("res://scenes/player/player.tscn")
 const ALLY_SCENE: PackedScene = preload("res://scenes/allies/ally.tscn")
@@ -15,6 +16,8 @@ const ITEMS: Array[String] = ["ersatzsicherung", "kupferdraht", "schmierfett", "
 	"werkstattkoffer", "dynamo", "ersatzsicherung", "spiegelscherbe", "ladestation",
 	"panzerglas", "leuchtturm", "sparlampe", "thermosicherung", "reservebatterie", "kondensator"]
 const COMPARE_TOLERANCE: float = 0.0001
+## Begleiter im normalen Aufbau (ID, Tier): Mini-Birne kopiert die erste Waffe, der Igel hat keinen Bezug zu Stats.
+const PETS: Array[Array] = [["mini_birne", 2], ["igel", 1]]
 
 ## Eigener Elternknoten pro Test: Effekte hängen Drohnen/Spiegelbild an den Elternknoten des Spielers.
 var _container: Node2D
@@ -54,6 +57,8 @@ func _build_normally(character: CharacterData) -> Player:
 		var item: ItemData = load("res://data/items/%s.tres" % id)
 		GameState.add_item(item)
 		player.apply_item(item)
+	for entry: Array in PETS:
+		player.pet_slots.add_pet(load("res://data/pets/%s.tres" % entry[0]), entry[1])
 	for i in 3:
 		player.add_run_modifier(StatModifier.create(Stats.MAX_HP, player.config.max_hp_per_level))
 	player.add_run_modifier(StatModifier.create(Stats.ARMOR, 2.0))
@@ -79,7 +84,32 @@ func _snapshot(player: Player) -> Dictionary:
 	for entry: TriggerEntry in player.triggers:
 		effects.append(entry.effect)
 	values["triggers"] = effects
+	var pets: Array = []
+	for pet: Pet in player.pet_slots.get_pets():
+		pets.append([String(pet.data.id), pet.tier, pet.slot_index])
+	values["pets"] = pets
+	values["pet_nodes"] = _pet_nodes(player)
+	values["pet_copies"] = _pet_copies(player)
 	return values
+
+
+## Begleiter-Knoten dieses Spielers im Baum (ohne solche, die schon freigegeben werden).
+func _pet_nodes(player: Player) -> int:
+	var count: int = 0
+	for node: Node in get_tree().get_nodes_in_group(Pet.GROUP):
+		if not node.is_queued_for_deletion() and (node as Pet).player == player:
+			count += 1
+	return count
+
+
+## Waffenkopien der Mini-Birnen (genau eine pro Mini-Birne, solange der Spieler Waffen hat).
+func _pet_copies(player: Player) -> int:
+	var count: int = 0
+	for pet: Pet in player.pet_slots.get_pets():
+		var slots: WeaponSlots = pet.state.get(PetWeaponCopyBehavior.SLOTS_KEY) as WeaponSlots
+		if slots != null:
+			count += slots.get_child_count()
+	return count
 
 
 func _assert_same(actual: Dictionary, expected: Dictionary, context: String) -> void:
@@ -213,6 +243,24 @@ func test_rebuild_keeps_vine_timer_and_souls_and_ghosts() -> void:
 	assert_eq(Ally.active_count(get_tree()), 1, "kein zusätzlicher Geist")
 
 
+func test_rebuild_keeps_pets_without_duplicates() -> void:
+	var player: Player = _build_normally(_character("spiegelkugel"))
+	_start_wave(player)
+	var pets: Array[Pet] = player.pet_slots.get_pets()
+	assert_eq(pets.size(), PETS.size())
+	assert_eq(_pet_copies(player), 1, "Mini-Birne trägt eine Kopie")
+	for i in 3:
+		player.rebuild()
+	await wait_physics_frames(1)
+	assert_eq(player.pet_slots.get_pets(), pets, "dieselben Begleiter-Knoten, nicht neu erzeugt")
+	assert_eq(_pet_nodes(player), PETS.size(), "keine doppelten Begleiter")
+	assert_eq(_pet_copies(player), 1, "keine doppelte Waffenkopie")
+	assert_eq(_count_children(&"MirrorClone"), 1, "Spiegelbild und Begleiter vertragen sich")
+	player.switch_character(_character("drohnenleuchte"))
+	await wait_physics_frames(1)
+	assert_eq(_pet_nodes(player), PETS.size(), "Charakterwechsel behält die Begleiter")
+
+
 # --- Charakterwechsel (Admin) ---
 
 func test_switch_character_recalculates_and_keeps_weapons() -> void:
@@ -233,6 +281,8 @@ func _build_normally_with_items_of(source: Player, character: CharacterData) -> 
 	player.apply_character(character)
 	for weapon: Weapon in source.weapon_slots.get_weapons():
 		player.weapon_slots.add_weapon(weapon.data, weapon.tier)
+	for pet: Pet in source.pet_slots.get_pets():
+		player.pet_slots.add_pet(pet.data, pet.tier)
 	for item: ItemData in GameState.items:
 		player.apply_item(item)
 	for mod: StatModifier in source.run_modifiers:

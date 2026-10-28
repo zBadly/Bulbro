@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="PetData" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/pet_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/data/pet_tier_stats.gd" id="2_tier"]
+[ext_resource type="Script" path="res://scripts/data/pets/pet_shoot_behavior.gd" id="3_behavior"]
+[ext_resource type="Texture2D" path="res://art/pets/leuchtkaefer.svg" id="4_tex"]
+[ext_resource type="Texture2D" path="res://art/fx/projectile_firefly.svg" id="5_proj"]
+
+[sub_resource type="Resource" id="Tier_1"]
+script = ExtResource("2_tier")
+base_damage = 4.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 0.5
+})
+cooldown = 1.0
+range = 380.0
+price = 30
+
+[sub_resource type="Resource" id="Tier_2"]
+script = ExtResource("2_tier")
+base_damage = 6.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 0.5
+})
+cooldown = 0.92
+range = 380.0
+price = 60
+
+[sub_resource type="Resource" id="Tier_3"]
+script = ExtResource("2_tier")
+base_damage = 9.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 0.5
+})
+cooldown = 0.85
+range = 380.0
+price = 108
+
+[sub_resource type="Resource" id="Tier_4"]
+script = ExtResource("2_tier")
+base_damage = 13.0
+scalings = Dictionary[StringName, float]({
+&"ranged_dmg": 0.5
+})
+cooldown = 0.78
+range = 380.0
+price = 195
+
+[sub_resource type="Resource" id="Behavior"]
+script = ExtResource("3_behavior")
+projectile_texture = ExtResource("5_proj")
+projectile_speed = 900.0
+orbit_radius = 26.0
+orbit_speed_deg = 200.0
+
+[resource]
+script = ExtResource("1_data")
+id = &"leuchtkaefer"
+name_key = "PET_LEUCHTKAEFER"
+texture = ExtResource("4_tex")
+tiers = Array[ExtResource("2_tier")]([SubResource("Tier_1"), SubResource("Tier_2"), SubResource("Tier_3"), SubResource("Tier_4")])
+behavior = SubResource("Behavior")
+tags = Array[StringName]([&"ranged"])
+lore_text = "LORE_PET_LEUCHTKAEFER"

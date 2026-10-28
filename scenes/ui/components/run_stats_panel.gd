@@ -52,7 +52,7 @@ const ROW_ALT_COLOR: Color = Color("#00000000")
 const KIND_COLORS: Dictionary[String, Color] = {
 	DamageSource.WEAPON: Color("#4A90E2"), DamageSource.ITEM: Color("#7ED957"),
 	DamageSource.CHARACTER: Color("#FFB347"), DamageSource.ALLY: Color("#9B59B6"),
-	DamageSource.STRUCTURE: Color("#5BC0BE"),
+	DamageSource.STRUCTURE: Color("#5BC0BE"), DamageSource.PET: Color("#F78FB3"),
 }
 
 var rows: Array[RunReport.Row] = []

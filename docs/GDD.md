@@ -176,6 +176,13 @@ Sieg-Items der Charaktere 13–22 (werden durch einen Sieg mit dem Charakter im 
 - Spiegelscherbe | III | +2 % Schaden pro getragener Waffe, -10 Reichweite | 70 (Spiegelkugel)
 Jedes Item hat Tags (z. B. hp, luck, economy, structure, elemental), damit der Shop Charakter-Vorlieben gewichten kann.
 
+Begleiter (eigener Item-Typ, Tiers I-IV wie Waffen, im Shop kombinierbar, höchstens 2 gleichzeitig; beim Kauf eines dritten fragt der Shop, welcher ersetzt wird, Rückgabe 25 %). Begleiter folgen dem Spieler mit leichter Verzögerung, weichen sich aus, sind unverwundbar und zählen nicht zum Gegnerlimit. Werte in `data/pets`:
+- Leuchtkäfer: kreist und schießt 4 (+50 % Fern) alle 1 s
+- Funkenspatz: sammelt Funken in 300 px Umkreis ein
+- Lampenschirm-Schildkröte: blockt alle 3 s ein gegnerisches Projektil in deiner Nähe
+- Batterie-Igel: rollt auf Gegner, 8 (+60 % Nah), Rückstoß
+- Mini-Birne: trägt eine Kopie deiner aktuell ersten Waffe mit 25 % Schaden
+
 ## 10. Charaktere
 Format: Name | Stats und Eigenschaften | Startwaffe(n) | Freischaltung.
 1. Standardbirne | +5 Max HP, +5 % Tempo, +8 Aufladung | Wahl: Funkenpistole, Glasscherbe, Ast, Funkenfaust | Start
