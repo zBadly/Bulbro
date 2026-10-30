@@ -21,7 +21,6 @@ burn_tint = Color(1, 0.62, 0.3, 0.42)
 homing_retarget_interval = 0.15
 split_spread_deg = 70.0
 split_range = 200.0
-structure_spawn_radius = 160.0
 projectile_pool_size = 300
 damage_number_pool_size = 100
 damage_number_crit_color = Color(1, 0.83137256, 0.23137255, 1)

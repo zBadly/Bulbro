@@ -127,6 +127,12 @@ Waffenliste (Tier-I-Werte, alle Startwerte):
 
 Lampenturm (Struktur): schießt alle 1,0 s für 5 (100 % Technik), Reichweite 400; Tier erhöht Feuerrate.
 
+Türme aus Items (stapelbar: jedes Exemplar baut einen Turm). Zu Wellenbeginn entstehen alle Türme (Lampentürme der Waffen zuerst) zufällig in einem Ring von 110 bis 230 px um den Spieler, innerhalb der Arena und mit mindestens 70 px Abstand; höchstens 12 Türme und 24 Minen gleichzeitig (`data/config/tower_config.tres`). Schaden, Heilung und Aura-Radius wachsen mit Technik (nie mit Schaden-%), Struktur-Angriffstempo verkürzt alle Abklingzeiten. Für Freischaltungen zählen nur Lampentürme.
+- Flammenturm | III | Flammenstrahl alle 0,6 s: 2 (+50 % Technik) an bis zu 5 Gegnern auf dem Strahl (Reichweite 220, Breite 36), setzt Brand 2 (+20 % Technik) × 3 Ticks | 65
+- Frostturm | II | verlangsamt Gegner im Radius 150 (+1 px pro Technik) um 30 % (SlowStatus) | 40
+- Heilturm | II | heilt 1 (+5 % Technik) HP alle 4 s, solange du im Radius 130 (+0,5 px pro Technik) stehst; Radius sichtbar, Heilzahl grün | 40
+- Stolperdraht | II | legt alle 8 s eine Mine bis 110 px um sich; scharf nach 0,6 s, explodiert bei Gegnern im Umkreis von 30 px: 15 (+100 % Technik), Radius 80 (ExplosionAction, mit Explosions-Stats) | 45
+
 ## 9. Items (Startwerte)
 Fast jedes Item hat einen Vorteil und einen Nachteil. Format: Name | Tier | Effekt | Preis | Limit.
 - Ersatzsicherung | I | +3 Max HP | 15

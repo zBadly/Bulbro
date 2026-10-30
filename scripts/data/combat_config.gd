@@ -33,9 +33,6 @@ extends Resource
 @export var split_spread_deg: float = 0.0
 @export var split_range: float = 0.0
 
-@export_group("Strukturen")
-@export var structure_spawn_radius: float = 0.0
-
 @export_group("Pools")
 @export var projectile_pool_size: int = 0
 @export var damage_number_pool_size: int = 0

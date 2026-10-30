@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_effect.gd" id="1_eff"]
+[ext_resource type="Script" path="res://scripts/data/effects/tower_item_effect.gd" id="2_tower"]
+[ext_resource type="Resource" path="res://data/structures/stolperdraht.tres" id="3_struct"]
+[ext_resource type="Texture2D" path="res://art/items/stolperdraht.svg" id="4_icon"]
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="5_item"]
+
+[sub_resource type="Resource" id="Resource_tower"]
+script = ExtResource("2_tower")
+structure = ExtResource("3_struct")
+
+[resource]
+script = ExtResource("5_item")
+lore_text = "LORE_ITEM_STOLPERDRAHT"
+id = &"stolperdraht"
+name_key = "ITEM_STOLPERDRAHT"
+tier = 2
+icon = ExtResource("4_icon")
+price = 45
+tags = Array[StringName]([&"structure"])
+effects = Array[ExtResource("1_eff")]([SubResource("Resource_tower")])

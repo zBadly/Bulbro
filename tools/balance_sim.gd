@@ -11,6 +11,8 @@ extends Node
 ##   ... -- 3 --items --uniques                    -> nur die Einzigartigen, Ausreißer gegenüber ihrem Schnitt
 ##   ... -- 3 --pets [--runs 150]                  -> Wirkung der Begleiter (Kauf in Welle 8, Tier wächst wie bei Waffen),
 ##                                                     Ausreißer gegenüber ihrem Schnitt; ändert nichts an den Daten
+##   ... -- 3 --towers [--runs 120]                -> Turm-Items (1 und 3 Exemplare) für Taschenlampe, Drohnenleuchte und
+##                                                    Standardbirne: Δ Siegquote, Δ Ø Welle, Turmanteil, Ausreißer (ändert nichts)
 ##   ... -- 0 --try kerze max_hp:4 armor:2       -> Buff-Varianten (stat:delta[:f|p|g]) auf Spannung 0 und 3 testen
 ##   ... -- 0 --trace <charakter-id>               -> ein Run Welle für Welle (Schaden, Treffer, Heilung, HP)
 ##   ... -- 0 --endless [--runs 100] [hp_growth=0.12 ...] -> erreichte Endlos-Welle je Charakter (Median = Ø Build,
@@ -27,8 +29,14 @@ const ITEMS_FLAG: String = "--items"
 const ABLATE_FLAG: String = "--ablate"
 const UNIQUES_FLAG: String = "--uniques"
 const PETS_FLAG: String = "--pets"
+const TOWERS_FLAG: String = "--towers"
 ## Begleiter-Vergleich: weniger Runs als beim Item-Vergleich, damit der Lauf unter 10 Minuten bleibt.
 const PET_RUNS: int = 150
+## Turm-Vergleich: Läufe je Charakter und Variante, Charaktere und Kaufwellen je Exemplarzahl.
+const TOWER_RUNS: int = 120
+const TOWER_CHARACTERS: Array[StringName] = [&"taschenlampe", &"drohnenleuchte", &"standardbirne"]
+const TOWER_BUY_WAVES: Dictionary[int, Array] = {1: [8], 3: [5, 8, 11]}
+const TOWER_SHARE_KEY: String = "Turm-Items"
 ## Ausreißer unter den Einzigartigen: Wertung weicht um mehr als so viele Standardabweichungen vom Schnitt ab.
 const OUTLIER_SD: float = 1.5
 const RUNS_FLAG: String = "--runs"
@@ -79,6 +87,8 @@ func _ready() -> void:
 		await _characters(difficulty, runs, ABLATE_FLAG in args)
 	elif WEAPONS_FLAG in args:
 		_weapons()
+	elif TOWERS_FLAG in args:
+		await _towers(difficulty, runs if runs_index >= 0 else TOWER_RUNS)
 	elif PETS_FLAG in args:
 		await _pets(difficulty, runs if runs_index >= 0 else PET_RUNS)
 	elif ITEMS_FLAG in args:
@@ -427,6 +437,77 @@ func _pets(difficulty: DifficultyData, runs: int) -> void:
 			if absf(z) > OUTLIER_SD:
 				print("  Ausreißer %s: %s %+.2f (%+.1f SD)" % ["stark" if z > 0.0 else "schwach", tr(pet.name_key), scores[pet][axis], z])
 	print("Laufzeit: %d s" % ((Time.get_ticks_msec() - started) / 1000))
+
+
+# --- Türme ---
+
+## Je Charakter und Turm-Item: 1 Exemplar (Kauf in Welle 8) und 3 Exemplare (Wellen 5, 8, 11) gegen denselben
+## Charakter ohne Turm-Items. Wertung wie bei Items (Δ Ø Welle + Δ Siegquote / 10), je 100 Funken mit dem
+## Grundpreis aller Exemplare. Turmanteil = Anteil der Turm-Items am Gesamtschaden.
+## Ausreißer je Charakter: Wertung je 100 Funken weicht um mehr als OUTLIER_SD vom Schnitt seiner Varianten ab.
+func _towers(difficulty: DifficultyData, runs: int) -> void:
+	var started: int = Time.get_ticks_msec()
+	var sim: CharacterSim = CharacterSim.new(self)
+	var items: Array[ItemData] = []
+	for res: Resource in DataRegistry.get_all("items"):
+		var item: ItemData = res as ItemData
+		if not item.effects.is_empty() and item.effects[0] is TowerItemEffect:
+			items.append(item)
+	items.sort_custom(func(a: ItemData, b: ItemData) -> bool: return String(a.id) < String(b.id))
+	print("BULBRO Turm-Vergleich – Spannung %d, %d Runs je Variante, 1 Exemplar in Welle %s, 3 Exemplare in Welle %s" % [
+		difficulty.level, runs, TOWER_BUY_WAVES[1], TOWER_BUY_WAVES[3]])
+	print("| Charakter | Turm | Exemplare | Preis | Δ Siegquote | Δ Ø Welle | Wertung | je 100 Funken | Turmanteil |")
+	print("|---|---|---|---|---|---|---|---|---|")
+	var tower_means: Dictionary[ItemData, float] = {}
+	for id: StringName in TOWER_CHARACTERS:
+		var character: CharacterData = load("res://data/characters/%s.tres" % id)
+		var base: Dictionary = sim.run_many(character, difficulty, runs, SEED)
+		await get_tree().process_frame
+		print("| %s | ohne | 0 | 0 | Siegquote %d %% | Ø Welle %.1f | | | |" % [tr(character.name_key), roundi(base["win_rate"] * 100.0), base["avg_wave"]])
+		var scores: Dictionary[String, float] = {}
+		for item: ItemData in items:
+			for copies: int in TOWER_BUY_WAVES:
+				var bought: Array = []
+				for wave: int in TOWER_BUY_WAVES[copies]:
+					bought.append([item, wave])
+				var result: Dictionary = sim.run_many(character, difficulty, runs, SEED, {"items": bought})
+				await get_tree().process_frame
+				var delta_win: float = (result["win_rate"] - base["win_rate"]) * 100.0
+				var delta_wave: float = result["avg_wave"] - base["avg_wave"]
+				var score: float = delta_wave + delta_win / 10.0
+				var price: int = item.price * copies
+				var per_100: float = score / maxf(1.0, price) * 100.0
+				scores["%s x%d" % [tr(item.name_key), copies]] = per_100
+				tower_means[item] = tower_means.get(item, 0.0) + per_100 / (TOWER_CHARACTERS.size() * TOWER_BUY_WAVES.size())
+				print("| %s | %s | %d | %d | %+.0f | %+.2f | %+.2f | %+.2f | %d %% |" % [tr(character.name_key), tr(item.name_key), copies, price,
+					delta_win, delta_wave, score, per_100, roundi(_share(result["shares"], TOWER_SHARE_KEY) * 100.0)])
+		_print_score_outliers(tr(character.name_key), scores)
+	var overall: Dictionary[String, float] = {}
+	for item: ItemData in tower_means:
+		overall[tr(item.name_key)] = tower_means[item]
+	_print_score_outliers("Alle Charaktere (Ø je Turm)", overall)
+	print("Laufzeit: %d s" % ((Time.get_ticks_msec() - started) / 1000))
+
+
+func _share(shares: Dictionary, key: String) -> float:
+	var total: float = 0.0
+	for k: String in shares:
+		total += shares[k]
+	return shares.get(key, 0.0) / maxf(total, 0.001)
+
+
+## Schnitt und Streuung einer Wertungsliste, Ausreißer über OUTLIER_SD. Ändert nichts an den Daten.
+func _print_score_outliers(label: String, scores: Dictionary[String, float]) -> void:
+	var values: Array[float] = []
+	values.assign(scores.values())
+	var mean: float = values.reduce(func(s: float, v: float) -> float: return s + v, 0.0) / values.size()
+	var variance: float = values.reduce(func(s: float, v: float) -> float: return s + (v - mean) * (v - mean), 0.0) / values.size()
+	var sd: float = sqrt(variance)
+	print("%s, Wertung je 100 Funken: Schnitt %+.2f, Streuung %.2f" % [label, mean, sd])
+	for key: String in scores:
+		var z: float = (scores[key] - mean) / maxf(sd, 0.0001)
+		if absf(z) > OUTLIER_SD:
+			print("  Ausreißer %s: %s %+.2f (%+.1f SD)" % ["stark" if z > 0.0 else "schwach", key, scores[key], z])
 
 
 # --- Wellen ---

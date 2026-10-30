@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="StructureData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/structure_data.gd" id="1_struct"]
+[ext_resource type="Texture2D" path="res://art/world/frostturm.svg" id="2_tex"]
+
+[resource]
+script = ExtResource("1_struct")
+id = &"frostturm"
+kind = 3
+name_key = "STRUCTURE_FROSTTURM"
+texture = ExtResource("2_tex")
+tier_cooldowns = Array[float]([0.25])
+aura_radius = 150.0
+aura_radius_per_engineering = 1.0
+aura_color = Color(0.561, 0.89, 1, 1)
+slow_pct = 30.0
+slow_duration = 0.5

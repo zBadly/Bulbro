@@ -104,6 +104,18 @@ const BOSS_PROJECTILE_SHARE: float = 0.7
 ## Vorbeiflieger). Anteil der Blocks, die wirklich einen Treffer verhindern.
 const PET_BLOCK_HIT_SHARE: float = 0.35
 
+# --- Türme aus Items (Paket 15-8) ---
+## Flammenstrahl: getroffene Gegner pro Strahl (Linie bis zur Reichweite, im Gedränge mehrere).
+const FLAME_TARGETS: float = 2.0
+## Anteil aller Gegner in einer Frost-Aura bei Referenzradius (wächst mit der Fläche).
+const FROST_ENEMY_SHARE: float = 0.12
+const FROST_REFERENCE_RADIUS: float = 150.0
+## Heilturm: Anteil der Kampfzeit, in der der Spieler im Radius steht (Türme stehen fest, der Spieler läuft).
+const HEAL_UPTIME: float = 0.35
+## Minen: Anteil, der wirklich einen Gegner erwischt, bevor die Welle endet oder die älteste ersetzt wird.
+const MINE_HIT_SHARE: float = 0.8
+const TOWERS: TowerConfig = preload("res://data/config/tower_config.tres")
+
 var host: Node
 var waves: Array[WaveData] = []
 var weapons: Array[WeaponData] = []
@@ -127,7 +139,7 @@ func _init(p_host: Node) -> void:
 
 
 ## Viele Runs: Siegquote, typische Scheiter-Welle, Durchschnittswelle und Schadensanteile.
-## options: "items" = Array von [ItemData, Welle], "pets" = Array von [PetData, Welle] (Tier wächst danach wie das
+## options: "items" = Array von [ItemData, Welle] (Turm-Items: jedes Exemplar ein Turm), "pets" = Array von [PetData, Welle] (Tier wächst danach wie das
 ## Waffen-Tier), "weapon" = feste Startwaffe, "effects" = Effektliste statt der des Charakters.
 func run_many(character: CharacterData, difficulty: DifficultyData, runs: int, seed_value: int, options: Dictionary = {}) -> Dictionary:
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -184,7 +196,7 @@ func simulate_run(character: CharacterData, difficulty: DifficultyData, rng: Ran
 		if wave.wave_number > RUN_WAVES:
 			break
 		_grow(player, wave.wave_number, start, luck, state)
-		_apply_items(player, wave.wave_number, options)
+		_apply_items(player, wave.wave_number, options, state)
 		_update_weapons(player, wave.wave_number, start, pool, rng, state)
 		_update_pets(wave.wave_number, options, state)
 		if not _play_wave(player, wave, difficulty, rng, state, wave.wave_number == elite_wave):
@@ -299,10 +311,17 @@ func _grow(player: Player, wave_number: int, start: WeaponData, luck: float, sta
 	player.stats.set_source(Stats.SOURCE_SPARKS, SPARKS_HELD)
 
 
-func _apply_items(player: Player, wave_number: int, options: Dictionary) -> void:
+## Gekaufte Items; Turm-Items merkt sich der Zustand (jedes Exemplar ein Turm, siehe _tower_value).
+func _apply_items(player: Player, wave_number: int, options: Dictionary, state: Dictionary) -> void:
 	for entry: Array in options.get("items", []):
 		if entry[1] == wave_number:
-			player.apply_item(entry[0])
+			var item: ItemData = entry[0]
+			player.apply_item(item)
+			for effect: ItemEffect in item.effects:
+				if effect is TowerItemEffect:
+					var towers: Array = state.get("towers", [])
+					towers.append((effect as TowerItemEffect).structure)
+					state["towers"] = towers
 
 
 ## Gekaufte Begleiter mit ihrem Tier in dieser Welle (wächst wie das Waffen-Tier, Kombinieren eingerechnet).
@@ -527,6 +546,7 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 		if entry.effect is MirrorCloneEffect:
 			mirror_factor += (entry.effect as MirrorCloneEffect).damage_factor
 	var structures: float = 0.0
+	var weapon_towers: int = 0
 	# Schaden eines Angriffs aller Waffen zusammen (Kondensator verstärkt je einen Angriff pro Waffe)
 	var volley: float = 0.0
 	var volley_single: float = 0.0
@@ -553,8 +573,9 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 		hits_per_second += rate * targets
 		attacks_per_second += rate
 		root_stop += rate * targets * t.root_chance * t.root_duration
-		if weapon.data.structure != null:
+		if weapon.data.structure != null and weapon_towers < TOWERS.max_towers:
 			structures += _structure_dps(player, weapon.data.structure, weapon.tier)
+			weapon_towers += 1
 	parts["Waffen"] = weapon_dps
 	if mirror_factor > 0.0:
 		parts["Spiegelbild"] = weapon_dps * mirror_factor
@@ -585,6 +606,17 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 	var freeze_share: float = 0.0
 	var slow_share: float = 0.0
 	var heal_rate: float = 0.0
+	# Türme aus Items, bis zur Obergrenze nach den Lampentürmen der Waffen
+	var item_towers: Array = state.get("towers", [])
+	for structure: StructureData in item_towers.slice(0, maxi(0, TOWERS.max_towers - weapon_towers)):
+		var tower: Dictionary = _tower_value(player, structure, burn_mult)
+		if tower["damage"] > 0.0:
+			_add(parts, "Turm-Items", tower["damage"])
+			single += tower["single"]
+		if tower["burn"] != Vector3.ZERO:
+			burn_sources.append(tower["burn"])
+		slow_share += tower["slow"]
+		heal_rate += tower["heal"]
 	var burning_share: float = 0.0
 	var kills: float = spawn_rate
 	var ctx: EffectContext = EffectContext.create(player)
@@ -689,6 +721,34 @@ func _structure_dps(player: Player, structure: StructureData, tier: int) -> floa
 		return 0.0
 	var damage: float = CombatMath.weapon_damage(structure.base_damage, CombatMath.scaling_bonus(structure.scalings, player.stats), 0.0, 1.0)
 	return damage / CombatMath.attack_cooldown(structure.cooldown_for_tier(tier), player.stats.get_stat(Stats.STRUCTURE_ATTACK_SPEED_PCT))
+
+
+## Ein Turm aus einem Item: Schaden pro Sekunde (alle Ziele, Einzelziel), Brandquelle (Rate, Tick, Ticks),
+## Verlangsamung (Anteil der Gegner x Stärke) und Heilung pro Sekunde.
+func _tower_value(player: Player, structure: StructureData, burn_mult: float) -> Dictionary:
+	var stats: StatSystem = player.stats
+	var value: Dictionary = {"damage": 0.0, "single": 0.0, "burn": Vector3.ZERO, "slow": 0.0, "heal": 0.0}
+	var rate: float = 1.0 / structure.cooldown(1, stats)
+	match structure.kind:
+		StructureData.Kind.TURRET:
+			value["damage"] = _structure_dps(player, structure, 1)
+			value["single"] = value["damage"]
+		StructureData.Kind.FLAME:
+			value["damage"] = structure.damage(stats) * rate * FLAME_TARGETS
+			value["single"] = structure.damage(stats) * rate
+			value["burn"] = Vector3(rate * FLAME_TARGETS, structure.burn_tick(stats) * burn_mult, structure.burn_ticks)
+		StructureData.Kind.FROST:
+			var area: float = pow(structure.aura(stats) / FROST_REFERENCE_RADIUS, 2.0)
+			value["slow"] = minf(1.0, FROST_ENEMY_SHARE * area) * structure.slow_pct / PERCENT
+		StructureData.Kind.HEAL:
+			value["heal"] = structure.heal(stats) * rate * HEAL_UPTIME
+		StructureData.Kind.MINE_LAYER:
+			var ctx: EffectContext = EffectContext.create(player)
+			ctx.structure_damage = true
+			var mine: Dictionary = _action_value(structure.mine, ctx)
+			value["damage"] = rate * MINE_HIT_SHARE * mine["damage"]
+			value["single"] = rate * MINE_HIT_SHARE * mine["single"]
+	return value
 
 
 ## Wirkung einer Aktion pro Auslösung: Schaden (alle Ziele), Einzelziel-Schaden, eingefrorene Zeit (Anteil

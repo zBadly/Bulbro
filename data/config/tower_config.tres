@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="TowerConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_config.gd" id="1_cfg"]
+
+[resource]
+script = ExtResource("1_cfg")
+ring_min_radius = 110.0
+ring_max_radius = 230.0
+min_spacing = 70.0
+placement_tries = 24
+edge_margin = 60.0
+max_towers = 12
+max_mines = 24
+mine_check_interval = 0.1
+heal_number_color = Color(0.494, 0.851, 0.341, 1)
+heal_number_font_size = 30
+heal_number_offset = Vector2(0, -64)
+aura_fill_alpha = 0.12
+aura_ring_width = 3.0
+flame_visible_time = 0.18
+flame_color = Color(0.949, 0.549, 0.22, 1)
+flame_core_color = Color(1, 0.878, 0.4, 1)

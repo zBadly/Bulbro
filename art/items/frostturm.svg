@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Item-Icon: Turm aus art/world/frostturm.svg, mittig -->
+  <g transform="translate(8,0)">
+    <!-- Frostturm: Metallmast mit Eiskristall-Kopf (Struktur) -->
+    <path d="M8,60 L40,60 L34,50 L14,50 Z" fill="#5A5F66" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+    <rect x="19" y="30" width="10" height="22" rx="2" fill="#9AA0A6" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M21,36 L27,42 M27,36 L21,42" stroke="#6F757C" stroke-width="2" stroke-linecap="round"/>
+    <path d="M24,3 L37,15 L33,30 L15,30 L11,15 Z" fill="#4FB3E0"/>
+    <path d="M24,4 L35,14 L31,27 L15,28 L12,15 Z" fill="#8FE3FF"/>
+    <path d="M17,12 L22,7 L21,14 Z" fill="#E6FAFF"/>
+    <path d="M24,3 L24,30 M11,15 L37,15" stroke="#4FB3E0" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M24,3 L37,15 L33,30 L15,30 L11,15 Z" fill="none" stroke="#2A1E2E" stroke-width="4" stroke-linejoin="round"/>
+    <ellipse cx="20" cy="20" rx="2.2" ry="3" fill="#2A1E2E"/>
+    <ellipse cx="28" cy="20" rx="2.2" ry="3" fill="#2A1E2E"/>
+  </g>
+</svg>

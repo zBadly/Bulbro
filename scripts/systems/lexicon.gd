@@ -27,6 +27,7 @@ const COMBAT: CombatConfig = preload("res://data/config/combat_config.tres")
 const WAVES: WaveConfig = preload("res://data/config/wave_config.tres")
 const ENDLESS: EndlessConfig = preload("res://data/config/endless_config.tres")
 const TOWER: StructureData = preload("res://data/structures/lampenturm.tres")
+const TOWERS: TowerConfig = preload("res://data/config/tower_config.tres")
 ## Teile einer Stat-Erklärung nach der Wirkung (LEX_STAT_<TEIL> als Überschrift, STAT_<TEIL>_<STAT> als Text).
 const STAT_PARTS: PackedStringArray = ["FORMULA", "EXAMPLE", "LIMIT"]
 const STAT_INFO_PART: String = "INFO"
@@ -566,6 +567,9 @@ static func topic_entry(topic: LexiconTopicData) -> LexiconEntry:
 			entry.add_text(t("LEX_DIFFICULTY_LIST"), "\n".join(lines))
 		LexiconTopicData.Table.UPGRADES:
 			entry.add_table(t("LEX_UPGRADE_TABLE"), upgrade_table())
+		LexiconTopicData.Table.TOWERS:
+			entry.add_table(t("LEX_TOWER_TABLE"), tower_table())
+			entry.add_text(t("LEX_ROW_TOWER_EFFECT"), tower_list())
 	for stat: StringName in topic.stats:
 		entry.add_text(t(Stats.label_key(stat)), stat_info(stat))
 	return entry
@@ -601,6 +605,52 @@ static func upgrade_table() -> Array[PackedStringArray]:
 	return table
 
 
+## Alle Türme mit ihrer Quelle: Lampenturm aus dem Schraubenzieher, die übrigen aus Items.
+static func towers() -> Array[Array]:
+	var result: Array[Array] = []
+	for weapon_res: Resource in DataRegistry.get_all("weapons"):
+		var weapon: WeaponData = weapon_res as WeaponData
+		if weapon.structure != null:
+			result.append([weapon.structure, t("LEX_TOWER_FROM_WEAPON") % t(weapon.name_key)])
+	for item_res: Resource in DataRegistry.get_all("items"):
+		for effect: ItemEffect in (item_res as ItemData).effects:
+			if effect is TowerItemEffect:
+				result.append([(effect as TowerItemEffect).structure, t("LEX_TOWER_FROM_ITEM")])
+	return result
+
+
+## Kurztabelle (Zellen brechen nicht um): Quelle, Abklingzeit, Hauptwert mit Skalierung, Reichweite bzw. Radius.
+static func tower_table() -> Array[PackedStringArray]:
+	var table: Array[PackedStringArray] = [PackedStringArray(["", t("LEX_ROW_TOWER_SOURCE"), t("LEX_ROW_TOWER_COOLDOWN"),
+		t("LEX_ROW_TOWER_VALUE"), t("LEX_ROW_TOWER_REACH")])]
+	for entry: Array in towers():
+		var structure: StructureData = entry[0]
+		var value: String = EffectAction.damage_text(structure.base_damage, structure.scalings)
+		var reach: float = structure.range
+		match structure.kind:
+			StructureData.Kind.FROST:
+				value = "-%d %%" % roundi(structure.slow_pct)
+				reach = structure.aura_radius
+			StructureData.Kind.HEAL:
+				value = t("LEX_TOWER_HEAL_VALUE") % EffectAction.damage_text(structure.heal_amount, structure.heal_scalings)
+				reach = structure.aura_radius
+			StructureData.Kind.MINE_LAYER:
+				value = EffectAction.damage_text(structure.mine.base_damage, structure.mine.scalings)
+				reach = structure.mine.radius
+		table.append(PackedStringArray([t(structure.name_key), entry[1], "%s s" % TextFormat.number(structure.cooldown_for_tier(1)),
+			value, TextFormat.number(reach)]))
+	return table
+
+
+## Vollständige Wirkung je Turm (Fließtext unter der Tabelle).
+static func tower_list() -> String:
+	var lines: PackedStringArray = []
+	for entry: Array in towers():
+		var structure: StructureData = entry[0]
+		lines.append("[color=%s]%s:[/color] %s" % [HEADING_COLOR, t(structure.name_key), ". ".join(structure.describe())])
+	return "\n".join(lines)
+
+
 ## Erklärtext eines Themas, gefüllt mit den aktuellen Werten aus Configs und Formeln (Text immer mit %% für Prozent).
 static func topic_text(key: String) -> String:
 	var args: Array = []
@@ -633,6 +683,9 @@ static func topic_text(key: String) -> String:
 			args = [TextFormat.number(STATUS.curse_tick_interval)]
 		"LEX_TOPIC_SLOW_TEXT":
 			args = [TextFormat.number(STATUS.root_immunity_time), _percent(STATUS.boss_status_factor)]
+		"LEX_TOPIC_TOWERS_TEXT":
+			args = [TextFormat.number(TOWERS.ring_min_radius), TextFormat.number(TOWERS.ring_max_radius),
+				TextFormat.number(TOWERS.min_spacing), TOWERS.max_towers, TOWERS.max_mines]
 		"LEX_TOPIC_ALLIES_TEXT":
 			args = [TextFormat.number(STATUS.ally_contact_interval), STATUS.ally_global_max]
 	return t(key) % args

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="StructureData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/structure_data.gd" id="1_struct"]
+[ext_resource type="Texture2D" path="res://art/world/flammenturm.svg" id="2_tex"]
+
+[resource]
+script = ExtResource("1_struct")
+id = &"flammenturm"
+kind = 2
+name_key = "STRUCTURE_FLAMMENTURM"
+texture = ExtResource("2_tex")
+base_damage = 2.0
+scalings = Dictionary[StringName, float]({
+&"engineering": 0.5
+})
+tier_cooldowns = Array[float]([0.6])
+range = 220.0
+beam_width = 36.0
+beam_max_targets = 5
+burn_damage = 2.0
+burn_scalings = Dictionary[StringName, float]({
+&"engineering": 0.2
+})
+burn_ticks = 3

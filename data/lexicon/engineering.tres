@@ -9,5 +9,7 @@ id = &"engineering"
 name_key = "LEX_TOPIC_ENGINEERING"
 icon = ExtResource("2_icon")
 order = 6
+text_key = "LEX_TOPIC_TOWERS_TEXT"
 stats = Array[StringName]([&"engineering", &"structure_attack_speed_pct"])
+table = 3
 lore_text = "LORE_TOPIC_ENGINEERING"

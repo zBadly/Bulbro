@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="StructureData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/structure_data.gd" id="1_struct"]
+[ext_resource type="Texture2D" path="res://art/world/stolperdraht.svg" id="2_tex"]
+[ext_resource type="Script" path="res://scripts/data/effects/explosion_action.gd" id="3_expl"]
+[ext_resource type="Texture2D" path="res://art/world/mine.svg" id="4_mine"]
+
+[sub_resource type="Resource" id="Resource_mine"]
+script = ExtResource("3_expl")
+radius = 80.0
+base_damage = 15.0
+scalings = Dictionary[StringName, float]({
+&"engineering": 1.0
+})
+
+[resource]
+script = ExtResource("1_struct")
+id = &"stolperdraht"
+kind = 5
+name_key = "STRUCTURE_STOLPERDRAHT"
+texture = ExtResource("2_tex")
+tier_cooldowns = Array[float]([8.0])
+mine = SubResource("Resource_mine")
+mine_texture = ExtResource("4_mine")
+mine_spread = 110.0
+mine_arm_time = 0.6
+mine_trigger_radius = 30.0

@@ -8,6 +8,7 @@ enum Table {
 	NONE,
 	DIFFICULTIES, ## alle Spannungsstufen aus data/difficulties
 	UPGRADES, ## Level-up-Werte je Tier aus data/upgrades
+	TOWERS, ## alle Türme aus data/structures mit Quelle und Wirkung
 }
 
 @export var id: StringName

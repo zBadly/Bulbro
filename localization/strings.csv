@@ -463,7 +463,7 @@ TIP_CHAR_LED_SCHUETZE,"Jeder Punkt Fernschaden zählt anderthalbfach, also stape
 LORE_CHAR_LAVALAMPE,"Blubbert gemütlich vor sich hin, bis sie Blitze schleudert.",Bubbles away peacefully until it starts hurling lightning.
 TIP_CHAR_LAVALAMPE,"Nur Strom zählt: Kupferdraht, Strom-Upgrades und Elementar-Waffen. Nah-, Fern- und Technik-Boni bringen dir nichts.","Only elemental counts: Copper Wire, elemental upgrades and elemental weapons. Melee, ranged and engineering bonuses do nothing for you."
 LORE_CHAR_TASCHENLAMPE,Hat immer Werkzeug dabei und leuchtet jedem Problem ins Gesicht.,Always carries tools and shines right into every problem's face.
-TIP_CHAR_TASCHENLAMPE,"Mehr Schraubenzieher bedeuten mehr Lampentürme, und Technik ist dein Schaden. Lauf so, dass die Gegner durch das Turmfeuer müssen.","More Screwdrivers mean more lamp towers, and engineering is your damage. Move so that enemies have to cross the tower fire."
+TIP_CHAR_TASCHENLAMPE,"Mehr Schraubenzieher bedeuten mehr Lampentürme, und Technik ist dein Schaden. Turm-Items wie Flammen- oder Frostturm bauen weitere Türme. Lauf so, dass die Gegner durch das Turmfeuer müssen.","More Screwdrivers mean more lamp towers, and engineering is your damage. Tower items like the Flame or Frost Tower build extra towers. Move so that enemies have to cross the tower fire."
 LORE_CHAR_DISCOKUGEL,"Wirft tausend Lichtpunkte, und mit etwas Glück trifft einer.","Throws a thousand specks of light; with a little luck, one hits."
 TIP_CHAR_DISCOKUGEL,"Jeder aufgehobene Funke schlägt zurück, also bleib in Bewegung und sammle alles ein. Glück verbessert Shop und Kartons, das langsame Angriffstempo gleicht es aber erst spät aus.","Every spark you pick up strikes back, so keep moving and collect everything. Luck improves the shop and crates, but only makes up for the slow attack speed later on."
 LORE_CHAR_LICHTERKETTE,"Zwölf Lämpchen, ein Gedanke: mehr ist mehr.","Twelve little lights, one thought: more is more."
@@ -489,7 +489,7 @@ TIP_CHAR_GEWAECHSHAUSLAMPE,"Lichtranken halten Gruppen fest, also kämpfe in ihr
 LORE_CHAR_SMARTBULB,Per App steuerbar und immer auf der Suche nach dem besten Tarif.,App-controlled and always hunting for the best rate.
 TIP_CHAR_SMARTBULB,Mehr Funken und niedrigere Preise: Kauf früh Aufladung und reroll großzügig nach starken Items. Der Schadensmalus verlangt einen soliden Build.,More sparks and lower prices: buy charge early and reroll generously for strong items. The damage penalty demands a solid build.
 LORE_CHAR_DROHNENLEUCHTE,"Warum selbst kämpfen, wenn man Drohnen hat?",Why fight yourself when you have drones?
-TIP_CHAR_DROHNENLEUCHTE,Technik verstärkt Drohnen und Lampentürme gleichzeitig. Mit nur 5 Slots lohnt sich jeder Schraubenzieher doppelt.,"Engineering boosts drones and lamp towers at once. With only 5 slots, every Screwdriver pays off twice."
+TIP_CHAR_DROHNENLEUCHTE,Technik verstärkt Drohnen und alle Türme gleichzeitig. Mit nur 5 Slots lohnen sich Turm-Items doppelt: Sie belegen keinen Waffenplatz.,"Engineering boosts drones and all towers at once. With only 5 slots, tower items pay off twice: they don't take a weapon slot."
 LORE_CHAR_STROBOSKOP,Zwischen zwei Blitzen bleibt für Schatten die Zeit stehen.,"Between two flashes, time stands still for shadows."
 TIP_CHAR_STROBOSKOP,"Der Lichtblitz friert regelmäßig alles ein: Nutze die Pause, um aus Umzingelungen zu laufen oder Bosse zu bearbeiten.",The flash regularly freezes everything: use the pause to escape when surrounded or to work on bosses.
 LORE_CHAR_VAMPIRBIRNE,Trinkt keinen Strom. Trinkt etwas Dunkleres.,Doesn't drink electricity. Drinks something darker.
@@ -719,7 +719,7 @@ STAT_INFO_RANGED_DMG,"Flacher Bonus für Waffen, die mit Fern skalieren.",Flat b
 STAT_INFO_ELEMENTAL_DMG,"Flacher Bonus für alles, was mit Strom skaliert: Waffen, Brand, Blitze und Zauber.","Flat bonus for everything that scales with Elemental: weapons, burn, lightning and spells."
 STAT_INFO_ATTACK_SPEED,Deine Waffen greifen schneller an.,Your weapons attack faster.
 STAT_INFO_CRIT_CHANCE,Chance auf kritische Treffer.,Chance to land critical hits.
-STAT_INFO_ENGINEERING,"Macht Strukturen wie Lampentürme, Drohnen und Lichtranken stärker.","Makes structures such as lamp towers, drones and light vines stronger."
+STAT_INFO_ENGINEERING,"Macht Strukturen wie Lampentürme, Drohnen, Lichtranken und die Türme aus Items stärker.","Makes structures such as lamp towers, drones, light vines and the towers from items stronger."
 STAT_INFO_RANGE,Wie weit deine Waffen Gegner erreichen.,How far your weapons reach enemies.
 STAT_INFO_ARMOR,"Senkt den Schaden, den du durch Treffer erleidest.",Reduces the damage you take from hits.
 STAT_INFO_DODGE,"Chance, einem Treffer komplett auszuweichen.",Chance to avoid a hit completely.
@@ -735,7 +735,7 @@ STAT_INFO_BOUNCES,Projektile springen nach einem Treffer zum nächsten Gegner we
 STAT_INFO_PIERCING,Projektile fliegen durch Gegner hindurch.,Projectiles pass through enemies.
 STAT_INFO_PIERCING_DMG_PCT,"Ändert den Schaden von Projektilen, nachdem sie einen Gegner durchschlagen haben.",Changes projectile damage after they pierce an enemy.
 STAT_INFO_BOSS_DMG_PCT,Mehr Schaden gegen Elites und Bosse.,More damage against elites and bosses.
-STAT_INFO_STRUCTURE_ATTACK_SPEED_PCT,Strukturen feuern schneller.,Structures fire faster.
+STAT_INFO_STRUCTURE_ATTACK_SPEED_PCT,Strukturen feuern schneller; Heilturm und Stolperdraht wirken öfter.,Structures fire faster; the Healing Tower and Tripwire trigger more often.
 STAT_INFO_BURN_SPEED_PCT,Brand-Ticks kommen schneller: gleicher Schaden in kürzerer Zeit.,Burn ticks come faster: the same damage in less time.
 STAT_INFO_BURN_SPREAD,Brand springt auf Gegner in der Nähe über.,Burn jumps to nearby enemies.
 STAT_INFO_KNOCKBACK,Treffer schubsen Gegner weiter weg.,Hits push enemies further away.
@@ -1075,3 +1075,36 @@ LEX_PET_RULES_TEXT,"Höchstens %d Begleiter gleichzeitig. Sie folgen dir, sind u
 ADMIN_GIVE_PET,Begleiter geben,Give companion
 ADMIN_REMOVE_PET,Begleiter entfernen,Remove companion
 ADMIN_OFFER_PET,Begleiter: %s,Companion: %s
+STRUCTURE_FLAMMENTURM,Flammenturm,Flame Tower
+STRUCTURE_FROSTTURM,Frostturm,Frost Tower
+STRUCTURE_HEILTURM,Heilturm,Healing Tower
+STRUCTURE_STOLPERDRAHT,Stolperdraht,Tripwire
+ITEM_FLAMMENTURM,Flammenturm,Flame Tower
+ITEM_FROSTTURM,Frostturm,Frost Tower
+ITEM_HEILTURM,Heilturm,Healing Tower
+ITEM_STOLPERDRAHT,Stolperdraht,Tripwire
+LORE_ITEM_FLAMMENTURM,"Ein Grill, der zurückgrillt.",A grill that grills back.
+LORE_ITEM_FROSTTURM,"Kühlschranklicht, nur mit Ambitionen.","Fridge light, but with ambitions."
+LORE_ITEM_HEILTURM,Ladestation für müde Birnen.,A charging station for tired bulbs.
+LORE_ITEM_STOLPERDRAHT,"Vorsicht, Kabelsalat!","Watch out, cable spaghetti!"
+TOWER_DESC_TURRET,"Schießt für %s Schaden alle %s s, Reichweite %s","Shoots for %s damage every %s s, range %s"
+TOWER_DESC_FLAME,"Flammenstrahl: %s Schaden an bis zu %d Gegnern auf dem Strahl, alle %s s, Reichweite %s","Flame beam: %s damage to up to %d enemies in the beam, every %s s, range %s"
+TOWER_DESC_BURN,"Setzt Brand: %s Schaden pro Tick, %d Ticks","Applies burn: %s damage per tick, %d ticks"
+TOWER_DESC_FROST,Verlangsamt Gegner um %d %% im Radius %s,Slows enemies by %d%% within a radius of %s
+TOWER_DESC_HEAL,"Heilt dich um %s HP alle %s s, solange du im Radius %s stehst",Heals you for %s HP every %s s while you stand within a radius of %s
+TOWER_DESC_MINE,Legt alle %s s eine Mine: Explosion für %s Schaden,Lays a mine every %s s: explosion for %s damage
+TOWER_DESC_ROOT,Hält Gegner im Radius %s für %s s fest,Holds enemies within a radius of %s for %s s
+TOWER_RADIUS_SCALING,%s (+%s pro Punkt %s),%s (+%s per point of %s)
+EFFECT_BUILDS_TOWER,Baut zu Wellenbeginn einen %s in deiner Nähe,Builds a %s near you at the start of each wave
+EFFECT_TOWER_STACKS,Jedes Exemplar baut einen weiteren Turm (höchstens %d Türme gleichzeitig),Each copy builds another tower (at most %d towers at once)
+ADMIN_REBUILD_TOWERS,Türme neu bauen,Rebuild towers
+LEX_TOWER_TABLE,Türme,Towers
+LEX_ROW_TOWER_SOURCE,Quelle,Source
+LEX_ROW_TOWER_EFFECT,Wirkung,Effect
+LEX_TOWER_FROM_WEAPON,Waffe: %s,Weapon: %s
+LEX_TOWER_FROM_ITEM,Item,Item
+LEX_TOPIC_TOWERS_TEXT,"Türme entstehen zu Beginn jeder Welle zufällig in einem Ring von %s bis %s px um dich, nie außerhalb der Arena und mit mindestens %s px Abstand zueinander. Jeder Schraubenzieher baut einen Lampenturm, jedes Turm-Item einen weiteren Turm. Gleichzeitig stehen höchstens %s Türme (Lampentürme zuerst) und %s Minen; eine neue Mine ersetzt die älteste. Turmschaden wächst mit Technik, nicht mit Schaden-%%. Struktur-Angriffstempo verkürzt alle Abklingzeiten. Für Freischaltungen zählen nur Lampentürme.","Towers appear at the start of every wave at random in a ring of %s to %s px around you, never outside the arena and at least %s px apart. Every Screwdriver builds a lamp tower, every tower item another tower. At most %s towers (lamp towers first) and %s mines stand at once; a new mine replaces the oldest. Tower damage grows with engineering, not with damage %%. Structure attack speed shortens all cooldowns. Only lamp towers count for unlocks."
+LEX_ROW_TOWER_COOLDOWN,Abklingzeit,Cooldown
+LEX_ROW_TOWER_VALUE,Wert,Value
+LEX_ROW_TOWER_REACH,Radius,Radius
+LEX_TOWER_HEAL_VALUE,%s HP,%s HP

@@ -152,6 +152,8 @@ func _build_run(box: VBoxContainer) -> void:
 	_toggle(box, &"time_frozen", "ADMIN_TIME_FROZEN", GameState.admin.time_frozen,
 		func(on: bool) -> void: GameState.admin.time_frozen = on)
 	_wave_only.append(_button(box, tr("ADMIN_SKIP_WAVE"), func() -> void: act(wave_manager.skip_wave)))
+	_wave_only.append(_button(box, tr("ADMIN_REBUILD_TOWERS"), func() -> void: act(func() -> void:
+		(get_parent() as Arena).towers.build_wave())))
 	var speed_row: HBoxContainer = _row(box, "ADMIN_SPEED")
 	var speeds: Array = AdminState.GAME_SPEEDS.map(func(s: float) -> String: return "%sx" % TextFormat.number(s))
 	var speed: OptionButton = _option(speed_row, speeds)

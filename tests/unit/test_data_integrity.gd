@@ -3,7 +3,7 @@ extends GutTest
 
 const DATA_ROOT: String = "res://data"
 const EXPECTED_WEAPONS: int = 22
-const EXPECTED_ITEMS: int = 54
+const EXPECTED_ITEMS: int = 58
 
 
 func _all_resource_paths(dir_path: String) -> PackedStringArray:
@@ -148,7 +148,19 @@ func _check_structure(s: StructureData) -> PackedStringArray:
 	if s.kind == StructureData.Kind.ROOT:
 		if s.root_radius <= 0.0 or s.root_duration <= 0.0: p.append("Ranke ohne Radius/Dauer")
 		return p
-	if s.projectile_texture == null: p.append("Projektilgrafik fehlt")
-	# Lampenturm hängt am Waffen-Tier (4 Stufen), Drohnen haben eine feste Stufe
+	# Lampenturm hängt am Waffen-Tier (4 Stufen), Drohnen und Item-Türme haben eine feste Stufe
 	if s.tier_cooldowns.is_empty() or s.tier_cooldowns.size() > 4: p.append("1 bis 4 Abklingzeiten erwartet")
+	match s.kind:
+		StructureData.Kind.TURRET:
+			if s.projectile_texture == null: p.append("Projektilgrafik fehlt")
+		StructureData.Kind.FLAME:
+			if s.range <= 0.0 or s.beam_width <= 0.0 or s.beam_max_targets <= 0 or s.burn_ticks <= 0: p.append("Flamme ohne Reichweite/Breite/Brand")
+		StructureData.Kind.FROST:
+			if s.aura_radius <= 0.0 or s.slow_pct <= 0.0 or s.slow_duration <= 0.0: p.append("Frost ohne Radius/Verlangsamung")
+		StructureData.Kind.HEAL:
+			if s.aura_radius <= 0.0 or s.heal_amount <= 0.0: p.append("Heilung ohne Radius/Menge")
+		StructureData.Kind.MINE_LAYER:
+			if s.mine == null or s.mine_texture == null or s.mine_trigger_radius <= 0.0: p.append("Minenleger ohne Mine")
+	for line: String in s.describe():
+		if line.contains("%s") or line.contains("%d"): p.append("Beschreibung mit offenem Platzhalter")
 	return p
