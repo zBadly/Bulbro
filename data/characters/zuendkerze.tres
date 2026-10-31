@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="8_x7dti"]
 [ext_resource type="Resource" path="res://data/weapons/feuerzeugwerfer.tres" id="9_hedey"]
 [ext_resource type="Texture2D" path="res://art/characters/zuendkerze.svg" id="10_rflb1"]
+[ext_resource type="Resource" path="res://data/weapons/loetkolben.tres" id="11_qdfns"]
 [ext_resource type="Texture2D" path="res://art/portraits/zuendkerze.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_1hve0"]
@@ -61,16 +62,20 @@ modifiers = Array[ExtResource("5_6lndk")]([SubResource("Resource_sxwk8")])
 
 [resource]
 script = ExtResource("7_wl084")
-tip_key = "TIP_CHAR_ZUENDKERZE"
-lore_text = "LORE_CHAR_ZUENDKERZE"
 id = &"zuendkerze"
 name_key = "CHAR_ZUENDKERZE"
 texture = ExtResource("10_rflb1")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_00ip1")]([SubResource("Resource_1hve0"), SubResource("Resource_ms8f1"), SubResource("Resource_3wxa5"), SubResource("Resource_wih35")])
-starting_weapons = Array[ExtResource("8_x7dti")]([ExtResource("9_hedey")])
+starting_weapons = Array[ExtResource("8_x7dti")]([ExtResource("9_hedey"), ExtResource("11_qdfns")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"feuerzeugwerfer": "HINT_ZUENDKERZE_FEUERZEUGWERFER",
+&"loetkolben": "HINT_ZUENDKERZE_LOETKOLBEN"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"elemental"])
 order = 13
+lore_text = "LORE_CHAR_ZUENDKERZE"
+tip_key = "TIP_CHAR_ZUENDKERZE"
 banned_classes = Array[StringName]([&"medical"])
-portrait = ExtResource("p_portrait")
 light_color = Color(1, 0.702, 0.278, 1)

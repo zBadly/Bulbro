@@ -8,8 +8,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="6_avyyo"]
 [ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="7_0vydt"]
 [ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="8_2tl6d"]
-[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="9_rxmt2"]
-[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="10_fdts5"]
+[ext_resource type="Resource" path="res://data/weapons/prisma.tres" id="8_56jmh"]
 [ext_resource type="Texture2D" path="res://art/characters/spiegelkugel.svg" id="11_rsku1"]
 [ext_resource type="Texture2D" path="res://art/portraits/spiegelkugel.svg" id="p_portrait"]
 
@@ -29,15 +28,20 @@ modifiers = Array[ExtResource("3_4hbbm")]([SubResource("Resource_jpgvm")])
 
 [resource]
 script = ExtResource("5_4kqrf")
-tip_key = "TIP_CHAR_SPIEGELKUGEL"
-lore_text = "LORE_CHAR_SPIEGELKUGEL"
 id = &"spiegelkugel"
 name_key = "CHAR_SPIEGELKUGEL"
 texture = ExtResource("11_rsku1")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_56jmh")]([SubResource("Resource_uarna"), SubResource("Resource_ojloj")])
-starting_weapons = Array[ExtResource("6_avyyo")]([ExtResource("7_0vydt"), ExtResource("8_2tl6d"), ExtResource("9_rxmt2"), ExtResource("10_fdts5")])
+starting_weapons = Array[ExtResource("6_avyyo")]([ExtResource("8_56jmh"), ExtResource("7_0vydt"), ExtResource("8_2tl6d")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"funkenpistole": "HINT_SPIEGELKUGEL_FUNKENPISTOLE",
+&"glasscherbe": "HINT_SPIEGELKUGEL_GLASSCHERBE",
+&"prisma": "HINT_SPIEGELKUGEL_PRISMA"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"damage"])
 order = 21
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_SPIEGELKUGEL"
+tip_key = "TIP_CHAR_SPIEGELKUGEL"
 light_color = Color(0.902, 0.98, 1, 1)

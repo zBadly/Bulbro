@@ -7,9 +7,10 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_mgc70"]
 [ext_resource type="Resource" path="res://data/weapons/schraubenzieher.tres" id="6_upkci"]
 [ext_resource type="Texture2D" path="res://art/characters/drohnenleuchte.svg" id="7_osfog"]
+[ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="10_mgc70"]
 [ext_resource type="Texture2D" path="res://art/portraits/drohnenleuchte.svg" id="p_portrait"]
-[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="r2_mod"]
 [ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="r2_eff"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="r2_mod"]
 
 [sub_resource type="Resource" id="Resource_7uaf6"]
 script = ExtResource("3_d1r03")
@@ -28,15 +29,19 @@ modifiers = Array[ExtResource("r2_mod")]([SubResource("Resource_r2eng")])
 
 [resource]
 script = ExtResource("4_ng1u5")
-tip_key = "TIP_CHAR_DROHNENLEUCHTE"
-lore_text = "LORE_CHAR_DROHNENLEUCHTE"
 id = &"drohnenleuchte"
 name_key = "CHAR_DROHNENLEUCHTE"
 texture = ExtResource("7_osfog")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_hg7bf")]([SubResource("Resource_7uaf6"), SubResource("Resource_r2stats")])
-starting_weapons = Array[ExtResource("5_mgc70")]([ExtResource("6_upkci")])
+starting_weapons = Array[ExtResource("5_mgc70")]([ExtResource("6_upkci"), ExtResource("10_mgc70")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"funkenpistole": "HINT_DROHNENLEUCHTE_FUNKENPISTOLE",
+&"schraubenzieher": "HINT_DROHNENLEUCHTE_SCHRAUBENZIEHER"
+})
 weapon_slots = 5
 preferred_tags = Array[StringName]([&"structure"])
 order = 18
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_DROHNENLEUCHTE"
+tip_key = "TIP_CHAR_DROHNENLEUCHTE"
 light_color = Color(1, 0.824, 0.478, 1)

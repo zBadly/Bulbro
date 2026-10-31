@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="7_1rfk2"]
 [ext_resource type="Resource" path="res://data/weapons/laserpointer.tres" id="8_hdnn5"]
 [ext_resource type="Texture2D" path="res://art/characters/stroboskop.svg" id="9_orehe"]
+[ext_resource type="Resource" path="res://data/weapons/prisma.tres" id="10_njhqx"]
+[ext_resource type="Resource" path="res://data/weapons/taschenlampenstrahl.tres" id="11_nt877"]
 [ext_resource type="Texture2D" path="res://art/portraits/stroboskop.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_u5lbw"]
@@ -36,15 +38,20 @@ modifiers = Array[ExtResource("4_njhqx")]([SubResource("Resource_35fia"), SubRes
 
 [resource]
 script = ExtResource("6_sghux")
-tip_key = "TIP_CHAR_STROBOSKOP"
-lore_text = "LORE_CHAR_STROBOSKOP"
 id = &"stroboskop"
 name_key = "CHAR_STROBOSKOP"
 texture = ExtResource("9_orehe")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_a2rug")]([SubResource("Resource_blnhp"), SubResource("Resource_dxai3")])
-starting_weapons = Array[ExtResource("7_1rfk2")]([ExtResource("8_hdnn5")])
+starting_weapons = Array[ExtResource("7_1rfk2")]([ExtResource("8_hdnn5"), ExtResource("10_njhqx"), ExtResource("11_nt877")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"laserpointer": "HINT_STROBOSKOP_LASERPOINTER",
+&"prisma": "HINT_STROBOSKOP_PRISMA",
+&"taschenlampenstrahl": "HINT_STROBOSKOP_TASCHENLAMPENSTRAHL"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"speed"])
 order = 19
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_STROBOSKOP"
+tip_key = "TIP_CHAR_STROBOSKOP"
 light_color = Color(1, 0.957, 0.722, 1)

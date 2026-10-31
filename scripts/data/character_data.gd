@@ -15,6 +15,8 @@ enum IdleStyle { BOB, HOVER_FLICKER }
 @export var effects: Array[ItemEffect] = []
 ## Auswahl an Startwaffen (eine wird vor dem Run gewählt).
 @export var starting_weapons: Array[WeaponData] = []
+## Synergie-Hinweis je Startwaffe für die Waffenauswahl: Waffen-ID -> Übersetzungsschlüssel (ehrlich, auch Schwächen).
+@export var start_weapon_hints: Dictionary[StringName, String] = {}
 @export var weapon_slots: int = 0
 @export var preferred_tags: Array[StringName] = []
 ## Reihenfolge in der Charakterauswahl (GDD-Liste).
@@ -47,6 +49,19 @@ enum IdleStyle { BOB, HOVER_FLICKER }
 
 func get_portrait() -> Texture2D:
 	return portrait if portrait != null else texture
+
+
+## Übersetzungsschlüssel des Synergie-Hinweises (leer, wenn keiner hinterlegt ist).
+func start_weapon_hint(weapon: WeaponData) -> String:
+	return start_weapon_hints.get(weapon.id, "")
+
+
+## Startwaffe aus der Liste mit dieser ID, sonst die erste (gespeicherte Wahl ungültig oder entfernt).
+func find_starting_weapon(weapon_id: StringName) -> WeaponData:
+	for weapon: WeaponData in starting_weapons:
+		if weapon.id == weapon_id:
+			return weapon
+	return starting_weapons[0] if not starting_weapons.is_empty() else null
 
 
 func can_use_weapon(weapon: WeaponData) -> bool:

@@ -17,6 +17,9 @@ const DESC_SIZE: int = 20
 const MIN_DESC_SIZE: int = 12
 const BUTTON_SIZE: int = 22
 const SIDE_BUTTON_SIZE: int = 18
+const FOOTER_SIZE: int = 20
+## Standardhöhe des Hinweis-Fußes in Zeilen; längerer Text wird kleiner (wie die Beschreibung).
+const FOOTER_LINES: int = 4
 const BORDER_WIDTH: int = 4
 ## Einzigartige Karten: dickere Goldkontur mit leichtem Schein.
 const UNIQUE_EXTRA_BORDER: int = 2
@@ -33,6 +36,7 @@ var _icon: TextureRect
 var _title: Label
 var _tier_label: Label
 var _description: RichTextLabel
+var _footer: RichTextLabel
 var _price_row: HBoxContainer
 var _price: Label
 var _actions: VBoxContainer
@@ -76,6 +80,15 @@ func _init() -> void:
 	box.add_child(_description)
 
 	# Fuß
+	_footer = RichTextLabel.new()
+	_footer.bbcode_enabled = true
+	_footer.fit_content = false
+	_footer.scroll_active = false
+	_footer.clip_contents = true
+	_footer.add_theme_font_override("normal_font", UiStyle.FONT)
+	_footer.resized.connect(_fit_footer)
+	_footer.hide()
+	box.add_child(_footer)
 	_price_row = HBoxContainer.new()
 	_price_row.add_theme_constant_override("separation", GAP)
 	_price_row.hide()
@@ -109,6 +122,14 @@ func configure(icon: Texture2D, title: String, tier: int, description_bbcode: St
 		style.shadow_color = Color(color, UNIQUE_GLOW_ALPHA)
 		style.shadow_size = UNIQUE_GLOW_SIZE
 	add_theme_stylebox_override("panel", style)
+
+
+## Hinweis über den Buttons mit fester Höhe (z. B. Synergie der Startwaffe), damit alle Karten gleich aufgebaut sind.
+func set_footer(bbcode: String, lines: int = FOOTER_LINES) -> void:
+	_footer.custom_minimum_size = Vector2(0.0, UiStyle.FONT.get_height(FOOTER_SIZE) * lines)
+	_footer.text = bbcode
+	_footer.show()
+	_fit_footer()
 
 
 func set_price(price: int, affordable: bool) -> void:
@@ -158,6 +179,14 @@ func _make_button(text: String, font_size: int, callback: Callable, disabled: bo
 
 
 ## Verkleinert die Schrift der Beschreibung, bis der Text in den verfügbaren Platz passt.
+func _fit_footer() -> void:
+	var available: float = _footer.size.y
+	for font_size: int in range(FOOTER_SIZE, MIN_DESC_SIZE - 1, -1):
+		_footer.add_theme_font_size_override("normal_font_size", font_size)
+		if available <= 0.0 or _footer.get_content_height() <= available:
+			return
+
+
 func _fit_description() -> void:
 	var available: float = _description.size.y
 	for font_size: int in range(DESC_SIZE, MIN_DESC_SIZE - 1, -1):

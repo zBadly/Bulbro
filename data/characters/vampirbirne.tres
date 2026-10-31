@@ -11,6 +11,8 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="9_qy6x3"]
 [ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="10_0mbp1"]
 [ext_resource type="Texture2D" path="res://art/characters/vampirbirne.svg" id="11_76rpx"]
+[ext_resource type="Resource" path="res://data/weapons/kabelpeitsche.tres" id="12_wjyen"]
+[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="13_m6ons"]
 [ext_resource type="Texture2D" path="res://art/portraits/vampirbirne.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_wmhv6"]
@@ -39,15 +41,20 @@ script = ExtResource("7_d4s8e")
 
 [resource]
 script = ExtResource("8_03pbt")
-tip_key = "TIP_CHAR_VAMPIRBIRNE"
-lore_text = "LORE_CHAR_VAMPIRBIRNE"
 id = &"vampirbirne"
 name_key = "CHAR_VAMPIRBIRNE"
 texture = ExtResource("11_76rpx")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_5kurn")]([SubResource("Resource_pia5b"), SubResource("Resource_7dqnh"), SubResource("Resource_1snqy"), SubResource("Resource_xbjms"), SubResource("Resource_syvjv")])
-starting_weapons = Array[ExtResource("9_qy6x3")]([ExtResource("10_0mbp1")])
+starting_weapons = Array[ExtResource("9_qy6x3")]([ExtResource("10_0mbp1"), ExtResource("12_wjyen"), ExtResource("13_m6ons")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"funkenfaust": "HINT_VAMPIRBIRNE_FUNKENFAUST",
+&"glasscherbe": "HINT_VAMPIRBIRNE_GLASSCHERBE",
+&"kabelpeitsche": "HINT_VAMPIRBIRNE_KABELPEITSCHE"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"hp"])
 order = 20
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_VAMPIRBIRNE"
+tip_key = "TIP_CHAR_VAMPIRBIRNE"
 light_color = Color(1, 0.361, 0.416, 1)

@@ -5,10 +5,9 @@
 [ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_5qrqq"]
 [ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_o3j6g"]
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_mtdsl"]
-[ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="6_8akjm"]
-[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="7_tusyr"]
-[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="8_iegwx"]
-[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="9_eu72p"]
+[ext_resource type="Resource" path="res://data/weapons/lampenhammer.tres" id="7_3hch0"]
+[ext_resource type="Resource" path="res://data/weapons/leuchtrakete.tres" id="8_j8esa"]
+[ext_resource type="Resource" path="res://data/weapons/taschenlampenstrahl.tres" id="9_5qrqq"]
 [ext_resource type="Texture2D" path="res://art/characters/halogenstrahler.svg" id="10_tsyof"]
 [ext_resource type="Texture2D" path="res://art/portraits/halogenstrahler.svg" id="p_portrait"]
 
@@ -33,17 +32,19 @@ modifiers = Array[ExtResource("2_j8esa")]([SubResource("Resource_7w353"), SubRes
 
 [resource]
 script = ExtResource("4_o3j6g")
-tip_key = "TIP_CHAR_HALOGENSTRAHLER"
-lore_text = "LORE_CHAR_HALOGENSTRAHLER"
 id = &"halogenstrahler"
 name_key = "CHAR_HALOGENSTRAHLER"
 texture = ExtResource("10_tsyof")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_3hch0")]([SubResource("Resource_6ystl")])
-starting_weapons = Array[ExtResource("5_mtdsl")]([ExtResource("6_8akjm"), ExtResource("7_tusyr"), ExtResource("8_iegwx"), ExtResource("9_eu72p")])
+starting_weapons = Array[ExtResource("5_mtdsl")]([ExtResource("7_3hch0"), ExtResource("8_j8esa"), ExtResource("9_5qrqq")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"lampenhammer": "HINT_HALOGENSTRAHLER_LAMPENHAMMER",
+&"leuchtrakete": "HINT_HALOGENSTRAHLER_LEUCHTRAKETE",
+&"taschenlampenstrahl": "HINT_HALOGENSTRAHLER_TASCHENLAMPENSTRAHL"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"damage"])
 order = 8
-set_bonus_multiplier = Dictionary[StringName, float]({})
-banned_classes = Array[StringName]([])
-no_melee = false
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_HALOGENSTRAHLER"
+tip_key = "TIP_CHAR_HALOGENSTRAHLER"

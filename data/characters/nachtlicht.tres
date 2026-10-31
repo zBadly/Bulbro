@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_yq7on"]
 [ext_resource type="Resource" path="res://data/weapons/heilstrahl.tres" id="6_innj5"]
 [ext_resource type="Texture2D" path="res://art/characters/nachtlicht.svg" id="7_s71no"]
+[ext_resource type="Resource" path="res://data/weapons/dornenranke.tres" id="8_dqui5"]
 [ext_resource type="Texture2D" path="res://art/portraits/nachtlicht.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_5gt3u"]
@@ -35,17 +36,18 @@ modifiers = Array[ExtResource("2_fkp22")]([SubResource("Resource_qrgcg")])
 
 [resource]
 script = ExtResource("4_i1h2e")
-tip_key = "TIP_CHAR_NACHTLICHT"
-lore_text = "LORE_CHAR_NACHTLICHT"
 id = &"nachtlicht"
 name_key = "CHAR_NACHTLICHT"
 texture = ExtResource("7_s71no")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_t2emj")]([SubResource("Resource_mgteh"), SubResource("Resource_nh1by")])
-starting_weapons = Array[ExtResource("5_yq7on")]([ExtResource("6_innj5")])
+starting_weapons = Array[ExtResource("5_yq7on")]([ExtResource("6_innj5"), ExtResource("8_dqui5")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"dornenranke": "HINT_NACHTLICHT_DORNENRANKE",
+&"heilstrahl": "HINT_NACHTLICHT_HEILSTRAHL"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"regen", &"hp"])
 order = 9
-set_bonus_multiplier = Dictionary[StringName, float]({})
-banned_classes = Array[StringName]([])
-no_melee = false
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_NACHTLICHT"
+tip_key = "TIP_CHAR_NACHTLICHT"

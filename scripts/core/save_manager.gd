@@ -146,7 +146,8 @@ func _defaults() -> Dictionary:
 	return {
 		"version": SAVE_VERSION,
 		"options": {},
-		"progress": {"characters": [], "items": [], "challenges": [], "won_difficulties": {}, "challenge_best": {}, "endless_best": {}},
+		"progress": {"characters": [], "items": [], "challenges": [], "won_difficulties": {}, "challenge_best": {}, "endless_best": {},
+			"start_weapons": {}},
 		"stats": {STAT_TOTAL_SPARKS: 0, STAT_KILLS: 0, STAT_RUNS: 0, STAT_WINS: 0},
 		"run": {},
 		"run_history": [],
@@ -306,6 +307,17 @@ func get_endless_best(character_id: StringName) -> int:
 func record_endless_best(character_id: StringName, level: int) -> void:
 	if level > get_endless_best(character_id):
 		_data["progress"]["endless_best"][String(character_id)] = level
+
+
+## Zuletzt gewählte Startwaffe je Charakter (Vorauswahl in der Waffenauswahl); leer = noch keine Wahl.
+func get_start_weapon(character_id: StringName) -> StringName:
+	return StringName(_data["progress"]["start_weapons"].get(String(character_id), ""))
+
+
+## Merkt die Wahl und speichert sofort (Einstellung, keine Run-Leistung; gilt auch in Admin-Runs).
+func set_start_weapon(character_id: StringName, weapon_id: StringName) -> void:
+	_data["progress"]["start_weapons"][String(character_id)] = String(weapon_id)
+	save_game()
 
 
 # --- Statistiken ---

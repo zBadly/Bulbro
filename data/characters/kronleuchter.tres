@@ -12,6 +12,8 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="10_6a6i0"]
 [ext_resource type="Resource" path="res://data/weapons/kristallstab.tres" id="11_5qj4c"]
 [ext_resource type="Texture2D" path="res://art/characters/kronleuchter.svg" id="12_rq1yl"]
+[ext_resource type="Resource" path="res://data/weapons/blitzwerfer.tres" id="13_atpy1"]
+[ext_resource type="Resource" path="res://data/weapons/taschenlampenstrahl.tres" id="14_2n2i0"]
 [ext_resource type="Texture2D" path="res://art/portraits/kronleuchter.svg" id="p_portrait"]
 [ext_resource type="Texture2D" path="res://art/characters/kronleuchter_kristalle.svg" id="p_swing"]
 
@@ -19,10 +21,10 @@
 script = ExtResource("4_01bev")
 radius = 70.0
 base_damage = 8.0
-travel_speed = 1100.0
 scalings = Dictionary[StringName, float]({
 &"elemental_dmg": 1.0
 })
+travel_speed = 1100.0
 
 [sub_resource type="Resource" id="Resource_dvu5g"]
 script = ExtResource("5_atpy1")
@@ -66,17 +68,22 @@ modifiers = Array[ExtResource("7_73yns")]([SubResource("Resource_075ob"), SubRes
 
 [resource]
 script = ExtResource("9_nkxu1")
-tip_key = "TIP_CHAR_KRONLEUCHTER"
-lore_text = "LORE_CHAR_KRONLEUCHTER"
 id = &"kronleuchter"
 name_key = "CHAR_KRONLEUCHTER"
 texture = ExtResource("12_rq1yl")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_43umi")]([SubResource("Resource_swq3a"), SubResource("Resource_6b5xt")])
-starting_weapons = Array[ExtResource("10_6a6i0")]([ExtResource("11_5qj4c")])
+starting_weapons = Array[ExtResource("10_6a6i0")]([ExtResource("11_5qj4c"), ExtResource("13_atpy1"), ExtResource("14_2n2i0")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"blitzwerfer": "HINT_KRONLEUCHTER_BLITZWERFER",
+&"kristallstab": "HINT_KRONLEUCHTER_KRISTALLSTAB",
+&"taschenlampenstrahl": "HINT_KRONLEUCHTER_TASCHENLAMPENSTRAHL"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"elemental"])
 order = 14
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_KRONLEUCHTER"
+tip_key = "TIP_CHAR_KRONLEUCHTER"
+light_color = Color(1, 0.824, 0.478, 1)
 swing_texture = ExtResource("p_swing")
 swing_pivot = Vector2(36, 40)
-light_color = Color(1, 0.824, 0.478, 1)

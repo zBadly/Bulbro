@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="6_a04ml"]
 [ext_resource type="Resource" path="res://data/weapons/seelenlaterne.tres" id="7_s2rmh"]
 [ext_resource type="Texture2D" path="res://art/characters/irrlicht.svg" id="8_58en7"]
+[ext_resource type="Resource" path="res://data/weapons/gluehwuermchen_stab.tres" id="9_adbdm"]
 [ext_resource type="Texture2D" path="res://art/portraits/irrlicht.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_v3ti3"]
@@ -45,16 +46,20 @@ modifiers = Array[ExtResource("3_adbdm")]([SubResource("Resource_b33m7")])
 
 [resource]
 script = ExtResource("5_14vd0")
-tip_key = "TIP_CHAR_IRRLICHT"
-lore_text = "LORE_CHAR_IRRLICHT"
 id = &"irrlicht"
 name_key = "CHAR_IRRLICHT"
 texture = ExtResource("8_58en7")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_3hk3f")]([SubResource("Resource_v3ti3"), SubResource("Resource_an3be"), SubResource("Resource_f5rrs")])
-starting_weapons = Array[ExtResource("6_a04ml")]([ExtResource("7_s2rmh")])
+starting_weapons = Array[ExtResource("6_a04ml")]([ExtResource("7_s2rmh"), ExtResource("9_adbdm")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"gluehwuermchen_stab": "HINT_IRRLICHT_GLUEHWUERMCHEN_STAB",
+&"seelenlaterne": "HINT_IRRLICHT_SEELENLATERNE"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"elemental"])
 order = 12
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_IRRLICHT"
+tip_key = "TIP_CHAR_IRRLICHT"
 light_color = Color(0.435, 0.827, 1, 1)
 idle_style = 1

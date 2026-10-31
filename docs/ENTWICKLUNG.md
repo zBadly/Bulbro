@@ -18,10 +18,12 @@ Stand 31.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 - **Erledigt 28.10.:** Paket 8, Teil „Begleiter“ (Commit „Feature: Begleiter (Phase 15, Paket 8)“): eigener Item-Typ mit Tiers I–IV, höchstens 2, Kombinieren, Ersetzen mit Rückfrage (25 % zurück), 5 Begleiter mit SVG und Animation, Lexikon-Reiter, Run-Statistik, Admin, Fortsetzen, Simulator `--pets`. Details im Abschnitt „Begleiter“.
 - **Erledigt 30.10.:** Paket 8, Teil „Türme“ (Commit „Feature: Türme (Phase 15, Paket 8)“): Flammenturm, Frostturm, Heilturm, Stolperdraht als stapelbare Items, `TowerBuilder` mit Ring-Platzierung und Obergrenzen (12 Türme, 24 Minen), Freischaltungen zählen nur Lampentürme (Entscheidung des Spielers, Test „5 Frosttürme schalten die Drohnenleuchte nicht frei“), Simulator `--towers`, Performance gemessen. Details im Abschnitt „Türme“.
 - **Erledigt 31.10.:** Paket 8d, Balancing der neuen Inhalte (Commit „Balancing: neue Inhalte“): Simulator erweitert (Tempo ×6, gezielte Builds, Reichweite, Salven-Modell der Schildkröte mit Fix der Schützen-Erkennung, Flammenstrahl mit `beam_max_targets` und Gegnerdichte, `--combos`, `--set`), Werte nach OK des Spielers geändert. Details, Tabellen und Kombinationen im Abschnitt „Balancing der neuen Inhalte (Paket 8d)“.
-- **Als Nächstes:** Paket 9.
+- **Erledigt 31.10.:** Paket 9, Teil „Startwaffen je Charakter“ (Commit „Feature: Startwaffen je Charakter (Phase 15, Paket 9)“): 22 Listen aus PHASE_15 ohne Konflikt mit den Einschränkungen, Auswahl mit Werten, Klassen, ehrlichem Synergie-Hinweis und Tooltip inkl. Charakter-Boni, gespeicherte Wahl je Charakter, „Nochmal“ mit Charakter und Startwaffe des Run-Starts, Simulator `--start-weapons`. Details, Tabelle und Austauschvorschläge im Abschnitt „Startwaffen je Charakter“.
+- **Als Nächstes:** Entscheidung des Spielers zu den Austauschvorschlägen (Startwaffen-Fallen), dann Paket 9, Teil „Gesamtstatistiken und Achievements“.
 - **Für Paket 9 schon vorhanden:** `SaveManager.get_run_history()` liefert die letzten 20 Runs (neueste zuerst) mit Charakter, Spannung, Ergebnis, Welle, Endlos-Welle, Datum, Kampfzeit, Level, Kills und Top-3-Quellen. Siehe Abschnitt „Run-Statistik und Run-Ende“.
 
 Offene Punkte:
+- Startwaffen-Fallen (Paket 9): Austauschvorschläge im Abschnitt „Startwaffen je Charakter“ warten auf die Entscheidung des Spielers; die Hinweistexte müssen bei einem Tausch mitgeändert werden.
 - Echter Endlos-Run zur Bestätigung von Welle 25 und 30 steht aus.
 - `stats.runs` = 2 im echten Spielstand ist geklärt (22.10.): Die 6.014 Kills übersteigen, was ein einzelner Run auf Spannung 0 liefern kann (rund 4.850 Gegner in den Wellen 1–19 plus Bosswelle). Es sind also zwei echte Runs mit Kills zu Ende gegangen, vermutlich der in der Sicherung vom 21.10. gespeicherte, unterbrochene Run (per „Fortsetzen“) und der Sieg mit dem LED-Schützen. Headless-Check und Tests können seit dem 22.10. ohnehin nicht mehr in den echten Spielstand schreiben.
 - Runs, die zwischen dem 21.10. 14:10 (Fehler eingeführt) und dem Fix endeten, fehlen in der Statistik und lassen sich nicht nachtragen.
@@ -81,6 +83,7 @@ Bosse testen: F10 → Run → Welle 20 starten; bei Spannung 5 erscheinen beide 
 | 15-8a | Einzigartige Items: Seltenheit „Einzigartig“ (Tier 5, Gold `#F5A623`, eigene Kartenfarbe und Kontur, Lexikon-Filter), max. 1 pro Run, eigener Shop-Wurf ab Welle 5, nie in Kartons; 10 Items mit Icons und Sprüchen; Effekttypen Stat pro Stat/Level/Funken (live, Obergrenze, Herkunft im Stat-Tooltip), Bonus unter X % HP, tödlichen Treffer überleben, verstärkter Angriff nach N Kills; HUD-Anzeigen Reservebatterie/Kondensator, „Gerettet!“ |
 | 15-8b | Begleiter: eigener Item-Typ „Begleiter“ mit Tiers I–IV (Kombinieren wie Waffen), höchstens 2, beim dritten fragt der Shop, wer ersetzt wird (25 % zurück); Leuchtkäfer, Funkenspatz, Lampenschirm-Schildkröte, Batterie-Igel, Mini-Birne mit SVGs und Juice-Animationen (flattern, rollen, ducken, hüpfen); Verbündeten-Ebene, unverwundbar, kein Gegnerlimit; Lexikon-Reiter, Tooltips, Kills/Schaden in der Run-Statistik, Admin, Fortsetzen; Simulator `--pets` |
 | 15-8c | Türme: Flammenturm (Strahl mit Brand), Frostturm (30 % langsamer in der Aura), Heilturm (grüne Aura, grüne Heilzahl), Stolperdraht (Minen mit ExplosionAction) als stapelbare Items; Ring-Platzierung zu Wellenbeginn, höchstens 12 Türme und 24 Minen; SVGs, Tooltips, Lexikon-Tabelle „Türme“, Run-Statistik, Admin „Türme neu bauen“, Fortsetzen; Freischaltungen zählen nur Lampentürme; Simulator `--towers` |
+| 15-9a | Startwaffen je Charakter: 2–4 Startwaffen für alle 22 Charaktere, Auswahl mit gleich großen Karten (Werte, Klassen, Synergie-Hinweis), Tooltip mit Werten inkl. Charakter-Boni (Maus und Gamepad), letzte Wahl je Charakter gespeichert und vorausgewählt, „Nochmal“ nimmt Charakter und Startwaffe des Run-Starts (auch nach Admin-Charakterwechsel), Simulator `--start-weapons` |
 | 15-7 | Boss-Phasen sichtbar: Phasennamen in den Daten, HP-Leiste mit Markierungen an den HP-Schwellen, „Phase 2/3: Name“ und Uhr mit Restzeit bei Zeitwechsel, kompakte Doppelleiste bei zwei Bossen, Banner beim Wechsel, Aura in Phasenfarbe, Screenshake (Option), 0,5 s Unverwundbarkeit mit Schimmern und grauem „Immun“; Lexikon mit Phasennamen; alle UI-Zeichen in der Schrift (Test) |
 | 14c-5 | Charakter-Simulator; Balancing in zwei Runden: neue Charaktere und Waffen, schwache alte Charaktere (Kerze, Taschenlampe, Discokugel, Nachtlicht), Drohnenleuchte |
 | 14c-4 | Eigene Grafiken für die Charaktere 13–22, Porträts (alle 22), Lichtfarben, Schweben/Flackern (Irrlicht), pendelnde Kristalle (Kronleuchter), Effekt-Blitz (Stroboskop); Fluch-Symbol, Geister, Frost/Eis, Ranken, Flammen, Spiegelglanz, Feuerball, Frostnova-Ring, Kettenblitz, Licht-Drohne, Lichtranke; Option „Blitzeffekte reduzieren“ |
@@ -440,6 +443,147 @@ Kombinationen (`--combos`, 150 Runs je Charakter):
 
 Charakter-Tabelle mit dem Reichweiten-Modell (200 Runs): Spannung 0 Schnitt 85 % wie vorher (alte 12: 84 %, neue 10: 87 %), Spannung 3 Schnitt 58 % (vorher 57 %; alte 12: 56 %, neue 10: 60 %). Mehr als 5 Punkte verschieben sich nur auf Spannung 3: Neonröhre 50 → 67 % (+100 Reichweite) und LED-Schütze 60 → 68 % (+50 Reichweite). Nicht geändert (Entscheidung des Spielers), offener Punkt oben.
 
+### Startwaffen je Charakter (Phase 15, Paket 9)
+
+- **Listen:** wie in PHASE_15 (Paket 9), Reihenfolge = Kartenreihenfolge, abgesichert durch `tests/unit/test_start_weapons.gd`. Alle bestehen `CharacterData.can_use_weapon` (LED-Schütze nur Fernkampf, Kerze ohne Elementar, Zündkerze ohne Medizinisch). Die früheren „beliebig“-Charaktere (Discokugel, Lichterkette, Halogenstrahler, Blitzlicht, Smartbulb, Spiegelkugel) haben jetzt eigene Listen; GDD Abschnitt 10 ist angepasst.
+- **Hinweise:** `CharacterData.start_weapon_hints` (Waffen-ID → Schlüssel `HINT_<CHARAKTER>_<WAFFE>`), 62 Texte auf Deutsch und Englisch, von Hand. Schwächere Kombinationen sagen, was fehlt (Boxer mit Ast/Lampenhammer „Kein Unbewaffnet-Bonus“, Taschenlampe mit Lötkolben „Kein Strom-Bonus“, Neonröhre mit Laserpointer „-10 Fern bei nur 50 % Skalierung“), Charaktere ohne passende Regel „Keine Charakter-Synergie“.
+- **Auswahl:** Karten 300×620 (feste Größe für 2–4 Karten), Beschreibung mit Werten und Klassen, darunter ein Fuß „Synergie“ mit fester Höhe (7 Zeilen, Schrift wird bei Bedarf kleiner). Tooltip aus Paket 4 an der Karte, ausgelöst über den Fokus des „Wählen“-Buttons; Maus über der Karte setzt den Fokus, dadurch verhalten sich Maus und Gamepad gleich. Die Werte im Tooltip kommen von je einem unsichtbaren Vorschau-Spieler pro Waffe (`Player.preview`: nicht in der Spielergruppe, ändert keine Run-Werte), ohne die Zeile „In diesem Run“. Geprüft mit Screenshots bei 1280×720 (2, 3 und 4 Karten).
+- **Freischaltungen:** Waffen haben keine; alle Startwaffen sind wählbar, keine Silhouetten.
+- **Speichern:** `progress.start_weapons` (`SaveManager.get_start_weapon`/`set_start_weapon`), geschrieben beim Run-Start, auch in späteren Admin-Runs (Einstellung, keine Leistung). Ungültige oder entfernte Waffe → erste der Liste (`CharacterData.find_starting_weapon`). Keine neue Spielstand-Version nötig, die Migration ergänzt das Feld.
+- **„Nochmal“:** `GameState.setup_character`/`setup_weapon` merken den Run-Start, `restore_run_setup()` vor dem Neuladen. Vorher hätte ein Admin-Charakterwechsel den neuen Charakter mit in den nächsten Run genommen.
+
+Simulator `--start-weapons` (150 Runs je Waffe und Stufe, Seed 4242, Vergleich mit der besten Startwaffe des Charakters; Siegquoten sind Vergleichswerte):
+
+| Charakter | Startwaffe | S0 Sieg | S0 Ø Welle | S0 Abstand | S3 Sieg | S3 Ø Welle | S3 Abstand | Falle |
+|---|---|---|---|---|---|---|---|---|
+| Standardbirne | Funkenpistole | 91 % | 20.9 | – | 79 % | 20.3 | – | |
+| Standardbirne | Glasscherbe | 88 % | 20.8 | -3 | 59 % | 17.0 | -21 | **ja** |
+| Standardbirne | Ast | 74 % | 20.3 | -17 | 15 % | 9.6 | -65 | **ja** |
+| Standardbirne | Funkenfaust | 85 % | 20.8 | -5 | 47 % | 15.9 | -32 | **ja** |
+| Glühfaden-Boxer | Funkenfaust | 93 % | 20.9 | – | 84 % | 20.2 | – | |
+| Glühfaden-Boxer | Ast | 41 % | 14.6 | -52 | 7 % | 6.7 | -77 | **ja** |
+| Glühfaden-Boxer | Lampenhammer | 87 % | 20.9 | -6 | 73 % | 20.4 | -11 | |
+| Neonröhre | Glasscherbe | 87 % | 20.7 | – | 68 % | 19.0 | – | |
+| Neonröhre | Kabelpeitsche | 78 % | 20.7 | -9 | 49 % | 19.0 | -19 | **ja** |
+| Neonröhre | Laserpointer | 1 % | 3.0 | -85 | 0 % | 2.1 | -68 | **ja** |
+| LED-Schütze | Funkenpistole | 85 % | 20.8 | -5 | 68 % | 20.1 | -12 | |
+| LED-Schütze | Laserpointer | 89 % | 20.9 | – | 80 % | 20.0 | – | |
+| LED-Schütze | Batterie-Schleuder | 87 % | 20.9 | -3 | 70 % | 20.0 | -10 | |
+| LED-Schütze | Prisma | 87 % | 20.8 | -3 | 77 % | 20.6 | -3 | |
+| Lavalampe | Lötkolben | 75 % | 20.6 | -19 | 54 % | 18.8 | -34 | **ja** |
+| Lavalampe | Blitzwerfer | 93 % | 20.9 | – | 88 % | 20.8 | – | |
+| Lavalampe | Glühwürmchen-Stab | 85 % | 20.8 | -9 | 64 % | 18.7 | -24 | **ja** |
+| Lavalampe | Kristallstab | 88 % | 20.8 | -5 | 79 % | 20.2 | -9 | |
+| Taschenlampe | Schraubenzieher | 66 % | 20.4 | -4 | 30 % | 17.8 | -15 | |
+| Taschenlampe | Lötkolben | 70 % | 20.6 | – | 45 % | 18.0 | – | |
+| Discokugel | Funkenpistole | 66 % | 20.6 | -1 | 48 % | 20.0 | -3 | |
+| Discokugel | Prisma | 67 % | 20.6 | – | 51 % | 20.3 | – | |
+| Discokugel | Funkensieb | 30 % | 18.7 | -37 | 0 % | 11.7 | -51 | **ja** |
+| Lichterkette | Funkenpistole | 91 % | 20.9 | -4 | 79 % | 20.1 | – | |
+| Lichterkette | Glasscherbe | 95 % | 20.9 | – | 76 % | 19.1 | -3 | |
+| Lichterkette | Ast | 71 % | 19.9 | -24 | 21 % | 12.9 | -59 | **ja** |
+| Halogenstrahler | Lampenhammer | 85 % | 20.7 | -3 | 67 % | 20.3 | -9 | |
+| Halogenstrahler | Leuchtrakete | 87 % | 20.8 | – | 72 % | 20.6 | -4 | |
+| Halogenstrahler | Taschenlampenstrahl | 87 % | 20.8 | – | 76 % | 20.6 | – | |
+| Nachtlicht | Heilstrahl | 95 % | 20.8 | – | 50 % | 16.9 | -6 | |
+| Nachtlicht | Dornenranke | 89 % | 20.8 | -7 | 56 % | 18.1 | – | |
+| Blitzlicht | Funkenfaust | 88 % | 20.7 | – | 77 % | 20.1 | – | |
+| Blitzlicht | Glasscherbe | 87 % | 20.8 | -1 | 72 % | 19.6 | -5 | |
+| Blitzlicht | Kabelpeitsche | 80 % | 20.8 | -8 | 54 % | 19.4 | -23 | **ja** |
+| Kerze | Ast | 87 % | 20.8 | -5 | 50 % | 17.2 | -24 | **ja** |
+| Kerze | Batterie-Schleuder | 93 % | 20.9 | – | 74 % | 19.7 | – | |
+| Irrlicht | Seelenlaterne | 77 % | 20.7 | – | 50 % | 18.5 | – | |
+| Irrlicht | Glühwürmchen-Stab | 71 % | 20.6 | -6 | 39 % | 17.6 | -11 | |
+| Zündkerze | Feuerzeugwerfer | 94 % | 20.9 | – | 94 % | 20.9 | – | |
+| Zündkerze | Lötkolben | 71 % | 20.7 | -23 | 51 % | 20.0 | -43 | **ja** |
+| Kronleuchter | Kristallstab | 85 % | 20.8 | -5 | 68 % | 20.0 | -18 | **ja** |
+| Kronleuchter | Blitzwerfer | 91 % | 20.9 | – | 86 % | 20.7 | – | |
+| Kronleuchter | Taschenlampenstrahl | 86 % | 20.8 | -5 | 75 % | 20.6 | -11 | |
+| Schwarzlicht | Voodoo-Nadel | 87 % | 20.8 | – | 79 % | 20.7 | – | |
+| Schwarzlicht | Glühwürmchen-Stab | 82 % | 20.8 | -5 | 57 % | 18.8 | -23 | **ja** |
+| Gewächshauslampe | Dornenranke | 89 % | 20.8 | -6 | 61 % | 18.5 | – | |
+| Gewächshauslampe | Ast | 81 % | 20.7 | -13 | 28 % | 14.0 | -33 | **ja** |
+| Gewächshauslampe | Heilstrahl | 95 % | 20.8 | – | 50 % | 17.0 | -11 | |
+| Smartbulb | Funkenpistole | 93 % | 20.9 | -1 | 85 % | 20.2 | – | |
+| Smartbulb | Funkensieb | 6 % | 5.0 | -87 | 0 % | 2.6 | -85 | **ja** |
+| Smartbulb | Laserpointer | 93 % | 20.8 | – | 79 % | 19.3 | -5 | |
+| Drohnenleuchte | Schraubenzieher | 79 % | 20.6 | -13 | 54 % | 19.7 | -24 | **ja** |
+| Drohnenleuchte | Funkenpistole | 92 % | 20.9 | – | 78 % | 20.7 | – | |
+| Stroboskop | Laserpointer | 86 % | 20.8 | – | 63 % | 18.0 | -12 | |
+| Stroboskop | Prisma | 85 % | 20.8 | -1 | 69 % | 20.3 | -5 | |
+| Stroboskop | Taschenlampenstrahl | 86 % | 20.8 | – | 75 % | 20.6 | – | |
+| Vampirbirne | Glasscherbe | 93 % | 20.5 | -1 | 39 % | 10.7 | -32 | **ja** |
+| Vampirbirne | Kabelpeitsche | 93 % | 20.9 | – | 71 % | 18.4 | – | |
+| Vampirbirne | Funkenfaust | 91 % | 20.8 | -2 | 33 % | 10.4 | -37 | **ja** |
+| Spiegelkugel | Prisma | 87 % | 20.8 | – | 78 % | 20.7 | – | |
+| Spiegelkugel | Funkenpistole | 85 % | 20.8 | -1 | 71 % | 20.4 | -7 | |
+| Spiegelkugel | Glasscherbe | 83 % | 20.8 | -3 | 60 % | 18.9 | -18 | **ja** |
+
+Fallen: 21 Startwaffen bei 18 Charakteren, die meisten nur auf Spannung 3. Kandidaten für einen Austausch (gleiche Runs und gleicher Seed, nur für den Lauf gesetzt, nichts geändert):
+
+| Charakter | Kandidat | S0 Sieg | S3 Sieg |
+|---|---|---|---|
+| Standardbirne | Batterie-Schleuder | 78 % | 46 % |
+| Standardbirne | Kabelpeitsche | 84 % | 57 % |
+| Standardbirne | Prisma | 91 % | 85 % |
+| Glühfaden-Boxer | Kabelpeitsche | 75 % | 41 % |
+| Glühfaden-Boxer | Glasscherbe | 79 % | 34 % |
+| Glühfaden-Boxer | Dornenranke | 66 % | 22 % |
+| Neonröhre | Kristallstab | 89 % | 78 % |
+| Neonröhre | Taschenlampenstrahl | 89 % | 81 % |
+| Lavalampe | Seelenlaterne | 87 % | 71 % |
+| Lavalampe | Taschenlampenstrahl | 89 % | 83 % |
+| Lavalampe | Feuerzeugwerfer | 97 % | 95 % |
+| Lavalampe | Voodoo-Nadel | 89 % | 84 % |
+| Discokugel | Laserpointer | 69 % | 53 % |
+| Discokugel | Batterie-Schleuder | 52 % | 30 % |
+| Discokugel | Leuchtrakete | 66 % | 49 % |
+| Lichterkette | Funkenfaust | 80 % | 35 % |
+| Lichterkette | Prisma | 95 % | 83 % |
+| Lichterkette | Laserpointer | 94 % | 76 % |
+| Blitzlicht | Dornenranke | 83 % | 60 % |
+| Blitzlicht | Lampenhammer | 87 % | 75 % |
+| Kerze | Dornenranke | 93 % | 73 % |
+| Zündkerze | Blitzwerfer | 91 % | 86 % |
+| Zündkerze | Seelenlaterne | 85 % | 69 % |
+| Zündkerze | Taschenlampenstrahl | 87 % | 76 % |
+| Kronleuchter | Seelenlaterne | 83 % | 66 % |
+| Kronleuchter | Feuerzeugwerfer | 96 % | 95 % |
+| Schwarzlicht | Seelenlaterne | 84 % | 64 % |
+| Schwarzlicht | Blitzwerfer | 91 % | 86 % |
+| Schwarzlicht | Kristallstab | 85 % | 66 % |
+| Gewächshauslampe | Batterie-Schleuder | 88 % | 59 % |
+| Gewächshauslampe | Blitzwerfer | 94 % | 93 % |
+| Gewächshauslampe | Kabelpeitsche | 85 % | 65 % |
+| Smartbulb | Prisma | 94 % | 90 % |
+| Smartbulb | Batterie-Schleuder | 83 % | 53 % |
+| Smartbulb | Leuchtrakete | 94 % | 89 % |
+| Drohnenleuchte | Laserpointer | 95 % | 81 % |
+| Vampirbirne | Dornenranke | 85 % | 37 % |
+| Vampirbirne | Lampenhammer | 79 % | 51 % |
+| Vampirbirne | Prisma | 99 % | 99 % |
+| Spiegelkugel | Laserpointer | 88 % | 79 % |
+| Spiegelkugel | Batterie-Schleuder | 75 % | 50 % |
+| Spiegelkugel | Leuchtrakete | 87 % | 76 % |
+
+Vorschläge (alt -> neu), **noch nicht umgesetzt, Entscheidung des Spielers offen**. Ziel: jede Startwaffe höchstens 15 Punkte unter der besten, ohne eine neue Waffe, die alle anderen abhängt (Feuerzeugwerfer 95–97 % und Prisma bei der Vampirbirne 99 % deshalb nicht vorgeschlagen):
+- Standardbirne: Ast -> Kabelpeitsche (Abstand S3 -65 -> -22). Glasscherbe und Funkenfaust bleiben auf S3 Fallen; Nahkampf liegt beim Standard-Build auf S3 allgemein hinten, ein Tausch löst das nicht.
+- Glühfaden-Boxer: Ast -> Kabelpeitsche (S0 -18, S3 -43, bleibt eine Falle). Kein getesteter Ersatz kommt an die Funkenfaust heran; Alternative: Ast streichen (Funkenfaust, Lampenhammer).
+- Neonröhre: Laserpointer -> Kristallstab, Kabelpeitsche -> Taschenlampenstrahl (alle Präzise; dann S3 68/78/81 %, größter Abstand -13).
+- Lavalampe: Lötkolben -> Taschenlampenstrahl, Glühwürmchen-Stab -> Voodoo-Nadel (S3 83/84 % gegen Blitzwerfer 88 %).
+- Discokugel: Funkensieb -> Laserpointer (69/53 %, gleichauf mit Prisma).
+- Lichterkette: Ast -> Laserpointer (94/76 %).
+- Blitzlicht: Kabelpeitsche -> Lampenhammer (87/75 %, nutzt +1 Nah pro 2 % Tempo mit 200 % Skalierung).
+- Kerze: Ast -> Dornenranke (93/73 %, bleibt Primitiv). Der Ast ist die Startwaffe aus dem GDD; Behalten ist vertretbar (nur S3 -24).
+- Zündkerze: Lötkolben -> Blitzwerfer (91/86 %, S3 -8).
+- Kronleuchter: kein guter Ersatz (Seelenlaterne schwächer, Feuerzeugwerfer zu stark); Kristallstab behalten (nur S3 -18, GDD-Startwaffe).
+- Schwarzlicht: Glühwürmchen-Stab -> Blitzwerfer (91/86 %, Voodoo-Nadel dann -7).
+- Gewächshauslampe: Ast -> Kabelpeitsche (85/65 %, größter Abstand S0 -10). Blitzwerfer (94/93 %) wäre zu stark.
+- Smartbulb: Funkensieb -> Leuchtrakete (94/89 %, Laserpointer dann S3 -10).
+- Drohnenleuchte: Schraubenzieher behalten (Türme sind der Kern des Charakters, der Simulator bewertet Lampentürme eher vorsichtig).
+- Vampirbirne: kein Tausch innerhalb von 15 Punkten gefunden außer Prisma (99 %, zu stark). Glasscherbe und Funkenfaust liegen auf S3 deutlich hinter der Kabelpeitsche; eher ein Balancing-Punkt des Charakters auf S3. Kleinster Schritt: Funkenfaust -> Lampenhammer (S3 -37 -> -20).
+- Spiegelkugel: Glasscherbe -> Laserpointer (88/79 %, gleichauf mit Prisma).
+
 ## Werkzeuge
 
 | Befehl | Zweck |
@@ -452,6 +596,7 @@ Charakter-Tabelle mit dem Reichweiten-Modell (200 Runs): Spannung 0 Schnitt 85 %
 | `… --set res://pfad.tres:feld.0.wert=x [...] --<modus>` | Datenwerte nur für diesen Lauf ändern (Vorschläge prüfen); Pfadteile sind Eigenschaften oder Array-Indizes, `--set` vor dem Modus-Flag |
 | `… -- 3 --pets [--runs 150]` | Wirkung der Begleiter (Kauf in Welle 8, Tier wächst wie bei Waffen) auf Siegquote und Wellen, Ausreißer markiert; ändert nichts. Etwa 1,5 Minuten |
 | `… -- 3 --towers [--runs 120]` | Turm-Items (1 und 3 Exemplare) für Taschenlampe, Drohnenleuchte und Standardbirne: Δ Siegquote, Δ Ø Welle, Wertung je 100 Funken, Turmanteil, Ausreißer; ändert nichts. Etwa 1,5 Minuten |
+| `… -- --start-weapons [--runs 150]` | Siegquote und Ø Welle je Charakter und Startwaffe auf Spannung 0 und 3, Abstand zur besten Startwaffe des Charakters, Fallen (mehr als 15 Punkte darunter) markiert; ändert nichts |
 | `… -- <Spannung> --trace <charakter-id>` | Einen Run Welle für Welle ausgeben (Kalibrierung) |
 | `… -- <Spannung> --endless [--runs 40] [key=wert …]` | Endlos-Modus: Sieger spielen weiter bis zum Tod; je Charakter P10/Median/P90 der erreichten Endlos-Stufe, Anteil Tod in Bosswellen, häufigste Todesstufen. `key=wert` setzt `EndlessConfig`-Werte nur für diesen Lauf (z. B. `hp_growth=0.06`). Mit `--trace <id> --endless` auch Welle für Welle |
 | `python tools/make_portraits.py` | Charakter-Porträts aus den Spielsprites erzeugen |

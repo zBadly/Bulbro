@@ -8,6 +8,8 @@
 [ext_resource type="Resource" path="res://data/weapons/loetkolben.tres" id="6_ib2ii"]
 [ext_resource type="Resource" path="res://data/weapons/blitzwerfer.tres" id="7_i8wca"]
 [ext_resource type="Texture2D" path="res://art/characters/lavalampe.svg" id="8_2t254"]
+[ext_resource type="Resource" path="res://data/weapons/gluehwuermchen_stab.tres" id="9_yaesr"]
+[ext_resource type="Resource" path="res://data/weapons/kristallstab.tres" id="10_8stsk"]
 [ext_resource type="Texture2D" path="res://art/portraits/lavalampe.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_2oujt"]
@@ -49,18 +51,21 @@ modifiers = Array[ExtResource("2_ql6ii")]([SubResource("Resource_a8ihs"), SubRes
 
 [resource]
 script = ExtResource("4_yaesr")
-tip_key = "TIP_CHAR_LAVALAMPE"
-lore_text = "LORE_CHAR_LAVALAMPE"
 id = &"lavalampe"
 name_key = "CHAR_LAVALAMPE"
 texture = ExtResource("8_2t254")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_3phsy")]([SubResource("Resource_8034g"), SubResource("Resource_galsc")])
-starting_weapons = Array[ExtResource("5_8stsk")]([ExtResource("6_ib2ii"), ExtResource("7_i8wca")])
+starting_weapons = Array[ExtResource("5_8stsk")]([ExtResource("6_ib2ii"), ExtResource("7_i8wca"), ExtResource("9_yaesr"), ExtResource("10_8stsk")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"blitzwerfer": "HINT_LAVALAMPE_BLITZWERFER",
+&"gluehwuermchen_stab": "HINT_LAVALAMPE_GLUEHWUERMCHEN_STAB",
+&"kristallstab": "HINT_LAVALAMPE_KRISTALLSTAB",
+&"loetkolben": "HINT_LAVALAMPE_LOETKOLBEN"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"elemental"])
 order = 4
-set_bonus_multiplier = Dictionary[StringName, float]({})
-banned_classes = Array[StringName]([])
-no_melee = false
+lore_text = "LORE_CHAR_LAVALAMPE"
+tip_key = "TIP_CHAR_LAVALAMPE"
 unlocked_by_default = true
-portrait = ExtResource("p_portrait")

@@ -17,6 +17,8 @@ extends Node
 ##                                                     Ausreißer gegenüber ihrem Schnitt; ändert nichts an den Daten
 ##   ... -- 3 --towers [--runs 120]                -> Turm-Items (1 und 3 Exemplare) für Taschenlampe, Drohnenleuchte und
 ##                                                    Standardbirne: Δ Siegquote, Δ Ø Welle, Turmanteil, Ausreißer (ändert nichts)
+##   ... -- --start-weapons [--runs 150]          -> Siegquote je Charakter und Startwaffe auf Spannung 0 und 3, Fallen
+##                                                    (mehr als 15 Punkte unter der besten Startwaffe); ändert nichts
 ##   ... -- 0 --try kerze max_hp:4 armor:2       -> Buff-Varianten (stat:delta[:f|p|g]) auf Spannung 0 und 3 testen
 ##   ... -- 0 --trace <charakter-id>               -> ein Run Welle für Welle (Schaden, Treffer, Heilung, HP)
 ##   ... -- 0 --endless [--runs 100] [hp_growth=0.12 ...] -> erreichte Endlos-Welle je Charakter (Median = Ø Build,
@@ -80,6 +82,10 @@ const COMBOS: Array[Dictionary] = [
 	{"label": "Vampirbirne + 3 Heiltürme", "characters": [&"vampirbirne"], "a": [[&"heilturm", 5], [&"heilturm", 8], [&"heilturm", 11]]},
 ]
 const RUNS_FLAG: String = "--runs"
+const START_WEAPONS_FLAG: String = "--start-weapons"
+const START_WEAPON_RUNS: int = 150
+## Falle: Siegquote liegt um mehr als so viele Prozentpunkte unter der besten Startwaffe desselben Charakters.
+const START_WEAPON_TRAP_POINTS: float = 15.0
 const TRY_FLAG: String = "--try"
 const ENDLESS_FLAG: String = "--endless"
 ## Perzentile für "durchschnittlicher" und "starker" Build unter den Siegern.
@@ -125,6 +131,8 @@ func _ready() -> void:
 		await _endless(difficulty, runs, args.slice(args.find(ENDLESS_FLAG) + 1))
 	elif TRY_FLAG in args:
 		await _try_variant(args.slice(args.find(TRY_FLAG) + 1), runs)
+	elif START_WEAPONS_FLAG in args:
+		await _start_weapons(runs if runs_index >= 0 else START_WEAPON_RUNS)
 	elif CHARACTERS_FLAG in args:
 		await _characters(difficulty, runs, ABLATE_FLAG in args)
 	elif WEAPONS_FLAG in args:
@@ -165,6 +173,55 @@ func _apply_overrides(specs: PackedStringArray) -> void:
 		else:
 			(target as Object).set(key, value)
 		print("Override: %s %s: %s -> %s" % [path.get_file(), ".".join(chain), str(old), str(value)])
+
+
+# --- Startwaffen (Phase 15, Paket 9) ---
+
+## Je Charakter und Startwaffe: Siegquote und Ø Welle auf den TRY_LEVELS; Abstand zur besten Startwaffe des
+## Charakters je Stufe. Markiert Fallen (> START_WEAPON_TRAP_POINTS unter der besten) und ändert nichts.
+func _start_weapons(runs: int) -> void:
+	var sim: CharacterSim = CharacterSim.new(self)
+	print("BULBRO Startwaffen – %d Runs je Waffe, Spannung %s" % [runs, ", ".join(TRY_LEVELS.map(func(l: int) -> String: return str(l)))])
+	var header: String = "| Charakter | Startwaffe |"
+	var line: String = "|---|---|"
+	for level: int in TRY_LEVELS:
+		header += " S%d Sieg | S%d Ø Welle | S%d Abstand |" % [level, level, level]
+		line += "---|---|---|"
+	print(header + " Falle |")
+	print(line + "---|")
+	var traps: PackedStringArray = []
+	for character: CharacterData in Unlocks.all_characters():
+		var rates: Dictionary[int, Array] = {}
+		var waves: Dictionary[int, Array] = {}
+		for level: int in TRY_LEVELS:
+			var difficulty: DifficultyData = load(DIFFICULTY_PATH % level)
+			rates[level] = []
+			waves[level] = []
+			for weapon: WeaponData in character.starting_weapons:
+				var result: Dictionary = sim.run_many(character, difficulty, runs, SEED, {"weapon": weapon})
+				rates[level].append(result["win_rate"] * 100.0)
+				waves[level].append(result["avg_wave"])
+				await get_tree().process_frame
+		for i: int in character.starting_weapons.size():
+			var weapon: WeaponData = character.starting_weapons[i]
+			var row: String = "| %s | %s |" % [tr(character.name_key), tr(weapon.name_key)]
+			var trap_levels: PackedStringArray = []
+			for level: int in TRY_LEVELS:
+				var best: float = rates[level].max()
+				var gap: float = best - rates[level][i]
+				row += " %d %% | %.1f | %s |" % [roundi(rates[level][i]), waves[level][i], "–" if is_zero_approx(gap) else "-%d" % roundi(gap)]
+				if gap > START_WEAPON_TRAP_POINTS:
+					var best_weapon: WeaponData = character.starting_weapons[rates[level].find(best)]
+					trap_levels.append("S%d (%d %% statt %d %% mit %s)" % [level, roundi(rates[level][i]), roundi(best), tr(best_weapon.name_key)])
+			print(row + (" **ja** |" if not trap_levels.is_empty() else " |"))
+			if not trap_levels.is_empty():
+				traps.append("%s – %s: %s" % [tr(character.name_key), tr(weapon.name_key), ", ".join(trap_levels)])
+	print("")
+	print("Fallen (mehr als %d Punkte unter der besten Startwaffe):" % roundi(START_WEAPON_TRAP_POINTS))
+	for trap: String in traps:
+		print("- " + trap)
+	if traps.is_empty():
+		print("- keine")
 
 
 # --- Endlos-Modus ---

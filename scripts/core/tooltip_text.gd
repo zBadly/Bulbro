@@ -20,7 +20,8 @@ static func title(name: String, tier: int) -> String:
 
 # --- Waffen ---
 
-static func weapon(w: Weapon) -> String:
+## with_run_line = false: ohne Kills/Schaden dieses Runs (Vorschau in der Startwaffen-Auswahl).
+static func weapon(w: Weapon, with_run_line: bool = true) -> String:
 	var t: WeaponTierStats = w.get_tier_stats()
 	var player: Player = w.player
 	var lines: PackedStringArray = [title(TextFormat.t(w.data.name_key), w.tier)]
@@ -39,8 +40,9 @@ static func weapon(w: Weapon) -> String:
 		if set_bonus != null:
 			lines.append(SECTION_GAP)
 			lines.append(set_bonus_text(set_bonus, counts.get(weapon_class, 0), player.set_bonus_multiplier.get(weapon_class, 1.0)))
-	lines.append(SECTION_GAP)
-	lines.append(run_line(DamageSource.weapon(w.data.id), player.weapon_slots.count_of(w.data.id)))
+	if with_run_line:
+		lines.append(SECTION_GAP)
+		lines.append(run_line(DamageSource.weapon(w.data.id), player.weapon_slots.count_of(w.data.id)))
 	return "\n".join(lines)
 
 

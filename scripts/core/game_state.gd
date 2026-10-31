@@ -62,6 +62,9 @@ var souls: SoulCounter = SoulCounter.new()
 var character: CharacterData
 var starting_weapon: WeaponData
 var difficulty: DifficultyData
+## Charakter und Startwaffe beim Start des Runs; "Nochmal" nimmt diese, auch wenn das Admin-Menü den Charakter wechselt.
+var setup_character: CharacterData
+var setup_weapon: WeaponData
 
 
 func _ready() -> void:
@@ -160,6 +163,15 @@ func set_run_setup(p_character: CharacterData, p_weapon: WeaponData, p_difficult
 	character = p_character
 	starting_weapon = p_weapon
 	difficulty = p_difficulty
+	setup_character = p_character
+	setup_weapon = p_weapon
+
+
+## Vor "Nochmal": Charakter und Startwaffe des letzten Run-Starts wiederherstellen.
+func restore_run_setup() -> void:
+	if setup_character != null:
+		character = setup_character
+		starting_weapon = setup_weapon
 
 
 func end_run(victory: bool) -> void:

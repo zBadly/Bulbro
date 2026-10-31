@@ -1108,3 +1108,67 @@ LEX_ROW_TOWER_COOLDOWN,Abklingzeit,Cooldown
 LEX_ROW_TOWER_VALUE,Wert,Value
 LEX_ROW_TOWER_REACH,Radius,Radius
 LEX_TOWER_HEAL_VALUE,%s HP,%s HP
+HINT_STANDARDBIRNE_FUNKENPISTOLE,"Keine Charakter-Synergie: sicherer Fernkampf, durchbohrt 1 Gegner.","No character synergy: safe ranged weapon, pierces 1 enemy."
+HINT_STANDARDBIRNE_GLASSCHERBE,"Keine Charakter-Synergie: 20 % Krit-Chance, Klinge-Set gibt Lebensraub.","No character synergy: 20% crit chance, Blade set grants life steal."
+HINT_STANDARDBIRNE_AST,"Keine Charakter-Synergie: billig, stärker mit jedem weiteren Ast, Primitiv-Set gibt Max HP.","No character synergy: cheap, stronger with every extra Branch, Primitive set grants Max HP."
+HINT_STANDARDBIRNE_FUNKENFAUST,"Keine Charakter-Synergie: schnelle Schläge mit Rückstoß, Unbewaffnet-Set gibt Ausweichen.","No character synergy: fast punches with knockback, Unarmed set grants dodge."
+HINT_GLUEHFADEN_BOXER_FUNKENFAUST,"Profitiert von +50 % Unbewaffnet-Angriffstempo, Unbewaffnet-Set gibt noch mehr Ausweichen.","Benefits from +50% Unarmed attack speed, Unarmed set adds even more dodge."
+HINT_GLUEHFADEN_BOXER_AST,"Kein Unbewaffnet-Bonus, dafür mehr Max HP über das Primitiv-Set. -50 Reichweite gilt auch hier.","No Unarmed bonus, but more Max HP from the Primitive set. -50 range applies here too."
+HINT_GLUEHFADEN_BOXER_LAMPENHAMMER,"Kein Unbewaffnet-Bonus und sehr langsam (2,2 s). Dafür 200 % Nah-Skalierung, Stumpf-Set gibt Rüstung.","No Unarmed bonus and very slow (2.2 s). In return 200% Melee scaling, Blunt set grants armor."
+HINT_NEONROEHRE_GLASSCHERBE,"Profitiert von +100 Reichweite für Präzise-Waffen und +25 % Angriffstempo, dazu 20 % Krit-Chance.","Benefits from +100 range for Precise weapons and +25% attack speed, plus 20% crit chance."
+HINT_NEONROEHRE_KABELPEITSCHE,Profitiert von +100 Reichweite für Präzise-Waffen: schlägt aus großem Abstand zu.,Benefits from +100 range for Precise weapons: strikes from far away.
+HINT_NEONROEHRE_LASERPOINTER,"Bekommt +100 Reichweite (Präzise), aber -10 Fern bei nur 50 % Skalierung: kleine Treffer, bis Fern-Items kommen.","Gets +100 range (Precise), but -10 Ranged at only 50% scaling: small hits until Ranged items arrive."
+HINT_LED_SCHUETZE_FUNKENPISTOLE,"Profitiert von Fern-Modifikationen +50 % und +50 Reichweite, Schusswaffe-Set gibt mehr Reichweite.","Benefits from Ranged modifications +50% and +50 range, Gun set adds more range."
+HINT_LED_SCHUETZE_LASERPOINTER,"Profitiert von Fern-Modifikationen +50 %: sehr schnelle Schüsse, Präzise-Set gibt Krit-Chance.","Benefits from Ranged modifications +50%: very fast shots, Precise set grants crit chance."
+HINT_LED_SCHUETZE_BATTERIE_SCHLEUDER,"Profitiert von Fern-Modifikationen +50 %, prallt 1-mal ab. Primitiv-Set gibt Max HP, durch -25 % aber weniger.","Benefits from Ranged modifications +50%, bounces once. Primitive set grants Max HP, reduced by -25%."
+HINT_LED_SCHUETZE_PRISMA,"Profitiert von Fern-Modifikationen +50 %: 3 Projektile pro Schuss, gut gegen Gruppen.","Benefits from Ranged modifications +50%: 3 projectiles per shot, good against groups."
+HINT_LAVALAMPE_LOETKOLBEN,Profitiert von +5 Strom und Strom-Modifikationen +33 %: Nahkampf mit Brand.,Benefits from +5 Elemental and Elemental modifications +33%: melee with burn.
+HINT_LAVALAMPE_BLITZWERFER,Profitiert von +5 Strom und Strom-Modifikationen +33 %: Blitz springt auf 2 weitere Gegner.,Benefits from +5 Elemental and Elemental modifications +33%: lightning jumps to 2 more enemies.
+HINT_LAVALAMPE_GLUEHWUERMCHEN_STAB,"Profitiert von +5 Strom und Strom-Modifikationen +33 %: zielsuchend. Ätherisch-Set gibt Ausweichen, kostet Rüstung.","Benefits from +5 Elemental and Elemental modifications +33%: homing. Ethereal set grants dodge, costs armor."
+HINT_LAVALAMPE_KRISTALLSTAB,Profitiert von +5 Strom und Strom-Modifikationen +33 %: zerspringt in 3 Splitter.,Benefits from +5 Elemental and Elemental modifications +33%: shatters into 3 shards.
+HINT_TASCHENLAMPE_SCHRAUBENZIEHER,"Baut jede Welle einen Lampenturm, der von +20 Technik und Technik-Modifikationen +25 % profitiert.",Builds a Lamp Tower every wave that benefits from +20 Engineering and Engineering modifications +25%.
+HINT_TASCHENLAMPE_LOETKOLBEN,"Kein Strom-Bonus: Schaden nur aus Grundwert und Brand, baut keine Türme. Werkzeug-Set gibt etwas Technik.","No Elemental bonus: damage only from base value and burn, builds no towers. Tool set grants some Engineering."
+HINT_DISCOKUGEL_FUNKENPISTOLE,"Keine Glück-Synergie und -40 % Angriffstempo: sicherer Fernkampf, bis die Funken-Treffer tragen.",No Luck synergy and -40% attack speed: safe ranged weapon until the spark hits carry.
+HINT_DISCOKUGEL_PRISMA,Keine Glück-Synergie: 3 Projektile pro Schuss mildern die -40 % Angriffstempo.,No Luck synergy: 3 projectiles per shot soften the -40% attack speed.
+HINT_DISCOKUGEL_FUNKENSIEB,15 % Chance auf einen Extra-Funken pro Kill: mehr Funken lösen öfter den Glückstreffer aus.,15% chance for an extra spark per kill: more sparks trigger the lucky hit more often.
+HINT_LICHTERKETTE_FUNKENPISTOLE,"Jede Waffe kostet 5 % Schaden. Pistolen bleiben auf Abstand, Schusswaffe-Set gibt Reichweite.","Every weapon costs 5% damage. Pistols keep their distance, Gun set grants range."
+HINT_LICHTERKETTE_GLASSCHERBE,"Jede Waffe kostet 5 % Schaden. 20 % Krit-Chance, Klinge-Set gibt Lebensraub.","Every weapon costs 5% damage. 20% crit chance, Blade set grants life steal."
+HINT_LICHTERKETTE_AST,"Stärker mit jedem weiteren Ast, passt zu 12 Waffenplätzen. Jede Waffe kostet aber 5 % Schaden.","Stronger with every extra Branch, fits 12 weapon slots. Every weapon still costs 5% damage."
+HINT_HALOGENSTRAHLER_LAMPENHAMMER,"+30 % Schaden auf einen harten, langsamen Treffer (2,2 s), Schwer-Set gibt noch mehr Schaden.","+30% damage on a hard, slow hit (2.2 s), Heavy set adds even more damage."
+HINT_HALOGENSTRAHLER_LEUCHTRAKETE,+30 % Schaden auf Explosionen: trifft mehrere der 25 % zusätzlichen Gegner.,+30% damage on explosions: hits several of the 25% extra enemies.
+HINT_HALOGENSTRAHLER_TASCHENLAMPENSTRAHL,"+30 % Schaden, durchdringt alle Gegner in der Linie. Strom startet aber bei 0.","+30% damage, pierces every enemy in line. Elemental starts at 0 though."
+HINT_NACHTLICHT_HEILSTRAHL,"Heilt bei 10 % der Treffer, Medizinisch-Set gibt HP-Regeneration (+50 % durch den Charakter).","Heals on 10% of hits, Medical set grants HP regeneration (+50% from the character)."
+HINT_NACHTLICHT_DORNENRANKE,"Hält Gegner fest (25 %), Medizinisch-Set gibt HP-Regeneration (+50 %), Primitiv-Set Max HP.","Roots enemies (25%), Medical set grants HP regeneration (+50%), Primitive set Max HP."
+HINT_BLITZLICHT_FUNKENFAUST,"Profitiert von +1 Nah pro 2 % Tempo bei 100 % Nah-Skalierung, schnelle Schläge.","Benefits from +1 Melee per 2% speed at 100% Melee scaling, fast punches."
+HINT_BLITZLICHT_GLASSCHERBE,"Profitiert von +1 Nah pro 2 % Tempo (80 % Skalierung), dazu 20 % Krit-Chance.","Benefits from +1 Melee per 2% speed (80% scaling), plus 20% crit chance."
+HINT_BLITZLICHT_KABELPEITSCHE,"Profitiert von +1 Nah pro 2 % Tempo, 200 Reichweite trifft im Vorbeilaufen.","Benefits from +1 Melee per 2% speed, 200 range hits while running past."
+HINT_KERZE_AST,"Primitiv-Set zählt doppelt (Max HP), stärker mit jedem weiteren Ast.","Primitive set counts double (Max HP), stronger with every extra Branch."
+HINT_KERZE_BATTERIE_SCHLEUDER,Primitiv-Set zählt doppelt (Max HP): Fernkampf mit Abpraller als Ergänzung zu Ästen.,Primitive set counts double (Max HP): ranged weapon with a bounce to go with Branches.
+HINT_IRRLICHT_SEELENLATERNE,"+1 Seele pro Kill füllt das Seelenglas schneller, zielsuchend.","+1 soul per kill fills the soul jar faster, homing."
+HINT_IRRLICHT_GLUEHWUERMCHEN_STAB,"Zielsuchend wie die Laterne, aber ohne Extra-Seelen. Ätherisch-Set gibt Ausweichen.","Homing like the Lantern, but without extra souls. Ethereal set grants dodge."
+HINT_ZUENDKERZE_FEUERZEUGWERFER,"Viele schnelle Treffer lösen die 25 % Brandchance pro Treffer sehr oft aus, durchdringt alles.","Many fast hits trigger the 25% burn chance per hit very often, pierces everything."
+HINT_ZUENDKERZE_LOETKOLBEN,"Eigener Brand profitiert von +50 % Brandschaden. Nahkampf, trifft seltener als der Feuerzeugwerfer.","Its own burn benefits from +50% burn damage. Melee, hits less often than the Lighter Thrower."
+HINT_KRONLEUCHTER_KRISTALLSTAB,"Jeder 4. Angriff zaubert, die Splitter treffen zusätzlich Gruppen.","Every 4th attack casts a spell, the shards also hit groups."
+HINT_KRONLEUCHTER_BLITZWERFER,"Schnellste der drei (0,7 s): zaubert am häufigsten.",Fastest of the three (0.7 s): casts most often.
+HINT_KRONLEUCHTER_TASCHENLAMPENSTRAHL,"Durchdringt alle Gegner in der Linie, jeder 4. Angriff zaubert.","Pierces every enemy in line, every 4th attack casts a spell."
+HINT_SCHWARZLICHT_VOODOO_NADEL,"Schnell (0,65 s) und durchbohrt 2: verflucht viele Gegner und stapelt den Fluch schnell.",Fast (0.65 s) and pierces 2: curses many enemies and stacks the curse quickly.
+HINT_SCHWARZLICHT_GLUEHWUERMCHEN_STAB,"Langsamer (1,2 s) und verflucht seltener, trifft aber sicher (zielsuchend). Ätherisch-Set gibt Ausweichen.","Slower (1.2 s) and curses less often, but always hits (homing). Ethereal set grants dodge."
+HINT_GEWAECHSHAUSLAMPE_DORNENRANKE,"Festhalten (25 %) ergänzt die Lichtranken, Primitiv-Set gibt Max HP.","Rooting (25%) complements the light vines, Primitive set grants Max HP."
+HINT_GEWAECHSHAUSLAMPE_AST,"Keine Charakter-Synergie: billig, stärker mit jedem weiteren Ast, Primitiv-Set gibt Max HP.","No character synergy: cheap, stronger with every extra Branch, Primitive set grants Max HP."
+HINT_GEWAECHSHAUSLAMPE_HEILSTRAHL,"Heilt bei 10 % der Treffer, Medizinisch-Set gibt HP-Regeneration. Keine Synergie mit Batterien.","Heals on 10% of hits, Medical set grants HP regeneration. No synergy with batteries."
+HINT_SMARTBULB_FUNKENPISTOLE,"Keine Händler-Synergie: sicherer Fernkampf, -15 % Schaden gilt auch hier.","No merchant synergy: safe ranged weapon, -15% damage applies here too."
+HINT_SMARTBULB_FUNKENSIEB,"15 % Chance auf einen Extra-Funken pro Kill, zusätzlich zu +30 % Funken aus Kills.","15% chance for an extra spark per kill, on top of +30% sparks from kills."
+HINT_SMARTBULB_LASERPOINTER,"Keine Händler-Synergie: schnelle kleine Treffer, wächst mit Fern-Items aus dem günstigeren Shop.","No merchant synergy: fast small hits, grows with Ranged items from the cheaper shop."
+HINT_DROHNENLEUCHTE_SCHRAUBENZIEHER,"Baut jede Welle einen Lampenturm, der wie die Drohnen von +30 Technik profitiert.",Builds a Lamp Tower every wave that benefits from +30 Engineering like the drones.
+HINT_DROHNENLEUCHTE_FUNKENPISTOLE,Keine Technik-Synergie: Fernkampf auf Abstand neben den Drohnen.,No Engineering synergy: ranged weapon at a distance next to the drones.
+HINT_STROBOSKOP_LASERPOINTER,"Schnelle Schüsse nutzen die Einfrierzeit, 450 Grundreichweite fängt -30 Reichweite ab.","Fast shots use the freeze time, 450 base range absorbs -30 range."
+HINT_STROBOSKOP_PRISMA,"3 Projektile treffen eingefrorene Gruppen, -30 Reichweite gilt auch hier.","3 projectiles hit frozen groups, -30 range applies here too."
+HINT_STROBOSKOP_TASCHENLAMPENSTRAHL,Durchdringt eingefrorene Reihen. Strom startet aber bei 0.,Pierces frozen rows. Elemental starts at 0 though.
+HINT_VAMPIRBIRNE_GLASSCHERBE,"Schnelle Treffer lösen den Lebensraub oft aus, Klinge-Set gibt noch mehr Lebensraub.","Fast hits trigger life steal often, Blade set adds even more life steal."
+HINT_VAMPIRBIRNE_KABELPEITSCHE,Lebensraub mit 200 Reichweite: heilt aus etwas größerem Abstand.,Life steal with 200 range: heals from a bit further away.
+HINT_VAMPIRBIRNE_FUNKENFAUST,"Schnelle Schläge (0,78 s) lösen den Lebensraub oft aus, Unbewaffnet-Set gibt Ausweichen.","Fast punches (0.78 s) trigger life steal often, Unarmed set grants dodge."
+HINT_SPIEGELKUGEL_PRISMA,Das Spiegelbild kopiert alle 3 Projektile mit 40 % Schaden.,The reflection copies all 3 projectiles at 40% damage.
+HINT_SPIEGELKUGEL_FUNKENPISTOLE,"Das Spiegelbild feuert mit 40 % Schaden mit, Durchschlag trifft 2 Gegner.","The reflection fires along at 40% damage, piercing hits 2 enemies."
+HINT_SPIEGELKUGEL_GLASSCHERBE,"Das Spiegelbild kopiert jeden Hieb mit 40 % Schaden, aber von seiner Position aus.","The reflection copies every slash at 40% damage, but from its own position."
+SELECT_WEAPON_FOR,Startwaffe für %s,Starting weapon for %s
+START_WEAPON_SYNERGY,Synergie,Synergy

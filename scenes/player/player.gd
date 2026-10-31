@@ -65,6 +65,8 @@ var manual_aim: bool = false
 ## Faktor auf den Mindestabstand zwischen zwei Lebensraub-Heilungen (0,5 = doppeltes Limit).
 var lifesteal_interval_factor: float = 1.0
 var rules: Dictionary[Rule, bool] = {}
+## Vorschau-Spieler (Tooltips der Startwaffen-Auswahl): nicht in der Spielergruppe, ändert keine Run-Werte.
+var preview: bool = false
 
 var _set_modifiers: Array[StatModifier] = []
 var _still_active: bool = false
@@ -82,7 +84,8 @@ var _swing: Sprite2D
 
 
 func _ready() -> void:
-	add_to_group(GROUP)
+	if not preview:
+		add_to_group(GROUP)
 	if rng == null:
 		rng = GameState.rng
 	stats = StatSystem.new(config.base_stats)
@@ -515,6 +518,8 @@ func is_low_hp_active(effect: LowHpStatEffect) -> bool:
 
 ## Werte für Freischaltungen mitschreiben (höchster Schaden-%, Tempo-%, verschiedene Waffen, nur Primitiv).
 func _track_run() -> void:
+	if preview:
+		return
 	var run: RunStats = GameState.run_stats
 	run.max_damage_pct = maxf(run.max_damage_pct, stats.get_stat(Stats.DAMAGE_PCT))
 	run.max_speed_pct = maxf(run.max_speed_pct, stats.get_stat(Stats.SPEED))

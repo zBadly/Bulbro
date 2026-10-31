@@ -8,9 +8,8 @@
 [ext_resource type="Script" path="res://scripts/data/character_data.gd" id="6_jm61q"]
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="7_nelm7"]
 [ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="8_b6u11"]
-[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="9_30oet"]
-[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="10_2okta"]
-[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="11_uyfu3"]
+[ext_resource type="Resource" path="res://data/weapons/prisma.tres" id="10_lk6ux"]
+[ext_resource type="Resource" path="res://data/weapons/funkensieb.tres" id="11_4kun0"]
 [ext_resource type="Texture2D" path="res://art/characters/discokugel.svg" id="12_3353g"]
 [ext_resource type="Texture2D" path="res://art/portraits/discokugel.svg" id="p_portrait"]
 
@@ -45,7 +44,6 @@ modifiers = Array[ExtResource("2_4kun0")]([SubResource("Resource_e7vxy")])
 
 [sub_resource type="Resource" id="Resource_54jg2"]
 script = ExtResource("4_i1c0o")
-count = 1
 base_damage = 1.0
 scalings = Dictionary[StringName, float]({
 &"luck": 0.15
@@ -58,17 +56,19 @@ action = SubResource("Resource_54jg2")
 
 [resource]
 script = ExtResource("6_jm61q")
-tip_key = "TIP_CHAR_DISCOKUGEL"
-lore_text = "LORE_CHAR_DISCOKUGEL"
 id = &"discokugel"
 name_key = "CHAR_DISCOKUGEL"
 texture = ExtResource("12_3353g")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_lk6ux")]([SubResource("Resource_vl3yb"), SubResource("Resource_lia6a"), SubResource("Resource_3wkn3")])
-starting_weapons = Array[ExtResource("7_nelm7")]([ExtResource("8_b6u11"), ExtResource("9_30oet"), ExtResource("10_2okta"), ExtResource("11_uyfu3")])
+starting_weapons = Array[ExtResource("7_nelm7")]([ExtResource("8_b6u11"), ExtResource("10_lk6ux"), ExtResource("11_4kun0")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"funkenpistole": "HINT_DISCOKUGEL_FUNKENPISTOLE",
+&"funkensieb": "HINT_DISCOKUGEL_FUNKENSIEB",
+&"prisma": "HINT_DISCOKUGEL_PRISMA"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"luck"])
 order = 6
-set_bonus_multiplier = Dictionary[StringName, float]({})
-banned_classes = Array[StringName]([])
-no_melee = false
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_DISCOKUGEL"
+tip_key = "TIP_CHAR_DISCOKUGEL"

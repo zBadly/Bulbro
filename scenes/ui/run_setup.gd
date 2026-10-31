@@ -1,6 +1,8 @@
 class_name RunSetup
 extends Control
 ## Vor dem Run: Charakterauswahl (Raster, gesperrte als Silhouette) -> Startwaffe -> Spannung -> Run.
+## Startwaffe (Phase 15, Paket 9): gleich große Karten mit Werten, Klassen und Synergie-Hinweis, Tooltip mit den Werten
+## inkl. Charakter (je Waffe ein unsichtbarer Vorschau-Spieler); die letzte Wahl je Charakter ist vorausgewählt.
 
 enum Step { CHARACTER, WEAPON, DIFFICULTY }
 
@@ -23,6 +25,12 @@ const GRID_VISIBLE_ROWS: int = 4
 const DIFFICULTY_WIDTH: float = 820.0
 const GAP: int = 20
 const LOCKED_COLOR: Color = Color("#000000")
+const PLAYER_SCENE: PackedScene = preload("res://scenes/player/player.tscn")
+## Startwaffen-Karten: größer als im Shop, damit Werte und Hinweis ohne Verkleinern passen; feste Größe für 2-4 Karten.
+const WEAPON_CARD_SIZE: Vector2 = Vector2(300, 620)
+const HINT_HEADING_COLOR: String = "#FFD43B"
+## Zeilen des Synergie-Hinweises (Überschrift + bis zu 6 Zeilen Text in voller Größe).
+const HINT_LINES: int = 7
 
 var _step: Step = Step.CHARACTER
 var _characters: Array[CharacterData] = []
@@ -32,6 +40,8 @@ var _content: VBoxContainer
 var _detail: VBoxContainer
 var _detail_scroll: ScrollContainer
 var _confirm: Button
+## Vorschau-Spieler je Startwaffe (nur im Waffenschritt), Grundlage der Tooltips.
+var _previews: Array[Player] = []
 
 
 func _ready() -> void:
@@ -69,6 +79,7 @@ func _show_step(step: Step) -> void:
 	for child: Node in _content.get_children():
 		_content.remove_child(child)
 		child.queue_free()
+	_free_previews()
 	match step:
 		Step.CHARACTER:
 			_build_characters()
@@ -142,7 +153,7 @@ func _build_characters() -> void:
 	_add_button(buttons, tr("BACK"), _back)
 	_confirm = _add_button(buttons, tr("CONFIRM"), _confirm_character)
 	_select_character(_character)
-	selected_button.call_deferred("grab_focus")
+	_focus_deferred.call_deferred(selected_button)
 
 
 func _select_character(character: CharacterData) -> void:
@@ -203,31 +214,54 @@ func _endless_best_text(character: CharacterData) -> String:
 func _confirm_character() -> void:
 	if not Unlocks.is_unlocked(_character):
 		return
-	if _character.starting_weapons.size() > 1:
-		_show_step(Step.WEAPON)
-	else:
-		_weapon = _character.starting_weapons[0] if not _character.starting_weapons.is_empty() else null
-		_show_step(Step.DIFFICULTY)
+	_weapon = _character.find_starting_weapon(SaveManager.get_start_weapon(_character.id))
+	_show_step(Step.WEAPON if _character.starting_weapons.size() > 1 else Step.DIFFICULTY)
 
 
 # --- Startwaffe ---
 
 func _build_weapons() -> void:
-	_title(tr("SELECT_WEAPON"))
+	_title(tr("SELECT_WEAPON_FOR") % tr(_character.name_key))
 	var row: HBoxContainer = HBoxContainer.new()
 	row.add_theme_constant_override("separation", GAP)
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	_content.add_child(row)
-	var first: Button = null
+	var focus: Button = null
 	for weapon: WeaponData in _character.starting_weapons:
 		var card: OfferCard = OfferCard.new()
+		card.custom_minimum_size = WEAPON_CARD_SIZE
+		card.payload = weapon
 		card.configure(weapon.texture, tr(weapon.name_key), WeaponData.MIN_TIER, TextFormat.describe_weapon(weapon, WeaponData.MIN_TIER))
+		var hint: String = _character.start_weapon_hint(weapon)
+		card.set_footer("[color=%s]%s[/color]\n%s" % [HINT_HEADING_COLOR, tr("START_WEAPON_SYNERGY"), tr(hint) if hint != "" else ""], HINT_LINES)
 		var button: Button = card.add_action(tr("CHOOSE"), _choose_weapon.bind(weapon))
-		if first == null or weapon == _weapon:
-			first = button
+		# Maus über der Karte setzt den Fokus: Tooltip und Auswahl verhalten sich wie mit dem Gamepad
+		card.mouse_entered.connect(button.grab_focus)
+		GameTooltip.attach_focus(button, card, TooltipText.weapon.bind(_make_preview(weapon), false))
+		if focus == null or weapon == _weapon:
+			focus = button
 		row.add_child(card)
 	_add_button(_button_row(), tr("BACK"), _back)
-	first.call_deferred("grab_focus")
+	_focus_deferred.call_deferred(focus)
+
+
+## Unsichtbarer Spieler mit Charakter und nur dieser Waffe: Tooltip-Werte wie im Run (Charakter-Boni, Set-Boni der
+## einen Waffe), ohne Run-Werte zu ändern.
+func _make_preview(weapon: WeaponData) -> Weapon:
+	var player: Player = PLAYER_SCENE.instantiate()
+	player.preview = true
+	player.visible = false
+	player.process_mode = Node.PROCESS_MODE_DISABLED
+	add_child(player)
+	player.apply_character(_character)
+	_previews.append(player)
+	return player.weapon_slots.add_weapon(weapon)
+
+
+func _free_previews() -> void:
+	for player: Player in _previews:
+		player.queue_free()
+	_previews.clear()
 
 
 func _choose_weapon(weapon: WeaponData) -> void:
@@ -254,10 +288,12 @@ func _build_difficulties() -> void:
 		if level == current:
 			focus = button
 	_add_button(_button_row(), tr("BACK"), _back)
-	focus.call_deferred("grab_focus")
+	_focus_deferred.call_deferred(focus)
 
 
 func _start_run(difficulty: DifficultyData) -> void:
+	if _weapon != null:
+		SaveManager.set_start_weapon(_character.id, _weapon.id)
 	GameState.set_run_setup(_character, _weapon, difficulty)
 	GameState.resume_data = {}
 	SaveManager.clear_run()
@@ -279,6 +315,13 @@ func _button_row() -> HBoxContainer:
 	row.add_theme_constant_override("separation", GAP)
 	_content.add_child(row)
 	return row
+
+
+## Fokus erst im nächsten Frame setzen; der Schritt kann bis dahin schon gewechselt haben (Button entfernt).
+## Variant statt Button: ein inzwischen freigegebener Button ließe sich sonst nicht übergeben.
+func _focus_deferred(button: Variant) -> void:
+	if is_instance_valid(button) and (button as Button).is_inside_tree():
+		(button as Button).grab_focus()
 
 
 func _add_button(parent: Control, text: String, callback: Callable) -> Button:

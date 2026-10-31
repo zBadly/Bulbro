@@ -208,6 +208,7 @@ func _continue_endless() -> void:
 
 func _restart() -> void:
 	get_tree().paused = false
+	GameState.restore_run_setup()
 	get_tree().reload_current_scene()
 
 

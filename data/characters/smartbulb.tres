@@ -6,9 +6,8 @@
 [ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_ihrol"]
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_46gpl"]
 [ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="6_v0ltx"]
-[ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="7_1fwb2"]
-[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="8_qjid3"]
-[ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="9_8i72f"]
+[ext_resource type="Resource" path="res://data/weapons/funkensieb.tres" id="8_h3ily"]
+[ext_resource type="Resource" path="res://data/weapons/laserpointer.tres" id="9_ykdht"]
 [ext_resource type="Texture2D" path="res://art/characters/smartbulb.svg" id="10_6wyax"]
 [ext_resource type="Texture2D" path="res://art/portraits/smartbulb.svg" id="p_portrait"]
 
@@ -43,15 +42,20 @@ modifiers = Array[ExtResource("2_ykdht")]([SubResource("Resource_0ehql"), SubRes
 
 [resource]
 script = ExtResource("4_ihrol")
-tip_key = "TIP_CHAR_SMARTBULB"
-lore_text = "LORE_CHAR_SMARTBULB"
 id = &"smartbulb"
 name_key = "CHAR_SMARTBULB"
 texture = ExtResource("10_6wyax")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_h3ily")]([SubResource("Resource_vldw5")])
-starting_weapons = Array[ExtResource("5_46gpl")]([ExtResource("6_v0ltx"), ExtResource("7_1fwb2"), ExtResource("8_qjid3"), ExtResource("9_8i72f")])
+starting_weapons = Array[ExtResource("5_46gpl")]([ExtResource("6_v0ltx"), ExtResource("8_h3ily"), ExtResource("9_ykdht")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"funkenpistole": "HINT_SMARTBULB_FUNKENPISTOLE",
+&"funkensieb": "HINT_SMARTBULB_FUNKENSIEB",
+&"laserpointer": "HINT_SMARTBULB_LASERPOINTER"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"economy"])
 order = 17
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_SMARTBULB"
+tip_key = "TIP_CHAR_SMARTBULB"
 light_color = Color(0.561, 0.89, 1, 1)

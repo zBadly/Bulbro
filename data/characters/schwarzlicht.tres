@@ -7,9 +7,10 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_fxtoj"]
 [ext_resource type="Resource" path="res://data/weapons/voodoo_nadel.tres" id="6_u6ig4"]
 [ext_resource type="Texture2D" path="res://art/characters/schwarzlicht.svg" id="7_q3p68"]
+[ext_resource type="Resource" path="res://data/weapons/gluehwuermchen_stab.tres" id="10_fxtoj"]
 [ext_resource type="Texture2D" path="res://art/portraits/schwarzlicht.svg" id="p_portrait"]
-[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="r2_mod"]
 [ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="r2_eff"]
+[ext_resource type="Script" path="res://scripts/data/stat_modifier.gd" id="r2_mod"]
 
 [sub_resource type="Resource" id="Resource_ghnhi"]
 script = ExtResource("2_xmywn")
@@ -33,15 +34,19 @@ modifiers = Array[ExtResource("r2_mod")]([SubResource("Resource_r2armor")])
 
 [resource]
 script = ExtResource("4_ap3it")
-tip_key = "TIP_CHAR_SCHWARZLICHT"
-lore_text = "LORE_CHAR_SCHWARZLICHT"
 id = &"schwarzlicht"
 name_key = "CHAR_SCHWARZLICHT"
 texture = ExtResource("7_q3p68")
+portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_1cme1")]([SubResource("Resource_ghnhi"), SubResource("Resource_76kjj"), SubResource("Resource_r2stats")])
-starting_weapons = Array[ExtResource("5_fxtoj")]([ExtResource("6_u6ig4")])
+starting_weapons = Array[ExtResource("5_fxtoj")]([ExtResource("6_u6ig4"), ExtResource("10_fxtoj")])
+start_weapon_hints = Dictionary[StringName, String]({
+&"gluehwuermchen_stab": "HINT_SCHWARZLICHT_GLUEHWUERMCHEN_STAB",
+&"voodoo_nadel": "HINT_SCHWARZLICHT_VOODOO_NADEL"
+})
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"elemental"])
 order = 15
-portrait = ExtResource("p_portrait")
+lore_text = "LORE_CHAR_SCHWARZLICHT"
+tip_key = "TIP_CHAR_SCHWARZLICHT"
 light_color = Color(0.69, 0.486, 1, 1)

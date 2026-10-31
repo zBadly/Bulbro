@@ -36,6 +36,14 @@ static func attach(control: Control, builder: Callable, mouse: bool = true, focu
 			_hide_on(control))
 
 
+## Tooltip bei Fokus von `trigger` (Maus über der Karte setzt dort den Fokus), platziert neben `anchor` (z. B. der
+## ganzen Karte statt nur ihres Buttons).
+static func attach_focus(trigger: Control, anchor: Control, builder: Callable) -> void:
+	trigger.focus_entered.connect(func() -> void: _show_on(anchor, builder))
+	trigger.focus_exited.connect(func() -> void: _hide_on(anchor))
+	trigger.tree_exiting.connect(func() -> void: _hide_on(anchor))
+
+
 ## Gerade sichtbarer Tooltip-Text (leer, wenn keiner offen ist); für Tests und Screenshots.
 static func current_text() -> String:
 	if _instance == null or not is_instance_valid(_instance) or not _instance._panel.visible:
