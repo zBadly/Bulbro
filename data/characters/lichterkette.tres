@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="4_akeya"]
 [ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="5_enmux"]
 [ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="6_8vsel"]
-[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="7_58jp2"]
+[ext_resource type="Resource" path="res://data/weapons/laserpointer.tres" id="8_v1nw8"]
 [ext_resource type="Texture2D" path="res://art/characters/lichterkette.svg" id="9_lpemx"]
 [ext_resource type="Texture2D" path="res://art/portraits/lichterkette.svg" id="p_portrait"]
 
@@ -22,11 +22,11 @@ name_key = "CHAR_LICHTERKETTE"
 texture = ExtResource("9_lpemx")
 portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_v1nw8")]([SubResource("Resource_eqtwc")])
-starting_weapons = Array[ExtResource("4_akeya")]([ExtResource("5_enmux"), ExtResource("6_8vsel"), ExtResource("7_58jp2")])
+starting_weapons = Array[ExtResource("4_akeya")]([ExtResource("5_enmux"), ExtResource("6_8vsel"), ExtResource("8_v1nw8")])
 start_weapon_hints = Dictionary[StringName, String]({
-&"ast": "HINT_LICHTERKETTE_AST",
 &"funkenpistole": "HINT_LICHTERKETTE_FUNKENPISTOLE",
-&"glasscherbe": "HINT_LICHTERKETTE_GLASSCHERBE"
+&"glasscherbe": "HINT_LICHTERKETTE_GLASSCHERBE",
+&"laserpointer": "HINT_LICHTERKETTE_LASERPOINTER"
 })
 weapon_slots = 12
 order = 7

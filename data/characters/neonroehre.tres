@@ -8,8 +8,8 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="6_rft8l"]
 [ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="7_6yh84"]
 [ext_resource type="Texture2D" path="res://art/characters/neonroehre.svg" id="8_u47bu"]
-[ext_resource type="Resource" path="res://data/weapons/kabelpeitsche.tres" id="9_hisj3"]
-[ext_resource type="Resource" path="res://data/weapons/laserpointer.tres" id="10_uhryv"]
+[ext_resource type="Resource" path="res://data/weapons/taschenlampenstrahl.tres" id="9_hisj3"]
+[ext_resource type="Resource" path="res://data/weapons/kristallstab.tres" id="10_uhryv"]
 [ext_resource type="Texture2D" path="res://art/portraits/neonroehre.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_3kgnn"]
@@ -52,8 +52,8 @@ effects = Array[ExtResource("1_p857a")]([SubResource("Resource_3kgnn"), SubResou
 starting_weapons = Array[ExtResource("6_rft8l")]([ExtResource("7_6yh84"), ExtResource("9_hisj3"), ExtResource("10_uhryv")])
 start_weapon_hints = Dictionary[StringName, String]({
 &"glasscherbe": "HINT_NEONROEHRE_GLASSCHERBE",
-&"kabelpeitsche": "HINT_NEONROEHRE_KABELPEITSCHE",
-&"laserpointer": "HINT_NEONROEHRE_LASERPOINTER"
+&"kristallstab": "HINT_NEONROEHRE_KRISTALLSTAB",
+&"taschenlampenstrahl": "HINT_NEONROEHRE_TASCHENLAMPENSTRAHL"
 })
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"crit"])

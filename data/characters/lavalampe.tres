@@ -5,10 +5,10 @@
 [ext_resource type="Script" path="res://scripts/data/stat_effect.gd" id="3_lf3q1"]
 [ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_yaesr"]
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_8stsk"]
-[ext_resource type="Resource" path="res://data/weapons/loetkolben.tres" id="6_ib2ii"]
 [ext_resource type="Resource" path="res://data/weapons/blitzwerfer.tres" id="7_i8wca"]
+[ext_resource type="Resource" path="res://data/weapons/taschenlampenstrahl.tres" id="7_yaesr"]
 [ext_resource type="Texture2D" path="res://art/characters/lavalampe.svg" id="8_2t254"]
-[ext_resource type="Resource" path="res://data/weapons/gluehwuermchen_stab.tres" id="9_yaesr"]
+[ext_resource type="Resource" path="res://data/weapons/voodoo_nadel.tres" id="9_8stsk"]
 [ext_resource type="Resource" path="res://data/weapons/kristallstab.tres" id="10_8stsk"]
 [ext_resource type="Texture2D" path="res://art/portraits/lavalampe.svg" id="p_portrait"]
 
@@ -56,12 +56,12 @@ name_key = "CHAR_LAVALAMPE"
 texture = ExtResource("8_2t254")
 portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_3phsy")]([SubResource("Resource_8034g"), SubResource("Resource_galsc")])
-starting_weapons = Array[ExtResource("5_8stsk")]([ExtResource("6_ib2ii"), ExtResource("7_i8wca"), ExtResource("9_yaesr"), ExtResource("10_8stsk")])
+starting_weapons = Array[ExtResource("5_8stsk")]([ExtResource("7_yaesr"), ExtResource("7_i8wca"), ExtResource("9_8stsk"), ExtResource("10_8stsk")])
 start_weapon_hints = Dictionary[StringName, String]({
 &"blitzwerfer": "HINT_LAVALAMPE_BLITZWERFER",
-&"gluehwuermchen_stab": "HINT_LAVALAMPE_GLUEHWUERMCHEN_STAB",
 &"kristallstab": "HINT_LAVALAMPE_KRISTALLSTAB",
-&"loetkolben": "HINT_LAVALAMPE_LOETKOLBEN"
+&"taschenlampenstrahl": "HINT_LAVALAMPE_TASCHENLAMPENSTRAHL",
+&"voodoo_nadel": "HINT_LAVALAMPE_VOODOO_NADEL"
 })
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"elemental"])

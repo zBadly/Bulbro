@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="7_4ksy0"]
 [ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="9_fm1ko"]
 [ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="11_iq5cr"]
-[ext_resource type="Resource" path="res://data/weapons/kabelpeitsche.tres" id="11_ugfeh"]
+[ext_resource type="Resource" path="res://data/weapons/lampenhammer.tres" id="11_ugfeh"]
 [ext_resource type="Texture2D" path="res://art/characters/blitzlicht.svg" id="12_wpe7u"]
 [ext_resource type="Texture2D" path="res://art/portraits/blitzlicht.svg" id="p_portrait"]
 
@@ -53,7 +53,7 @@ starting_weapons = Array[ExtResource("7_4ksy0")]([ExtResource("11_iq5cr"), ExtRe
 start_weapon_hints = Dictionary[StringName, String]({
 &"funkenfaust": "HINT_BLITZLICHT_FUNKENFAUST",
 &"glasscherbe": "HINT_BLITZLICHT_GLASSCHERBE",
-&"kabelpeitsche": "HINT_BLITZLICHT_KABELPEITSCHE"
+&"lampenhammer": "HINT_BLITZLICHT_LAMPENHAMMER"
 })
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"speed"])

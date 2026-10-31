@@ -2,30 +2,30 @@ extends GutTest
 ## Startwaffen je Charakter (Phase 15, Paket 9): Listen, Hinweise, gespeicherte Wahl, Auswahl-Layout und "Nochmal".
 
 const RUN_SETUP_SCENE: PackedScene = preload("res://scenes/ui/run_setup.tscn")
-## Listen aus docs/PHASE_15.md, Paket 9 (Reihenfolge = Reihenfolge der Karten).
+## Listen aus docs/PHASE_15.md, Paket 9, mit den Tauschen nach der Simulator-Prüfung (Reihenfolge = Kartenreihenfolge).
 const EXPECTED: Dictionary[StringName, Array] = {
-	&"standardbirne": [&"funkenpistole", &"glasscherbe", &"ast", &"funkenfaust"],
-	&"gluehfaden_boxer": [&"funkenfaust", &"ast", &"lampenhammer"],
-	&"neonroehre": [&"glasscherbe", &"kabelpeitsche", &"laserpointer"],
+	&"standardbirne": [&"funkenpistole", &"glasscherbe", &"kabelpeitsche", &"funkenfaust"],
+	&"gluehfaden_boxer": [&"funkenfaust", &"lampenhammer"],
+	&"neonroehre": [&"glasscherbe", &"taschenlampenstrahl", &"kristallstab"],
 	&"led_schuetze": [&"funkenpistole", &"laserpointer", &"batterie_schleuder", &"prisma"],
-	&"lavalampe": [&"loetkolben", &"blitzwerfer", &"gluehwuermchen_stab", &"kristallstab"],
+	&"lavalampe": [&"taschenlampenstrahl", &"blitzwerfer", &"voodoo_nadel", &"kristallstab"],
 	&"taschenlampe": [&"schraubenzieher", &"loetkolben"],
-	&"discokugel": [&"funkenpistole", &"prisma", &"funkensieb"],
-	&"lichterkette": [&"funkenpistole", &"glasscherbe", &"ast"],
+	&"discokugel": [&"funkenpistole", &"prisma", &"laserpointer"],
+	&"lichterkette": [&"funkenpistole", &"glasscherbe", &"laserpointer"],
 	&"halogenstrahler": [&"lampenhammer", &"leuchtrakete", &"taschenlampenstrahl"],
 	&"nachtlicht": [&"heilstrahl", &"dornenranke"],
-	&"blitzlicht": [&"funkenfaust", &"glasscherbe", &"kabelpeitsche"],
-	&"kerze": [&"ast", &"batterie_schleuder"],
+	&"blitzlicht": [&"funkenfaust", &"glasscherbe", &"lampenhammer"],
+	&"kerze": [&"ast", &"batterie_schleuder", &"dornenranke"],
 	&"irrlicht": [&"seelenlaterne", &"gluehwuermchen_stab"],
-	&"zuendkerze": [&"feuerzeugwerfer", &"loetkolben"],
+	&"zuendkerze": [&"feuerzeugwerfer", &"blitzwerfer"],
 	&"kronleuchter": [&"kristallstab", &"blitzwerfer", &"taschenlampenstrahl"],
-	&"schwarzlicht": [&"voodoo_nadel", &"gluehwuermchen_stab"],
-	&"gewaechshauslampe": [&"dornenranke", &"ast", &"heilstrahl"],
-	&"smartbulb": [&"funkenpistole", &"funkensieb", &"laserpointer"],
+	&"schwarzlicht": [&"voodoo_nadel", &"blitzwerfer"],
+	&"gewaechshauslampe": [&"dornenranke", &"kabelpeitsche", &"heilstrahl"],
+	&"smartbulb": [&"funkenpistole", &"leuchtrakete", &"laserpointer"],
 	&"drohnenleuchte": [&"schraubenzieher", &"funkenpistole"],
 	&"stroboskop": [&"laserpointer", &"prisma", &"taschenlampenstrahl"],
 	&"vampirbirne": [&"glasscherbe", &"kabelpeitsche", &"funkenfaust"],
-	&"spiegelkugel": [&"prisma", &"funkenpistole", &"glasscherbe"],
+	&"spiegelkugel": [&"prisma", &"funkenpistole", &"laserpointer"],
 }
 
 
@@ -68,7 +68,7 @@ func test_every_start_weapon_has_hint_in_both_languages() -> void:
 
 
 func test_weak_combinations_are_described_honestly() -> void:
-	# Keine Versprechen: die drei schwächeren Kombinationen nennen, was fehlt.
+	# Keine Versprechen: schwächere Kombinationen nennen, was fehlt.
 	TranslationServer.set_locale("de")
 	var boxer: CharacterData = _char(&"gluehfaden_boxer")
 	for weapon: WeaponData in boxer.starting_weapons.slice(1):
@@ -76,18 +76,19 @@ func test_weak_combinations_are_described_honestly() -> void:
 	var lamp: CharacterData = _char(&"taschenlampe")
 	assert_string_contains(tr(lamp.start_weapon_hint(lamp.starting_weapons[1])), "Kein Strom-Bonus")
 	var neon: CharacterData = _char(&"neonroehre")
-	assert_string_contains(tr(neon.start_weapon_hint(neon.starting_weapons[2])), "-10 Fern")
+	for weapon: WeaponData in neon.starting_weapons.slice(1):
+		assert_string_contains(tr(neon.start_weapon_hint(weapon)), "Strom startet bei 0")
 
 
 func test_saved_choice_and_fallback() -> void:
 	var lava: CharacterData = _char(&"lavalampe")
 	assert_eq(SaveManager.get_start_weapon(lava.id), &"")
-	assert_eq(lava.find_starting_weapon(SaveManager.get_start_weapon(lava.id)).id, &"loetkolben")
+	assert_eq(lava.find_starting_weapon(SaveManager.get_start_weapon(lava.id)).id, &"taschenlampenstrahl")
 	SaveManager.set_start_weapon(lava.id, &"kristallstab")
 	assert_eq(SaveManager.get_start_weapon(lava.id), &"kristallstab")
 	assert_eq(lava.find_starting_weapon(&"kristallstab").id, &"kristallstab")
 	# Gespeicherte Waffe nicht (mehr) in der Liste: erste Startwaffe
-	assert_eq(lava.find_starting_weapon(&"funkenpistole").id, &"loetkolben")
+	assert_eq(lava.find_starting_weapon(&"funkenpistole").id, &"taschenlampenstrahl")
 	SaveManager.load_game()
 	assert_eq(SaveManager.get_start_weapon(lava.id), &"kristallstab", "bleibt nach dem Laden erhalten")
 
@@ -130,7 +131,7 @@ func test_cards_have_same_size_for_two_and_four_weapons() -> void:
 	var size_four: Vector2 = _cards(four)[0].size
 	for card: OfferCard in _cards(four):
 		assert_eq(card.size, size_four)
-	var two: RunSetup = _open_weapon_step(&"kerze")
+	var two: RunSetup = _open_weapon_step(&"taschenlampe")
 	await wait_process_frames(2)
 	for card: OfferCard in _cards(two):
 		assert_eq(card.size, size_four, "Karten springen nicht mit der Anzahl")
@@ -140,7 +141,7 @@ func test_tooltip_uses_character_values_without_run_line() -> void:
 	var setup: RunSetup = _open_weapon_step(&"gluehfaden_boxer")
 	await wait_process_frames(2)
 	var previews: Array[Player] = setup.get("_previews")
-	assert_eq(previews.size(), 3, "ein Vorschau-Spieler je Startwaffe")
+	assert_eq(previews.size(), 2, "ein Vorschau-Spieler je Startwaffe")
 	var fist: Weapon = previews[0].weapon_slots.get_weapons()[0]
 	assert_lt(fist.get_cooldown(), fist.get_tier_stats().cooldown, "+50 % Unbewaffnet-Angriffstempo im Tooltip")
 	var text: String = TooltipText.weapon(fist, false)

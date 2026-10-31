@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="8_jowux"]
 [ext_resource type="Resource" path="res://data/weapons/dornenranke.tres" id="9_n3o4t"]
 [ext_resource type="Texture2D" path="res://art/characters/gewaechshauslampe.svg" id="10_go43i"]
-[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="11_3ui34"]
+[ext_resource type="Resource" path="res://data/weapons/kabelpeitsche.tres" id="11_3ui34"]
 [ext_resource type="Resource" path="res://data/weapons/heilstrahl.tres" id="12_anirj"]
 [ext_resource type="Texture2D" path="res://art/portraits/gewaechshauslampe.svg" id="p_portrait"]
 
@@ -52,9 +52,9 @@ portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_n88yd")]([SubResource("Resource_3n168"), SubResource("Resource_w5onn")])
 starting_weapons = Array[ExtResource("8_jowux")]([ExtResource("9_n3o4t"), ExtResource("11_3ui34"), ExtResource("12_anirj")])
 start_weapon_hints = Dictionary[StringName, String]({
-&"ast": "HINT_GEWAECHSHAUSLAMPE_AST",
 &"dornenranke": "HINT_GEWAECHSHAUSLAMPE_DORNENRANKE",
-&"heilstrahl": "HINT_GEWAECHSHAUSLAMPE_HEILSTRAHL"
+&"heilstrahl": "HINT_GEWAECHSHAUSLAMPE_HEILSTRAHL",
+&"kabelpeitsche": "HINT_GEWAECHSHAUSLAMPE_KABELPEITSCHE"
 })
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"hp"])

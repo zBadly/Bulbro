@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://scripts/data/character_data.gd" id="4_ihrol"]
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_46gpl"]
 [ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="6_v0ltx"]
-[ext_resource type="Resource" path="res://data/weapons/funkensieb.tres" id="8_h3ily"]
+[ext_resource type="Resource" path="res://data/weapons/leuchtrakete.tres" id="8_h3ily"]
 [ext_resource type="Resource" path="res://data/weapons/laserpointer.tres" id="9_ykdht"]
 [ext_resource type="Texture2D" path="res://art/characters/smartbulb.svg" id="10_6wyax"]
 [ext_resource type="Texture2D" path="res://art/portraits/smartbulb.svg" id="p_portrait"]
@@ -50,8 +50,8 @@ effects = Array[ExtResource("1_h3ily")]([SubResource("Resource_vldw5")])
 starting_weapons = Array[ExtResource("5_46gpl")]([ExtResource("6_v0ltx"), ExtResource("8_h3ily"), ExtResource("9_ykdht")])
 start_weapon_hints = Dictionary[StringName, String]({
 &"funkenpistole": "HINT_SMARTBULB_FUNKENPISTOLE",
-&"funkensieb": "HINT_SMARTBULB_FUNKENSIEB",
-&"laserpointer": "HINT_SMARTBULB_LASERPOINTER"
+&"laserpointer": "HINT_SMARTBULB_LASERPOINTER",
+&"leuchtrakete": "HINT_SMARTBULB_LEUCHTRAKETE"
 })
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"economy"])

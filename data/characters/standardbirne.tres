@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="5_7etbl"]
 [ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="6_txp8q"]
 [ext_resource type="Resource" path="res://data/weapons/glasscherbe.tres" id="7_bv26f"]
-[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="8_6ll5f"]
+[ext_resource type="Resource" path="res://data/weapons/kabelpeitsche.tres" id="9_6ughp"]
 [ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="9_h533c"]
 [ext_resource type="Texture2D" path="res://art/characters/standardbirne.svg" id="10_olhf7"]
 [ext_resource type="Texture2D" path="res://art/portraits/standardbirne.svg" id="p_portrait"]
@@ -38,12 +38,12 @@ name_key = "CHAR_STANDARDBIRNE"
 texture = ExtResource("10_olhf7")
 portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_p2o4s")]([SubResource("Resource_chdfv")])
-starting_weapons = Array[ExtResource("5_7etbl")]([ExtResource("6_txp8q"), ExtResource("7_bv26f"), ExtResource("8_6ll5f"), ExtResource("9_h533c")])
+starting_weapons = Array[ExtResource("5_7etbl")]([ExtResource("6_txp8q"), ExtResource("7_bv26f"), ExtResource("9_6ughp"), ExtResource("9_h533c")])
 start_weapon_hints = Dictionary[StringName, String]({
-&"ast": "HINT_STANDARDBIRNE_AST",
 &"funkenfaust": "HINT_STANDARDBIRNE_FUNKENFAUST",
 &"funkenpistole": "HINT_STANDARDBIRNE_FUNKENPISTOLE",
-&"glasscherbe": "HINT_STANDARDBIRNE_GLASSCHERBE"
+&"glasscherbe": "HINT_STANDARDBIRNE_GLASSCHERBE",
+&"kabelpeitsche": "HINT_STANDARDBIRNE_KABELPEITSCHE"
 })
 weapon_slots = 6
 lore_text = "LORE_CHAR_STANDARDBIRNE"

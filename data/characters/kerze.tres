@@ -8,6 +8,7 @@
 [ext_resource type="Resource" path="res://data/weapons/ast.tres" id="6_rnf4g"]
 [ext_resource type="Texture2D" path="res://art/characters/kerze.svg" id="7_x4dop"]
 [ext_resource type="Resource" path="res://data/weapons/batterie_schleuder.tres" id="8_uegwu"]
+[ext_resource type="Resource" path="res://data/weapons/dornenranke.tres" id="9_mqsc0"]
 [ext_resource type="Texture2D" path="res://art/portraits/kerze.svg" id="p_portrait"]
 
 [sub_resource type="Resource" id="Resource_n7vwf"]
@@ -36,10 +37,11 @@ name_key = "CHAR_KERZE"
 texture = ExtResource("7_x4dop")
 portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_kia3w")]([SubResource("Resource_rm355")])
-starting_weapons = Array[ExtResource("5_ipdas")]([ExtResource("6_rnf4g"), ExtResource("8_uegwu")])
+starting_weapons = Array[ExtResource("5_ipdas")]([ExtResource("6_rnf4g"), ExtResource("8_uegwu"), ExtResource("9_mqsc0")])
 start_weapon_hints = Dictionary[StringName, String]({
 &"ast": "HINT_KERZE_AST",
-&"batterie_schleuder": "HINT_KERZE_BATTERIE_SCHLEUDER"
+&"batterie_schleuder": "HINT_KERZE_BATTERIE_SCHLEUDER",
+&"dornenranke": "HINT_KERZE_DORNENRANKE"
 })
 weapon_slots = 6
 preferred_tags = Array[StringName]([&"hp"])

@@ -8,7 +8,6 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="6_7yu6f"]
 [ext_resource type="Resource" path="res://data/weapons/funkenfaust.tres" id="7_40biv"]
 [ext_resource type="Texture2D" path="res://art/characters/gluehfaden_boxer.svg" id="8_4io72"]
-[ext_resource type="Resource" path="res://data/weapons/ast.tres" id="9_ed2ex"]
 [ext_resource type="Resource" path="res://data/weapons/lampenhammer.tres" id="10_3har3"]
 [ext_resource type="Texture2D" path="res://art/portraits/gluehfaden_boxer.svg" id="p_portrait"]
 
@@ -44,9 +43,8 @@ name_key = "CHAR_GLUEHFADEN_BOXER"
 texture = ExtResource("8_4io72")
 portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_3yssm")]([SubResource("Resource_jagdv"), SubResource("Resource_y2agg")])
-starting_weapons = Array[ExtResource("6_7yu6f")]([ExtResource("7_40biv"), ExtResource("9_ed2ex"), ExtResource("10_3har3")])
+starting_weapons = Array[ExtResource("6_7yu6f")]([ExtResource("7_40biv"), ExtResource("10_3har3")])
 start_weapon_hints = Dictionary[StringName, String]({
-&"ast": "HINT_GLUEHFADEN_BOXER_AST",
 &"funkenfaust": "HINT_GLUEHFADEN_BOXER_FUNKENFAUST",
 &"lampenhammer": "HINT_GLUEHFADEN_BOXER_LAMPENHAMMER"
 })

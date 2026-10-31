@@ -19,11 +19,13 @@ Stand 31.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 - **Erledigt 30.10.:** Paket 8, Teil „Türme“ (Commit „Feature: Türme (Phase 15, Paket 8)“): Flammenturm, Frostturm, Heilturm, Stolperdraht als stapelbare Items, `TowerBuilder` mit Ring-Platzierung und Obergrenzen (12 Türme, 24 Minen), Freischaltungen zählen nur Lampentürme (Entscheidung des Spielers, Test „5 Frosttürme schalten die Drohnenleuchte nicht frei“), Simulator `--towers`, Performance gemessen. Details im Abschnitt „Türme“.
 - **Erledigt 31.10.:** Paket 8d, Balancing der neuen Inhalte (Commit „Balancing: neue Inhalte“): Simulator erweitert (Tempo ×6, gezielte Builds, Reichweite, Salven-Modell der Schildkröte mit Fix der Schützen-Erkennung, Flammenstrahl mit `beam_max_targets` und Gegnerdichte, `--combos`, `--set`), Werte nach OK des Spielers geändert. Details, Tabellen und Kombinationen im Abschnitt „Balancing der neuen Inhalte (Paket 8d)“.
 - **Erledigt 31.10.:** Paket 9, Teil „Startwaffen je Charakter“ (Commit „Feature: Startwaffen je Charakter (Phase 15, Paket 9)“): 22 Listen aus PHASE_15 ohne Konflikt mit den Einschränkungen, Auswahl mit Werten, Klassen, ehrlichem Synergie-Hinweis und Tooltip inkl. Charakter-Boni, gespeicherte Wahl je Charakter, „Nochmal“ mit Charakter und Startwaffe des Run-Starts, Simulator `--start-weapons`. Details, Tabelle und Austauschvorschläge im Abschnitt „Startwaffen je Charakter“.
-- **Als Nächstes:** Entscheidung des Spielers zu den Austauschvorschlägen (Startwaffen-Fallen), dann Paket 9, Teil „Gesamtstatistiken und Achievements“.
+- **Erledigt 31.10.:** Startwaffen-Tausch nach Simulator-Prüfung (Commit „Balancing: Startwaffen getauscht (Phase 15, Paket 9)“): 13 Charaktere mit geänderter Liste, neue Simulator-Tabelle und Prüfung der Kerze-Freischaltung im Abschnitt „Startwaffen je Charakter“.
+- **Als Nächstes:** Paket 9, Teil „Gesamtstatistiken und Achievements“.
 - **Für Paket 9 schon vorhanden:** `SaveManager.get_run_history()` liefert die letzten 20 Runs (neueste zuerst) mit Charakter, Spannung, Ergebnis, Welle, Endlos-Welle, Datum, Kampfzeit, Level, Kills und Top-3-Quellen. Siehe Abschnitt „Run-Statistik und Run-Ende“.
 
 Offene Punkte:
-- Startwaffen-Fallen (Paket 9): Austauschvorschläge im Abschnitt „Startwaffen je Charakter“ warten auf die Entscheidung des Spielers; die Hinweistexte müssen bei einem Tausch mitgeändert werden.
+- **Balancing für den Abschluss (1): Nahkampf auf Spannung 3.** In `--start-weapons` liegen Nahkampf-Startwaffen auf Spannung 3 allgemein hinter Fernkampf und Strom (z. B. Standardbirne: Glasscherbe 59 %, Funkenfaust 47 % gegen Funkenpistole 79 %). Prüfen, ob das echt ist oder ein Simulator-Artefakt (Treffer- und Schadensmodell für Nahkampf, Kontaktschaden in der Nähe, Reichweite), am besten mit echten Runs auf Spannung 3; falls echt, Nahkampf-Waffen oder -Stats anheben.
+- **Balancing für den Abschluss (2): Vampirbirne auf Spannung 3 zu schwach.** Glasscherbe 39 %, Funkenfaust 33 % gegen Kabelpeitsche 71 %; kein Startwaffen-Tausch innerhalb von 15 Punkten gefunden (Prisma 99 % wäre zu stark). Den Charakter selbst anpassen (z. B. Lebensraub, HP-Verlust), Zusammenhang mit Punkt (1) beachten.
 - Echter Endlos-Run zur Bestätigung von Welle 25 und 30 steht aus.
 - `stats.runs` = 2 im echten Spielstand ist geklärt (22.10.): Die 6.014 Kills übersteigen, was ein einzelner Run auf Spannung 0 liefern kann (rund 4.850 Gegner in den Wellen 1–19 plus Bosswelle). Es sind also zwei echte Runs mit Kills zu Ende gegangen, vermutlich der in der Sicherung vom 21.10. gespeicherte, unterbrochene Run (per „Fortsetzen“) und der Sieg mit dem LED-Schützen. Headless-Check und Tests können seit dem 22.10. ohnehin nicht mehr in den echten Spielstand schreiben.
 - Runs, die zwischen dem 21.10. 14:10 (Fehler eingeführt) und dem Fix endeten, fehlen in der Statistik und lassen sich nicht nachtragen.
@@ -445,81 +447,17 @@ Charakter-Tabelle mit dem Reichweiten-Modell (200 Runs): Spannung 0 Schnitt 85 %
 
 ### Startwaffen je Charakter (Phase 15, Paket 9)
 
-- **Listen:** wie in PHASE_15 (Paket 9), Reihenfolge = Kartenreihenfolge, abgesichert durch `tests/unit/test_start_weapons.gd`. Alle bestehen `CharacterData.can_use_weapon` (LED-Schütze nur Fernkampf, Kerze ohne Elementar, Zündkerze ohne Medizinisch). Die früheren „beliebig“-Charaktere (Discokugel, Lichterkette, Halogenstrahler, Blitzlicht, Smartbulb, Spiegelkugel) haben jetzt eigene Listen; GDD Abschnitt 10 ist angepasst.
-- **Hinweise:** `CharacterData.start_weapon_hints` (Waffen-ID → Schlüssel `HINT_<CHARAKTER>_<WAFFE>`), 62 Texte auf Deutsch und Englisch, von Hand. Schwächere Kombinationen sagen, was fehlt (Boxer mit Ast/Lampenhammer „Kein Unbewaffnet-Bonus“, Taschenlampe mit Lötkolben „Kein Strom-Bonus“, Neonröhre mit Laserpointer „-10 Fern bei nur 50 % Skalierung“), Charaktere ohne passende Regel „Keine Charakter-Synergie“.
+- **Listen:** wie in PHASE_15 (Paket 9) mit den Tauschen unten, Reihenfolge = Kartenreihenfolge, abgesichert durch `tests/unit/test_start_weapons.gd`. Alle bestehen `CharacterData.can_use_weapon` (LED-Schütze nur Fernkampf, Kerze ohne Elementar, Zündkerze ohne Medizinisch). Die früheren „beliebig“-Charaktere (Discokugel, Lichterkette, Halogenstrahler, Blitzlicht, Smartbulb, Spiegelkugel) haben jetzt eigene Listen; GDD Abschnitt 10 ist angepasst.
+- **Hinweise:** `CharacterData.start_weapon_hints` (Waffen-ID → Schlüssel `HINT_<CHARAKTER>_<WAFFE>`), 62 Texte auf Deutsch und Englisch, von Hand. Schwächere Kombinationen sagen, was fehlt (Boxer mit Lampenhammer „Kein Unbewaffnet-Bonus“, Taschenlampe mit Lötkolben „Kein Strom-Bonus“, Neonröhre mit Strom-Waffen „Strom startet bei 0“), Charaktere ohne passende Regel „Keine Charakter-Synergie“.
 - **Auswahl:** Karten 300×620 (feste Größe für 2–4 Karten), Beschreibung mit Werten und Klassen, darunter ein Fuß „Synergie“ mit fester Höhe (7 Zeilen, Schrift wird bei Bedarf kleiner). Tooltip aus Paket 4 an der Karte, ausgelöst über den Fokus des „Wählen“-Buttons; Maus über der Karte setzt den Fokus, dadurch verhalten sich Maus und Gamepad gleich. Die Werte im Tooltip kommen von je einem unsichtbaren Vorschau-Spieler pro Waffe (`Player.preview`: nicht in der Spielergruppe, ändert keine Run-Werte), ohne die Zeile „In diesem Run“. Geprüft mit Screenshots bei 1280×720 (2, 3 und 4 Karten).
 - **Freischaltungen:** Waffen haben keine; alle Startwaffen sind wählbar, keine Silhouetten.
 - **Speichern:** `progress.start_weapons` (`SaveManager.get_start_weapon`/`set_start_weapon`), geschrieben beim Run-Start, auch in späteren Admin-Runs (Einstellung, keine Leistung). Ungültige oder entfernte Waffe → erste der Liste (`CharacterData.find_starting_weapon`). Keine neue Spielstand-Version nötig, die Migration ergänzt das Feld.
 - **„Nochmal“:** `GameState.setup_character`/`setup_weapon` merken den Run-Start, `restore_run_setup()` vor dem Neuladen. Vorher hätte ein Admin-Charakterwechsel den neuen Charakter mit in den nächsten Run genommen.
 
-Simulator `--start-weapons` (150 Runs je Waffe und Stufe, Seed 4242, Vergleich mit der besten Startwaffe des Charakters; Siegquoten sind Vergleichswerte):
+Simulator `--start-weapons` (150 Runs je Waffe und Stufe, Seed 4242, Vergleich mit der besten Startwaffe des Charakters; Siegquoten sind Vergleichswerte).
 
-| Charakter | Startwaffe | S0 Sieg | S0 Ø Welle | S0 Abstand | S3 Sieg | S3 Ø Welle | S3 Abstand | Falle |
-|---|---|---|---|---|---|---|---|---|
-| Standardbirne | Funkenpistole | 91 % | 20.9 | – | 79 % | 20.3 | – | |
-| Standardbirne | Glasscherbe | 88 % | 20.8 | -3 | 59 % | 17.0 | -21 | **ja** |
-| Standardbirne | Ast | 74 % | 20.3 | -17 | 15 % | 9.6 | -65 | **ja** |
-| Standardbirne | Funkenfaust | 85 % | 20.8 | -5 | 47 % | 15.9 | -32 | **ja** |
-| Glühfaden-Boxer | Funkenfaust | 93 % | 20.9 | – | 84 % | 20.2 | – | |
-| Glühfaden-Boxer | Ast | 41 % | 14.6 | -52 | 7 % | 6.7 | -77 | **ja** |
-| Glühfaden-Boxer | Lampenhammer | 87 % | 20.9 | -6 | 73 % | 20.4 | -11 | |
-| Neonröhre | Glasscherbe | 87 % | 20.7 | – | 68 % | 19.0 | – | |
-| Neonröhre | Kabelpeitsche | 78 % | 20.7 | -9 | 49 % | 19.0 | -19 | **ja** |
-| Neonröhre | Laserpointer | 1 % | 3.0 | -85 | 0 % | 2.1 | -68 | **ja** |
-| LED-Schütze | Funkenpistole | 85 % | 20.8 | -5 | 68 % | 20.1 | -12 | |
-| LED-Schütze | Laserpointer | 89 % | 20.9 | – | 80 % | 20.0 | – | |
-| LED-Schütze | Batterie-Schleuder | 87 % | 20.9 | -3 | 70 % | 20.0 | -10 | |
-| LED-Schütze | Prisma | 87 % | 20.8 | -3 | 77 % | 20.6 | -3 | |
-| Lavalampe | Lötkolben | 75 % | 20.6 | -19 | 54 % | 18.8 | -34 | **ja** |
-| Lavalampe | Blitzwerfer | 93 % | 20.9 | – | 88 % | 20.8 | – | |
-| Lavalampe | Glühwürmchen-Stab | 85 % | 20.8 | -9 | 64 % | 18.7 | -24 | **ja** |
-| Lavalampe | Kristallstab | 88 % | 20.8 | -5 | 79 % | 20.2 | -9 | |
-| Taschenlampe | Schraubenzieher | 66 % | 20.4 | -4 | 30 % | 17.8 | -15 | |
-| Taschenlampe | Lötkolben | 70 % | 20.6 | – | 45 % | 18.0 | – | |
-| Discokugel | Funkenpistole | 66 % | 20.6 | -1 | 48 % | 20.0 | -3 | |
-| Discokugel | Prisma | 67 % | 20.6 | – | 51 % | 20.3 | – | |
-| Discokugel | Funkensieb | 30 % | 18.7 | -37 | 0 % | 11.7 | -51 | **ja** |
-| Lichterkette | Funkenpistole | 91 % | 20.9 | -4 | 79 % | 20.1 | – | |
-| Lichterkette | Glasscherbe | 95 % | 20.9 | – | 76 % | 19.1 | -3 | |
-| Lichterkette | Ast | 71 % | 19.9 | -24 | 21 % | 12.9 | -59 | **ja** |
-| Halogenstrahler | Lampenhammer | 85 % | 20.7 | -3 | 67 % | 20.3 | -9 | |
-| Halogenstrahler | Leuchtrakete | 87 % | 20.8 | – | 72 % | 20.6 | -4 | |
-| Halogenstrahler | Taschenlampenstrahl | 87 % | 20.8 | – | 76 % | 20.6 | – | |
-| Nachtlicht | Heilstrahl | 95 % | 20.8 | – | 50 % | 16.9 | -6 | |
-| Nachtlicht | Dornenranke | 89 % | 20.8 | -7 | 56 % | 18.1 | – | |
-| Blitzlicht | Funkenfaust | 88 % | 20.7 | – | 77 % | 20.1 | – | |
-| Blitzlicht | Glasscherbe | 87 % | 20.8 | -1 | 72 % | 19.6 | -5 | |
-| Blitzlicht | Kabelpeitsche | 80 % | 20.8 | -8 | 54 % | 19.4 | -23 | **ja** |
-| Kerze | Ast | 87 % | 20.8 | -5 | 50 % | 17.2 | -24 | **ja** |
-| Kerze | Batterie-Schleuder | 93 % | 20.9 | – | 74 % | 19.7 | – | |
-| Irrlicht | Seelenlaterne | 77 % | 20.7 | – | 50 % | 18.5 | – | |
-| Irrlicht | Glühwürmchen-Stab | 71 % | 20.6 | -6 | 39 % | 17.6 | -11 | |
-| Zündkerze | Feuerzeugwerfer | 94 % | 20.9 | – | 94 % | 20.9 | – | |
-| Zündkerze | Lötkolben | 71 % | 20.7 | -23 | 51 % | 20.0 | -43 | **ja** |
-| Kronleuchter | Kristallstab | 85 % | 20.8 | -5 | 68 % | 20.0 | -18 | **ja** |
-| Kronleuchter | Blitzwerfer | 91 % | 20.9 | – | 86 % | 20.7 | – | |
-| Kronleuchter | Taschenlampenstrahl | 86 % | 20.8 | -5 | 75 % | 20.6 | -11 | |
-| Schwarzlicht | Voodoo-Nadel | 87 % | 20.8 | – | 79 % | 20.7 | – | |
-| Schwarzlicht | Glühwürmchen-Stab | 82 % | 20.8 | -5 | 57 % | 18.8 | -23 | **ja** |
-| Gewächshauslampe | Dornenranke | 89 % | 20.8 | -6 | 61 % | 18.5 | – | |
-| Gewächshauslampe | Ast | 81 % | 20.7 | -13 | 28 % | 14.0 | -33 | **ja** |
-| Gewächshauslampe | Heilstrahl | 95 % | 20.8 | – | 50 % | 17.0 | -11 | |
-| Smartbulb | Funkenpistole | 93 % | 20.9 | -1 | 85 % | 20.2 | – | |
-| Smartbulb | Funkensieb | 6 % | 5.0 | -87 | 0 % | 2.6 | -85 | **ja** |
-| Smartbulb | Laserpointer | 93 % | 20.8 | – | 79 % | 19.3 | -5 | |
-| Drohnenleuchte | Schraubenzieher | 79 % | 20.6 | -13 | 54 % | 19.7 | -24 | **ja** |
-| Drohnenleuchte | Funkenpistole | 92 % | 20.9 | – | 78 % | 20.7 | – | |
-| Stroboskop | Laserpointer | 86 % | 20.8 | – | 63 % | 18.0 | -12 | |
-| Stroboskop | Prisma | 85 % | 20.8 | -1 | 69 % | 20.3 | -5 | |
-| Stroboskop | Taschenlampenstrahl | 86 % | 20.8 | – | 75 % | 20.6 | – | |
-| Vampirbirne | Glasscherbe | 93 % | 20.5 | -1 | 39 % | 10.7 | -32 | **ja** |
-| Vampirbirne | Kabelpeitsche | 93 % | 20.9 | – | 71 % | 18.4 | – | |
-| Vampirbirne | Funkenfaust | 91 % | 20.8 | -2 | 33 % | 10.4 | -37 | **ja** |
-| Spiegelkugel | Prisma | 87 % | 20.8 | – | 78 % | 20.7 | – | |
-| Spiegelkugel | Funkenpistole | 85 % | 20.8 | -1 | 71 % | 20.4 | -7 | |
-| Spiegelkugel | Glasscherbe | 83 % | 20.8 | -3 | 60 % | 18.9 | -18 | **ja** |
+Erste Prüfung mit den Listen aus PHASE_15: 21 Fallen bei 18 Charakteren, die meisten nur auf Spannung 3, die schlimmsten Neonröhre mit Laserpointer (1 %/0 % statt 87 %/68 %), Smartbulb mit Funkensieb (6 %/0 %), Boxer mit Ast (41 %/7 %), Discokugel mit Funkensieb (30 %/0 %) und Standardbirne mit Ast (74 %/15 %). Kandidaten für einen Austausch (nur für den Lauf gesetzt):
 
-Fallen: 21 Startwaffen bei 18 Charakteren, die meisten nur auf Spannung 3. Kandidaten für einen Austausch (gleiche Runs und gleicher Seed, nur für den Lauf gesetzt, nichts geändert):
 
 | Charakter | Kandidat | S0 Sieg | S3 Sieg |
 |---|---|---|---|
@@ -566,23 +504,102 @@ Fallen: 21 Startwaffen bei 18 Charakteren, die meisten nur auf Spannung 3. Kandi
 | Spiegelkugel | Batterie-Schleuder | 75 % | 50 % |
 | Spiegelkugel | Leuchtrakete | 87 % | 76 % |
 
-Vorschläge (alt -> neu), **noch nicht umgesetzt, Entscheidung des Spielers offen**. Ziel: jede Startwaffe höchstens 15 Punkte unter der besten, ohne eine neue Waffe, die alle anderen abhängt (Feuerzeugwerfer 95–97 % und Prisma bei der Vampirbirne 99 % deshalb nicht vorgeschlagen):
-- Standardbirne: Ast -> Kabelpeitsche (Abstand S3 -65 -> -22). Glasscherbe und Funkenfaust bleiben auf S3 Fallen; Nahkampf liegt beim Standard-Build auf S3 allgemein hinten, ein Tausch löst das nicht.
-- Glühfaden-Boxer: Ast -> Kabelpeitsche (S0 -18, S3 -43, bleibt eine Falle). Kein getesteter Ersatz kommt an die Funkenfaust heran; Alternative: Ast streichen (Funkenfaust, Lampenhammer).
-- Neonröhre: Laserpointer -> Kristallstab, Kabelpeitsche -> Taschenlampenstrahl (alle Präzise; dann S3 68/78/81 %, größter Abstand -13).
-- Lavalampe: Lötkolben -> Taschenlampenstrahl, Glühwürmchen-Stab -> Voodoo-Nadel (S3 83/84 % gegen Blitzwerfer 88 %).
-- Discokugel: Funkensieb -> Laserpointer (69/53 %, gleichauf mit Prisma).
-- Lichterkette: Ast -> Laserpointer (94/76 %).
-- Blitzlicht: Kabelpeitsche -> Lampenhammer (87/75 %, nutzt +1 Nah pro 2 % Tempo mit 200 % Skalierung).
-- Kerze: Ast -> Dornenranke (93/73 %, bleibt Primitiv). Der Ast ist die Startwaffe aus dem GDD; Behalten ist vertretbar (nur S3 -24).
-- Zündkerze: Lötkolben -> Blitzwerfer (91/86 %, S3 -8).
-- Kronleuchter: kein guter Ersatz (Seelenlaterne schwächer, Feuerzeugwerfer zu stark); Kristallstab behalten (nur S3 -18, GDD-Startwaffe).
-- Schwarzlicht: Glühwürmchen-Stab -> Blitzwerfer (91/86 %, Voodoo-Nadel dann -7).
-- Gewächshauslampe: Ast -> Kabelpeitsche (85/65 %, größter Abstand S0 -10). Blitzwerfer (94/93 %) wäre zu stark.
-- Smartbulb: Funkensieb -> Leuchtrakete (94/89 %, Laserpointer dann S3 -10).
-- Drohnenleuchte: Schraubenzieher behalten (Türme sind der Kern des Charakters, der Simulator bewertet Lampentürme eher vorsichtig).
-- Vampirbirne: kein Tausch innerhalb von 15 Punkten gefunden außer Prisma (99 %, zu stark). Glasscherbe und Funkenfaust liegen auf S3 deutlich hinter der Kabelpeitsche; eher ein Balancing-Punkt des Charakters auf S3. Kleinster Schritt: Funkenfaust -> Lampenhammer (S3 -37 -> -20).
-- Spiegelkugel: Glasscherbe -> Laserpointer (88/79 %, gleichauf mit Prisma).
+Nach Entscheidung des Spielers getauscht (alt -> neu; Hinweistexte, GDD Abschnitt 10 und Tests angepasst):
+- Standardbirne: Ast -> Kabelpeitsche
+- Glühfaden-Boxer: Ast gestrichen (Funkenfaust, Lampenhammer)
+- Neonröhre: Kabelpeitsche -> Taschenlampenstrahl, Laserpointer -> Kristallstab
+- Lavalampe: Lötkolben -> Taschenlampenstrahl, Glühwürmchen-Stab -> Voodoo-Nadel
+- Discokugel: Funkensieb -> Laserpointer
+- Lichterkette: Ast -> Laserpointer
+- Blitzlicht: Kabelpeitsche -> Lampenhammer
+- Kerze: Dornenranke als dritte Option (Ast, Batterie-Schleuder, Dornenranke)
+- Zündkerze: Lötkolben -> Blitzwerfer
+- Schwarzlicht: Glühwürmchen-Stab -> Blitzwerfer
+- Gewächshauslampe: Ast -> Kabelpeitsche
+- Smartbulb: Funkensieb -> Leuchtrakete
+- Spiegelkugel: Glasscherbe -> Laserpointer
+- Unverändert: Kronleuchter (Kristallstab ist die GDD-Startwaffe), Drohnenleuchte (Türme sind der Kern), Vampirbirne (eher ein Balancing-Punkt des Charakters, siehe Offene Punkte).
+
+Kettensprünge des Blitzwerfers laufen über `Hits.apply_weapon_hit`; Brandchance der Zündkerze und Fluch des Schwarzlichts wirken also auch auf die übersprungenen Gegner (so in den Hinweisen).
+
+Neue Tabelle nach dem Tausch:
+
+| Charakter | Startwaffe | S0 Sieg | S0 Ø Welle | S0 Abstand | S3 Sieg | S3 Ø Welle | S3 Abstand | Falle |
+|---|---|---|---|---|---|---|---|---|
+| Standardbirne | Funkenpistole | 91 % | 20.9 | – | 79 % | 20.3 | – | |
+| Standardbirne | Glasscherbe | 88 % | 20.8 | -3 | 59 % | 17.0 | -21 | **ja** |
+| Standardbirne | Kabelpeitsche | 84 % | 20.8 | -7 | 57 % | 18.7 | -23 | **ja** |
+| Standardbirne | Funkenfaust | 85 % | 20.8 | -5 | 47 % | 15.9 | -32 | **ja** |
+| Glühfaden-Boxer | Funkenfaust | 93 % | 20.9 | – | 84 % | 20.2 | – | |
+| Glühfaden-Boxer | Lampenhammer | 87 % | 20.9 | -6 | 73 % | 20.4 | -11 | |
+| Neonröhre | Glasscherbe | 87 % | 20.7 | -2 | 68 % | 19.0 | -13 | |
+| Neonröhre | Taschenlampenstrahl | 89 % | 20.9 | – | 81 % | 20.7 | – | |
+| Neonröhre | Kristallstab | 89 % | 20.9 | – | 78 % | 20.1 | -3 | |
+| LED-Schütze | Funkenpistole | 85 % | 20.8 | -5 | 68 % | 20.1 | -12 | |
+| LED-Schütze | Laserpointer | 89 % | 20.9 | – | 80 % | 20.0 | – | |
+| LED-Schütze | Batterie-Schleuder | 87 % | 20.9 | -3 | 70 % | 20.0 | -10 | |
+| LED-Schütze | Prisma | 87 % | 20.8 | -3 | 77 % | 20.6 | -3 | |
+| Lavalampe | Taschenlampenstrahl | 89 % | 20.9 | -5 | 83 % | 20.6 | -5 | |
+| Lavalampe | Blitzwerfer | 93 % | 20.9 | – | 88 % | 20.8 | – | |
+| Lavalampe | Voodoo-Nadel | 89 % | 20.9 | -4 | 84 % | 20.6 | -4 | |
+| Lavalampe | Kristallstab | 88 % | 20.8 | -5 | 79 % | 20.2 | -9 | |
+| Taschenlampe | Schraubenzieher | 66 % | 20.4 | -4 | 30 % | 17.8 | -15 | |
+| Taschenlampe | Lötkolben | 70 % | 20.6 | – | 45 % | 18.0 | – | |
+| Discokugel | Funkenpistole | 66 % | 20.6 | -3 | 48 % | 20.0 | -5 | |
+| Discokugel | Prisma | 67 % | 20.6 | -1 | 51 % | 20.3 | -1 | |
+| Discokugel | Laserpointer | 69 % | 20.7 | – | 53 % | 19.5 | – | |
+| Lichterkette | Funkenpistole | 91 % | 20.9 | -4 | 79 % | 20.1 | – | |
+| Lichterkette | Glasscherbe | 95 % | 20.9 | – | 76 % | 19.1 | -3 | |
+| Lichterkette | Laserpointer | 94 % | 20.9 | -1 | 76 % | 19.5 | -3 | |
+| Halogenstrahler | Lampenhammer | 85 % | 20.7 | -3 | 67 % | 20.3 | -9 | |
+| Halogenstrahler | Leuchtrakete | 87 % | 20.8 | – | 72 % | 20.6 | -4 | |
+| Halogenstrahler | Taschenlampenstrahl | 87 % | 20.8 | – | 76 % | 20.6 | – | |
+| Nachtlicht | Heilstrahl | 95 % | 20.8 | – | 50 % | 16.9 | -6 | |
+| Nachtlicht | Dornenranke | 89 % | 20.8 | -7 | 56 % | 18.1 | – | |
+| Blitzlicht | Funkenfaust | 88 % | 20.7 | – | 77 % | 20.1 | – | |
+| Blitzlicht | Glasscherbe | 87 % | 20.8 | -1 | 72 % | 19.6 | -5 | |
+| Blitzlicht | Lampenhammer | 87 % | 20.7 | -1 | 75 % | 20.4 | -1 | |
+| Kerze | Ast | 87 % | 20.8 | -5 | 50 % | 17.2 | -24 | **ja** |
+| Kerze | Batterie-Schleuder | 93 % | 20.9 | – | 74 % | 19.7 | – | |
+| Kerze | Dornenranke | 93 % | 20.9 | – | 73 % | 19.4 | -1 | |
+| Irrlicht | Seelenlaterne | 77 % | 20.7 | – | 50 % | 18.5 | – | |
+| Irrlicht | Glühwürmchen-Stab | 71 % | 20.6 | -6 | 39 % | 17.6 | -11 | |
+| Zündkerze | Feuerzeugwerfer | 94 % | 20.9 | – | 94 % | 20.9 | – | |
+| Zündkerze | Blitzwerfer | 91 % | 20.9 | -3 | 86 % | 20.7 | -8 | |
+| Kronleuchter | Kristallstab | 85 % | 20.8 | -5 | 68 % | 20.0 | -18 | **ja** |
+| Kronleuchter | Blitzwerfer | 91 % | 20.9 | – | 86 % | 20.7 | – | |
+| Kronleuchter | Taschenlampenstrahl | 86 % | 20.8 | -5 | 75 % | 20.6 | -11 | |
+| Schwarzlicht | Voodoo-Nadel | 87 % | 20.8 | -4 | 79 % | 20.7 | -7 | |
+| Schwarzlicht | Blitzwerfer | 91 % | 20.9 | – | 86 % | 20.7 | – | |
+| Gewächshauslampe | Dornenranke | 89 % | 20.8 | -6 | 61 % | 18.5 | -3 | |
+| Gewächshauslampe | Kabelpeitsche | 85 % | 20.8 | -10 | 65 % | 19.4 | – | |
+| Gewächshauslampe | Heilstrahl | 95 % | 20.8 | – | 50 % | 17.0 | -15 | |
+| Smartbulb | Funkenpistole | 93 % | 20.9 | -1 | 85 % | 20.2 | -4 | |
+| Smartbulb | Leuchtrakete | 94 % | 20.9 | – | 89 % | 20.8 | – | |
+| Smartbulb | Laserpointer | 93 % | 20.8 | -1 | 79 % | 19.3 | -9 | |
+| Drohnenleuchte | Schraubenzieher | 79 % | 20.6 | -13 | 54 % | 19.7 | -24 | **ja** |
+| Drohnenleuchte | Funkenpistole | 92 % | 20.9 | – | 78 % | 20.7 | – | |
+| Stroboskop | Laserpointer | 86 % | 20.8 | – | 63 % | 18.0 | -12 | |
+| Stroboskop | Prisma | 85 % | 20.8 | -1 | 69 % | 20.3 | -5 | |
+| Stroboskop | Taschenlampenstrahl | 86 % | 20.8 | – | 75 % | 20.6 | – | |
+| Vampirbirne | Glasscherbe | 93 % | 20.5 | -1 | 39 % | 10.7 | -32 | **ja** |
+| Vampirbirne | Kabelpeitsche | 93 % | 20.9 | – | 71 % | 18.4 | – | |
+| Vampirbirne | Funkenfaust | 91 % | 20.8 | -2 | 33 % | 10.4 | -37 | **ja** |
+| Spiegelkugel | Prisma | 87 % | 20.8 | -1 | 78 % | 20.7 | -1 | |
+| Spiegelkugel | Funkenpistole | 85 % | 20.8 | -3 | 71 % | 20.4 | -8 | |
+| Spiegelkugel | Laserpointer | 88 % | 20.8 | – | 79 % | 20.2 | – | |
+
+Fallen (mehr als 15 Punkte unter der besten Startwaffe):
+- Standardbirne – Glasscherbe: S3 (59 % statt 79 % mit Funkenpistole)
+- Standardbirne – Kabelpeitsche: S3 (57 % statt 79 % mit Funkenpistole)
+- Standardbirne – Funkenfaust: S3 (47 % statt 79 % mit Funkenpistole)
+- Kerze – Ast: S3 (50 % statt 74 % mit Batterie-Schleuder)
+- Kronleuchter – Kristallstab: S3 (68 % statt 86 % mit Blitzwerfer)
+- Drohnenleuchte – Schraubenzieher: S3 (54 % statt 78 % mit Funkenpistole)
+- Vampirbirne – Glasscherbe: S3 (39 % statt 71 % mit Kabelpeitsche)
+- Vampirbirne – Funkenfaust: S3 (33 % statt 71 % mit Kabelpeitsche)
+
+Kerze-Freischaltung („Run nur mit Primitiv-Waffen gewinnen“) nach dem Tausch: Von Beginn an spielbar sind Standardbirne, Glühfaden-Boxer, Neonröhre, LED-Schütze und Lavalampe. Eine Primitiv-Startwaffe hat nur noch der LED-Schütze (Batterie-Schleuder); vorher auch Standardbirne und Boxer (Ast). Weil `RunStats.primitive_only` schon mit der Startwaffe auf falsch fällt, führt der Weg nur über diesen Start. Der Simulator rüstet beim LED-Schützen mit Batterie-Schleuder nur Primitiv-Waffen nach (für ihn gibt es keine weitere, Ast und Dornenranke sind Nahkampf), seine Zahl ist also der Primitiv-Run: 87 % auf Spannung 0, 70 % auf Spannung 3. Die alten Wege lagen im selben Modell niedriger (Standardbirne mit Ast 74 %, Boxer mit Ast 41 % auf Spannung 0). Einschränkung: Im echten Spiel muss der Shop genug Batterie-Schleudern anbieten, der Simulator nimmt Kopien als verfügbar an. Ergebnis: gut erreichbar, aber nur noch über einen Weg; die Bedingung der Kerze nennt ihn nicht.
 
 ## Werkzeuge
 

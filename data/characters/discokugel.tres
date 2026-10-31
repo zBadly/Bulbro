@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://scripts/data/weapon_data.gd" id="7_nelm7"]
 [ext_resource type="Resource" path="res://data/weapons/funkenpistole.tres" id="8_b6u11"]
 [ext_resource type="Resource" path="res://data/weapons/prisma.tres" id="10_lk6ux"]
-[ext_resource type="Resource" path="res://data/weapons/funkensieb.tres" id="11_4kun0"]
+[ext_resource type="Resource" path="res://data/weapons/laserpointer.tres" id="11_lk6ux"]
 [ext_resource type="Texture2D" path="res://art/characters/discokugel.svg" id="12_3353g"]
 [ext_resource type="Texture2D" path="res://art/portraits/discokugel.svg" id="p_portrait"]
 
@@ -61,10 +61,10 @@ name_key = "CHAR_DISCOKUGEL"
 texture = ExtResource("12_3353g")
 portrait = ExtResource("p_portrait")
 effects = Array[ExtResource("1_lk6ux")]([SubResource("Resource_vl3yb"), SubResource("Resource_lia6a"), SubResource("Resource_3wkn3")])
-starting_weapons = Array[ExtResource("7_nelm7")]([ExtResource("8_b6u11"), ExtResource("10_lk6ux"), ExtResource("11_4kun0")])
+starting_weapons = Array[ExtResource("7_nelm7")]([ExtResource("8_b6u11"), ExtResource("10_lk6ux"), ExtResource("11_lk6ux")])
 start_weapon_hints = Dictionary[StringName, String]({
 &"funkenpistole": "HINT_DISCOKUGEL_FUNKENPISTOLE",
-&"funkensieb": "HINT_DISCOKUGEL_FUNKENSIEB",
+&"laserpointer": "HINT_DISCOKUGEL_LASERPOINTER",
 &"prisma": "HINT_DISCOKUGEL_PRISMA"
 })
 weapon_slots = 6
