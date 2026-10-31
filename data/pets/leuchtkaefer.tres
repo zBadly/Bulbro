@@ -8,7 +8,7 @@
 
 [sub_resource type="Resource" id="Tier_1"]
 script = ExtResource("2_tier")
-base_damage = 4.0
+base_damage = 5.0
 scalings = Dictionary[StringName, float]({
 &"ranged_dmg": 0.5
 })
@@ -18,7 +18,7 @@ price = 30
 
 [sub_resource type="Resource" id="Tier_2"]
 script = ExtResource("2_tier")
-base_damage = 6.0
+base_damage = 8.0
 scalings = Dictionary[StringName, float]({
 &"ranged_dmg": 0.5
 })
@@ -28,7 +28,7 @@ price = 60
 
 [sub_resource type="Resource" id="Tier_3"]
 script = ExtResource("2_tier")
-base_damage = 9.0
+base_damage = 11.0
 scalings = Dictionary[StringName, float]({
 &"ranged_dmg": 0.5
 })
@@ -38,7 +38,7 @@ price = 108
 
 [sub_resource type="Resource" id="Tier_4"]
 script = ExtResource("2_tier")
-base_damage = 13.0
+base_damage = 16.0
 scalings = Dictionary[StringName, float]({
 &"ranged_dmg": 0.5
 })

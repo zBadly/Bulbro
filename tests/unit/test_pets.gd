@@ -85,11 +85,11 @@ func test_all_pets_have_four_tiers_texture_and_texts() -> void:
 
 func test_firefly_and_hedgehog_match_the_spec() -> void:
 	var firefly: PetTierStats = _pet("leuchtkaefer").get_tier(1)
-	assert_eq(firefly.base_damage, 4.0)
+	assert_eq(firefly.base_damage, 5.0)
 	assert_eq(firefly.scalings.get(Stats.RANGED_DMG, 0.0), 0.5)
 	assert_eq(firefly.cooldown, 1.0)
 	var hedgehog: PetTierStats = _pet("igel").get_tier(1)
-	assert_eq(hedgehog.base_damage, 8.0)
+	assert_eq(hedgehog.base_damage, 10.0)
 	assert_eq(hedgehog.scalings.get(Stats.MELEE_DMG, 0.0), 0.6)
 	assert_eq(_pet("funkenspatz").get_tier(1).radius, 300.0)
 	assert_eq(_pet("schildkroete").get_tier(1).cooldown, 3.0)
@@ -287,7 +287,7 @@ func test_firefly_shoots_with_pet_origin() -> void:
 	var projectile: Projectile = pool.get_active()[0] as Projectile
 	var info: DamageInfo = projectile.get("_spec").info
 	assert_eq(info.origin, DamageSource.pet(&"leuchtkaefer"))
-	assert_eq(info.amount, 4, "4 (+50 % Fern) ohne Fern-Stat")
+	assert_eq(info.amount, 5, "5 (+50 % Fern) ohne Fern-Stat")
 	_run(pet, 0.5)
 	assert_eq(pool.active_count(), 1, "Abklingzeit 1 s")
 	_run(pet, 0.55)

@@ -9,7 +9,7 @@
 script = ExtResource("2_cr14r")
 from_stat = &"luck"
 to_stat = &"crit_chance"
-per = 10.0
+per = 6.0
 
 [resource]
 script = ExtResource("4_wfcj2")

@@ -9,7 +9,7 @@
 script = ExtResource("2_48go2")
 from_stat = &"speed"
 to_stat = &"melee_dmg"
-per = 3.0
+per = 6.0
 
 [resource]
 script = ExtResource("4_c1e2v")

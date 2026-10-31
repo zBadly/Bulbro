@@ -8,7 +8,11 @@ extends Node
 ##   ... -- 0 --characters [--runs 200] [--ablate]  -> Siegquote, Scheiter-Welle und stärkster Effekt je Charakter
 ##   ... -- 0 --weapons                            -> DPS aller Waffen (Tier I und IV) im Vergleich zur eigenen Klasse
 ##   ... -- 3 --items [--runs 200]                 -> Wirkung der Tier-III/IV-Items und Einzigartigen auf Siegquote und Wellen
-##   ... -- 3 --items --uniques                    -> nur die Einzigartigen, Ausreißer gegenüber ihrem Schnitt
+##   ... -- 3 --items --uniques                    -> nur die Einzigartigen (Standard- und gezielter Build), Ausreißer
+##                                                     gegenüber ihrem Schnitt
+##   ... -- 3 --combos [--runs 150]                -> starke Kombinationen (Synergie = Kombi - Summe der Einzelteile)
+##   ... --set res://pfad.tres:eigenschaft.0.feld=wert [...] -> Datenwerte nur für diesen Lauf ändern (Vorschläge
+##                                                     prüfen, nichts wird gespeichert); vor dem Modus-Flag angeben
 ##   ... -- 3 --pets [--runs 150]                  -> Wirkung der Begleiter (Kauf in Welle 8, Tier wächst wie bei Waffen),
 ##                                                     Ausreißer gegenüber ihrem Schnitt; ändert nichts an den Daten
 ##   ... -- 3 --towers [--runs 120]                -> Turm-Items (1 und 3 Exemplare) für Taschenlampe, Drohnenleuchte und
@@ -30,6 +34,8 @@ const ABLATE_FLAG: String = "--ablate"
 const UNIQUES_FLAG: String = "--uniques"
 const PETS_FLAG: String = "--pets"
 const TOWERS_FLAG: String = "--towers"
+const COMBOS_FLAG: String = "--combos"
+const SET_FLAG: String = "--set"
 ## Begleiter-Vergleich: weniger Runs als beim Item-Vergleich, damit der Lauf unter 10 Minuten bleibt.
 const PET_RUNS: int = 150
 ## Turm-Vergleich: Läufe je Charakter und Variante, Charaktere und Kaufwellen je Exemplarzahl.
@@ -39,6 +45,40 @@ const TOWER_BUY_WAVES: Dictionary[int, Array] = {1: [8], 3: [5, 8, 11]}
 const TOWER_SHARE_KEY: String = "Turm-Items"
 ## Ausreißer unter den Einzigartigen: Wertung weicht um mehr als so viele Standardabweichungen vom Schnitt ab.
 const OUTLIER_SD: float = 1.5
+## Gezielte Builds je Einzigartigem (Paket 15-8d): Charaktere, optional feste Startwaffe und zusätzlicher Zuwachs pro
+## Welle für den Ausgangs-Stat. Vergleich immer gegen denselben Build ohne das Item.
+const FOCUS_BUILDS: Dictionary[StringName, Dictionary] = {
+	&"panzerglas": {"label": "Rüstung", "characters": [&"standardbirne", &"lavalampe", &"led_schuetze", &"gluehfaden_boxer"], "focus": {&"armor": 0.7}},
+	&"schwungrad": {"label": "Tempo, Nahkampf", "characters": [&"gluehfaden_boxer", &"blitzlicht"], "weapon": &"funkenfaust", "focus": {&"speed": 2.0}},
+	&"gluecksfassung": {"label": "Glück", "characters": [&"standardbirne", &"lavalampe", &"led_schuetze", &"gluehfaden_boxer"], "focus": {&"luck": 3.0}},
+	&"hochspannungsspeicher": {"label": "Max HP", "characters": [&"standardbirne", &"lavalampe", &"led_schuetze", &"gluehfaden_boxer"], "focus": {&"max_hp": 2.0}},
+	&"gleichrichter": {"label": "Angriffstempo, Strom", "characters": [&"lavalampe", &"zuendkerze", &"kronleuchter"], "focus": {&"attack_speed": 3.0}},
+	&"leuchtturm": {"label": "Nahkampf", "characters": [&"gluehfaden_boxer", &"blitzlicht"], "weapon": &"funkenfaust", "focus": {}},
+}
+## Kombinationen (--combos): Teil A, Teil B und beides gegen den Build ohne beide. Einträge [id, Welle]; die id wird
+## zuerst unter den Items, dann unter den Begleitern gesucht. Ohne Teil B wird nur das Bündel A bewertet.
+const COMBO_RUNS: int = 150
+const COMBOS: Array[Dictionary] = [
+	{"label": "Panzerglas + 3 Hochspannungsschilde (Rüstungs-Build)", "characters": [&"standardbirne", &"lavalampe", &"led_schuetze", &"gluehfaden_boxer"],
+		"focus": {&"armor": 0.7}, "a": [[&"panzerglas", 8]], "b": [[&"hochspannungsschild", 5], [&"hochspannungsschild", 8], [&"hochspannungsschild", 11]]},
+	{"label": "Taschenlampe: je 1 Turm (4 Items)", "characters": [&"taschenlampe"],
+		"a": [[&"flammenturm", 5], [&"frostturm", 6], [&"heilturm", 7], [&"stolperdraht", 8]]},
+	{"label": "Taschenlampe: je 3 Türme (12 Items, Obergrenze)", "characters": [&"taschenlampe"],
+		"a": [[&"flammenturm", 4], [&"frostturm", 5], [&"heilturm", 6], [&"stolperdraht", 7], [&"flammenturm", 8], [&"frostturm", 9],
+			[&"heilturm", 10], [&"stolperdraht", 11], [&"flammenturm", 12], [&"frostturm", 13], [&"heilturm", 14], [&"stolperdraht", 15]]},
+	{"label": "Taschenlampe: 3 Heiltürme", "characters": [&"taschenlampe"], "a": [[&"heilturm", 5], [&"heilturm", 8], [&"heilturm", 11]]},
+	{"label": "Taschenlampe: 5 Heiltürme", "characters": [&"taschenlampe"],
+		"a": [[&"heilturm", 4], [&"heilturm", 6], [&"heilturm", 8], [&"heilturm", 10], [&"heilturm", 12]]},
+	{"label": "Taschenlampe: 8 Heiltürme", "characters": [&"taschenlampe"],
+		"a": [[&"heilturm", 3], [&"heilturm", 4], [&"heilturm", 5], [&"heilturm", 6], [&"heilturm", 8], [&"heilturm", 10], [&"heilturm", 12], [&"heilturm", 14]]},
+	{"label": "Lichterkette + Spiegelscherbe", "characters": [&"lichterkette"], "a": [[&"spiegelscherbe", 8]]},
+	{"label": "Lichterkette + 3 Spiegelscherben", "characters": [&"lichterkette"], "a": [[&"spiegelscherbe", 5], [&"spiegelscherbe", 8], [&"spiegelscherbe", 11]]},
+	{"label": "Schildkröte + Reservebatterie", "characters": [&"standardbirne", &"lavalampe", &"led_schuetze", &"gluehfaden_boxer"],
+		"a": [[&"schildkroete", 8]], "b": [[&"reservebatterie", 8]]},
+	{"label": "Lichterkette + Kondensator", "characters": [&"lichterkette"], "a": [[&"kondensator", 8]]},
+	{"label": "Vampirbirne + Heilturm", "characters": [&"vampirbirne"], "a": [[&"heilturm", 8]]},
+	{"label": "Vampirbirne + 3 Heiltürme", "characters": [&"vampirbirne"], "a": [[&"heilturm", 5], [&"heilturm", 8], [&"heilturm", 11]]},
+]
 const RUNS_FLAG: String = "--runs"
 const TRY_FLAG: String = "--try"
 const ENDLESS_FLAG: String = "--endless"
@@ -73,6 +113,8 @@ func _ready() -> void:
 	var runs_index: int = args.find(RUNS_FLAG)
 	if runs_index >= 0 and runs_index + 1 < args.size():
 		runs = int(args[runs_index + 1])
+	if SET_FLAG in args:
+		_apply_overrides(args.slice(args.find(SET_FLAG) + 1))
 	if "--trace" in args:
 		var sim: CharacterSim = CharacterSim.new(self)
 		var character: CharacterData = load("res://data/characters/%s.tres" % args[args.find("--trace") + 1])
@@ -87,6 +129,8 @@ func _ready() -> void:
 		await _characters(difficulty, runs, ABLATE_FLAG in args)
 	elif WEAPONS_FLAG in args:
 		_weapons()
+	elif COMBOS_FLAG in args:
+		await _combos(difficulty, runs if runs_index >= 0 else COMBO_RUNS)
 	elif TOWERS_FLAG in args:
 		await _towers(difficulty, runs if runs_index >= 0 else TOWER_RUNS)
 	elif PETS_FLAG in args:
@@ -96,6 +140,31 @@ func _ready() -> void:
 	else:
 		_waves(level, difficulty, APPLY_FLAG in args)
 	get_tree().quit()
+
+
+# --- Datenwerte nur für diesen Lauf ---
+
+## `res://pfad.tres:a.b.0.c=wert` je Argument bis zum nächsten "--"-Flag. Pfadteile sind Eigenschaften oder
+## Array-Indizes; der Wert wird im Typ des alten Werts gesetzt. Die Resource ist dieselbe Instanz wie in der
+## DataRegistry (Cache), die Änderung wirkt also überall und wird nicht gespeichert.
+func _apply_overrides(specs: PackedStringArray) -> void:
+	for spec: String in specs:
+		if spec.begins_with("--"):
+			break
+		var path: String = spec.get_slice(":", 0) + ":" + spec.get_slice(":", 1)
+		var chain: PackedStringArray = spec.trim_prefix(path + ":").get_slice("=", 0).split(".")
+		var text: String = spec.get_slice("=", 1)
+		var target: Variant = load(path)
+		for part: String in chain.slice(0, chain.size() - 1):
+			target = target[int(part)] if target is Array else (target as Object).get(part)
+		var key: String = chain[chain.size() - 1]
+		var old: Variant = target[int(key)] if target is Array else (target as Object).get(key)
+		var value: Variant = int(text) if old is int else float(text)
+		if target is Array:
+			target[int(key)] = value
+		else:
+			(target as Object).set(key, value)
+		print("Override: %s %s: %s -> %s" % [path.get_file(), ".".join(chain), str(old), str(value)])
 
 
 # --- Endlos-Modus ---
@@ -327,8 +396,8 @@ func _items(difficulty: DifficultyData, runs: int, uniques_only: bool = false) -
 			victory_items[challenge.reward_item] = String(challenge.id)
 	print("BULBRO Item-Vergleich – Spannung %d, Kauf in Welle %d, Charaktere: %s; ohne Item: Siegquote %d %%, Ø Welle %.1f" % [
 		difficulty.level, ITEM_WAVE, ", ".join(ITEM_TEST_CHARACTERS), roundi(base["win_rate"] * 100.0), base["avg_wave"]])
-	print("| Item | Tier | Preis | Δ Siegquote | Δ Ø Welle | Δ je 100 Funken | Sieg-Item | Einzigartig |")
-	print("|---|---|---|---|---|---|---|---|")
+	print("| Item | Tier | Preis | Δ Siegquote | Δ Ø Welle | Δ je 100 Funken | Sieg-Item | Einzigartig | gezielter Build: Δ Sieg / Δ Welle / Wertung / je 100 Funken |")
+	print("|---|---|---|---|---|---|---|---|---|")
 	var items: Array[ItemData] = []
 	for res: Resource in DataRegistry.get_all("items"):
 		var item: ItemData = res as ItemData
@@ -337,15 +406,60 @@ func _items(difficulty: DifficultyData, runs: int, uniques_only: bool = false) -
 	# Wertung je Item (Δ Ø Welle + Δ Siegquote / 10) für die Ausreißer unter den Einzigartigen
 	var scores: Dictionary[ItemData, Vector2] = {}
 	items.sort_custom(func(a: ItemData, b: ItemData) -> bool: return a.tier < b.tier or (a.tier == b.tier and String(a.id) < String(b.id)))
+	var started: int = Time.get_ticks_msec()
 	for item: ItemData in items:
 		var result: Dictionary = await _item_result(sim, characters, difficulty, runs, item)
 		var delta_win: float = (result["win_rate"] - base["win_rate"]) * 100.0
 		var delta_wave: float = result["avg_wave"] - base["avg_wave"]
 		var score: float = delta_wave + delta_win / 10.0
 		scores[item] = Vector2(score, score / maxf(1.0, item.price) * 100.0)
-		print("| %s | %s | %d | %+.0f | %+.2f | %+.2f | %s | %s |" % [tr(item.name_key), TextFormat.tier_name(item.tier), item.price, delta_win, delta_wave,
-			scores[item].y, "ja" if victory_items.has(item) else "", "ja" if item.is_unique() else ""])
+		# Gezielter Build: die Wertung des Items ist die bessere der beiden (so kauft man es)
+		var focus_text: String = ""
+		if FOCUS_BUILDS.has(item.id):
+			var focus: Dictionary = await _focus_result(sim, difficulty, runs, item)
+			var focus_score: float = focus["delta_wave"] + focus["delta_win"] / 10.0
+			focus_text = "%s (ohne: %d %%, Ø %.1f): %+.0f / %+.2f / %+.2f / %+.2f" % [FOCUS_BUILDS[item.id]["label"], roundi(focus["base_win"] * 100.0),
+				focus["base_wave"], focus["delta_win"], focus["delta_wave"], focus_score, focus_score / maxf(1.0, item.price) * 100.0]
+			if focus_score > score:
+				scores[item] = Vector2(focus_score, focus_score / maxf(1.0, item.price) * 100.0)
+		print("| %s | %s | %d | %+.0f | %+.2f | %+.2f | %s | %s | %s |" % [tr(item.name_key), TextFormat.tier_name(item.tier), item.price, delta_win, delta_wave,
+			score / maxf(1.0, item.price) * 100.0, "ja" if victory_items.has(item) else "", "ja" if item.is_unique() else "", focus_text])
 	_print_outliers(scores, victory_items)
+	print("Laufzeit: %d s" % ((Time.get_ticks_msec() - started) / 1000))
+
+
+## Item im gezielten Build (FOCUS_BUILDS) gegen denselben Build ohne Item; Referenzen werden je Build gemerkt.
+var _focus_bases: Dictionary[String, Dictionary] = {}
+
+
+func _focus_result(sim: CharacterSim, difficulty: DifficultyData, runs: int, item: ItemData) -> Dictionary:
+	var build: Dictionary = FOCUS_BUILDS[item.id]
+	var key: String = str(build["characters"]) + str(build["focus"]) + str(build.get("weapon", ""))
+	var options: Dictionary = {"focus": build["focus"]}
+	if build.has("weapon"):
+		options["weapon"] = load("res://data/weapons/%s.tres" % build["weapon"])
+	if not _focus_bases.has(key):
+		_focus_bases[key] = await _run_group(sim, build["characters"], difficulty, runs, options)
+	var with_item: Dictionary = options.duplicate()
+	with_item["items"] = [[item, ITEM_WAVE]]
+	var result: Dictionary = await _run_group(sim, build["characters"], difficulty, runs, with_item)
+	return {"delta_win": (result["win_rate"] - _focus_bases[key]["win_rate"]) * 100.0, "delta_wave": result["avg_wave"] - _focus_bases[key]["avg_wave"],
+		"base_win": _focus_bases[key]["win_rate"], "base_wave": _focus_bases[key]["avg_wave"]}
+
+
+## Schnitt über mehrere Charaktere mit denselben Optionen.
+func _run_group(sim: CharacterSim, ids: Array, difficulty: DifficultyData, runs: int, options: Dictionary) -> Dictionary:
+	var win: float = 0.0
+	var wave: float = 0.0
+	var shares: Dictionary = {}
+	for id: StringName in ids:
+		var result: Dictionary = sim.run_many(load("res://data/characters/%s.tres" % id), difficulty, runs, SEED, options)
+		await get_tree().process_frame
+		win += result["win_rate"] / ids.size()
+		wave += result["avg_wave"] / ids.size()
+		for key: String in result["shares"]:
+			shares[key] = shares.get(key, 0.0) + result["shares"][key] / ids.size()
+	return {"win_rate": win, "avg_wave": wave, "shares": shares}
 
 
 ## Ausreißer unter den Einzigartigen (Wertung und Wertung je 100 Funken) gegenüber deren Schnitt;
@@ -437,6 +551,78 @@ func _pets(difficulty: DifficultyData, runs: int) -> void:
 			if absf(z) > OUTLIER_SD:
 				print("  Ausreißer %s: %s %+.2f (%+.1f SD)" % ["stark" if z > 0.0 else "schwach", tr(pet.name_key), scores[pet][axis], z])
 	print("Laufzeit: %d s" % ((Time.get_ticks_msec() - started) / 1000))
+
+
+# --- Kombinationen ---
+
+## Je Kombination: Teil A, Teil B und beides gegen den Build ohne beide (gleiche Charaktere, Fokus, Seeds).
+## Synergie = Wertung(A+B) - Wertung(A) - Wertung(B); positiv heißt, die Teile verstärken sich.
+func _combos(difficulty: DifficultyData, runs: int) -> void:
+	var started: int = Time.get_ticks_msec()
+	var sim: CharacterSim = CharacterSim.new(self)
+	print("BULBRO Kombinationen – Spannung %d, %d Runs je Charakter und Variante (Wertung = Δ Ø Welle + Δ Siegquote / 10)" % [difficulty.level, runs])
+	print("| Kombination | ohne: Siegquote / Ø Welle | A: Δ Sieg / Wertung | B: Δ Sieg / Wertung | A+B: Δ Sieg / Δ Welle / Wertung | Preis | je 100 Funken | Synergie |")
+	print("|---|---|---|---|---|---|---|---|")
+	for combo: Dictionary in COMBOS:
+		var options: Dictionary = {"focus": combo.get("focus", {})}
+		var base: Dictionary = await _run_group(sim, combo["characters"], difficulty, runs, options)
+		var a: Array = combo["a"]
+		var b: Array = combo.get("b", [])
+		var cells: Array[String] = []
+		var scores: Array[float] = []
+		var parts: Array = [a, b, a + b] if not b.is_empty() else [a]
+		for i in parts.size():
+			var variant: Dictionary = options.duplicate()
+			_add_purchases(variant, parts[i])
+			var result: Dictionary = await _run_group(sim, combo["characters"], difficulty, runs, variant)
+			var delta_win: float = (result["win_rate"] - base["win_rate"]) * 100.0
+			var delta_wave: float = result["avg_wave"] - base["avg_wave"]
+			scores.append(delta_wave + delta_win / 10.0)
+			# Das volle Bündel (A+B bzw. nur A) mit Δ Welle, die Einzelteile kurz
+			if i == parts.size() - 1:
+				cells.append("%+.0f / %+.2f / %+.2f" % [delta_win, delta_wave, scores[-1]])
+			else:
+				cells.append("%+.0f / %+.2f" % [delta_win, scores[-1]])
+		var price: int = _purchase_price(a + b)
+		var synergy: String = "%+.2f" % (scores[2] - scores[0] - scores[1]) if scores.size() == 3 else "-"
+		var full: String = cells[2] if cells.size() == 3 else cells[0]
+		print("| %s | %d %% / %.1f | %s | %s | %s | %d | %+.2f | %s |" % [combo["label"], roundi(base["win_rate"] * 100.0), base["avg_wave"],
+			cells[0] if cells.size() == 3 else "-", cells[1] if cells.size() == 3 else "-", full, price, scores[-1] / maxf(1.0, price) * 100.0, synergy])
+	print("Laufzeit: %d s" % ((Time.get_ticks_msec() - started) / 1000))
+
+
+## Käufe [id, Welle] als Simulator-Optionen: Items unter "items", Begleiter unter "pets".
+func _add_purchases(options: Dictionary, bought: Array) -> void:
+	var items: Array = []
+	var pets: Array = []
+	for entry: Array in bought:
+		var item: Resource = _find("items", entry[0])
+		if item != null:
+			items.append([item, entry[1]])
+		else:
+			pets.append([_find("pets", entry[0]), entry[1]])
+	options["items"] = items
+	options["pets"] = pets
+
+
+func _find(category: String, id: StringName) -> Resource:
+	for res: Resource in DataRegistry.get_all(category):
+		if res.get("id") == id:
+			return res
+	return null
+
+
+## Grundpreis aller Käufe (Begleiter mit dem Preis des Tiers in der Kaufwelle).
+func _purchase_price(bought: Array) -> int:
+	var price: int = 0
+	for entry: Array in bought:
+		var item: ItemData = _find("items", entry[0]) as ItemData
+		if item != null:
+			price += item.price
+		else:
+			var pet: PetData = _find("pets", entry[0]) as PetData
+			price += pet.get_tier(clampi(1 + (int(entry[1]) - 1) / BalanceModel.WAVES_PER_TIER, WeaponData.MIN_TIER, WeaponData.MAX_TIER)).price
+	return price
 
 
 # --- Türme ---

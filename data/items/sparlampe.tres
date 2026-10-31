@@ -11,13 +11,13 @@
 script = ExtResource("2_f53w3")
 from_stat = &"sparks_held"
 to_stat = &"damage_pct"
-per = 20.0
+per = 10.0
 max_gain = 30.0
 
 [sub_resource type="Resource" id="Resource_ey3er"]
 script = ExtResource("3_fm1x0")
 stat = &"item_price_pct"
-value = 10.0
+value = 5.0
 
 [sub_resource type="Resource" id="Resource_5syne"]
 script = ExtResource("4_nsx24")

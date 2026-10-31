@@ -35,6 +35,8 @@ const GROWTH_PER_WAVE: Dictionary[StringName, float] = {
 }
 ## Zuwachs des Skalierungs-Stats der Startwaffe pro Welle (und Technik bei Struktur-Builds).
 const MAIN_STAT_PER_WAVE: float = 1.0
+## Gezielter Build ("focus"): Der Fokus-Stat wird statt anderer Stats gekauft; alle übrigen Zuwächse sinken um diesen Anteil.
+const FOCUS_TRADE: float = 0.3
 ## Anteil des Zuwachses aus Items (Wirtschaft) bzw. Level-ups (XP).
 const ITEM_SHARE: float = 0.6
 ## Glück pro Run (Shop, Drops, Können): Normalverteilung um 1.
@@ -92,6 +94,14 @@ const SPARKS_HELD: float = 60.0
 ## Anteil der Kampfzeit unter der HP-Schwelle (Thermosicherung), als Bruchteil der Boni gerechnet.
 const LOW_HP_UPTIME: float = 0.2
 
+# --- Reichweite (Paket 15-8d) ---
+## Fernkampf: mehr Reichweite hält Gegner auf Abstand, -x Treffer pro +100 % Reichweite (gewichtet nach Waffenanteil).
+const RANGED_RANGE_HIT_RELIEF: float = 0.3
+## Nahkampf: mehr Reichweite trifft öfter und mehr Gegner, +x Schaden pro +100 % Reichweite.
+const MELEE_RANGE_DPS_FACTOR: float = 0.5
+## Höchstens so viel Entlastung/Zuschlag durch Reichweite (auch nach unten bei negativer Reichweite).
+const RANGE_EFFECT_MAX: float = 0.3
+
 # --- Begleiter (Paket 15-8) ---
 ## Der Igel rollt erst zum Ziel und nur auf Gegner nahe dem Spieler: Anteil der Zeit, in der er rammt.
 const PET_ROLL_UPTIME: float = 0.6
@@ -100,13 +110,23 @@ const PET_ROLL_UPTIME: float = 0.6
 const PET_COLLECT_HIT_RELIEF_PER_100: float = 0.015
 ## Schildkröte: so viele der Bosstreffer sind Projektile (Rest Kontakt).
 const BOSS_PROJECTILE_SHARE: float = 0.7
-## Schildkröte: Sie blockt das nächste Projektil im Umkreis, nicht unbedingt eins, das getroffen hätte (Salven,
-## Vorbeiflieger). Anteil der Blocks, die wirklich einen Treffer verhindern.
-const PET_BLOCK_HIT_SHARE: float = 0.35
+## Schildkröte (Salven-Modell, Paket 15-8d): Sobald sie bereit ist, blockt sie das nächste Projektil im Umkreis,
+## meist eins, das ohnehin vorbeigeflogen wäre. Fliegen P Projektile pro Sekunde in ihren Umkreis, verhindert ein
+## Block nur mit Wahrscheinlichkeit Treffer/P einen Treffer; verhindert werden also Treffer x min(1, Bias / (P x Abklingzeit)).
+## Bias: Das nächste Projektil zum Spieler trifft öfter als ein beliebiges.
+const PET_BLOCK_AIM_BIAS: float = 2.0
+## Schüsse pro Sekunde eines Schützen ohne Feuerintervall in den Daten.
+const SHOTS_PER_SECOND_DEFAULT: float = 0.4
+## Bosse feuern radiale Salven (8–20 Projektile alle 1,5–3 s); davon fliegen so viele pro Sekunde nahe am Spieler vorbei.
+const BOSS_NEAR_PROJECTILES_PER_SECOND: float = 2.5
 
 # --- Türme aus Items (Paket 15-8) ---
-## Flammenstrahl: getroffene Gegner pro Strahl (Linie bis zur Reichweite, im Gedränge mehrere).
-const FLAME_TARGETS: float = 2.0
+## Flammenstrahl: Gegner auf dem Strahl = 1 (Ziel) + lebende Gegner x Strahlfläche / Kampffläche x Ballung,
+## höchstens StructureData.beam_max_targets. Die Gegner stehen im Umkreis FLAME_ENGAGE_RADIUS um den Spieler,
+## nahe am Spieler (und den Türmen) dichter als im Schnitt.
+const FLAME_ENGAGE_RADIUS: float = 350.0
+const FLAME_CLUSTER: float = 2.0
+const ENEMY_RADIUS: float = 16.0
 ## Anteil aller Gegner in einer Frost-Aura bei Referenzradius (wächst mit der Fläche).
 const FROST_ENEMY_SHARE: float = 0.12
 const FROST_REFERENCE_RADIUS: float = 150.0
@@ -140,7 +160,8 @@ func _init(p_host: Node) -> void:
 
 ## Viele Runs: Siegquote, typische Scheiter-Welle, Durchschnittswelle und Schadensanteile.
 ## options: "items" = Array von [ItemData, Welle] (Turm-Items: jedes Exemplar ein Turm), "pets" = Array von [PetData, Welle] (Tier wächst danach wie das
-## Waffen-Tier), "weapon" = feste Startwaffe, "effects" = Effektliste statt der des Charakters.
+## Waffen-Tier), "weapon" = feste Startwaffe, "effects" = Effektliste statt der des Charakters,
+## "focus" = Dictionary[StringName, float] zusätzlicher Zuwachs pro Welle (gezielter Build, z. B. Rüstung für Panzerglas).
 func run_many(character: CharacterData, difficulty: DifficultyData, runs: int, seed_value: int, options: Dictionary = {}) -> Dictionary:
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	var wins: int = 0
@@ -189,7 +210,7 @@ func simulate_run(character: CharacterData, difficulty: DifficultyData, rng: Ran
 	var pool: Array[WeaponData] = _weapon_pool(player, start)
 	var luck: float = maxf(RUN_LUCK_MIN, 1.0 + rng.randfn(0.0, RUN_LUCK_SD))
 	var state: Dictionary = {"hp": player.get_max_hp(), "xp": 0.0, "level": 0, "kills": 0.0, "overheal_dps": 0.0,
-		"weapon_ids": [start], "shares": {}, "trace": options.get("trace", false)}
+		"weapon_ids": [start], "shares": {}, "trace": options.get("trace", false), "focus": options.get("focus", {})}
 	var elite_wave: int = _elite_wave(difficulty, rng)
 	var result: Dictionary = {"won": false, "wave": BOSS_WAVE, "shares": {}, "endless": 0}
 	for wave: WaveData in waves:
@@ -279,6 +300,11 @@ func _update_weapons(player: Player, wave_number: int, start: WeaponData, pool: 
 	var ids: Array = state["weapon_ids"]
 	while ids.size() < count:
 		ids.append(start if pool.is_empty() or rng.randf() < DUPLICATE_SHARE else pool[rng.randi_range(0, pool.size() - 1)])
+	# Nur neu bauen, wenn sich Anzahl oder Tier ändern (Waffen-Knoten sind teuer)
+	var key: Vector2i = Vector2i(ids.size(), tier)
+	if state.get("weapon_key", Vector2i.ZERO) == key:
+		return
+	state["weapon_key"] = key
 	for weapon: Weapon in player.weapon_slots.get_weapons():
 		player.weapon_slots.remove_weapon(weapon)
 		weapon.free()
@@ -299,16 +325,43 @@ func _grow(player: Player, wave_number: int, start: WeaponData, luck: float, sta
 	growth[_main_stat(start)] = growth.get(_main_stat(start), 0.0) + MAIN_STAT_PER_WAVE
 	if start.structure != null or _has_effect(player, "OrbitingDroneEffect"):
 		growth[Stats.ENGINEERING] = growth.get(Stats.ENGINEERING, 0.0) + MAIN_STAT_PER_WAVE
+	var focus: Dictionary = state.get("focus", {})
+	if not focus.is_empty():
+		for stat: StringName in growth:
+			if not focus.has(stat):
+				growth[stat] *= 1.0 - FOCUS_TRADE
+	for stat: StringName in focus:
+		growth[stat] = growth.get(stat, 0.0) + float(focus[stat])
 	for stat: StringName in growth:
-		player.add_run_modifier(StatModifier.create(stat, growth[stat] * factor))
+		growth[stat] *= factor
 	# Level-ups: +1 Max HP pro Level (wie Player._on_level_up)
 	var level: int = _level_for_xp(state["xp"])
-	for i in level - int(state["level"]):
-		player.add_run_modifier(StatModifier.create(Stats.MAX_HP, player.config.max_hp_per_level))
+	growth[Stats.MAX_HP] = growth.get(Stats.MAX_HP, 0.0) + (level - int(state["level"])) * player.config.max_hp_per_level
 	state["level"] = level
+	_add_growth(player, state, growth)
 	# Quellen für Umrechnungen (Leuchtturm: Level, Sparlampe: Funken im Besitz)
 	player.stats.set_source(Stats.SOURCE_LEVEL, level)
 	player.stats.set_source(Stats.SOURCE_SPARKS, SPARKS_HELD)
+
+
+## Zuwachs als ein FLAT-Run-Modifikator je Stat (Summe aller Wellen). Gleiches Ergebnis wie ein Modifikator pro
+## Welle, aber jede Änderung leert den Stat-Cache: einzeln hinzugefügt wurde der Run quadratisch langsam.
+func _add_growth(player: Player, state: Dictionary, growth: Dictionary[StringName, float]) -> void:
+	var totals: Dictionary = state.get("growth", {})
+	var old_mods: Array[StatModifier] = []
+	old_mods.assign(state.get("growth_mods", []))
+	var mods: Array[StatModifier] = []
+	for stat: StringName in growth:
+		totals[stat] = float(totals.get(stat, 0.0)) + growth[stat]
+	for stat: StringName in totals:
+		mods.append(StatModifier.create(stat, totals[stat]))
+	state["growth"] = totals
+	state["growth_mods"] = mods
+	for mod: StatModifier in old_mods:
+		player.run_modifiers.erase(mod)
+	player.run_modifiers.append_array(mods)
+	player.stats.remove_modifiers(old_mods)
+	player.stats.add_modifiers(mods)
 
 
 ## Gekaufte Items; Turm-Items merkt sich der Zustand (jedes Exemplar ein Turm, siehe _tower_value).
@@ -386,6 +439,7 @@ func _play_wave(player: Player, wave: WaveData, difficulty: DifficultyData, rng:
 	var count: float = load_info["count"] * enemy_factor
 	var spawn_rate: float = count / duration
 	var low_hp: Array[StatModifier] = _add_low_hp_bonus(player)
+	state["density"] = enemy_factor
 	var offense: Dictionary = _offense(player, state, spawn_rate)
 	var total: float = offense["total"] + state["overheal_dps"]
 	var ratio: float = total / maxf(required, 0.01)
@@ -398,6 +452,7 @@ func _play_wave(player: Player, wave: WaveData, difficulty: DifficultyData, rng:
 	var pressure: float = clampf(pow(1.0 / maxf(ratio, 0.01), PRESSURE_EXPONENT), PRESSURE_MIN, PRESSURE_MAX) * scale.get("speed", 1.0)
 	var hit_damage: float = _average_enemy_damage(wave, difficulty) * scale.get("damage", 1.0)
 	state["projectile_share"] = _projectile_share(wave, difficulty)
+	state["projectile_rate"] = _projectile_rate(wave, difficulty) * enemy_factor
 	var noise: float = exp(rng.randfn(0.0, WAVE_NOISE_SD))
 	var flows: Dictionary = _defense(player, offense, kills, pressure * noise, hit_damage, state)
 	state["landed"] = flows["landed"]
@@ -442,6 +497,7 @@ func _play_boss(player: Player, difficulty: DifficultyData, rng: RandomNumberGen
 		boss_hp *= _hp_factor(difficulty) * scale["hp"] * scale["boss_hp"]
 	var damage_scale: float = scale.get("damage", 1.0)
 	var low_hp: Array[StatModifier] = _add_low_hp_bonus(player)
+	state["density"] = 1.0
 	var offense: Dictionary = _offense(player, state, 1.0)
 	var time: float = boss_hp / maxf(offense["single"] + state["overheal_dps"], 0.01)
 	if time > BOSS_MAX_TIME:
@@ -451,12 +507,14 @@ func _play_boss(player: Player, difficulty: DifficultyData, rng: RandomNumberGen
 	var noise: float = exp(rng.randfn(0.0, WAVE_NOISE_SD))
 	var add_time: float = minf(time, BOSS_ADD_TIME)
 	state["projectile_share"] = _projectile_share(waves[RUN_WAVES - 1], difficulty)
+	state["projectile_rate"] = _projectile_rate(waves[RUN_WAVES - 1], difficulty) * BOSS_ADD_PRESSURE
 	var add_flows: Dictionary = _defense(player, offense, 1.0, BOSS_ADD_PRESSURE * noise * scale.get("speed", 1.0),
 		_average_enemy_damage(waves[RUN_WAVES - 1], difficulty) * damage_scale, state)
 	var boss_damage: float = boss.damage_for_wave(wave_number) * damage_factor * damage_scale * scale.get("boss_damage", 1.0)
 	# Endlos: alle Bosse greifen gleichzeitig an.
 	var boss_count: float = float(bosses.size()) if not scale.is_empty() else 1.0
 	state["projectile_share"] = BOSS_PROJECTILE_SHARE
+	state["projectile_rate"] = BOSS_NEAR_PROJECTILES_PER_SECOND * boss_count + float(state["projectile_rate"])
 	var boss_flows: Dictionary = _defense(player, offense, 0.0, BOSS_HIT_RATE / HIT_COEF * noise * boss_count, boss_damage, state)
 	player.stats.remove_modifiers(low_hp)
 	var hp: float = float(state["hp"]) + (add_flows["heal"] - add_flows["damage"]) * add_time - boss_flows["damage"] * time
@@ -513,6 +571,8 @@ func _average_enemy_damage(wave: WaveData, difficulty: DifficultyData) -> float:
 
 
 ## Anteil der Gegner der Welle, die Projektile schießen (nach Anzahl gewichtet; Schildkröte).
+## Schützen erkennt man am Verhalten (Projektilgeschwindigkeit); projectile_damage_for_wave fällt sonst auf den
+## Kontaktschaden zurück und ist nie 0 (bis 15-8d zählte deshalb jeder Gegner als Schütze).
 func _projectile_share(wave: WaveData, difficulty: DifficultyData) -> float:
 	var level: int = difficulty.level if difficulty != null else 0
 	var shooters: float = 0.0
@@ -521,10 +581,35 @@ func _projectile_share(wave: WaveData, difficulty: DifficultyData) -> float:
 		if group.min_difficulty > level:
 			continue
 		var n: float = (group.group_min + group.group_max) * 0.5 / maxf(group.interval, 0.1)
-		if group.enemy.projectile_damage_for_wave(wave.wave_number) > 0.0:
+		if _is_shooter(group.enemy):
 			shooters += n
 		weight += n
 	return shooters / maxf(weight, 0.001)
+
+
+## Gegnerprojektile pro Sekunde nahe am Spieler (Schildkröte): lebende Gegner x Anteil der Schützen x deren
+## Schussrate (Feuerintervall aus dem Verhalten, sonst SHOTS_PER_SECOND_DEFAULT). Gezielte Schüsse fliegen alle nahe vorbei.
+func _projectile_rate(wave: WaveData, difficulty: DifficultyData) -> float:
+	var level: int = difficulty.level if difficulty != null else 0
+	var shots: float = 0.0
+	var weight: float = 0.0
+	for group: SpawnGroupData in wave.groups:
+		if group.min_difficulty > level:
+			continue
+		var n: float = (group.group_min + group.group_max) * 0.5 / maxf(group.interval, 0.1)
+		weight += n
+		if not _is_shooter(group.enemy):
+			continue
+		var rate: float = SHOTS_PER_SECOND_DEFAULT
+		var behavior: Resource = group.enemy.behavior
+		if behavior.get("fire_interval_min") != null:
+			rate = 2.0 / maxf(0.1, float(behavior.get("fire_interval_min")) + float(behavior.get("fire_interval_max")))
+		shots += n * rate
+	return ALIVE_BASE * shots / maxf(weight, 0.001)
+
+
+func _is_shooter(enemy: EnemyData) -> bool:
+	return enemy.behavior != null and enemy.behavior.get("projectile_speed") != null
 
 
 # --- Schaden ---
@@ -553,6 +638,9 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 	# Erste Waffe (Mini-Birne kopiert sie): Gesamt- und Einzelziel-DPS
 	var first_dps: float = -1.0
 	var first_single: float = 0.0
+	# Reichweite der Fernwaffen: weniger Treffer (Anteil je Waffe)
+	var range_relief: float = 0.0
+	var weapon_count: float = maxf(1.0, player.weapon_slots.get_weapons().size())
 	for weapon: Weapon in player.weapon_slots.get_weapons():
 		var t: WeaponTierStats = weapon.get_tier_stats()
 		var base: float = t.base_damage + weapon.data.damage_per_same_weapon * (player.weapon_slots.count_of(weapon.data.id) - 1)
@@ -561,6 +649,11 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 		var per_hit: float = hit * (1.0 + crit * (t.crit_multiplier - 1.0))
 		var rate: float = 1.0 / weapon.get_cooldown()
 		var targets: float = BalanceModel.targets_per_attack(weapon.data, t) + t.split_count * t.split_damage_pct / PERCENT * SPLIT_HIT_SHARE
+		var range_gain: float = weapon.get_range() / maxf(1.0, CombatMath.effective_range(t.range, 0.0, weapon.data.is_melee())) - 1.0
+		if weapon.data.is_melee():
+			per_hit *= 1.0 + clampf(range_gain * MELEE_RANGE_DPS_FACTOR, -RANGE_EFFECT_MAX, RANGE_EFFECT_MAX)
+		else:
+			range_relief += clampf(range_gain * RANGED_RANGE_HIT_RELIEF, -RANGE_EFFECT_MAX, RANGE_EFFECT_MAX) / weapon_count
 		if t.burn_damage > 0.0 and t.burn_ticks > 0:
 			burn_sources.append(Vector3(rate * targets * t.burn_chance, t.burn_damage * burn_mult, t.burn_ticks))
 		weapon_dps += per_hit * rate * targets
@@ -609,7 +702,7 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 	# Türme aus Items, bis zur Obergrenze nach den Lampentürmen der Waffen
 	var item_towers: Array = state.get("towers", [])
 	for structure: StructureData in item_towers.slice(0, maxi(0, TOWERS.max_towers - weapon_towers)):
-		var tower: Dictionary = _tower_value(player, structure, burn_mult)
+		var tower: Dictionary = _tower_value(player, structure, burn_mult, float(state.get("density", 1.0)))
 		if tower["damage"] > 0.0:
 			_add(parts, "Turm-Items", tower["damage"])
 			single += tower["single"]
@@ -709,7 +802,8 @@ func _offense(player: Player, state: Dictionary, spawn_rate: float) -> Dictionar
 		total += parts[key]
 	single *= curse_amp
 	return {"total": total, "single": single, "parts": parts, "hits": hits_per_second, "freeze": clampf(freeze_share, 0.0, 0.9),
-		"slow": clampf(slow_share, 0.0, 0.9), "stop": clampf(root_stop * ROOT_HIT_STOP_SHARE / alive, 0.0, 0.9), "heal": heal_rate}
+		"slow": clampf(slow_share, 0.0, 0.9), "stop": clampf(root_stop * ROOT_HIT_STOP_SHARE / alive, 0.0, 0.9), "heal": heal_rate,
+		"range_relief": range_relief}
 
 
 func _add(parts: Dictionary[String, float], key: String, value: float) -> void:
@@ -725,7 +819,7 @@ func _structure_dps(player: Player, structure: StructureData, tier: int) -> floa
 
 ## Ein Turm aus einem Item: Schaden pro Sekunde (alle Ziele, Einzelziel), Brandquelle (Rate, Tick, Ticks),
 ## Verlangsamung (Anteil der Gegner x Stärke) und Heilung pro Sekunde.
-func _tower_value(player: Player, structure: StructureData, burn_mult: float) -> Dictionary:
+func _tower_value(player: Player, structure: StructureData, burn_mult: float, density: float = 1.0) -> Dictionary:
 	var stats: StatSystem = player.stats
 	var value: Dictionary = {"damage": 0.0, "single": 0.0, "burn": Vector3.ZERO, "slow": 0.0, "heal": 0.0}
 	var rate: float = 1.0 / structure.cooldown(1, stats)
@@ -734,9 +828,10 @@ func _tower_value(player: Player, structure: StructureData, burn_mult: float) ->
 			value["damage"] = _structure_dps(player, structure, 1)
 			value["single"] = value["damage"]
 		StructureData.Kind.FLAME:
-			value["damage"] = structure.damage(stats) * rate * FLAME_TARGETS
+			var targets: float = _flame_targets(structure, density)
+			value["damage"] = structure.damage(stats) * rate * targets
 			value["single"] = structure.damage(stats) * rate
-			value["burn"] = Vector3(rate * FLAME_TARGETS, structure.burn_tick(stats) * burn_mult, structure.burn_ticks)
+			value["burn"] = Vector3(rate * targets, structure.burn_tick(stats) * burn_mult, structure.burn_ticks)
 		StructureData.Kind.FROST:
 			var area: float = pow(structure.aura(stats) / FROST_REFERENCE_RADIUS, 2.0)
 			value["slow"] = minf(1.0, FROST_ENEMY_SHARE * area) * structure.slow_pct / PERCENT
@@ -749,6 +844,13 @@ func _tower_value(player: Player, structure: StructureData, burn_mult: float) ->
 			value["damage"] = rate * MINE_HIT_SHARE * mine["damage"]
 			value["single"] = rate * MINE_HIT_SHARE * mine["single"]
 	return value
+
+
+## Gegner auf einem Flammenstrahl (siehe FLAME_ENGAGE_RADIUS), `density` = Faktor auf die lebenden Gegner.
+func _flame_targets(structure: StructureData, density: float) -> float:
+	var beam_area: float = structure.range * (structure.beam_width + 2.0 * ENEMY_RADIUS)
+	var share: float = beam_area / (PI * FLAME_ENGAGE_RADIUS * FLAME_ENGAGE_RADIUS)
+	return clampf(1.0 + ALIVE_BASE * density * share * FLAME_CLUSTER, 1.0, maxf(1.0, structure.beam_max_targets))
 
 
 ## Wirkung einer Aktion pro Auslösung: Schaden (alle Ziele), Einzelziel-Schaden, eingefrorene Zeit (Anteil
@@ -815,13 +917,15 @@ func _defense(player: Player, offense: Dictionary, kills: float, pressure: float
 			melee_share += 1.0 / weapons_now.size()
 	var speed_relief: float = clampf(stats.get_stat(Stats.SPEED) / SPEED_HIT_DIVISOR, -SPEED_HIT_MAX_REDUCTION, SPEED_HIT_MAX_REDUCTION)
 	var attempts: float = HIT_COEF * pressure * lerpf(1.0, MELEE_HIT_FACTOR, melee_share) * (1.0 - speed_relief)
-	attempts *= (1.0 - offense["freeze"]) * (1.0 - offense["stop"]) * (1.0 - offense["slow"] * SLOW_DEFENSE_SHARE)
+	attempts *= (1.0 - offense["freeze"]) * (1.0 - offense["stop"]) * (1.0 - offense["slow"] * SLOW_DEFENSE_SHARE) * (1.0 - offense["range_relief"])
 	attempts = minf(attempts, MAX_HITS_PER_SECOND)
 	for entry: Array in state.get("pets", []):
 		var pet: PetData = entry[0]
 		var stats_tier: PetTierStats = pet.get_tier(entry[1])
 		if pet.behavior is PetBlockBehavior:
-			attempts -= minf(attempts * float(state.get("projectile_share", 0.0)), PET_BLOCK_HIT_SHARE / maxf(stats_tier.cooldown, 0.1))
+			var projectile_hits: float = attempts * float(state.get("projectile_share", 0.0))
+			var near: float = float(state.get("projectile_rate", 0.0)) * maxf(stats_tier.cooldown, 0.1)
+			attempts -= projectile_hits * minf(1.0, PET_BLOCK_AIM_BIAS / maxf(near, 0.001))
 		elif pet.behavior is PetCollectBehavior:
 			attempts *= 1.0 - minf(0.5, PET_COLLECT_HIT_RELIEF_PER_100 * stats_tier.radius / 100.0)
 	var dodge: float = CombatMath.dodge_chance(stats.get_stat(Stats.DODGE), player.config.dodge_cap)

@@ -4,7 +4,7 @@ Ergänzt [GDD.md](GDD.md) und [ART_STYLE.md](ART_STYLE.md). Hier stehen der Stan
 
 ## Nächste Sitzung
 
-Stand 28.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
+Stand 31.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 
 - **Erledigt:** Paket 1 (Crash nach Bosssieg, `a4c51cb`, Nacharbeit typisierte Literale `89833f1`) und Paket 2 (Lexikon-Erweiterungen, `55bf4bc`).
 - **Crash-Fix im echten Spiel bestätigt:** Bosssieg mit LED-Schütze auf Spannung 0. „Glasfaser“ wurde freigeschaltet, Sieg, Challenge und Statistik sind gespeichert, der Fortsetzen-Stand wurde gelöscht.
@@ -17,20 +17,17 @@ Stand 28.10.2026, Spezifikation in [PHASE_15.md](PHASE_15.md):
 - **Erledigt 28.10.:** Paket 8, Teil „Einzigartige Items“ (Commit „Feature: Einzigartige Items (Phase 15, Paket 8)“): Seltenheit Einzigartig (Tier 5, Gold), 10 Items, vier neue allgemeine Effekttypen, HUD-Anzeigen, Simulator-Auswertung. Details und geprüfte Tier-Stellen im Abschnitt „Einzigartige Items“.
 - **Erledigt 28.10.:** Paket 8, Teil „Begleiter“ (Commit „Feature: Begleiter (Phase 15, Paket 8)“): eigener Item-Typ mit Tiers I–IV, höchstens 2, Kombinieren, Ersetzen mit Rückfrage (25 % zurück), 5 Begleiter mit SVG und Animation, Lexikon-Reiter, Run-Statistik, Admin, Fortsetzen, Simulator `--pets`. Details im Abschnitt „Begleiter“.
 - **Erledigt 30.10.:** Paket 8, Teil „Türme“ (Commit „Feature: Türme (Phase 15, Paket 8)“): Flammenturm, Frostturm, Heilturm, Stolperdraht als stapelbare Items, `TowerBuilder` mit Ring-Platzierung und Obergrenzen (12 Türme, 24 Minen), Freischaltungen zählen nur Lampentürme (Entscheidung des Spielers, Test „5 Frosttürme schalten die Drohnenleuchte nicht frei“), Simulator `--towers`, Performance gemessen. Details im Abschnitt „Türme“.
-- **Als Nächstes:** Paket 8d, Balancing der Einzigartigen, Begleiter und Türme (Simulator-Tabellen in den Abschnitten „Einzigartige Items“, „Begleiter“ und „Türme“, noch nichts geändert). Danach Paket 9.
+- **Erledigt 31.10.:** Paket 8d, Balancing der neuen Inhalte (Commit „Balancing: neue Inhalte“): Simulator erweitert (Tempo ×6, gezielte Builds, Reichweite, Salven-Modell der Schildkröte mit Fix der Schützen-Erkennung, Flammenstrahl mit `beam_max_targets` und Gegnerdichte, `--combos`, `--set`), Werte nach OK des Spielers geändert. Details, Tabellen und Kombinationen im Abschnitt „Balancing der neuen Inhalte (Paket 8d)“.
+- **Als Nächstes:** Paket 9.
 - **Für Paket 9 schon vorhanden:** `SaveManager.get_run_history()` liefert die letzten 20 Runs (neueste zuerst) mit Charakter, Spannung, Ergebnis, Welle, Endlos-Welle, Datum, Kampfzeit, Level, Kills und Top-3-Quellen. Siehe Abschnitt „Run-Statistik und Run-Ende“.
 
 Offene Punkte:
 - Echter Endlos-Run zur Bestätigung von Welle 25 und 30 steht aus.
 - `stats.runs` = 2 im echten Spielstand ist geklärt (22.10.): Die 6.014 Kills übersteigen, was ein einzelner Run auf Spannung 0 liefern kann (rund 4.850 Gegner in den Wellen 1–19 plus Bosswelle). Es sind also zwei echte Runs mit Kills zu Ende gegangen, vermutlich der in der Sicherung vom 21.10. gespeicherte, unterbrochene Run (per „Fortsetzen“) und der Sieg mit dem LED-Schützen. Headless-Check und Tests können seit dem 22.10. ohnehin nicht mehr in den echten Spielstand schreiben.
 - Runs, die zwischen dem 21.10. 14:10 (Fehler eingeführt) und dem Fix endeten, fehlen in der Statistik und lassen sich nicht nachtragen.
-- **Für Paket 8d (Balancing Einzigartige, Begleiter und Türme):**
-  1. Der Simulator modelliert Glück und Reichweite nicht, „Stat pro Stat“-Items (Panzerglas, Schwungrad, Gleichrichter, Glücksfassung, Leuchtturm) werden unterschätzt. In 8d gezielte Builds je Item simulieren, z. B. Panzerglas in einem Rüstungs-Build.
-  2. `--items` ist mit etwa 80 s pro Item zu langsam (voller Lauf über 40 Minuten). In 8d beschleunigen: weniger Runs, parallel rechnen oder nur geänderte Items.
-  3. Lexikon: Wird der Filter per Code gesetzt (`set_filter`), zeigt das Auswahlfeld weiter „Alle“, obwohl korrekt gefiltert wird. Betrifft nur Skripte, nicht die Bedienung.
-  4. Begleiter: Die Lampenschirm-Schildkröte ist laut Simulator ein starker Ausreißer (+27 % Siegquote). Das Modell verteilt Projektiltreffer gleichmäßig und kennt keine Salven, die Schildkröte fängt dort fast jeden Projektiltreffer ab. Vor einer Änderung im echten Spiel prüfen (Spannung 3, Welle 12–19, Boss). Kandidaten: Abklingzeit 3 → 4–5 s oder nur Projektile blocken, die den Spieler treffen würden. Leuchtkäfer ist der schwächste Begleiter (Wertung +0,26).
-  5. Türme: Der Heilturm ist für Taschenlampe und Drohnenleuchte der stärkste Turm je Funke (Ausreißer), der Stolperdraht der schwächste (bei der Drohnenleuchte fast ohne Wirkung). Kandidaten: Stolperdraht 8 → 6 s oder Mine 15 → 20; Heilturm vor einer Änderung im echten Spiel prüfen (das Modell rechnet 35 % Zeit im Radius). Der Frostturm wirkt nur über weniger Treffer; für Builds ohne Technik (Standardbirne) bringt er fast nichts, das ist gewollt.
-  6. Simulator: Der Flammenstrahl rechnet fest mit 2 Zielen (`CharacterSim.FLAME_TARGETS`). In 8d stattdessen den Wert aus `StructureData.beam_max_targets` nutzen (Flammenturm: 5, bestätigt 31.10.), ggf. mit einem Faktor für die Gegnerdichte auf dem Strahl, und die Turm-Tabelle neu rechnen.
+- Schwungrad, Heilturm-Stapel und Schildkröte im echten Spiel prüfen.
+- Neonröhre und LED-Schütze liegen seit dem Reichweiten-Modell (8d) auf Spannung 3 deutlich höher (50 → 67 %, 60 → 68 %); beide haben viel Reichweite (+100 bzw. +50). Nichts geändert, bei Gelegenheit im echten Spiel prüfen.
+- Lexikon: Wird der Filter per Code gesetzt (`set_filter`), zeigt das Auswahlfeld weiter „Alle“, obwohl korrekt gefiltert wird. Betrifft nur Skripte, nicht die Bedienung.
 - `piercing_dmg_pct` und `boss_dmg_pct` wirken seit Paket 2, aber noch kein Item gibt diese Stats (Kandidaten für Paket 8).
 - Der Run-Ende-Bildschirm wurde mit nachgestellten Run-Daten geprüft (Screenshots 1920×1080 und 1280×720, Sieg und Tod im Endlos-Modus). Ein echter Sieg im Spiel mit Blick auf DPS-Werte und Diagramm steht noch aus.
 - Erledigt 22.10.: „ObjectDB instances leaked“ im Headless-Check der Run-Szene. Betroffen waren nur `AudioStreamWAV` und `AudioStreamPlaybackWAV`: Effekte, die beim Beenden noch liefen. `stop()` übergibt das Stoppen asynchron an den Mixer-Thread; endet das Programm vorher, hält der AudioServer die Wiedergabe fest. Jetzt spielt der AudioManager headless keine Effekte (`output_enabled`), und „Beenden“ bzw. Fenster schließen laufen über `AudioManager.quit_game()` (alles stoppen, 0,1 s warten). Messung mit Unendlich HP über 20 Endloswellen (21–41): Nodes konstant 5.227, Objekte 11.430 ± 30, Resources konstant 1.276. Während eines Runs bleibt nichts liegen; die Zunahme in den ersten Wellen sind neue Gegner-Pools (je Gegnertyp 30 vorgewärmte Gegner, 271 Nodes).
@@ -293,7 +290,7 @@ Getestete Alternativen (20 Runs, Spannung 0): HP 8 %/Schaden 6 % → Median 8, P
 ### Einzigartige Items (Phase 15, Paket 8)
 - Seltenheit: `ItemData.UNIQUE_TIER = 5`, Anzeige überall „Einzigartig“ (`TIER_5`), Farbe Gold `#F5A623` als fünfte Tier-Farbe. Angebotskarten: dickere Goldkontur (6 px), leicht goldener Hintergrund (14 %), Schein. Lexikon: Filter „Tier“ bietet „Einzigartig“, Einträge mit Abschnitt „Einzigartig“ (Regeln).
 - Shop (`data/config/shop_config.tres`): pro neu gezogenem Angebotsplatz ab Welle 5 ein eigener Wurf, Chance 4 % × (1 + Glück/100 × 0,5), höchstens 8 %, nie unter 0. Höchstens ein Einzigartiges pro Angebot (gesperrte zählen mit), nur Items, die weder besessen noch schon angeboten sind (`limit = 1`). Preis wie alle Items über `Economy.inflated_price`.
-- Items (Startwerte, Preise vor Inflation): Panzerglas 110 (+1 Schaden % pro 1 Rüstung), Schwungrad 105 (+1 Nah pro 3 % Tempo), Glücksfassung 95 (+1 % Krit pro 10 Glück), Hochspannungsspeicher 115 (+1 Schaden % pro 4 Max HP, -2 HP-Regen), Gleichrichter 105 (+1 Strom pro 5 % Angriffstempo), Leuchtturm 90 (+3 Reichweite pro Level), Reservebatterie 115 (einmal pro Welle tödlichen Treffer mit 1 HP überleben), Thermosicherung 95 (unter 30 % HP +40 % Angriffstempo, +20 % Tempo), Kondensator 120 (nach je 15 Kills doppelter Schaden für den nächsten Angriff jeder Waffe), Sparlampe 85 (+1 Schaden % pro 20 Funken im Besitz, max. +30, Item-Preise +10 %).
+- Items (Startwerte, Preise vor Inflation): Panzerglas 110 (+1 Schaden % pro 1 Rüstung), Schwungrad 105 (+1 Nah pro 6 % Tempo, vor 8d pro 3), Glücksfassung 95 (+1 % Krit pro 6 Glück, vor 8d pro 10), Hochspannungsspeicher 115 (+1 Schaden % pro 4 Max HP, -1 HP-Regen, vor 8d -2), Gleichrichter 105 (+1 Strom pro 5 % Angriffstempo), Leuchtturm 90 (+3 Reichweite pro Level), Reservebatterie 115 (einmal pro Welle tödlichen Treffer mit 1 HP überleben), Thermosicherung 95 (unter 30 % HP +40 % Angriffstempo, +20 % Tempo), Kondensator 120 (nach je 13 Kills doppelter Schaden für den nächsten Angriff jeder Waffe, vor 8d 15), Sparlampe 85 (+1 Schaden % pro 10 Funken im Besitz, max. +30, Item-Preise +5 %, vor 8d pro 20 und +10 %).
 - Effekttypen (allgemein, für spätere Items): `StatConversionEffect` (erweitert: Quelle auch `Stats.SOURCE_LEVEL`/`SOURCE_SPARKS`, `max_gain`, Herkunft), `LowHpStatEffect` (Bonus unter X % HP), `SurviveLethalEffect` (Ladungen pro Welle, Rest-HP; Hook `ItemEffect.on_lethal_hit`), `KillChargeEffect` (nach N Kills Faktor für den nächsten Angriff jeder Waffe). HUD-Anzeige über `ItemEffect.hud_charge` (0..1, negativ = keine).
 - Umrechnungen rechnen live im `StatSystem`: `floor(Ausgang / per) × gain`, mit kleinem Zuschlag gegen Rundungsfehler (9 Tempo / 3 = 3), negative Ausgangswerte zählen als 0. Der Stat-Tooltip zeigt jede Umrechnung: „+12 Schaden % durch Panzerglas (aus 12 Rüstung)“. Level und Funken setzt der Spieler über `Events.xp_changed`/`level_up`/`sparks_changed` und beim Aufbau (`rebuild`).
 - Reservebatterie: „Gerettet!“ in Gold über dem Spieler, Bildschirmblitz (gedämpft mit „Effekte reduzieren“), goldener Ring, Screenshake, Ton `heal`. HUD (unter den Funken): Icon voll = verfügbar, blass = in dieser Welle verbraucht. Kondensator: Icon mit Ladeleiste (Kills/15, hellblau), gold und voll, solange noch Waffen geladen sind; die Waffe blitzt beim verstärkten Angriff.
@@ -310,7 +307,7 @@ Getestete Alternativen (20 Runs, Spannung 0): HP 8 %/Schaden 6 % → Median 8, P
   - Datenprüfung: Items Tier 1–5, Einzigartige müssen `limit = 1` haben, Umrechnungen nur mit gültigen Stats/Quellen.
 - Simulator: `… -- 3 --items --uniques` (Kauf in Welle 8, Spannung 3, 200 Runs je Referenzcharakter) mit Spalte „Einzigartig“ und Ausreißern (mehr als 1,5 Standardabweichungen vom Schnitt der Einzigartigen). Modellierung im `CharacterSim`: Umrechnungen über echte Spieler-Stats (Level aus dem XP-Modell, 60 Funken im Besitz), Thermosicherung mit 20 % Zeitanteil unter der Schwelle, Reservebatterie als ein zusätzlicher Treffer Puffer pro Ladung, Kondensator als Zusatzschaden je Waffenangriff nach Kill-Rate.
 
-Simulator-Ergebnis 28.10. (`-- 3 --items --uniques`, Referenz ohne Item: Siegquote 67 %, Ø Welle 18,8; Wertung = Δ Ø Welle + Δ Siegquote/10). Noch nichts geändert, Entscheidungen in Paket 8d:
+Simulator-Ergebnis 28.10. (`-- 3 --items --uniques`, Referenz ohne Item: Siegquote 67 %, Ø Welle 18,8; Wertung = Δ Ø Welle + Δ Siegquote/10), altes Modell vor 8d; aktuelle Werte im Abschnitt „Balancing der neuen Inhalte (Paket 8d)“:
 
 | Item | Preis | Δ Siegquote | Δ Ø Welle | Δ je 100 Funken | Befund |
 |---|---|---|---|---|---|
@@ -330,10 +327,10 @@ Schnitt der Einzigartigen: Wertung +0,31 (Streuung 0,60), je 100 Funken +0,27. Z
 ### Begleiter (Phase 15, Paket 8)
 - Daten: `PetData` unter `data/pets` (Kategorie „pets“ der DataRegistry) mit `PetTierStats` je Tier (Schaden, Skalierung, Abklingzeit, Reichweite, Radius, Schadensfaktor, Rückstoß, Preis) und einem `PetBehavior` (Baustein wie Effekte bei Items: `PetShootBehavior`, `PetCollectBehavior`, `PetBlockBehavior`, `PetRollBehavior`, `PetWeaponCopyBehavior`). Gemeinsame Werte in `data/config/pet_config.tres`: höchstens 2, Angebotsanteil 8 %, Rückgabe 25 %, Ruheplätze (−105/55) und (105/55) neben dem Spieler, Folgeverzögerung 5 (pro Frame 1 − e^(−5·Δt) des Abstands), Mindestabstand 60 px, Trefferabstand 36 px, Suchintervall 0,1 s.
 - Startwerte (Tier I/II/III/IV, Preise vor Inflation wie bei Waffen ×1/×2/×3,6/×6,5):
-  - Leuchtkäfer: 4/6/9/13 (+50 % Fern) alle 1,0/0,92/0,85/0,78 s, Reichweite 380, kreist mit 26 px um seinen Platz; 30/60/108/195 Funken.
+  - Leuchtkäfer: 5/8/11/16 (+50 % Fern; vor 8d 4/6/9/13) alle 1,0/0,92/0,85/0,78 s, Reichweite 380, kreist mit 26 px um seinen Platz; 30/60/108/195 Funken.
   - Funkenspatz: zieht Funken im Umkreis von 300/360/430/520 px um sich zum Spieler; 25/50/90/162.
   - Lampenschirm-Schildkröte: blockt alle 3,0/2,6/2,2/1,8 s das nächste Gegnerprojektil im Umkreis von 180/195/210/230 px um den Spieler; 35/70/126/228.
-  - Batterie-Igel: rollt auf Gegner bis 320/340/360/380 px um den Spieler, 8/12/18/26 (+60 % Nah) alle 0,9/0,83/0,77/0,7 s, Rückstoß 20/25/30/35; 30/60/108/195.
+  - Batterie-Igel: rollt auf Gegner bis 320/340/360/380 px um den Spieler, 10/15/22/32 (+60 % Nah; vor 8d 8/12/18/26) alle 0,9/0,83/0,77/0,7 s, Rückstoß 20/25/30/35; 30/60/108/195.
   - Mini-Birne: Kopie der aktuell ersten Waffe mit 25/35/50/70 % Schaden; 40/80/144/260.
 - Laufzeit: `PetSlots` (Kind des Spielers) verwaltet die Begleiter; die `Pet`-Knoten stehen wie Spiegelbild und Drohnen im Elternknoten des Spielers, auf der Physik-Ebene „allies“, nicht in der Gruppe der Ziele (kein Gegnerlimit, Waffen zielen nicht darauf), unverwundbar. Sie handeln nur während der Welle und folgen sonst. `Player.rebuild()` fasst sie nicht an; der Rebuild-Test prüft gleiche Knoten, keine doppelten Begleiter und genau eine Waffenkopie der Mini-Birne, auch nach einem Charakterwechsel.
 - Mini-Birne: eigene `WeaponSlots` mit einer Kopie (`is_clone`, kein Lebensraub, keine Angriffs-Effekte); baut neu, sobald sich Datentyp oder Tier der ersten Waffe ändern (`weapons_changed`). `Weapon.origin_override` lässt Schaden und Kills für die Mini-Birne zählen; Waffen-Freischaltungen (`kills_<waffe>`) zählen ihre Kills nicht.
@@ -341,9 +338,9 @@ Schnitt der Einzigartigen: Wertung +0,31 (Streuung 0,60), je 100 Funken +0,27. Z
 - Run-Statistik: Herkunft `pet/<id>`, Art „Begleiter“ (Farbe `#F78FB3`); Sonderzähler `RunStats.pet_events` (eingesammelte Funken, geblockte Projektile) im Tooltip und im Fortsetzen-Stand. Tooltip zeigt Wirkung im Tier, aktuellen Schaden mit allen Stats bzw. die kopierte Waffe, Zähler und Run-Werte.
 - Lexikon: eigener Reiter „Begleiter“ zwischen Items und Gegnern (Reiter jetzt 206 px breit), Wirkung je Tier, Preise, Regeln, Spruch.
 - Animationen (`Juice`): `flutter` (Leuchtkäfer), `roll` (Igel, dreht sich beim Rollen und richtet sich im Stand auf), `duck` (Schildkröte beim Blocken, mit Ring und Partikeln), `hop` (Funkenspatz beim Einsammeln).
-- Simulator: `… -- 3 --pets` (Kauf in Welle 8 als Tier II, danach Tier wie bei Waffen; 150 Runs je Referenzcharakter, Laufzeit etwa 5,5 Minuten). Modell im `CharacterSim`: Leuchtkäfer und Igel als Einzelziel-DPS (Igel 60 % Zeitanteil), Mini-Birne als Anteil der ersten Waffe, Schildkröte senkt Projektiltreffer (Anteil schießender Gegner der Welle, Boss 70 %; höchstens 35 % ihrer Blocks verhindern einen Treffer), Funkenspatz senkt Treffer um 1,5 % je 100 px Radius (Funken gehen ohne ihn nicht verloren, er spart Laufwege).
+- Simulator: `… -- 3 --pets` (Kauf in Welle 8 als Tier II, danach Tier wie bei Waffen; 150 Runs je Referenzcharakter, Laufzeit etwa 5,5 Minuten). Modell im `CharacterSim`: Leuchtkäfer und Igel als Einzelziel-DPS (Igel 60 % Zeitanteil), Mini-Birne als Anteil der ersten Waffe, Schildkröte senkt Projektiltreffer (Salven-Modell seit 8d, siehe dort), Funkenspatz senkt Treffer um 1,5 % je 100 px Radius (Funken gehen ohne ihn nicht verloren, er spart Laufwege).
 
-Simulator-Ergebnis 28.10. (`-- 3 --pets`, Referenz ohne Begleiter: Siegquote 66 %, Ø Welle 18,8; Wertung = Δ Ø Welle + Δ Siegquote/10). Noch nichts geändert, Entscheidungen in Paket 8d:
+Simulator-Ergebnis 28.10. (`-- 3 --pets`, Referenz ohne Begleiter: Siegquote 66 %, Ø Welle 18,8; Wertung = Δ Ø Welle + Δ Siegquote/10), altes Modell vor 8d (Schildkröte durch den Fehler bei der Schützen-Erkennung überschätzt); aktuelle Werte im Abschnitt „Balancing der neuen Inhalte (Paket 8d)“:
 
 | Begleiter | Preis beim Kauf (Tier II) | Δ Siegquote | Δ Ø Welle | Wertung | je 100 Funken | Befund |
 |---|---|---|---|---|---|---|
@@ -357,16 +354,16 @@ Schnitt der Begleiter: Wertung +1,16 (Streuung 1,25), je 100 Funken +1,74. Ohne 
 
 ### Türme (Phase 15, Paket 8)
 - Daten: `StructureData` hat die neuen Arten FLAME, FROST, HEAL und MINE_LAYER (an die bestehenden TURRET und ROOT angehängt) mit den Gruppen Aura, Flamme, Frost, Heilung und Mine sowie den Rechenfunktionen `cooldown`, `damage`, `burn_tick`, `heal`, `aura`, `mine_damage` und `describe` (Tooltips, Lexikon, Simulator nutzen dieselben). Die Items unter `data/items` tragen einen `TowerItemEffect` (kein Trigger, `Player.rebuild()` bleibt unverändert). Gemeinsame Werte in `data/config/tower_config.tres`: Ring 110–230 px, Mindestabstand 70 px, 24 Platzierungsversuche, Randabstand 60 px, höchstens 12 Türme und 24 Minen, Minen-Prüfintervall 0,1 s, Heilzahl `#7ED957` in Größe 30 über dem Kopf, Aura-Deckkraft 12 %, Flammen sichtbar 0,18 s. `CombatConfig.structure_spawn_radius` ist entfallen.
-- Startwerte (Tier, Preis): Flammenturm III/65: alle 0,6 s 2 (+50 % Technik) an bis zu 5 Gegnern (die nächsten zur Mündung) auf dem Strahl, Reichweite 220, Breite 36, Brand 2 (+20 % Technik) × 3 Ticks. Frostturm II/40: alle 0,25 s 30 % langsamer für 0,5 s im Radius 150 (+1 px pro Technik). Heilturm II/40: alle 4 s 1 HP (+5 % Technik, abgerundet) im Radius 130 (+0,5 px pro Technik), erste Heilung nach der ersten Abklingzeit. Stolperdraht II/45: alle 8 s eine Mine bis 110 px um den Turm, scharf nach 0,6 s, Auslöser 30 px, Explosion 15 (+100 % Technik) im Radius 80.
+- Startwerte (Tier, Preis): Flammenturm III/65: alle 0,6 s 2 (+50 % Technik) an bis zu 5 Gegnern (die nächsten zur Mündung) auf dem Strahl, Reichweite 220, Breite 36, Brand 2 (+20 % Technik) × 3 Ticks. Frostturm II/40: alle 0,25 s 30 % langsamer für 0,5 s im Radius 150 (+1 px pro Technik). Heilturm II/40: alle 5 s (vor 8d 4 s) 1 HP (+5 % Technik, abgerundet) im Radius 130 (+0,5 px pro Technik), erste Heilung nach der ersten Abklingzeit. Stolperdraht II/45: alle 6 s (vor 8d 8 s) eine Mine bis 110 px um den Turm, scharf nach 0,6 s, Auslöser 30 px, Explosion 15 (+100 % Technik) im Radius 80.
 - Laufzeit: Die Arena hat einen `TowerBuilder` (`scenes/structures/tower_builder.gd`). Zu Wellenbeginn baut er die Lampentürme der Waffen (Tier der Waffe) und danach je Exemplar eines Turm-Items einen Turm (Kaufreihenfolge), bis zur Obergrenze. Platz: zufällig im Ring um den Spieler, auf die Arena (minus Randabstand) begrenzt; findet sich in 24 Versuchen kein Platz mit Mindestabstand, nimmt er den mit dem größten Abstand. Ranken (Gewächshauslampe) laufen weiter über `Events.structure_requested` und ihre eigene Höchstzahl. Auren liegen auf dem Boden (Kind von `Floor`), Minen sind eigene Knoten (`Mine`), die älteste verschwindet bei voller Obergrenze. Strukturschaden ohne Schaden-%: `EffectContext.structure_damage` für die Mine, Brand über den normalen Treffer (`Hits.apply_weapon_hit` ohne Lebensraub, mit Brandschaden-%).
 - Freischaltungen: `TowerBuilder.UNLOCK_TOWER_ID = &"lampenturm"`; nur Lampentürme setzen `GameState.max_structures` (Taschenlampe: 3 gleichzeitig) und `RunStats.current_turrets` (Drohnenleuchte: 5 am Run-Ende). Texte unverändert. Entscheidung des Spielers vom 30.10.; abgesichert in `test_towers.gd`.
 - Synergien: Werkzeug-Set gibt Technik, Taschenlampe (+20 Technik, ×1,25) und Drohnenleuchte (+30 Technik) profitieren direkt; beide bevorzugen Tag `structure`, der Shop bietet ihnen die Turm-Items häufiger an. Tipps der beiden Charaktere nennen die Turm-Items.
 - Run-Statistik: Herkunft `structure/<id>` für Strahl, Brand und Minen (Art „Struktur“). Admin: „Türme neu bauen“ im Reiter Run; Turm-Items über „Item geben“. Fortsetzen: Items stehen im Fortsetzen-Stand, Türme entstehen zur nächsten Welle neu.
 - Lexikon: Thema „Technik und Strukturen“ mit Erklärtext (Ring, Obergrenzen, Freischaltung), Tabelle „Türme“ (Quelle, Abklingzeit, Wert, Radius) und Wirkung je Turm.
 - Performance (30.10., Fenster 1920×1080 mit `--mute`, Vsync aus, 100 Gegner mit 1000-fachen HP, damit nur die Turmarbeit zählt, Blöcke je 6 s abwechselnd): ohne Türme 541 FPS, 12 Türme gemischt + 24 Minen 320 FPS, 12 Stolperdrähte + 24 Minen 436 FPS. Je Art (12 gleiche): Lampenturm 480, Flammenturm 328, Frostturm 379, Heilturm 452, Stolperdraht 473 FPS. Vor der Grenze von 5 Treffern pro Strahl lagen 12 Flammentürme bei 69 FPS (jeder Treffer erzeugt Partikel, Hit-Flash, Ton und Schadenszahl); daher `beam_max_targets`.
-- Simulator: `… -- 3 --towers` (120 Runs je Variante, Laufzeit 320 s). Modell im `CharacterSim`: Flamme 2 Ziele je Strahl plus Brandquelle, Frost senkt Treffer über den Anteil der Gegner in der Aura (12 % bei Radius 150, wächst mit der Fläche), Heilung mit 35 % Zeit im Radius, Minen treffen zu 80 % mit dem Wert der ExplosionAction (ohne Schaden-%). Turm-Items zählen bis zur Obergrenze nach den Lampentürmen.
+- Simulator: `… -- 3 --towers` (120 Runs je Variante, Laufzeit 320 s). Modell im `CharacterSim`: Flamme mit Zielen nach Gegnerdichte (seit 8d, siehe dort) plus Brandquelle, Frost senkt Treffer über den Anteil der Gegner in der Aura (12 % bei Radius 150, wächst mit der Fläche), Heilung mit 35 % Zeit im Radius, Minen treffen zu 80 % mit dem Wert der ExplosionAction (ohne Schaden-%). Turm-Items zählen bis zur Obergrenze nach den Lampentürmen.
 
-Simulator-Ergebnis 30.10. (`-- 3 --towers`; 1 Exemplar in Welle 8, 3 Exemplare in Welle 5/8/11; Wertung = Δ Ø Welle + Δ Siegquote/10; Turmanteil ohne den Brand des Flammenturms). Noch nichts geändert, Entscheidungen in Paket 8d:
+Simulator-Ergebnis 30.10. (`-- 3 --towers`; 1 Exemplar in Welle 8, 3 Exemplare in Welle 5/8/11; Wertung = Δ Ø Welle + Δ Siegquote/10; Turmanteil ohne den Brand des Flammenturms), altes Modell vor 8d; aktuelle Werte im Abschnitt „Balancing der neuen Inhalte (Paket 8d)“:
 
 | Charakter (ohne Türme) | Turm | 1 Exemplar: Δ Sieg / Δ Welle / je 100 Funken | 3 Exemplare: Δ Sieg / Δ Welle / je 100 Funken | Turmanteil (3) |
 |---|---|---|---|---|
@@ -385,6 +382,64 @@ Simulator-Ergebnis 30.10. (`-- 3 --towers`; 1 Exemplar in Welle 8, 3 Exemplare i
 
 Schnitt aller Charaktere je 100 Funken: +1,64 (Streuung 0,92); Heilturm +3,07 (Ausreißer stark, +1,6 SD). Befund: Türme lohnen sich klar für Technik-Builds (Taschenlampe Schnitt +2,99, Drohnenleuchte +1,33, Standardbirne +0,59). Der Heilturm ist in allen Varianten der beste Kauf je Funke, der Stolperdraht der schwächste. Der Simulator lief vor der Grenze von 5 Treffern pro Strahl; das Modell rechnet ohnehin mit 2 Zielen, die Werte gelten unverändert.
 
+### Balancing der neuen Inhalte (Phase 15, Paket 8d)
+Simulator-Änderungen (`scripts/systems/character_sim.gd`, `tools/balance_sim.gd`):
+- Tempo: Der Zuwachs pro Welle ist jetzt ein FLAT-Run-Modifikator je Stat (Summe), Waffen werden nur bei geänderter Anzahl oder Tier neu gebaut. Vorher leerte jeder einzelne Modifikator den Stat-Cache, der Run wurde quadratisch langsam. 13 statt 82 ms pro Run; voller `--items`-Lauf 568 s statt über 40 Minuten.
+- Gezielte Builds (`FOCUS_BUILDS` im Simulator, Option `"focus"`): zusätzlicher Zuwachs pro Welle auf den Ausgangs-Stat, alle übrigen Zuwächse −30 % (`FOCUS_TRADE`, der Build kauft den Fokus-Stat statt anderer). Vergleich gegen denselben Build ohne Item; die Item-Wertung ist die bessere aus Standard- und gezieltem Build. Panzerglas: Rüstung +0,7, Schwungrad: Tempo +2 (Glühfaden-Boxer, Blitzlicht mit Funkenfaust), Glücksfassung: Glück +3, Hochspannungsspeicher: Max HP +2, Gleichrichter: Angriffstempo +3 (Lavalampe, Zündkerze, Kronleuchter), Leuchtturm: Nahkampf ohne Fokus.
+- Reichweite: Fernwaffen −30 % Treffer pro +100 % Reichweite (`RANGED_RANGE_HIT_RELIEF`, Anteil je Waffe), Nahkampf +50 % Schaden pro +100 % (`MELEE_RANGE_DPS_FACTOR`), beides höchstens ±30 % (`RANGE_EFFECT_MAX`), auch negativ (Spiegelscherbe, Prismenlinse).
+- Schildkröte: Schützen werden am Verhalten erkannt (Projektilgeschwindigkeit). Vorher fiel `projectile_damage_for_wave` auf den Kontaktschaden zurück, jeder Gegner zählte als Schütze; daher kam der +27-%-Ausreißer. Salven-Modell: verhindert werden Projektiltreffer × min(1, 2 / (P × Abklingzeit)), P = Projektile pro Sekunde nahe am Spieler aus den Feuerintervallen der Schützen, Bosse 2,5/s (`PET_BLOCK_AIM_BIAS`, `BOSS_NEAR_PROJECTILES_PER_SECOND`).
+- Flammenstrahl: Ziele = 1 + lebende Gegner × Strahlfläche / Kampffläche (Radius 350) × Ballung 2, höchstens `beam_max_targets` (meist etwa 3, bei Horden mehr).
+- Neu: `--combos` (Kombinationen, Synergie = Kombi − Summe der Teile) und `--set res://….tres:feld.0.wert=x` (Datenwerte nur für diesen Lauf).
+- Grenze: Ab DPS-Verhältnis ~2 sinkt der Trefferdruck nicht weiter (`PRESSURE_MIN`); reiner Zusatzschaden bringt in starken Builds kaum etwas, Schaden-Items und -Begleiter werden eher unterschätzt.
+
+Geändert nach OK des Spielers (rein nach Simulator, ohne Spielgefühl): Schwungrad pro 3 → 6 % Tempo, Kondensator 15 → 13 Kills, Glücksfassung pro 10 → 6 Glück, Sparlampe pro 20 → 10 Funken und Preise +10 → +5 %, Hochspannungsspeicher HP-Regen −2 → −1; Heilturm 4 → 5 s, Stolperdraht 8 → 6 s; Leuchtkäfer 4/6/9/13 → 5/8/11/16, Batterie-Igel 8/12/18/26 → 10/15/22/32 (Tier-Faustregel). Schildkröte unverändert, keine Sonderregel für überlappende Heiltürme.
+
+Ergebnis 31.10. mit den neuen Werten (Spannung 3; Wertung = Δ Ø Welle + Δ Siegquote/10; Einzigartige: bessere Wertung aus Standard und gezieltem Build):
+
+| Inhalt | Δ Siegquote | Wertung | je 100 Funken | Bemerkung |
+|---|---|---|---|---|
+| Schwungrad (Tempo, Nahkampf) | +19 | +3,22 | +3,07 | stärkstes Einzigartiges (+2,8 SD), vorher +29 / +4,82; im Standard-Build fast wirkungslos |
+| Reservebatterie | +11 | +1,38 | +1,19 | |
+| Hochspannungsspeicher (Max HP) | +6 | +0,99 | +0,86 | vorher −0,41 |
+| Panzerglas (Rüstung) | +6 | +0,98 | +0,89 | |
+| Gleichrichter (Angriffstempo, Strom) | +6 | +0,84 | +0,80 | |
+| Glücksfassung (Glück) | +4 | +0,80 | +0,84 | vorher +0,37 |
+| Kondensator | +4 | +0,75 | +0,63 | vorher +0,41 |
+| Thermosicherung | +4 | +0,63 | +0,66 | |
+| Leuchtturm (Nahkampf) | +4 | +0,47 | +0,52 | |
+| Sparlampe | +1 | +0,16 | +0,19 | vorher −0,22; das Modell rechnet fest 60 Funken im Besitz |
+| Schildkröte (Tier II, 70) | +9 | +1,12 | +1,60 | bester Begleiter (+1,8 SD) |
+| Funkenspatz (50) | +5 | +0,61 | +1,21 | |
+| Mini-Birne (80) | +3 | +0,56 | +0,70 | |
+| Batterie-Igel (60) | +1 | +0,27 | +0,44 | Schaden-Buff im Modell kaum sichtbar (Sättigung) |
+| Leuchtkäfer (60) | +1 | +0,23 | +0,39 | dito |
+
+Schnitt der Einzigartigen +1,03 (ohne Schwungrad +0,78), Ziel ≥ 0,43 erreicht; Sieg-Items im neuen Modell +0,24, alle Tier-III-Items +0,29. Begleiter Schnitt +0,56. Kein einzelner Kauf hebt die Siegquote um mehr als +20 Punkte (höchste: Schwungrad gezielt +19, Flammenturm bei der Taschenlampe +14, Heilturm bei der Taschenlampe +13, Reservebatterie +11).
+
+Türme, 1 Exemplar (Δ Siegquote / je 100 Funken; Taschenlampe 26 %, Drohnenleuchte 54 %, Standardbirne 50 % ohne Türme):
+
+| Turm | Taschenlampe | Drohnenleuchte | Standardbirne | 3 Exemplare, Taschenlampe |
+|---|---|---|---|---|
+| Flammenturm | +14 / +5,38 | +5 / +0,85 | +3 / +1,44 | +19 / +2,13 |
+| Heilturm | +13 / +5,35 (vorher +15 / +6,19) | +8 / +2,88 (vorher +11 / +3,79) | +0 / +0,21 | +25 / +3,46 (vorher +32) |
+| Frostturm | +5 / +1,94 | +5 / +1,60 | +0 / 0 | +13 / +1,72 |
+| Stolperdraht | +4 / +1,91 (vorher +3 / +1,50) | +1 / +0,20 | +0 / +0,02 | +10 / +1,49 |
+
+Kombinationen (`--combos`, 150 Runs je Charakter):
+
+| Kombination | ohne | Δ Siegquote | Wertung | Preis | Synergie |
+|---|---|---|---|---|---|
+| Panzerglas + 3 Hochspannungsschilde (Rüstungs-Build) | 63 % | +24 (A +6, B +21) | +3,99 | 335 | −0,40 (keine) |
+| Taschenlampe, je 1 Turm | 30 % | +22 | +4,54 | 190 | – |
+| Taschenlampe, je 3 Türme (Obergrenze) | 30 % | +34 | +5,97 | 570 | – |
+| Taschenlampe, 3 / 5 / 8 Heiltürme | 30 % | +22 / +35 / +45 | +3,87 / +5,61 / +7,13 | 120 / 200 / 320 | – |
+| Lichterkette + 1 / 3 Spiegelscherben | 54 % | +9 / +24 | +1,93 / +4,93 | 70 / 210 | – |
+| Lichterkette + Kondensator | 54 % | +13 (Standard-Builds +4) | +3,10 | 120 | deutlich positiv |
+| Schildkröte + Reservebatterie | 67 % | +16 (A +9, B +11) | +2,01 | 185 | −0,48 (keine) |
+| Vampirbirne + 1 / 3 Heiltürme | 39 % | +1 / +2 | +0,07 / +0,43 | 40 / 120 | wirkt kaum |
+
+Charakter-Tabelle mit dem Reichweiten-Modell (200 Runs): Spannung 0 Schnitt 85 % wie vorher (alte 12: 84 %, neue 10: 87 %), Spannung 3 Schnitt 58 % (vorher 57 %; alte 12: 56 %, neue 10: 60 %). Mehr als 5 Punkte verschieben sich nur auf Spannung 3: Neonröhre 50 → 67 % (+100 Reichweite) und LED-Schütze 60 → 68 % (+50 Reichweite). Nicht geändert (Entscheidung des Spielers), offener Punkt oben.
+
 ## Werkzeuge
 
 | Befehl | Zweck |
@@ -392,9 +447,11 @@ Schnitt aller Charaktere je 100 Funken: +1,64 (Streuung 0,92); Heilturm +3,07 (A
 | `godot --headless --path . res://tools/balance_sim.tscn -- <Spannung>` | Balancing-Tabelle: Gegner-HP pro Welle gegen DPS von drei Builds (Fern, Nah, Strom) |
 | `… -- <Spannung> --apply` | Vorgeschlagene Intervall-Faktoren in die Wellen-`.tres` schreiben |
 | `… -- <Spannung> --characters [--runs 200] [--ablate]` | Run-Simulation je Charakter: Siegquote, Ø Welle, Scheiter-Welle, Schadensanteile, stärkster Effekt (Ablation) |
-| `… -- 0 --weapons` / `… -- 3 --items [--uniques]` | DPS aller Waffen gegen die eigene Klasse / Wirkung der Tier-III/IV-Items und Einzigartigen auf Siegquote (mit `--uniques` nur die Einzigartigen, Ausreißer markiert). Etwa 80 s pro Item; der volle Lauf braucht über 40 Minuten |
-| `… -- 3 --pets [--runs 150]` | Wirkung der Begleiter (Kauf in Welle 8, Tier wächst wie bei Waffen) auf Siegquote und Wellen, Ausreißer markiert; ändert nichts. Etwa 5,5 Minuten |
-| `… -- 3 --towers [--runs 120]` | Turm-Items (1 und 3 Exemplare) für Taschenlampe, Drohnenleuchte und Standardbirne: Δ Siegquote, Δ Ø Welle, Wertung je 100 Funken, Turmanteil, Ausreißer; ändert nichts. Etwa 5,5 Minuten |
+| `… -- 0 --weapons` / `… -- 3 --items [--uniques]` | DPS aller Waffen gegen die eigene Klasse / Wirkung der Tier-III/IV-Items und Einzigartigen auf Siegquote, Einzigartige zusätzlich im gezielten Build (mit `--uniques` nur die Einzigartigen, Ausreißer markiert). Voller Lauf etwa 9,5 Minuten, `--uniques` etwa 4,5 |
+| `… -- 3 --combos [--runs 150]` | Starke Kombinationen (Liste `COMBOS` im Simulator): Teil A, Teil B, beides, Synergie; ändert nichts. Etwa 3 Minuten |
+| `… --set res://pfad.tres:feld.0.wert=x [...] --<modus>` | Datenwerte nur für diesen Lauf ändern (Vorschläge prüfen); Pfadteile sind Eigenschaften oder Array-Indizes, `--set` vor dem Modus-Flag |
+| `… -- 3 --pets [--runs 150]` | Wirkung der Begleiter (Kauf in Welle 8, Tier wächst wie bei Waffen) auf Siegquote und Wellen, Ausreißer markiert; ändert nichts. Etwa 1,5 Minuten |
+| `… -- 3 --towers [--runs 120]` | Turm-Items (1 und 3 Exemplare) für Taschenlampe, Drohnenleuchte und Standardbirne: Δ Siegquote, Δ Ø Welle, Wertung je 100 Funken, Turmanteil, Ausreißer; ändert nichts. Etwa 1,5 Minuten |
 | `… -- <Spannung> --trace <charakter-id>` | Einen Run Welle für Welle ausgeben (Kalibrierung) |
 | `… -- <Spannung> --endless [--runs 40] [key=wert …]` | Endlos-Modus: Sieger spielen weiter bis zum Tod; je Charakter P10/Median/P90 der erreichten Endlos-Stufe, Anteil Tod in Bosswellen, häufigste Todesstufen. `key=wert` setzt `EndlessConfig`-Werte nur für diesen Lauf (z. B. `hp_growth=0.06`). Mit `--trace <id> --endless` auch Welle für Welle |
 | `python tools/make_portraits.py` | Charakter-Porträts aus den Spielsprites erzeugen |

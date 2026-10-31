@@ -245,9 +245,9 @@ func test_sparlampe_counts_sparks_with_cap() -> void:
 	var before: float = player.stats.get_stat(Stats.DAMAGE_PCT)
 	var price_before: float = player.stats.get_stat(Stats.ITEM_PRICE_PCT)
 	_give(player, "sparlampe")
-	assert_eq(player.stats.get_stat(Stats.ITEM_PRICE_PCT), price_before + 10.0)
+	assert_eq(player.stats.get_stat(Stats.ITEM_PRICE_PCT), price_before + 5.0)
 	Events.sparks_changed.emit(130, 0)
-	assert_eq(player.stats.get_stat(Stats.DAMAGE_PCT), before + 6.0)
+	assert_eq(player.stats.get_stat(Stats.DAMAGE_PCT), before + 13.0)
 	Events.sparks_changed.emit(5000, 0)
 	assert_eq(player.stats.get_stat(Stats.DAMAGE_PCT), before + 30.0, "höchstens +30 %")
 
@@ -275,7 +275,7 @@ func test_hochspannungsspeicher_damage_per_max_hp_and_regen_malus() -> void:
 	var regen: float = player.stats.get_stat(Stats.HP_REGEN)
 	_give(player, "hochspannungsspeicher")
 	assert_eq(player.stats.get_stat(Stats.DAMAGE_PCT), damage + floorf(player.stats.get_stat(Stats.MAX_HP) / 4.0))
-	assert_eq(player.stats.get_stat(Stats.HP_REGEN), regen - 2.0)
+	assert_eq(player.stats.get_stat(Stats.HP_REGEN), regen - 1.0)
 
 
 # --- Bonus unter X % HP ---
