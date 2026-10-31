@@ -275,6 +275,13 @@ func test_flame_beam_hits_at_most_max_targets_nearest_first() -> void:
 		assert_eq(line[i].is_burning(), i < data.beam_max_targets, "Treffer %d" % i)
 
 
+## Tooltip und Lexikon nutzen describe(): Die Trefferzahl kommt aus beam_max_targets.
+func test_flame_description_names_max_targets() -> void:
+	var data: StructureData = _structure("flammenturm")
+	var text: String = " ".join(data.describe())
+	assert_string_contains(text, "trifft bis zu %d Gegner" % data.beam_max_targets)
+
+
 func test_mine_explodes_as_structure_damage_without_damage_pct() -> void:
 	var data: StructureData = _structure("stolperdraht")
 	_player.add_run_modifier(StatModifier.create(Stats.DAMAGE_PCT, 100.0))

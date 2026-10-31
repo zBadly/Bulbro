@@ -1088,7 +1088,7 @@ LORE_ITEM_FROSTTURM,"Kühlschranklicht, nur mit Ambitionen.","Fridge light, but 
 LORE_ITEM_HEILTURM,Ladestation für müde Birnen.,A charging station for tired bulbs.
 LORE_ITEM_STOLPERDRAHT,"Vorsicht, Kabelsalat!","Watch out, cable spaghetti!"
 TOWER_DESC_TURRET,"Schießt für %s Schaden alle %s s, Reichweite %s","Shoots for %s damage every %s s, range %s"
-TOWER_DESC_FLAME,"Flammenstrahl: %s Schaden an bis zu %d Gegnern auf dem Strahl, alle %s s, Reichweite %s","Flame beam: %s damage to up to %d enemies in the beam, every %s s, range %s"
+TOWER_DESC_FLAME,"Flammenstrahl: %s Schaden, trifft bis zu %d Gegner auf dem Strahl, alle %s s, Reichweite %s","Flame beam: %s damage, hits up to %d enemies in the beam, every %s s, range %s"
 TOWER_DESC_BURN,"Setzt Brand: %s Schaden pro Tick, %d Ticks","Applies burn: %s damage per tick, %d ticks"
 TOWER_DESC_FROST,Verlangsamt Gegner um %d %% im Radius %s,Slows enemies by %d%% within a radius of %s
 TOWER_DESC_HEAL,"Heilt dich um %s HP alle %s s, solange du im Radius %s stehst",Heals you for %s HP every %s s while you stand within a radius of %s
