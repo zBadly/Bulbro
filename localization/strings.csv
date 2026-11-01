@@ -289,7 +289,7 @@ STRUCTURE_DROHNE,Licht-Drohne,Light Drone
 TRIGGER_ON_BURNING_KILL,"%d %% Chance, wenn ein brennender Gegner stirbt: %s",%d %% chance when a burning enemy dies: %s
 EFFECT_CURSE_ON_HIT,"Treffer verfluchen Gegner %s s: %s Schaden/s und +%d %% erlittener Schaden, stapelt bis %d","Hits curse enemies for %s s: %s damage/s and +%d %% damage taken, stacks up to %d"
 EFFECT_BURN_ON_HIT,"%d %% Chance pro Treffer: Brand (%s Schaden, %d Ticks)","%d %% chance per hit: burn (%s damage, %d ticks)"
-EFFECT_REANIMATE,"Kills füllen ein Seelenglas (max. %d). Alle %s s ab %d Seelen kehrt der zuletzt getötete Gegnertyp für %s s als Schattengeist zurück (%s Kontaktschaden, max. %d gleichzeitig); +%s Geisterschaden pro %d Seelen","Kills fill a soul jar (max %d). Every %s s with at least %d souls, the last slain enemy type returns for %s s as a shadow ghost (%s contact damage, max %d at once); +%s ghost damage per %d souls"
+EFFECT_REANIMATE,"Kills füllen ein Seelenglas (max. %d). Alle %s s ab %d Seelen kehrt der zuletzt getötete Gegnertyp für %s s als Schattengeist zurück (%s Kontaktschaden, dadurch höchstens %d gleichzeitig); +%s Geisterschaden pro %d Seelen","Kills fill a soul jar (max %d). Every %s s with at least %d souls, the last slain enemy type returns for %s s as a shadow ghost (%s contact damage, so at most %d at once); +%s ghost damage per %d souls"
 EFFECT_SPELL_CYCLE,Jeder %d. Angriff jeder Waffe wirkt zusätzlich im Wechsel: %s,Every %dth attack of each weapon also casts in turn: %s
 ACTION_FROST_NOVA,"Frostnova (%s Schaden, %d %% langsamer für %s s)","frost nova (%s damage, %d %% slower for %s s)"
 ACTION_CHAIN_LIGHTNING,"Kettenblitz (%s Schaden, springt %d-mal)","chain lightning (%s damage, jumps %d times)"
@@ -706,8 +706,8 @@ LEX_TOPIC_SLOW,"Verlangsamen, Einfrieren, Festhalten","Slow, Freeze, Root"
 LEX_TOPIC_SLOW_TEXT,"Verlangsamen senkt das Tempo eines Gegners; bei mehreren Effekten gilt der stärkste. Eingefrorene Gegner bleiben stehen, schießen nicht und machen keinen Kontaktschaden. Festgehaltene Gegner hängen in Ranken fest; danach sind sie %s s geschützt, bevor sie erneut festgehalten werden können. Elites und Bosse halten jeden dieser Effekte nur %s %% so lange.","Slows reduce an enemy's speed; with several effects, the strongest wins. Frozen enemies stand still, don't shoot and deal no contact damage. Rooted enemies are stuck in vines; afterwards they are protected for %s s before they can be rooted again. Elites and bosses keep each of these effects only %s %% as long."
 LORE_TOPIC_SLOW,"Kälte ist nur Licht, das sich Zeit lässt.",Cold is just light taking its time.
 LEX_TOPIC_ALLIES,Verbündete,Allies
-LEX_TOPIC_ALLIES_TEXT,"Verbündete wie die Schattengeister des Irrlichts kämpfen auf deiner Seite. Sie sind unverwundbar, Gegner ignorieren sie, und sie zählen nicht zum Gegnerlimit. Sie machen alle %s s Kontaktschaden; höchstens %d sind gleichzeitig unterwegs.
-Auch das Spiegelbild der Spiegelkugel hilft mit: Es feuert Kopien deiner Waffen, aber ohne Lebensraub. Drohnen und Lichtranken sind dagegen Strukturen und werden mit Technik stärker.","Allies such as the Will-o'-Wisp's shadow ghosts fight on your side. They are invulnerable, enemies ignore them, and they don't count toward the enemy limit. They deal contact damage every %s s; at most %d can be around at once.
+LEX_TOPIC_ALLIES_TEXT,"Verbündete wie die Schattengeister des Irrlichts kämpfen auf deiner Seite. Sie sind unverwundbar, Gegner ignorieren sie, und sie zählen nicht zum Gegnerlimit. Sie machen alle %s s Kontaktschaden; das Irrlicht hat höchstens %d gleichzeitig.
+Auch das Spiegelbild der Spiegelkugel hilft mit: Es feuert Kopien deiner Waffen, aber ohne Lebensraub. Drohnen und Lichtranken sind dagegen Strukturen und werden mit Technik stärker.","Allies such as the Will-o'-Wisp's shadow ghosts fight on your side. They are invulnerable, enemies ignore them, and they don't count toward the enemy limit. They deal contact damage every %s s; the Will-o'-Wisp has at most %d at once.
 The Mirror Ball's mirror image helps too: it fires copies of your weapons, but without lifesteal. Drones and light vines, on the other hand, are structures and grow stronger with engineering."
 LORE_TOPIC_ALLIES,Zusammen leuchtet es sich besser.,Shining is better together.
 STAT_INFO_MAX_HP,"Dein Leben. Fällt es auf 0, ist der Run vorbei. Mehr Max HP heilt dich sofort um denselben Betrag.","Your life. If it drops to 0, the run is over. More Max HP heals you instantly by the same amount."
@@ -1257,7 +1257,7 @@ ACH_PHASENWANDLER_DESC,Erlebe alle {value} Boss-Phasen (Dimmer und Finsternis).,
 ACH_KURZER_PROZESS,Kurzer Prozess,Short Work
 ACH_KURZER_PROZESS_DESC,Besiege einen Boss höchstens {value} Sekunden nach seinem Erscheinen.,Defeat a boss at most {value} seconds after it appears.
 ACH_GEISTERHEER,Geisterheer,Ghost Army
-ACH_GEISTERHEER_DESC,Habe als Irrlicht {value} Schattengeister gleichzeitig.,Have {value} shadow ghosts at once as the Will-o'-Wisp.
+ACH_GEISTERHEER_DESC,Lass Schattengeister {value} Gegner in einem Run besiegen.,Have shadow ghosts defeat {value} enemies in one run.
 ACH_EISZEIT,Eiszeit,Ice Age
 ACH_EISZEIT_DESC,Friere {value} Gegner gleichzeitig ein oder halte sie fest.,Freeze or hold {value} enemies at once.
 ACH_FLUCHBRECHER,Fluchbrecher,Curse Breaker

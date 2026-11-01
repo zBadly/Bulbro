@@ -274,6 +274,7 @@ func _finish(player: Player, state: Dictionary, result: Dictionary) -> void:
 		total += shares[key]
 	for key: String in shares:
 		result["shares"][key] = shares[key] / maxf(total, 0.001)
+	result["kills"] = float(state["kills"])
 	host.remove_child(player)
 	player.free()
 

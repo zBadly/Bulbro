@@ -108,6 +108,8 @@ func _on_enemy_killed(data: EnemyData, _position: Vector2, info: DamageInfo) -> 
 	if info == null:
 		return
 	run_stats.record_kill(info.origin)
+	if DamageSource.kind_of(info.origin) == DamageSource.ALLY:
+		run_stats.ally_kills += 1
 	if info.is_burn:
 		run_stats.burn_kills += 1
 	var weapon: Weapon = info.source as Weapon if is_instance_valid(info.source) else null

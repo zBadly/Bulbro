@@ -78,6 +78,13 @@ func active_allies(entry: TriggerEntry) -> Array[Ally]:
 	return result
 
 
+## Gleichzeitig mögliche Geister: alle `interval` Sekunden einer, jeder lebt `lifetime` Sekunden, höchstens `max_allies`.
+func max_at_once() -> int:
+	if interval <= 0.0:
+		return max_allies
+	return mini(max_allies, ceili(lifetime / interval))
+
+
 func describe() -> PackedStringArray:
 	return [TextFormat.t("EFFECT_REANIMATE") % [max_souls, TextFormat.number(interval), min_souls, TextFormat.number(lifetime),
-		EffectAction.damage_text(base_damage, scalings), max_allies, TextFormat.number(bonus_per_step), souls_per_step]]
+		EffectAction.damage_text(base_damage, scalings), max_at_once(), TextFormat.number(bonus_per_step), souls_per_step]]

@@ -7,8 +7,8 @@
 script = ExtResource("1_ach")
 id = &"ach_geisterheer"
 condition = 18
-value = 4.0
-stat_key = "max_allies"
+value = 900.0
+stat_key = "ally_kills"
 name_key = "ACH_GEISTERHEER"
 description_key = "ACH_GEISTERHEER_DESC"
 icon = ExtResource("2_icon")

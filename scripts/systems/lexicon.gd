@@ -721,8 +721,18 @@ static func topic_text(key: String) -> String:
 			args = [TextFormat.number(TOWERS.ring_min_radius), TextFormat.number(TOWERS.ring_max_radius),
 				TextFormat.number(TOWERS.min_spacing), TOWERS.max_towers, TOWERS.max_mines]
 		"LEX_TOPIC_ALLIES_TEXT":
-			args = [TextFormat.number(STATUS.ally_contact_interval), STATUS.ally_global_max]
+			args = [TextFormat.number(STATUS.ally_contact_interval), max_allies_at_once()]
 	return t(key) % args
+
+
+## Wirklich erreichbare Zahl gleichzeitiger Verbündeter: bestes Seelenglas eines Charakters, höchstens das globale Limit.
+static func max_allies_at_once() -> int:
+	var best: int = 0
+	for character: CharacterData in Unlocks.all_characters():
+		for effect: ItemEffect in character.effects:
+			if effect is ReanimateEffect:
+				best = maxi(best, (effect as ReanimateEffect).max_at_once())
+	return mini(best, STATUS.ally_global_max)
 
 
 ## Erklärung eines Stats in vier Teilen: Wirkung, Formel, Beispiel, Grenze (Texte STAT_INFO/FORMULA/EXAMPLE/LIMIT_<STAT>).

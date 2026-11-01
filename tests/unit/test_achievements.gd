@@ -170,15 +170,38 @@ func test_run_value_targets_are_reachable() -> void:
 	assert_gt(_achievement("kurzer_prozess").value, 0.0)
 
 
-## Irrlicht: alle `interval` Sekunden ein Geist, jeder lebt `lifetime` Sekunden, höchstens `max_allies`.
-func test_ghost_army_is_reachable_with_irrlicht() -> void:
-	var effect: ReanimateEffect = null
+func _reanimate() -> ReanimateEffect:
 	for candidate: ItemEffect in IRRLICHT.effects:
 		if candidate is ReanimateEffect:
-			effect = candidate
-	assert_not_null(effect)
+			return candidate
+	return null
+
+
+## Geisterheer zählt Kills der Schattengeister (Herkunft "ally") in einem Run.
+func test_ghost_army_counts_ally_kills() -> void:
+	assert_eq(_achievement("geisterheer").stat_key, "ally_kills")
+	var ghost_kill: DamageInfo = DamageInfo.create(10, false, 0.0, null, DamageSource.ally())
+	var weapon_kill: DamageInfo = DamageInfo.create(10, false, 0.0, null, DamageSource.weapon(&"ast"))
+	for i: int in 3:
+		Events.enemy_killed.emit(load("res://data/enemies/motte.tres"), Vector2.ZERO, ghost_kill)
+	Events.enemy_killed.emit(load("res://data/enemies/motte.tres"), Vector2.ZERO, weapon_kill)
+	assert_eq(GameState.run_stats.ally_kills, 3)
+	GameState.run_stats.ally_kills = int(_achievement("geisterheer").value)
+	Unlocks.check(false, false)
+	assert_true(SaveManager.is_challenge_completed(&"ach_geisterheer"))
+
+
+## Irrlicht: alle `interval` Sekunden ein Geist, der `lifetime` Sekunden lebt; die Texte nennen die erreichbare Zahl.
+func test_ghost_texts_name_reachable_limit() -> void:
+	var effect: ReanimateEffect = _reanimate()
 	var possible: int = mini(effect.max_allies, ceili(effect.lifetime / effect.interval))
-	assert_lte(_achievement("geisterheer").value, float(possible), "gleichzeitig mögliche Geister")
+	assert_eq(effect.max_at_once(), possible)
+	assert_lt(possible, effect.max_allies, "Grenze im Effekt ist nicht erreichbar, Texte dürfen sie nicht nennen")
+	var text: String = effect.describe()[0]
+	assert_true(text.contains(" %d " % possible), "Effekttext nennt %d: %s" % [possible, text])
+	assert_false(text.contains(" %d " % effect.max_allies), "Effekttext nennt nicht die unerreichbare Grenze")
+	assert_eq(Lexicon.max_allies_at_once(), possible, "Lexikon-Thema Verbündete")
+	assert_true(Lexicon.topic_text("LEX_TOPIC_ALLIES_TEXT").contains(" %d " % possible))
 
 
 func test_elites_appear_on_some_difficulty() -> void:

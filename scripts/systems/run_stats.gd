@@ -5,7 +5,7 @@ extends RefCounted
 ## Ganzzahlige Zähler für Achievements und Gesamtstatistik (Paket 9), gespeichert unter ihrem Feldnamen.
 const SAVED_COUNTERS: PackedStringArray = [
 	"max_weapons", "max_class_weapons", "tier4_bought", "tier4_combined", "max_uniques", "max_pet_tier", "max_towers",
-	"best_clean_wave", "max_hit", "max_allies", "max_frozen", "cursed_kills", "elite_kills", "boss_kills",
+	"best_clean_wave", "max_hit", "max_allies", "ally_kills", "max_frozen", "cursed_kills", "elite_kills", "boss_kills",
 ]
 
 var healed: float = 0.0
@@ -74,6 +74,8 @@ var max_hit: int = 0
 ## Höchstzahl gleichzeitiger Schattengeister; gleichzeitig eingefrorener oder festgehaltener Gegner.
 var max_allies: int = 0
 var max_frozen: int = 0
+## Kills durch Verbündete (Schattengeister des Irrlichts).
+var ally_kills: int = 0
 ## Gegner, die verflucht gestorben sind.
 var cursed_kills: int = 0
 var elite_kills: int = 0
