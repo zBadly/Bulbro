@@ -26,6 +26,10 @@ var classes: Array[StringName] = []
 var melee: bool = false
 ## Gegnerart (Lexicon.EnemyKind).
 var enemy_kind: int = 0
+## Achievement-Kategorie (AchievementData.Category).
+var category: int = 0
+## Noch nicht erreicht (Achievements): Icon gedämpft statt Silhouette, Inhalt sichtbar.
+var dimmed: bool = false
 
 var _search_text: String = ""
 var _search_text_full: String = ""

@@ -44,6 +44,24 @@ const STAT_BURN_KILLS: String = "burn_kills"
 const STAT_CRYSTALS: String = "crystals"
 ## Kills pro Waffe: "kills_<waffen-id>".
 const WEAPON_KILLS_PREFIX: String = "kills_"
+# Gesamtstatistik und Achievements (Phase 15, Paket 9)
+## Spielzeit in Sekunden (Wellen, Shop und Wellenende, ohne Pausemenü).
+const STAT_PLAY_TIME: String = "play_time"
+const STAT_ELITE_KILLS: String = "elite_kills"
+const STAT_BOSS_KILLS: String = "boss_kills"
+const STAT_CURSED_KILLS: String = "cursed_kills"
+## Kills durch Türme und Minen (Strukturen ohne Drohnen und Ranken).
+const STAT_TOWER_KILLS: String = "tower_kills"
+## "enemy_kills_<gegner-id>", "source_kills_<herkunft>" (z. B. "source_kills_item/supernova"), "buys_<id>".
+const ENEMY_KILLS_PREFIX: String = "enemy_kills_"
+const SOURCE_KILLS_PREFIX: String = "source_kills_"
+const PURCHASES_PREFIX: String = "buys_"
+## Runs je Charakter "char_runs_<charakter>" und Waffen-Kills je Charakter "char_kills_<charakter>/<waffe>".
+const CHARACTER_RUNS_PREFIX: String = "char_runs_"
+const CHARACTER_KILLS_PREFIX: String = "char_kills_"
+## Bestzeiten in progress.records: schnellster Sieg je Spannung (Kampfzeit) und schnellster Bosskill.
+const RECORD_WIN_TIME: String = "win_time_%d"
+const RECORD_BOSS_KILL: String = "boss_kill"
 
 # Eigener Spielstand statt des echten (Headless-Checks, Tests, Werkzeuge)
 ## Kommandozeile: godot ... -- --save=user://check_save.json
@@ -147,7 +165,7 @@ func _defaults() -> Dictionary:
 		"version": SAVE_VERSION,
 		"options": {},
 		"progress": {"characters": [], "items": [], "challenges": [], "won_difficulties": {}, "challenge_best": {}, "endless_best": {},
-			"start_weapons": {}},
+			"start_weapons": {}, "collections": {}, "records": {}, "completed_dates": {}, "achievements_backfilled": false},
 		"stats": {STAT_TOTAL_SPARKS: 0, STAT_KILLS: 0, STAT_RUNS: 0, STAT_WINS: 0},
 		"run": {},
 		"run_history": [],
@@ -264,6 +282,13 @@ func is_challenge_completed(challenge_id: StringName) -> bool:
 
 func complete_challenge(challenge_id: StringName) -> void:
 	_add_unique(_data["progress"]["challenges"], String(challenge_id))
+	if not _data["progress"]["completed_dates"].has(String(challenge_id)):
+		_data["progress"]["completed_dates"][String(challenge_id)] = int(Time.get_unix_time_from_system())
+
+
+## Unix-Zeit, zu der eine Challenge bzw. ein Achievement geschafft wurde (0 = unbekannt oder offen).
+func get_completed_date(challenge_id: StringName) -> int:
+	return int(_data["progress"]["completed_dates"].get(String(challenge_id), 0))
 
 
 ## Bestwert einer Run-Bedingung (Fortschrittsanzeige, z. B. "312/500 Kills").
@@ -296,6 +321,34 @@ func get_won_difficulties(character_id: StringName) -> Array[int]:
 
 func get_wins(character_id: StringName) -> int:
 	return get_won_difficulties(character_id).size()
+
+
+## Alle Spannungsstufen, auf denen mit irgendeinem Charakter gewonnen wurde (aufsteigend).
+func won_difficulty_levels() -> Array[int]:
+	var result: Array[int] = []
+	for character_id: String in _data["progress"]["won_difficulties"]:
+		for level: int in get_won_difficulties(StringName(character_id)):
+			if level not in result:
+				result.append(level)
+	result.sort()
+	return result
+
+
+## Zahl der Charaktere mit mindestens einem Sieg.
+func won_character_count() -> int:
+	var count: int = 0
+	for character_id: String in _data["progress"]["won_difficulties"]:
+		if not get_won_difficulties(StringName(character_id)).is_empty():
+			count += 1
+	return count
+
+
+## Höchste Endlos-Stufe über alle Charaktere.
+func get_endless_best_overall() -> int:
+	var best: int = 0
+	for character_id: String in _data["progress"]["endless_best"]:
+		best = maxi(best, get_endless_best(StringName(character_id)))
+	return best
 
 
 ## Höchste erreichte Endlos-Welle (Endlos-Stufe) je Charakter; 0 = noch keine.
@@ -336,6 +389,58 @@ func get_total_sparks() -> int:
 
 static func weapon_kills_key(weapon_id: StringName) -> String:
 	return WEAPON_KILLS_PREFIX + String(weapon_id)
+
+
+static func character_kills_key(character_id: StringName, weapon_id: StringName) -> String:
+	return "%s%s/%s" % [CHARACTER_KILLS_PREFIX, character_id, weapon_id]
+
+
+# --- Sammlungen, Bestzeiten, rückwirkende Gutschrift (Phase 15, Paket 9) ---
+
+## IDs einer Sammlung über alle Runs (z. B. "uniques": gekaufte Einzigartige Items).
+func get_collection(collection: String) -> Array[String]:
+	var result: Array[String] = []
+	for id: Variant in _data["progress"]["collections"].get(collection, []):
+		result.append(String(id))
+	return result
+
+
+func collection_has(collection: String, id: StringName) -> bool:
+	return String(id) in get_collection(collection)
+
+
+func add_to_collection(collection: String, id: StringName) -> void:
+	var list: Array = _data["progress"]["collections"].get(collection, [])
+	_add_unique(list, String(id))
+	_data["progress"]["collections"][collection] = list
+
+
+## Bestzeit in Sekunden (0 = noch keine).
+func get_record(key: String) -> float:
+	return float(_data["progress"]["records"].get(key, 0.0))
+
+
+## Merkt sich eine Zeit, wenn sie kürzer als die bisherige ist.
+func record_best_time(key: String, seconds: float) -> void:
+	if seconds > 0.0 and (get_record(key) <= 0.0 or seconds < get_record(key)):
+		_data["progress"]["records"][key] = seconds
+
+
+## Alle Statistik-Schlüssel mit diesem Präfix (ohne Präfix) und ihren Werten.
+func get_stats_with_prefix(prefix: String) -> Dictionary[String, int]:
+	var result: Dictionary[String, int] = {}
+	for key: String in _data["stats"]:
+		if key.begins_with(prefix):
+			result[key.trim_prefix(prefix)] = get_stat(key)
+	return result
+
+
+func is_achievements_backfilled() -> bool:
+	return bool(_data["progress"]["achievements_backfilled"])
+
+
+func set_achievements_backfilled() -> void:
+	_data["progress"]["achievements_backfilled"] = true
 
 
 # --- Run-Historie (Phase 15, Paket 5; Grundlage für den Statistik-Bildschirm) ---

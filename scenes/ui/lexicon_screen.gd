@@ -15,7 +15,7 @@ const TITLE_SIZE: int = 52
 const TEXT_SIZE: int = 22
 const HINT_SIZE: int = 18
 const SEARCH_WIDTH: float = 560.0
-const TAB_WIDTH: float = 206.0
+const TAB_WIDTH: float = 186.0
 const ROW_HEIGHT: float = 52.0
 const FILTER_WIDTH: float = 260.0
 const SHOW_ALL_WIDTH: float = 260.0
@@ -27,7 +27,7 @@ const DETAIL_SIZE: Vector2 = Vector2(808, 712)
 ## Rechter Stick scrollt das Detailpanel ab dieser Auslenkung.
 const STICK_DEADZONE: float = 0.25
 
-enum Filter { CLASS, RANGE, TIER, TAG, SORT, KIND }
+enum Filter { CLASS, RANGE, TIER, TAG, SORT, KIND, CATEGORY }
 
 var _entries: Array[Array] = []
 var _tab: int = Lexicon.Tab.CHARACTERS
@@ -206,11 +206,7 @@ func _style_pressed(button: Button) -> void:
 
 
 func _field_style(focused: bool) -> StyleBoxFlat:
-	var style: StyleBoxFlat = UiStyle.panel_style()
-	style.bg_color = UiStyle.BAR_BG_COLOR
-	style.border_color = UiStyle.BUTTON_FOCUS_COLOR if focused else UiStyle.OUTLINE_COLOR
-	style.set_border_width_all(UiStyle.BORDER_WIDTH)
-	return style
+	return UiStyle.field_style(focused)
 
 
 ## Filterwerte stammen aus den Einträgen selbst (neue Klassen, Tiers oder Tags erscheinen automatisch).
@@ -273,6 +269,19 @@ func _build_filters() -> void:
 			for key: String in Lexicon.ENEMY_KIND_KEYS:
 				kinds.append(tr(key))
 			_add_filter(Filter.KIND, tr("LEX_FILTER_KIND"), kinds, true)
+		Lexicon.Tab.ACHIEVEMENTS:
+			_add_filter(Filter.CATEGORY, tr("LEX_FILTER_CATEGORY"), _category_options(), false)
+
+
+## "Alle (12/45)", "Fortschritt (3/8)", ...: Zähler je Kategorie im Achievement-Filter.
+func _category_options() -> PackedStringArray:
+	var all: Array[AchievementData] = Unlocks.all_achievements()
+	var options: PackedStringArray = [tr("ACH_FILTER_ENTRY") % [tr("LEX_FILTER_ALL"), Unlocks.count_completed(all), all.size()]]
+	for category: int in AchievementData.Category.size():
+		var in_category: Array[AchievementData] = all.filter(func(a: AchievementData) -> bool: return a.category == category)
+		options.append(tr("ACH_FILTER_ENTRY") % [tr(AchievementData.CATEGORY_KEY % category), Unlocks.count_completed(in_category),
+			in_category.size()])
+	return options
 
 
 func _add_filter(filter: Filter, label_text: String, options: PackedStringArray, with_all: bool) -> void:
@@ -328,6 +337,9 @@ func _passes_filters(tab: int, entry: LexiconEntry) -> bool:
 		Lexicon.Tab.ENEMIES:
 			var kind_index: int = _filters.get(Filter.KIND, 0)
 			return kind_index == 0 or entry.enemy_kind == kind_index - 1
+		Lexicon.Tab.ACHIEVEMENTS:
+			var category_index: int = _filters.get(Filter.CATEGORY, 0)
+			return category_index == 0 or entry.category == category_index - 1
 	return true
 
 

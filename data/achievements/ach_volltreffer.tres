@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/achievement_data.gd" id="1_ach"]
+[ext_resource type="Texture2D" path="res://art/achievements/combat.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_ach")
+id = &"ach_volltreffer"
+condition = 18
+value = 1000.0
+stat_key = "max_hit"
+name_key = "ACH_VOLLTREFFER"
+description_key = "ACH_VOLLTREFFER_DESC"
+icon = ExtResource("2_icon")
+category = 3
+difficulty = 1
+order = 23

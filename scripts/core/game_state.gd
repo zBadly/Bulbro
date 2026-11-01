@@ -67,16 +67,44 @@ var setup_character: CharacterData
 var setup_weapon: WeaponData
 
 
+## Sammlungen im Spielstand und in RunStats.collections (Achievements, Phase 15, Paket 9).
+const COLLECTION_UNIQUES: String = "uniques"
+const COLLECTION_PETS: String = "pets"
+const COLLECTION_BOSSES: String = "bosses"
+const COLLECTION_BOSS_PHASES: String = "boss_phases"
+const TOWERS: TowerConfig = preload("res://data/config/tower_config.tres")
+
+## Pausemenü offen: die Spielzeit läuft nicht weiter.
+var _pause_menu_open: bool = false
+
+
 func _ready() -> void:
+	# Spielzeit zählt auch im Shop (Baum pausiert), nur nicht im Pausemenü.
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	Events.pause_toggled.connect(func(is_paused: bool) -> void: _pause_menu_open = is_paused)
+	Events.boss_spawned.connect(_on_boss_spawned)
+	Events.boss_phase_changed.connect(_on_boss_phase_changed)
 	Events.enemy_killed.connect(_on_enemy_killed)
 	Events.enemy_damaged.connect(func(origin: StringName, amount: int) -> void: run_stats.record_damage(origin, amount))
 	Events.crystal_destroyed.connect(func(_position: Vector2) -> void: run_stats.crystals_destroyed += 1)
 	Events.wave_started.connect(func(_wave_number: int) -> void: run_stats.begin_wave())
-	Events.wave_ended.connect(func(_wave_number: int) -> void: run_stats.end_wave())
+	Events.wave_ended.connect(func(wave_number: int) -> void: run_stats.end_wave(wave_number))
 
 
-func _on_enemy_killed(_data: EnemyData, _position: Vector2, info: DamageInfo) -> void:
+func _process(delta: float) -> void:
+	if is_run_active and not _pause_menu_open:
+		run_stats.play_time += delta
+
+
+func _on_enemy_killed(data: EnemyData, _position: Vector2, info: DamageInfo) -> void:
 	run_stats.enemies_killed += 1
+	if data != null:
+		run_stats.record_enemy_kill(data.id)
+		if data.is_elite:
+			run_stats.elite_kills += 1
+		if data.is_boss:
+			run_stats.boss_kills += 1
+			run_stats.add_to_collection(COLLECTION_BOSSES, data.id)
 	if info == null:
 		return
 	run_stats.record_kill(info.origin)
@@ -87,16 +115,51 @@ func _on_enemy_killed(_data: EnemyData, _position: Vector2, info: DamageInfo) ->
 		run_stats.weapon_kills[weapon.data.id] = run_stats.weapon_kills.get(weapon.data.id, 0) + 1
 
 
+## Boss-Phase 1 gilt beim Erscheinen als erlebt (Achievement Phasenwandler).
+func _on_boss_spawned(enemy: Enemy) -> void:
+	if enemy.data.is_boss:
+		run_stats.add_to_collection(COLLECTION_BOSS_PHASES, boss_phase_id(enemy.data.id, 0))
+
+
+func _on_boss_phase_changed(enemy: Enemy, phase_index: int) -> void:
+	if enemy.data.is_boss:
+		run_stats.add_to_collection(COLLECTION_BOSS_PHASES, boss_phase_id(enemy.data.id, phase_index))
+
+
+## "dimmer_2" für die zweite Phase des Dimmers.
+static func boss_phase_id(boss_id: StringName, phase_index: int) -> StringName:
+	return StringName("%s_%d" % [boss_id, phase_index + 1])
+
+
 ## Werte dieses Runs, die in die Gesamtstatistik einfließen (Statistik-Schlüssel -> Wert).
+## Zuwächse zählen über reported_totals nur einmal, auch wenn der Run zweimal ausgewertet wird (Endlos).
 func run_totals() -> Dictionary[String, int]:
 	var totals: Dictionary[String, int] = {
 		SaveManager.STAT_TOTAL_SPARKS: total_sparks_collected,
 		SaveManager.STAT_KILLS: run_stats.enemies_killed,
 		SaveManager.STAT_BURN_KILLS: run_stats.burn_kills,
 		SaveManager.STAT_CRYSTALS: run_stats.crystals_destroyed,
+		SaveManager.STAT_PLAY_TIME: floori(run_stats.play_time),
+		SaveManager.STAT_ELITE_KILLS: run_stats.elite_kills,
+		SaveManager.STAT_BOSS_KILLS: run_stats.boss_kills,
+		SaveManager.STAT_CURSED_KILLS: run_stats.cursed_kills,
 	}
+	var tower_kills: int = 0
+	for origin: StringName in run_stats.source_kills:
+		totals[SaveManager.SOURCE_KILLS_PREFIX + String(origin)] = run_stats.source_kills[origin]
+		if DamageSource.kind_of(origin) == DamageSource.STRUCTURE and DamageSource.id_of(origin) in TOWERS.tower_kill_ids:
+			tower_kills += run_stats.source_kills[origin]
+	totals[SaveManager.STAT_TOWER_KILLS] = tower_kills
+	for enemy_id: StringName in run_stats.enemy_kills:
+		totals[SaveManager.ENEMY_KILLS_PREFIX + String(enemy_id)] = run_stats.enemy_kills[enemy_id]
+	for id: StringName in run_stats.purchases:
+		totals[SaveManager.PURCHASES_PREFIX + String(id)] = run_stats.purchases[id]
 	for weapon_id: StringName in run_stats.weapon_kills:
 		totals[SaveManager.weapon_kills_key(weapon_id)] = run_stats.weapon_kills[weapon_id]
+	if character != null:
+		totals[SaveManager.CHARACTER_RUNS_PREFIX + String(character.id)] = 1
+		for weapon_id: StringName in run_stats.weapon_kills:
+			totals[SaveManager.character_kills_key(character.id, weapon_id)] = run_stats.weapon_kills[weapon_id]
 	return totals
 
 
@@ -231,6 +294,9 @@ func item_counts() -> Dictionary[StringName, int]:
 
 func add_item(item: ItemData) -> void:
 	items.append(item)
+	if item.is_unique():
+		run_stats.add_to_collection(COLLECTION_UNIQUES, item.id)
+		run_stats.max_uniques = maxi(run_stats.max_uniques, items.filter(func(i: ItemData) -> bool: return i.is_unique()).size())
 	for mod: StatModifier in item.get_modifiers():
 		if mod.stat == Stats.DODGE and mod.value > 0.0:
 			run_stats.dodge_item_taken = true

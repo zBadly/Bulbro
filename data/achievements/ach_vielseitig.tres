@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/achievement_data.gd" id="1_ach"]
+[ext_resource type="Texture2D" path="res://art/achievements/victories.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_ach")
+id = &"ach_vielseitig"
+condition = 21
+value = 8.0
+name_key = "ACH_VIELSEITIG"
+description_key = "ACH_VIELSEITIG_DESC"
+icon = ExtResource("2_icon")
+category = 2
+difficulty = 1
+order = 14

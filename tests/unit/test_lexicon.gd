@@ -38,7 +38,9 @@ func test_entries_have_no_empty_fields() -> void:
 			var context: String = "%s/%s" % [Lexicon.tab_title(tab), entry.id]
 			assert_ne(entry.title.strip_edges(), "", "Name: " + context)
 			assert_ne(entry.subtitle.strip_edges(), "", "Einordnung: " + context)
-			assert_ne(entry.lore.strip_edges(), "", "Spruch: " + context)
+			# Achievements haben keinen Spruch: ihr Inhalt ist die Bedingung.
+			if tab != Lexicon.Tab.ACHIEVEMENTS:
+				assert_ne(entry.lore.strip_edges(), "", "Spruch: " + context)
 			assert_ne(entry.lock_text.strip_edges() if tab in [Lexicon.Tab.CHARACTERS, Lexicon.Tab.ITEMS] else "-", "", "Freischaltung: " + context)
 			assert_not_null(entry.icon, "Icon: " + context)
 			assert_gt(entry.sections.size(), 0, "Abschnitte: " + context)

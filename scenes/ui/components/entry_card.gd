@@ -20,6 +20,7 @@ const LOCKED_COLOR: Color = Color("#000000")
 const LOCKED_TEXT_COLOR: Color = Color("#8A8A8A")
 const LOCK_TEXTURE: Texture2D = preload("res://art/ui/lock.svg")
 const LOCK_SIZE: Vector2 = Vector2(30, 30)
+const DIMMED_COLOR: Color = Color(0.45, 0.45, 0.5, 1.0)
 
 var entry: LexiconEntry
 
@@ -75,7 +76,7 @@ func configure(lexicon_entry: LexiconEntry, show_all: bool = false) -> void:
 	entry = lexicon_entry
 	var masked: bool = entry.is_hidden(show_all)
 	_icon.texture = entry.icon
-	_icon.modulate = LOCKED_COLOR if masked else Color.WHITE
+	_icon.modulate = LOCKED_COLOR if masked else (DIMMED_COLOR if entry.dimmed else Color.WHITE)
 	_lock.visible = entry.locked
 	_name.text = entry.title
 	_fit_name()

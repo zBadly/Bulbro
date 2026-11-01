@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/achievement_data.gd" id="1_ach"]
+[ext_resource type="Texture2D" path="res://art/achievements/characters.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_ach")
+id = &"ach_eiszeit"
+condition = 18
+value = 30.0
+stat_key = "max_frozen"
+name_key = "ACH_EISZEIT"
+description_key = "ACH_EISZEIT_DESC"
+icon = ExtResource("2_icon")
+category = 10
+difficulty = 1
+order = 44

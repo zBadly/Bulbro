@@ -1,10 +1,12 @@
 class_name MainMenu
 extends Control
-## Hauptmenü: Start (zur Charakterauswahl), Lexikon, Optionen, Beenden.
+## Hauptmenü: Start (zur Charakterauswahl), Statistiken, Lexikon, Optionen, Beenden.
+## Beim ersten Start mit Achievements werden sie einmalig rückwirkend gutgeschrieben (Popups hier).
 
 const RUN_SETUP_SCENE: String = "res://scenes/ui/run_setup.tscn"
 const RUN_SCENE: String = "res://scenes/world/main.tscn"
 const LEXICON_SCENE: String = "res://scenes/ui/lexicon.tscn"
+const STATS_SCENE: String = "res://scenes/ui/stats_screen.tscn"
 const FLOOR_TEXTURE: Texture2D = preload("res://art/world/floor_tile.svg")
 const HERO_TEXTURE: Texture2D = preload("res://art/characters/standardbirne.svg")
 const HERO_SCALE: float = 2.5
@@ -18,6 +20,7 @@ const BOB_TIME: float = 0.9
 const TITLE_COLOR: Color = Color("#FFE066")
 
 var _options: OptionsMenu
+var _toast: UnlockToast
 
 
 func _ready() -> void:
@@ -26,12 +29,15 @@ func _ready() -> void:
 	_options = OptionsMenu.new()
 	add_child(_options)
 	_options.closed.connect(_build)
+	_toast = UnlockToast.new()
+	add_child(_toast)
 	_build()
+	Unlocks.backfill_achievements.call_deferred()
 
 
 func _build() -> void:
 	for child: Node in get_children():
-		if child != _options:
+		if child != _options and child != _toast:
 			child.queue_free()
 	var floor_rect: TextureRect = TextureRect.new()
 	floor_rect.texture = FLOOR_TEXTURE
@@ -76,6 +82,7 @@ func _build() -> void:
 		if character != null:
 			first = _button(box, tr("MENU_CONTINUE") % [tr(character.name_key), int(run.get("wave", 0))], _continue_run)
 	var start: Button = _button(box, tr("MENU_START"), func() -> void: get_tree().change_scene_to_file(RUN_SETUP_SCENE))
+	_button(box, tr("MENU_STATS"), func() -> void: get_tree().change_scene_to_file(STATS_SCENE))
 	_button(box, tr("MENU_LEXICON"), func() -> void: get_tree().change_scene_to_file(LEXICON_SCENE))
 	_button(box, tr("MENU_OPTIONS"), _options.open)
 	_button(box, tr("MENU_QUIT"), AudioManager.quit_game)

@@ -117,6 +117,7 @@ func _record_lamp_towers() -> void:
 	var lamps: int = lamp_tower_count()
 	GameState.max_structures = maxi(GameState.max_structures, lamps)
 	GameState.run_stats.current_turrets = lamps
+	GameState.run_stats.max_towers = maxi(GameState.run_stats.max_towers, towers().size())
 
 
 func add_mine(data: StructureData, at: Vector2) -> Mine:

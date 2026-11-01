@@ -5,6 +5,7 @@ extends RefCounted
 
 const CHARACTER_CATEGORY: String = "characters"
 const CHALLENGE_CATEGORY: String = "challenges"
+const ACHIEVEMENT_CATEGORY: String = "achievements"
 
 
 ## Alle Charaktere in der Reihenfolge der GDD-Liste.
@@ -22,6 +23,35 @@ static func all_challenges() -> Array[ChallengeData]:
 		result.append(res as ChallengeData)
 	result.sort_custom(func(a: ChallengeData, b: ChallengeData) -> bool: return String(a.id) < String(b.id))
 	return result
+
+
+## Achievements in der Reihenfolge der Liste (Phase 15, Paket 9).
+static func all_achievements() -> Array[AchievementData]:
+	var result: Array[AchievementData] = []
+	for res: Resource in DataRegistry.get_all(ACHIEVEMENT_CATEGORY):
+		result.append(res as AchievementData)
+	result.sort_custom(func(a: AchievementData, b: AchievementData) -> bool: return a.order < b.order)
+	return result
+
+
+## Freischaltungen und Achievements: alles, was check() prüft.
+static func all_checks() -> Array[ChallengeData]:
+	var result: Array[ChallengeData] = all_challenges()
+	for achievement: AchievementData in all_achievements():
+		result.append(achievement)
+	return result
+
+
+static func completed_achievement_count() -> int:
+	return count_completed(all_achievements())
+
+
+static func count_completed(list: Array[AchievementData]) -> int:
+	return list.filter(func(a: AchievementData) -> bool: return SaveManager.is_challenge_completed(a.id)).size()
+
+
+static func unlocked_character_count() -> int:
+	return all_characters().filter(is_unlocked).size()
 
 
 static func is_unlocked(character: CharacterData) -> bool:
@@ -70,7 +100,7 @@ static func make_context(at_run_end: bool, victory: bool) -> ChallengeContext:
 	ctx.at_run_end = at_run_end
 	ctx.character_id = GameState.character.id if GameState.character != null else &""
 	var run_totals: Dictionary[String, int] = GameState.run_totals()
-	for challenge: ChallengeData in all_challenges():
+	for challenge: ChallengeData in all_checks():
 		if challenge.is_total():
 			var key: String = challenge.total_key()
 			var unreported: int = 0
@@ -87,10 +117,10 @@ static func check(at_run_end: bool, victory: bool) -> Array[ChallengeData]:
 	if GameState.admin.used:
 		return completed
 	var ctx: ChallengeContext = make_context(at_run_end, victory)
-	for challenge: ChallengeData in all_challenges():
+	for challenge: ChallengeData in all_checks():
 		if SaveManager.is_challenge_completed(challenge.id):
 			continue
-		if challenge.has_progress() and not challenge.is_total() and (at_run_end or not challenge.needs_run_end()):
+		if challenge.has_progress() and not challenge.is_total() and not challenge.is_meta() 				and (at_run_end or not challenge.needs_run_end()):
 			SaveManager.record_challenge_best(challenge.id, challenge.current_value(ctx))
 		if challenge.is_met(ctx):
 			_complete(challenge)
@@ -100,13 +130,24 @@ static func check(at_run_end: bool, victory: bool) -> Array[ChallengeData]:
 	return completed
 
 
-## Fortschritt außerhalb eines Runs: Summe bei Gesamt-Bedingungen, sonst Bestwert.
+## Fortschritt außerhalb eines Runs: Summe bei Gesamt-Bedingungen, Spielstand bei Meta-Bedingungen, sonst Bestwert.
 static func progress(challenge: ChallengeData) -> float:
 	if SaveManager.is_challenge_completed(challenge.id):
 		return challenge.value
 	if challenge.is_total():
 		return SaveManager.get_stat(challenge.total_key())
+	if challenge.is_meta():
+		return challenge.current_value(saved_context())
 	return SaveManager.get_challenge_best(challenge.id)
+
+
+## Kontext nur aus dem Spielstand (kein laufender Run): Fortschrittsanzeige und rückwirkende Gutschrift.
+static func saved_context() -> ChallengeContext:
+	var ctx: ChallengeContext = ChallengeContext.new()
+	for challenge: ChallengeData in all_checks():
+		if challenge.is_total():
+			ctx.totals[challenge.total_key()] = SaveManager.get_stat(challenge.total_key())
+	return ctx
 
 
 ## "312/500" für einen gesperrten Charakter (leer, wenn es keinen Zahlenfortschritt gibt).
@@ -137,11 +178,62 @@ static func evaluate_run_end(victory: bool) -> Array[ChallengeData]:
 	if not GameState.run_reported:
 		SaveManager.add_stat(SaveManager.STAT_RUNS, 1)
 	GameState.run_reported = true
+	var level: int = GameState.difficulty.level if GameState.difficulty != null else 0
 	if victory and GameState.character != null:
-		SaveManager.record_win(GameState.character.id, GameState.difficulty.level if GameState.difficulty != null else 0)
+		SaveManager.record_win(GameState.character.id, level)
+		SaveManager.record_best_time(SaveManager.RECORD_WIN_TIME % level, GameState.run_stats.combat_time())
+	_save_run_collections()
 	var completed: Array[ChallengeData] = check(true, victory)
 	RunHistory.record(victory)
 	SaveManager.clear_run()
+	return completed
+
+
+## Sammlungen (Einzigartige, Begleiter, Bosse, Boss-Phasen) und der schnellste Bosskill gehen in den Spielstand.
+static func _save_run_collections() -> void:
+	var run: RunStats = GameState.run_stats
+	for collection: String in run.collections:
+		for id: Variant in run.collections[collection]:
+			SaveManager.add_to_collection(collection, StringName(id))
+	SaveManager.record_best_time(SaveManager.RECORD_BOSS_KILL, run.fastest_boss_kill)
+
+
+## Einmalig beim ersten Start mit Achievements: was sich aus dem Spielstand ableiten lässt, wird gutgeschrieben
+## (Gesamtwerte wie Kills und Funken, Siege, Freischaltungen, Endlos-Bestwert; aus der Run-Historie die Bestwerte
+## für Kills und Boss-Zyklen in einem Run, Bestzeiten, Runs und Waffen-Kills je Charakter). Meldet jedes Achievement
+## über Events.challenge_completed (Popup im Hauptmenü).
+static func backfill_achievements() -> Array[ChallengeData]:
+	var completed: Array[ChallengeData] = []
+	if SaveManager.is_achievements_backfilled():
+		return completed
+	var best: RunStats = RunStats.new()
+	for entry: Dictionary in SaveManager.get_run_history():
+		var character_id: String = String(entry.get("character", ""))
+		best.enemies_killed = maxi(best.enemies_killed, int(entry.get("kills", 0)))
+		best.boss_cycles = maxi(best.boss_cycles, int(entry.get("boss_cycles", 0)))
+		if entry.get("result", "") == RunHistory.RESULT_VICTORY and int(entry.get("endless_wave", 0)) == 0:
+			SaveManager.record_best_time(SaveManager.RECORD_WIN_TIME % int(entry.get("difficulty", 0)), float(entry.get("time", 0.0)))
+		if character_id == "":
+			continue
+		SaveManager.add_stat(SaveManager.CHARACTER_RUNS_PREFIX + character_id, 1)
+		for top: Variant in entry.get("top_sources", []):
+			var origin: StringName = StringName((top as Dictionary).get("source", ""))
+			if DamageSource.kind_of(origin) == DamageSource.WEAPON:
+				SaveManager.add_stat(SaveManager.character_kills_key(StringName(character_id), DamageSource.id_of(origin)),
+					int((top as Dictionary).get("kills", 0)))
+	var ctx: ChallengeContext = saved_context()
+	ctx.run = best
+	for achievement: AchievementData in all_achievements():
+		if SaveManager.is_challenge_completed(achievement.id):
+			continue
+		if achievement.condition in [ChallengeData.Condition.RUN_KILLS, ChallengeData.Condition.RUN_VALUE]:
+			SaveManager.record_challenge_best(achievement.id, achievement.current_value(ctx))
+		if (achievement.is_total() or achievement.is_meta() or achievement.condition == ChallengeData.Condition.RUN_KILLS
+				or achievement.condition == ChallengeData.Condition.RUN_VALUE) and achievement.is_met(ctx):
+			_complete(achievement)
+			completed.append(achievement)
+	SaveManager.set_achievements_backfilled()
+	SaveManager.save_game()
 	return completed
 
 

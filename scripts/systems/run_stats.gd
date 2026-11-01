@@ -2,6 +2,12 @@ class_name RunStats
 extends RefCounted
 ## Werte eines Runs für Freischaltungen und die Build-Übersicht am Run-Ende.
 
+## Ganzzahlige Zähler für Achievements und Gesamtstatistik (Paket 9), gespeichert unter ihrem Feldnamen.
+const SAVED_COUNTERS: PackedStringArray = [
+	"max_weapons", "max_class_weapons", "tier4_bought", "tier4_combined", "max_uniques", "max_pet_tier", "max_towers",
+	"best_clean_wave", "max_hit", "max_allies", "max_frozen", "cursed_kills", "elite_kills", "boss_kills",
+]
+
 var healed: float = 0.0
 var max_damage_pct: float = 0.0
 var max_speed_pct: float = 0.0
@@ -49,6 +55,41 @@ var wave_damage: Array[int] = []
 var current_wave_time: float = 0.0
 var wave_open: bool = false
 
+# --- Achievements und Gesamtstatistik (Phase 15, Paket 9) ---
+## Höchstzahl Waffen gleichzeitig (Minimalist) und gleichzeitiger Waffen derselben Klasse.
+var max_weapons: int = 0
+var max_class_weapons: int = 0
+## Im Shop gekaufte Tier-IV-Waffen; durch Kombinieren entstandene Tier-IV-Waffen.
+var tier4_bought: int = 0
+var tier4_combined: int = 0
+## Höchstzahl gleichzeitig besessener Einzigartiger Items.
+var max_uniques: int = 0
+var max_pet_tier: int = 0
+## Höchstzahl gleichzeitig stehender Türme (alle Turmarten, ohne Ranken und Minen).
+var max_towers: int = 0
+## Höchste Welle, die ohne erlittenen Schaden beendet wurde.
+var best_clean_wave: int = 0
+## Größter einzelner Treffer gegen einen Gegner.
+var max_hit: int = 0
+## Höchstzahl gleichzeitiger Schattengeister; gleichzeitig eingefrorener oder festgehaltener Gegner.
+var max_allies: int = 0
+var max_frozen: int = 0
+## Gegner, die verflucht gestorben sind.
+var cursed_kills: int = 0
+var elite_kills: int = 0
+var boss_kills: int = 0
+## Schnellster Bosskill in Sekunden Kampfzeit nach dem Erscheinen (0 = noch keiner).
+var fastest_boss_kill: float = 0.0
+## Kills je Gegnertyp (EnemyData.id) und Käufe je Waffe/Item/Begleiter (id).
+var enemy_kills: Dictionary[StringName, int] = {}
+var purchases: Dictionary[StringName, int] = {}
+## Sammlungen dieses Runs (Name -> IDs), z. B. "uniques", "pets", "bosses", "boss_phases"; gehen am Run-Ende in den Spielstand.
+var collections: Dictionary[String, Array] = {}
+## Spielzeit inklusive Shop und Wellenende (ohne Pausemenü), in Sekunden.
+var play_time: float = 0.0
+## Erlittener Schaden beim Wellenbeginn (Welle ohne Schaden).
+var _wave_damage_start: int = 0
+
 
 func record_damage(origin: StringName, amount: int) -> void:
 	if origin != &"" and amount > 0:
@@ -62,6 +103,7 @@ func begin_wave() -> void:
 	end_wave()
 	wave_open = true
 	current_wave_time = 0.0
+	_wave_damage_start = damage_taken
 
 
 func advance(delta: float) -> void:
@@ -70,9 +112,12 @@ func advance(delta: float) -> void:
 
 
 ## Schließt die laufende Welle ab (Wellenende oder Tod); ohne offene Welle ohne Wirkung.
-func end_wave() -> void:
+## `wave_number` > 0: die Welle wurde überstanden (zählt für "Welle ohne Schaden").
+func end_wave(wave_number: int = 0) -> void:
 	if not wave_open:
 		return
+	if wave_number > 0 and damage_taken == _wave_damage_start:
+		best_clean_wave = maxi(best_clean_wave, wave_number)
 	var before: int = 0
 	for amount: int in wave_damage:
 		before += amount
@@ -127,6 +172,36 @@ func pet_events_of(origin: StringName) -> int:
 	return pet_events.get(origin, 0)
 
 
+## Wert für RUN_VALUE-Bedingungen: ein Zahlenfeld dieser Klasse (z. B. "dodges", "max_hit").
+func value_of(key: String) -> float:
+	var value: Variant = get(key)
+	return float(value) if value is int or value is float else 0.0
+
+
+func add_to_collection(collection: String, id: StringName) -> void:
+	var list: Array = collections.get(collection, [])
+	if String(id) not in list:
+		list.append(String(id))
+	collections[collection] = list
+
+
+func collection_has(collection: String, id: StringName) -> bool:
+	return String(id) in collections.get(collection, [])
+
+
+func record_enemy_kill(enemy_id: StringName) -> void:
+	enemy_kills[enemy_id] = enemy_kills.get(enemy_id, 0) + 1
+
+
+func record_purchase(id: StringName) -> void:
+	purchases[id] = purchases.get(id, 0) + 1
+
+
+func record_boss_kill(seconds: float) -> void:
+	if fastest_boss_kill <= 0.0 or seconds < fastest_boss_kill:
+		fastest_boss_kill = seconds
+
+
 func to_dict() -> Dictionary:
 	var kills: Dictionary = {}
 	for weapon_id: StringName in weapon_kills:
@@ -139,7 +214,15 @@ func to_dict() -> Dictionary:
 		"source_kills": _to_plain(source_kills), "source_damage": _to_plain(source_damage),
 		"first_hit_time": _to_plain_float(first_hit_time), "damage_taken": damage_taken, "dodges": dodges,
 		"sparks_spent": sparks_spent, "rerolls": rerolls, "boss_cycles": boss_cycles, "wave_times": wave_times.duplicate(),
-		"wave_damage": wave_damage.duplicate(), "pet_events": _to_plain(pet_events)}
+		"wave_damage": wave_damage.duplicate(), "pet_events": _to_plain(pet_events)}.merged(_achievement_dict())
+
+
+func _achievement_dict() -> Dictionary:
+	var data: Dictionary = {"fastest_boss_kill": fastest_boss_kill, "enemy_kills": _to_plain(enemy_kills),
+		"purchases": _to_plain(purchases), "collections": collections.duplicate(true), "play_time": play_time}
+	for key: String in SAVED_COUNTERS:
+		data[key] = get(key)
+	return data
 
 
 static func from_dict(data: Dictionary) -> RunStats:
@@ -176,6 +259,19 @@ static func from_dict(data: Dictionary) -> RunStats:
 		run.wave_times.append(float(seconds))
 	for amount: Variant in data.get("wave_damage", []):
 		run.wave_damage.append(int(amount))
+	for key: String in SAVED_COUNTERS:
+		run.set(key, int(data.get(key, 0)))
+	run.fastest_boss_kill = float(data.get("fastest_boss_kill", 0.0))
+	run.play_time = float(data.get("play_time", 0.0))
+	_from_plain(data.get("enemy_kills", {}), run.enemy_kills)
+	_from_plain(data.get("purchases", {}), run.purchases)
+	var stored: Variant = data.get("collections", {})
+	if stored is Dictionary:
+		for collection: Variant in stored:
+			var list: Array = []
+			for id: Variant in stored[collection]:
+				list.append(String(id))
+			run.collections[String(collection)] = list
 	return run
 
 

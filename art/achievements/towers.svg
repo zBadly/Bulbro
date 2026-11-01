@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Plakette: Schatten, Grundton, Glanz -->
+  <circle cx="32" cy="33" r="28" fill="#24202F"/>
+  <circle cx="31" cy="31" r="26" fill="#3A3550"/>
+  <ellipse cx="22" cy="17" rx="7" ry="3.5" fill="#4E4868"/>
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <!-- Turm -->
+  <path d="M22 50 L25 26 H39 L42 50 Z" fill="#6F757C"/>
+  <path d="M23 49 L25.5 27 H37 L39 49 Z" fill="#9AA0A6"/>
+  <path d="M20 20 H44 V27 H20 Z" fill="#9AA0A6"/>
+  <path d="M20 20 V15 H25 V18 H29.5 V15 H34.5 V18 H39 V15 H44 V20" fill="#9AA0A6"/>
+  <circle cx="32" cy="36" r="4" fill="#FFE066"/>
+  <path d="M22 50 L25 27 H39 L42 50 Z" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M20 27 V15 H25 V18 H29.5 V15 H34.5 V18 H39 V15 H44 V27 Z" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="32" cy="36" r="4" fill="none" stroke="#2A1E2E" stroke-width="2.5"/>
+</svg>

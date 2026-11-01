@@ -1172,3 +1172,176 @@ HINT_SCHWARZLICHT_BLITZWERFER,"Schnell (0,7 s), der Blitz springt auf 2 weitere 
 HINT_GEWAECHSHAUSLAMPE_KABELPEITSCHE,"Keine Charakter-Synergie: 200 Reichweite hält Abstand, -15 % Angriffstempo gilt auch hier.","No character synergy: 200 range keeps distance, -15% attack speed applies here too."
 HINT_SMARTBULB_LEUCHTRAKETE,"Keine Händler-Synergie: Explosionen treffen Gruppen, -15 % Schaden gilt auch hier.","No merchant synergy: explosions hit groups, -15% damage applies here too."
 HINT_SPIEGELKUGEL_LASERPOINTER,Das Spiegelbild kopiert jeden der schnellen Schüsse mit 40 % Schaden.,The reflection copies every one of the fast shots at 40% damage.
+ACH_ERSTER_FUNKE,Erster Funke,First Spark
+ACH_ERSTER_FUNKE_DESC,Beende einen Run.,Finish a run.
+ACH_SCHATTENJAEGER,Schattenjäger,Shadow Hunter
+ACH_SCHATTENJAEGER_DESC,Besiege insgesamt {value} Gegner.,Defeat {value} enemies in total.
+ACH_LICHTFLUT,Lichtflut,Flood of Light
+ACH_LICHTFLUT_DESC,Besiege insgesamt {value} Gegner.,Defeat {value} enemies in total.
+ACH_SONNENSTURM,Sonnensturm,Solar Storm
+ACH_SONNENSTURM_DESC,Besiege insgesamt {value} Gegner.,Defeat {value} enemies in total.
+ACH_FUNKENSAMMLER,Funkensammler,Spark Collector
+ACH_FUNKENSAMMLER_DESC,Sammle insgesamt {value} Funken.,Collect {value} sparks in total.
+ACH_FUNKENBARON,Funkenbaron,Spark Baron
+ACH_FUNKENBARON_DESC,Sammle insgesamt {value} Funken.,Collect {value} sparks in total.
+ACH_KRISTALLBRECHER,Kristallbrecher,Crystal Breaker
+ACH_KRISTALLBRECHER_DESC,Zerstöre insgesamt {value} Leuchtkristalle.,Destroy {value} glow crystals in total.
+ACH_MOTTENFAENGER,Mottenfänger,Moth Catcher
+ACH_MOTTENFAENGER_DESC,Besiege insgesamt {value} Mottenschwärme.,Defeat {value} moth swarms in total.
+ACH_ELITEJAEGER,Elitejäger,Elite Hunter
+ACH_ELITEJAEGER_DESC,Besiege insgesamt {value} Elites.,Defeat {value} elites in total.
+ACH_FEUERTEUFEL,Feuerteufel,Firebrand
+ACH_FEUERTEUFEL_DESC,Besiege insgesamt {value} Gegner durch Brand.,Defeat {value} enemies with burn in total.
+ACH_HELL_ERLEUCHTET,Hell erleuchtet,Brightly Lit
+ACH_HELL_ERLEUCHTET_DESC,Gewinne einen Run.,Win a run.
+ACH_VOLLE_SPANNUNG,Volle Spannung,Full Voltage
+ACH_VOLLE_SPANNUNG_DESC,Gewinne einen Run auf Spannung {value}.,Win a run on Tension {value}.
+ACH_SPANNUNGSBOGEN,Spannungsbogen,Voltage Arc
+ACH_SPANNUNGSBOGEN_DESC,Gewinne auf {value} verschiedenen Spannungsstufen (0 bis 5).,Win on {value} different tension levels (0 to 5).
+ACH_VIELSEITIG,Vielseitig,Versatile
+ACH_VIELSEITIG_DESC,Gewinne mit {value} verschiedenen Charakteren.,Win with {value} different characters.
+ACH_LAMPENFAMILIE,Lampenfamilie,Lamp Family
+ACH_LAMPENFAMILIE_DESC,Gewinne mit allen {value} Charakteren.,Win with all {value} characters.
+ACH_SAMMLERSTUECK,Sammlerstück,Collector's Piece
+ACH_SAMMLERSTUECK_DESC,Schalte alle {value} Charaktere frei.,Unlock all {value} characters.
+ACH_SPARSAM,Sparsam,Thrifty
+ACH_SPARSAM_DESC,"Gewinne einen Run, ohne einmal neu zu würfeln.",Win a run without a single reroll.
+ACH_MINIMALIST,Minimalist,Minimalist
+ACH_MINIMALIST_DESC,Gewinne einen Run mit nie mehr als {value} Waffen gleichzeitig.,Win a run never carrying more than {value} weapons at once.
+ACH_UNBERUEHRT,Unberührt,Untouched
+ACH_UNBERUEHRT_DESC,"Beende eine Welle ab Welle {value}, ohne Schaden zu nehmen.",Finish a wave from wave {value} on without taking damage.
+ACH_MASSENVERNICHTUNG,Massenvernichtung,Mass Extinction
+ACH_MASSENVERNICHTUNG_DESC,Besiege {value} Gegner in einem Run.,Defeat {value} enemies in one run.
+ACH_AUSWEICHKUENSTLER,Ausweichkünstler,Escape Artist
+ACH_AUSWEICHKUENSTLER_DESC,Weiche in einem Run {value}-mal aus.,Dodge {value} times in one run.
+ACH_LEBENSKUENSTLER,Lebenskünstler,Survivor
+ACH_LEBENSKUENSTLER_DESC,Heile {value} HP in einem Run.,Heal {value} HP in one run.
+ACH_VOLLTREFFER,Volltreffer,Bullseye
+ACH_VOLLTREFFER_DESC,Verursache {value} Schaden mit einem einzigen Treffer.,Deal {value} damage with a single hit.
+ACH_KLASSENBESTER,Klassenbester,Top of the Class
+ACH_KLASSENBESTER_DESC,Trage {value} Waffen derselben Klasse gleichzeitig.,Carry {value} weapons of the same class at once.
+ACH_MEISTERSTUECK,Meisterstück,Masterpiece
+ACH_MEISTERSTUECK_DESC,Kaufe im Shop eine Waffe auf Tier IV.,Buy a tier IV weapon in the shop.
+ACH_WAFFENSCHMIED,Waffenschmied,Weaponsmith
+ACH_WAFFENSCHMIED_DESC,Bringe eine Waffe durch Kombinieren auf Tier IV.,Combine a weapon up to tier IV.
+ACH_GOLDSTUECK,Goldstück,Gold Piece
+ACH_GOLDSTUECK_DESC,Kaufe ein Einzigartiges Item.,Buy a unique item.
+ACH_GOLDRAUSCH,Goldrausch,Gold Rush
+ACH_GOLDRAUSCH_DESC,Besitze {value} Einzigartige Items in einem Run.,Own {value} unique items in one run.
+ACH_KURIOSITAETENKABINETT,Kuriositätenkabinett,Cabinet of Curiosities
+ACH_KURIOSITAETENKABINETT_DESC,Kaufe jedes der {value} Einzigartigen Items mindestens einmal.,Buy each of the {value} unique items at least once.
+ACH_ERSTER_FREUND,Erster Freund,First Friend
+ACH_ERSTER_FREUND_DESC,Kaufe einen Begleiter.,Buy a companion.
+ACH_ZOOHANDLUNG,Zoohandlung,Pet Shop
+ACH_ZOOHANDLUNG_DESC,Entdecke alle {value} Begleiter.,Discover all {value} companions.
+ACH_TREUE_SEELE,Treue Seele,Faithful Soul
+ACH_TREUE_SEELE_DESC,Bringe einen Begleiter auf Tier IV.,Get a companion to tier IV.
+ACH_BAUMEISTER,Baumeister,Master Builder
+ACH_BAUMEISTER_DESC,Lass {value} Türme gleichzeitig stehen.,Have {value} towers standing at once.
+ACH_FESTUNG,Festung,Fortress
+ACH_FESTUNG_DESC,Lass {value} Türme gleichzeitig stehen (Obergrenze).,Have {value} towers standing at once (the limit).
+ACH_MINENLEGER,Minenleger,Minelayer
+ACH_MINENLEGER_DESC,Besiege insgesamt {value} Gegner mit Türmen und Minen.,Defeat {value} enemies with towers and mines in total.
+ACH_KEIN_ENDE,Kein Ende in Sicht,No End in Sight
+ACH_KEIN_ENDE_DESC,Erreiche Welle {value} (Endlos {endless}).,Reach wave {value} (Endless {endless}).
+ACH_ZYKLUSBRECHER,Zyklusbrecher,Cycle Breaker
+ACH_ZYKLUSBRECHER_DESC,Besiege im Endlos-Modus den ersten Boss-Zyklus (Welle {cycle_wave}).,Defeat the first boss cycle in endless mode (wave {cycle_wave}).
+ACH_DAUERLICHT,Dauerlicht,Everlight
+ACH_DAUERLICHT_DESC,Erreiche Welle {value} (Endlos {endless}).,Reach wave {value} (Endless {endless}).
+ACH_DIMMER_GEDIMMT,Dimmer gedimmt,Dimmer Dimmed
+ACH_DIMMER_GEDIMMT_DESC,Besiege den Dimmer.,Defeat the Dimmer.
+ACH_FINSTERNIS_VERTRIEBEN,Finsternis vertrieben,Darkness Dispelled
+ACH_FINSTERNIS_VERTRIEBEN_DESC,Besiege die Finsternis.,Defeat the Darkness.
+ACH_PHASENWANDLER,Phasenwandler,Phase Walker
+ACH_PHASENWANDLER_DESC,Erlebe alle {value} Boss-Phasen (Dimmer und Finsternis).,Witness all {value} boss phases (Dimmer and Darkness).
+ACH_KURZER_PROZESS,Kurzer Prozess,Short Work
+ACH_KURZER_PROZESS_DESC,Besiege einen Boss höchstens {value} Sekunden nach seinem Erscheinen.,Defeat a boss at most {value} seconds after it appears.
+ACH_GEISTERHEER,Geisterheer,Ghost Army
+ACH_GEISTERHEER_DESC,Habe als Irrlicht {value} Schattengeister gleichzeitig.,Have {value} shadow ghosts at once as the Will-o'-Wisp.
+ACH_EISZEIT,Eiszeit,Ice Age
+ACH_EISZEIT_DESC,Friere {value} Gegner gleichzeitig ein oder halte sie fest.,Freeze or hold {value} enemies at once.
+ACH_FLUCHBRECHER,Fluchbrecher,Curse Breaker
+ACH_FLUCHBRECHER_DESC,Besiege insgesamt {value} verfluchte Gegner.,Defeat {value} cursed enemies in total.
+ACH_CAT_0,Fortschritt,Progress
+ACH_CAT_1,Gegner,Enemies
+ACH_CAT_2,Siege,Victories
+ACH_CAT_3,Kampf,Combat
+ACH_CAT_4,Ausrüstung,Gear
+ACH_CAT_5,Einzigartige,Uniques
+ACH_CAT_6,Begleiter,Companions
+ACH_CAT_7,Türme,Towers
+ACH_CAT_8,Endlos,Endless
+ACH_CAT_9,Bosse,Bosses
+ACH_CAT_10,Charaktere,Characters
+ACH_DIFF_0,Leicht,Easy
+ACH_DIFF_1,Mittel,Medium
+ACH_DIFF_2,Schwer,Hard
+ACHIEVEMENT_TOAST,Achievement erreicht!,Achievement unlocked!
+RUN_END_ACHIEVEMENT,Achievement erreicht: %s,Achievement unlocked: %s
+MENU_STATS,Statistiken,Statistics
+LEX_TAB_ACHIEVEMENTS,Achievements,Achievements
+LEX_FILTER_CATEGORY,Kategorie,Category
+ACH_COUNTER,Achievements: %d/%d,Achievements: %d/%d
+ACH_FILTER_ENTRY,%s (%d/%d),%s (%d/%d)
+ACH_META,%s · %s,%s · %s
+ACH_DONE_ON,Erreicht am %s,Unlocked on %s
+ACH_DONE,Erreicht,Unlocked
+ACH_OPEN,Noch offen,Not yet unlocked
+ACH_CONDITION,Bedingung,Condition
+ACH_STATUS,Status,Status
+META_TITLE,Statistiken,Statistics
+META_TAB_GENERAL,Allgemein,General
+META_TAB_CHARACTERS,Charaktere,Characters
+META_TAB_GEAR,Waffen/Items,Weapons/Items
+META_TAB_ENEMIES,Gegner,Enemies
+META_TAB_HISTORY,Run-Historie,Run History
+META_TAB_ACHIEVEMENTS,Achievements,Achievements
+META_HEADING_GENERAL,Alle Runs,All runs
+META_HEADING_RECORDS,Bestzeiten,Best times
+META_HEADING_CHARACTERS,Charaktere,Characters
+META_HEADING_WEAPONS,Waffen,Weapons
+META_HEADING_ITEMS,Items und Begleiter,Items and companions
+META_HEADING_ENEMIES,Besiegte Gegner,Defeated enemies
+META_COL_STAT,Wert,Stat
+META_COL_VALUE,Stand,Value
+META_COL_RECORD,Bestzeit,Record
+META_COL_TIME,Zeit,Time
+META_COL_CHARACTER,Charakter,Character
+META_COL_WON_LEVELS,Siege auf Spannung,Wins on tension
+META_COL_WEAPON,Waffe,Weapon
+META_COL_ITEM,Item,Item
+META_COL_KILLS,Kills,Kills
+META_COL_BOUGHT,Käufe,Bought
+META_COL_ENEMY,Gegner,Enemy
+META_COL_KIND,Art,Type
+META_COL_DATE,Datum,Date
+META_COL_DIFFICULTY,Spannung,Tension
+META_COL_RESULT,Ergebnis,Result
+META_RUNS,Runs,Runs
+META_WINS,Siege,Wins
+META_PLAY_TIME,Spielzeit,Play time
+META_KILLS,Kills gesamt,Total kills
+META_ELITE_KILLS,Besiegte Elites,Elites defeated
+META_BOSS_KILLS,Besiegte Bosse,Bosses defeated
+META_SPARKS,Funken gesammelt,Sparks collected
+META_CRYSTALS,Leuchtkristalle zerstört,Glow crystals destroyed
+META_BURN_KILLS,Kills durch Brand,Burn kills
+META_FAVORITE_CHARACTER,Lieblingscharakter,Favorite character
+META_FAVORITE_WEAPON,Lieblingswaffe,Favorite weapon
+META_ENDLESS_BEST,Höchste Endlos-Welle,Highest endless wave
+META_ACHIEVEMENTS,Achievements,Achievements
+META_FASTEST_WIN,Schnellster Sieg auf Spannung %d,Fastest win on tension %d
+META_FASTEST_BOSS,Schnellster Bosskill,Fastest boss kill
+META_LOCKED,Gesperrt,Locked
+META_NONE,Noch nichts,Nothing yet
+META_MINUTES,%d min,%d min
+META_HOURS_MINUTES,%d h %02d min,%d h %02d min
+META_DATE,%02d.%02d.%d %02d:%02d,%02d/%02d/%d %02d:%02d
+META_HISTORY_LINE,%s  ·  %s  ·  Spannung %d  ·  %s  ·  %s,%s  ·  %s  ·  Tension %d  ·  %s  ·  %s
+META_RESULT_VICTORY,Sieg,Victory
+META_RESULT_DEFEAT,Niederlage,Defeat
+META_WAVE,Welle %d,Wave %d
+META_HISTORY_EMPTY,Noch keine Runs gespeichert.,No runs saved yet.
+META_HISTORY_HEADING,Letzte Runs (%d),Recent runs (%d)
+META_HISTORY_DETAIL,Details,Details
+META_HISTORY_SOURCES,Stärkste Quellen,Top sources

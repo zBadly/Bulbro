@@ -3,11 +3,12 @@ extends RefCounted
 ## Baut die Lexikon-Einträge aller Reiter aus den Resources der DataRegistry (keine handgeschriebenen Listen).
 ## Effekttexte kommen aus denselben Funktionen wie die Shop-Tooltips (TextFormat, ItemData.get_description).
 
-enum Tab { CHARACTERS, WEAPONS, ITEMS, PETS, ENEMIES, CLASSES, MECHANICS }
+enum Tab { CHARACTERS, WEAPONS, ITEMS, PETS, ENEMIES, CLASSES, MECHANICS, ACHIEVEMENTS }
 enum EnemyKind { NORMAL, ELITE, BOSS }
 
 const TAB_KEYS: PackedStringArray = [
 	"LEX_TAB_CHARACTERS", "LEX_TAB_WEAPONS", "LEX_TAB_ITEMS", "LEX_TAB_PETS", "LEX_TAB_ENEMIES", "LEX_TAB_CLASSES", "LEX_TAB_MECHANICS",
+	"LEX_TAB_ACHIEVEMENTS",
 ]
 const ENEMY_KIND_KEYS: PackedStringArray = ["LEX_ENEMY_NORMAL", "LEX_ENEMY_ELITE", "LEX_ENEMY_BOSS"]
 ## Welle, für die Gegnerwerte und Item-Preise im Lexikon als Beispiel berechnet werden.
@@ -69,7 +70,40 @@ static func entries(tab: int) -> Array[LexiconEntry]:
 			return class_entries()
 		Tab.MECHANICS:
 			return topic_entries()
+		Tab.ACHIEVEMENTS:
+			return achievement_entries()
 	return []
+
+
+## Achievements (Phase 15, Paket 9): nie verborgen; offene mit gedämpftem Icon, Fortschritt und Bedingung.
+static func achievement_entries() -> Array[LexiconEntry]:
+	var result: Array[LexiconEntry] = []
+	for achievement: AchievementData in Unlocks.all_achievements():
+		var done: bool = SaveManager.is_challenge_completed(achievement.id)
+		var entry: LexiconEntry = LexiconEntry.new()
+		entry.id = achievement.id
+		entry.tab = Tab.ACHIEVEMENTS
+		entry.source = achievement
+		entry.title = achievement.display_name()
+		entry.subtitle = t("ACH_META") % [achievement.category_name(), achievement.difficulty_name()]
+		entry.icon = achievement.icon
+		# Offene grau, erreichte in der Farbe ihrer Schwierigkeit (Bronze, Silber, Gold)
+		entry.color = achievement.difficulty_color() if done else UiStyle.tier_color(1)
+		entry.dimmed = not done
+		entry.category = achievement.category
+		entry.order = achievement.order
+		entry.add_text(t("ACH_CONDITION"), achievement.condition_text())
+		var status: String
+		if done:
+			var date: int = SaveManager.get_completed_date(achievement.id)
+			status = t("ACH_DONE_ON") % MetaStats.format_date(date) if date > 0 else t("ACH_DONE")
+		elif achievement.has_progress():
+			status = t("CHALLENGE_PROGRESS") % achievement.progress_text(Unlocks.progress(achievement))
+		else:
+			status = t("ACH_OPEN")
+		entry.add_text(t("ACH_STATUS"), status)
+		result.append(entry)
+	return result
 
 
 static func strip_bbcode(text: String) -> String:

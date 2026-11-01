@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/achievement_data.gd" id="1_ach"]
+[ext_resource type="Texture2D" path="res://art/achievements/gear.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_ach")
+id = &"ach_klassenbester"
+condition = 18
+value = 6.0
+stat_key = "max_class_weapons"
+name_key = "ACH_KLASSENBESTER"
+description_key = "ACH_KLASSENBESTER_DESC"
+icon = ExtResource("2_icon")
+category = 4
+difficulty = 1
+order = 24

@@ -30,3 +30,6 @@ extends Resource
 @export var flame_visible_time: float = 0.0
 @export var flame_color: Color = Color.WHITE
 @export var flame_core_color: Color = Color.WHITE
+## Strukturen, deren Kills als "Kills durch Türme und Minen" zählen (Gesamtstatistik, Achievement Minenleger).
+## Drohnen und Ranken gehören nicht dazu.
+@export var tower_kill_ids: Array[StringName] = []

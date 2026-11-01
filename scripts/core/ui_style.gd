@@ -41,6 +41,15 @@ static func make_panel() -> PanelContainer:
 	return panel
 
 
+## Eingabe- und Auswahlfelder (Suche, Filter): dunkler Grund, Rahmen in Fokusfarbe bei Fokus.
+static func field_style(focused: bool) -> StyleBoxFlat:
+	var style: StyleBoxFlat = panel_style()
+	style.bg_color = BAR_BG_COLOR
+	style.border_color = BUTTON_FOCUS_COLOR if focused else OUTLINE_COLOR
+	style.set_border_width_all(BORDER_WIDTH)
+	return style
+
+
 static func make_label(font_size: int, color: Color = TEXT_COLOR) -> Label:
 	var label: Label = Label.new()
 	label.add_theme_font_override("font", FONT)

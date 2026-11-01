@@ -325,15 +325,19 @@ func _on_buy(index: int) -> void:
 	if not GameState.spend(_offer_price(offer)):
 		return
 	if offer.is_weapon():
-		player.weapon_slots.add_or_combine(offer.weapon, offer.tier)
+		var weapon: Weapon = player.weapon_slots.add_or_combine(offer.weapon, offer.tier)
+		_track_weapon_purchase(offer, weapon)
 	elif offer.is_pet():
 		player.pet_slots.add_or_combine(offer.pet, offer.tier)
+		GameState.run_stats.record_purchase(offer.pet.id)
 	else:
 		GameState.add_item(offer.item)
 		player.apply_item(offer.item)
+		GameState.run_stats.record_purchase(offer.item.id)
 	AudioManager.play(&"buy")
 	GameState.shop.mark_sold(index)
 	_refresh_context()
+	_check_achievements()
 	_build.call_deferred("lock_%d" % index)
 
 
@@ -351,10 +355,28 @@ func _on_reroll() -> void:
 	_build.call_deferred("reroll")
 
 
+## Achievements: Käufe je Waffe, gekaufte Tier-IV-Waffen und beim Kauf automatisch auf Tier IV kombinierte.
+func _track_weapon_purchase(offer: ShopOffer, weapon: Weapon) -> void:
+	var run: RunStats = GameState.run_stats
+	run.record_purchase(offer.weapon.id)
+	if offer.tier >= WeaponData.MAX_TIER:
+		run.tier4_bought += 1
+	elif weapon != null and weapon.tier >= WeaponData.MAX_TIER:
+		run.tier4_combined += 1
+
+
+## Neue Achievements aus dem Shop (Kauf, Kombinieren) sofort melden statt erst in der nächsten Welle.
+func _check_achievements() -> void:
+	Unlocks.check(false, false)
+
+
 func _on_combine(weapon: Weapon) -> void:
 	AudioManager.play(&"buy")
-	player.weapon_slots.combine(weapon)
+	var combined: Weapon = player.weapon_slots.combine(weapon)
+	if combined != null and combined.tier >= WeaponData.MAX_TIER:
+		GameState.run_stats.tier4_combined += 1
 	_refresh_context()
+	_check_achievements()
 	_build.call_deferred("next")
 
 
@@ -369,6 +391,7 @@ func _on_recycle_weapon(weapon: Weapon) -> void:
 func _on_combine_pet(pet: Pet) -> void:
 	AudioManager.play(&"buy")
 	player.pet_slots.combine(pet)
+	_check_achievements()
 	_build.call_deferred("next")
 
 
@@ -430,9 +453,11 @@ func _on_replace(index: int, old: Pet) -> void:
 		return
 	GameState.add_sparks(pet_recycle_value(old))
 	player.pet_slots.replace(old, offer.pet, offer.tier)
+	GameState.run_stats.record_purchase(offer.pet.id)
 	AudioManager.play(&"buy")
 	GameState.shop.mark_sold(index)
 	_refresh_context()
+	_check_achievements()
 	_build.call_deferred("lock_%d" % index)
 
 

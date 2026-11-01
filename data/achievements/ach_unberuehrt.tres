@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/achievement_data.gd" id="1_ach"]
+[ext_resource type="Texture2D" path="res://art/achievements/combat.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_ach")
+id = &"ach_unberuehrt"
+condition = 18
+value = 10.0
+stat_key = "best_clean_wave"
+name_key = "ACH_UNBERUEHRT"
+description_key = "ACH_UNBERUEHRT_DESC"
+icon = ExtResource("2_icon")
+category = 3
+difficulty = 1
+order = 19

@@ -73,6 +73,10 @@ var _rooted: bool = false
 var _frost_particle_left: float = 0.0
 ## HP-Leiste unter normalen Gegnern (null bei Elites und Bossen).
 var _hp_bar: EnemyHpBar
+## Kampfzeit beim Erscheinen (Elites und Bosse: Achievement "Kurzer Prozess").
+var _spawn_combat_time: float = 0.0
+## Zählung der gleichzeitig Eingefrorenen/Festgehaltenen ist für dieses Bild schon angefordert.
+static var _frozen_count_queued: bool = false
 
 @onready var visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -154,6 +158,7 @@ func activate(p_wave: int, spawn_position: Vector2, p_player: Player, bounds: Re
 	_behavior.reset()
 	Juice.spawn_pop(visual).finished.connect(_on_spawned, CONNECT_ONE_SHOT)
 	if data.is_boss or data.is_elite:
+		_spawn_combat_time = GameState.run_stats.combat_time()
 		Events.boss_spawned.emit(self)
 
 
@@ -193,6 +198,7 @@ func take_damage(info: DamageInfo) -> void:
 		if float(amount - roundi(amount * info.bonus_share)) < hp and amount >= hp:
 			_last_hit = info.with_origin(info.bonus_origin)
 	hp -= amount
+	GameState.run_stats.max_hit = maxi(GameState.run_stats.max_hit, amount)
 	_update_hp_bar()
 	Juice.hit_flash(_sprite)
 	AudioManager.play(&"hit_crit" if info.is_crit else &"hit")
@@ -214,6 +220,10 @@ func die() -> void:
 		_hp_bar.hide()
 	if is_burning():
 		Events.burning_enemy_killed.emit(global_position)
+	if is_cursed():
+		GameState.run_stats.cursed_kills += 1
+	if data.is_boss:
+		GameState.run_stats.record_boss_kill(GameState.run_stats.combat_time() - _spawn_combat_time)
 	Events.enemy_killed.emit(data, global_position, _last_hit)
 	_clear_statuses()
 	if data.death_spawn != null and data.death_spawn_count > 0:
@@ -424,7 +434,24 @@ func apply_slow(factor: float, duration: float) -> void:
 	if slow.is_stopped() and not was_stopped and not _rooted:
 		Fx.particles(get_tree(), ParticleFx.Kind.ICE_POP, get_hit_position())
 		_pop_overlay(_hold_fx)
+	if slow.is_stopped() and not _frozen_count_queued:
+		# Ein Lichtblitz friert viele Gegner im selben Bild ein: einmal am Bildende zählen.
+		_frozen_count_queued = true
+		_count_frozen.call_deferred()
 	_update_tint()
+
+
+## Achievement "Eiszeit": Höchstzahl gleichzeitig eingefrorener oder festgehaltener Gegner.
+func _count_frozen() -> void:
+	_frozen_count_queued = false
+	if not is_inside_tree():
+		return
+	var count: int = 0
+	for target: Damageable in Hits.alive_targets(get_tree()):
+		var enemy: Enemy = target as Enemy
+		if enemy != null and enemy.slow.is_stopped():
+			count += 1
+	GameState.run_stats.max_frozen = maxi(GameState.run_stats.max_frozen, count)
 
 
 func freeze(duration: float) -> void:

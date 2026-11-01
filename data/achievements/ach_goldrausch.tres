@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/achievement_data.gd" id="1_ach"]
+[ext_resource type="Texture2D" path="res://art/achievements/uniques.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_ach")
+id = &"ach_goldrausch"
+condition = 18
+value = 3.0
+stat_key = "max_uniques"
+name_key = "ACH_GOLDRAUSCH"
+description_key = "ACH_GOLDRAUSCH_DESC"
+icon = ExtResource("2_icon")
+category = 5
+difficulty = 2
+order = 28

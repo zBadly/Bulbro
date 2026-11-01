@@ -218,6 +218,8 @@ Startwaffen-Auswahl (Phase 15, Paket 9): Karten mit Werten, Klassen und Synergie
 
 Freischaltungen (ChallengeData unter data/challenges): Run-Bedingungen speichern den Bestwert, Gesamt-Bedingungen die Summe über alle Runs; gesperrte Charaktere zeigen den Fortschritt (z. B. "312/500"). Siegbedingungen und "Run beenden" werden nur am Run-Ende geprüft, alle anderen laufend während der Welle.
 
+Achievements (Phase 15, Paket 9; AchievementData unter data/achievements, erweitert ChallengeData): 45 Stück in 11 Kategorien, Schwierigkeit leicht/mittel/schwer (Rahmen Bronze/Silber/Gold), Fortschritt und Datum, Popup beim Erreichen (gestapelt). Admin-Runs zählen nicht. Hauptmenü "Statistiken" (Allgemein, Charaktere, Waffen/Items, Gegner, Run-Historie, Achievements) und Lexikon-Reiter "Achievements". Beim ersten Start wird einmalig gutgeschrieben, was sich aus dem Spielstand ableiten lässt.
+
 Status-Effekte: Brand (Schaden pro Tick, breitet sich mit Brandausbreitung aus), Fluch (stapelbar, Schaden über Zeit und mehr erlittener Schaden), Verlangsamen/Einfrieren/Festhalten (eingefrorene Gegner laufen, schießen und treffen nicht; Elites/Bosse halten Status nur halb so lange; nach dem Festhalten kurze Schutzzeit), Verbündete (Schattengeister: unverwundbar, von Gegnern ignoriert, zählen nicht zum Gegnerlimit).
 
 ## 11. Gegner

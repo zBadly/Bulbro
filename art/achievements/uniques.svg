@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Plakette: Schatten, Grundton, Glanz -->
+  <circle cx="32" cy="33" r="28" fill="#24202F"/>
+  <circle cx="31" cy="31" r="26" fill="#3A3550"/>
+  <ellipse cx="22" cy="17" rx="7" ry="3.5" fill="#4E4868"/>
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <!-- Goldener Edelstein -->
+  <path d="M18 26 L25 16 H39 L46 26 L32 49 Z" fill="#C97F10"/>
+  <path d="M19 26 L25.5 17 H38.5 L44 26 Z" fill="#F5A623"/>
+  <path d="M19 26 H44 L32 46 Z" fill="#E09418"/>
+  <path d="M26 26 L32 17 L38 26 L32 46 Z" fill="#FFC35C"/>
+  <path d="M27 20 L30 18" stroke="#FFF1CC" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M18 26 L25 16 H39 L46 26 L32 49 Z M18 26 H46" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+</svg>

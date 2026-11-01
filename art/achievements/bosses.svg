@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Plakette: Schatten, Grundton, Glanz -->
+  <circle cx="32" cy="33" r="28" fill="#24202F"/>
+  <circle cx="31" cy="31" r="26" fill="#3A3550"/>
+  <ellipse cx="22" cy="17" rx="7" ry="3.5" fill="#4E4868"/>
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <!-- Krone über Schattengesicht -->
+  <circle cx="32" cy="38" r="12" fill="#3A2A5C"/>
+  <circle cx="31" cy="37" r="10.5" fill="#5B3F8C"/>
+  <path d="M26 37 L30 39 M38 37 L34 39" stroke="#F7F0FF" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="32" cy="38" r="12" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <path d="M20 27 L22 13 L28 20 L32 11 L36 20 L42 13 L44 27 Z" fill="#FFD43B"/>
+  <path d="M24 24 L25 18" stroke="#FFF4B8" stroke-width="2" stroke-linecap="round"/>
+  <path d="M20 27 L22 13 L28 20 L32 11 L36 20 L42 13 L44 27 Z" fill="none" stroke="#2A1E2E" stroke-width="3" stroke-linejoin="round"/>
+</svg>

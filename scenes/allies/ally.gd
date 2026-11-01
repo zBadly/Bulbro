@@ -79,6 +79,7 @@ func summon(p_data: EnemyData, spawn_position: Vector2, p_damage: int, lifetime:
 	_contact_cooldown = 0.0
 	_active = true
 	add_to_group(ACTIVE_GROUP)
+	GameState.run_stats.max_allies = maxi(GameState.run_stats.max_allies, active_count(get_tree()))
 	Juice.spawn_pop(visual).finished.connect(_on_spawned, CONNECT_ONE_SHOT)
 
 

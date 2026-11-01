@@ -20,3 +20,4 @@ aura_ring_width = 3.0
 flame_visible_time = 0.18
 flame_color = Color(0.949, 0.549, 0.22, 1)
 flame_core_color = Color(1, 0.878, 0.4, 1)
+tower_kill_ids = Array[StringName]([&"lampenturm", &"flammenturm", &"frostturm", &"heilturm", &"stolperdraht"])

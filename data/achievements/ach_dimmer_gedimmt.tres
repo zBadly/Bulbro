@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/achievement_data.gd" id="1_ach"]
+[ext_resource type="Texture2D" path="res://art/achievements/bosses.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_ach")
+id = &"ach_dimmer_gedimmt"
+condition = 23
+value = 1.0
+stat_key = "bosses"
+entry = &"dimmer"
+name_key = "ACH_DIMMER_GEDIMMT"
+description_key = "ACH_DIMMER_GEDIMMT_DESC"
+icon = ExtResource("2_icon")
+category = 9
+difficulty = 0
+order = 39

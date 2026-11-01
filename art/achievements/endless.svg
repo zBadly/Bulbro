@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Plakette: Schatten, Grundton, Glanz -->
+  <circle cx="32" cy="33" r="28" fill="#24202F"/>
+  <circle cx="31" cy="31" r="26" fill="#3A3550"/>
+  <ellipse cx="22" cy="17" rx="7" ry="3.5" fill="#4E4868"/>
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#2A1E2E" stroke-width="3"/>
+  <!-- Unendlich-Schleife -->
+  <path d="M32 32 C27 24 14 24 14 32 C14 40 27 40 32 32 C37 24 50 24 50 32 C50 40 37 40 32 32 Z" fill="none" stroke="#2A1E2E" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M32 32 C27 24 14 24 14 32 C14 40 27 40 32 32 C37 24 50 24 50 32 C50 40 37 40 32 32 Z" fill="none" stroke="#8FE3FF" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M18 29 C20 27 23 27 25 28" fill="none" stroke="#E6FAFF" stroke-width="2" stroke-linecap="round"/>
+</svg>

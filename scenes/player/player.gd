@@ -103,6 +103,7 @@ func _ready() -> void:
 	weapon_slots.weapons_changed.connect(_track_run)
 	pet_slots.player = self
 	weapon_slots.weapons_changed.connect(pet_slots.refresh_weapons)
+	pet_slots.pets_changed.connect(_track_pets)
 	Juice.idle_bob(_visual)
 	Events.level_up.connect(_on_level_up)
 	Events.wave_ended.connect(_on_wave_ended)
@@ -525,11 +526,25 @@ func _track_run() -> void:
 	run.max_speed_pct = maxf(run.max_speed_pct, stats.get_stat(Stats.SPEED))
 	run.max_elemental = maxf(run.max_elemental, stats.get_stat(Stats.ELEMENTAL_DMG))
 	var ids: Dictionary[StringName, bool] = {}
+	var classes: Dictionary[StringName, int] = {}
 	for weapon: Weapon in weapon_slots.get_weapons():
 		ids[weapon.data.id] = true
 		if WeaponClasses.PRIMITIVE not in weapon.data.classes:
 			run.primitive_only = false
+		for weapon_class: StringName in weapon.data.classes:
+			classes[weapon_class] = classes.get(weapon_class, 0) + 1
 	run.max_distinct_weapons = maxi(run.max_distinct_weapons, ids.size())
+	run.max_weapons = maxi(run.max_weapons, weapon_slots.get_weapons().size())
+	run.max_class_weapons = maxi(run.max_class_weapons, classes.values().max() if not classes.is_empty() else 0)
+
+
+## Achievements: entdeckte Begleiter und höchstes Begleiter-Tier.
+func _track_pets() -> void:
+	if preview:
+		return
+	for pet: Pet in pet_slots.get_pets():
+		GameState.run_stats.add_to_collection(GameState.COLLECTION_PETS, pet.data.id)
+		GameState.run_stats.max_pet_tier = maxi(GameState.run_stats.max_pet_tier, pet.tier)
 
 
 ## Aufgeben im Pausemenü: Run sofort als Niederlage beenden.

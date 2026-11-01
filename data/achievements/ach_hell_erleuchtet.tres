@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/achievement_data.gd" id="1_ach"]
+[ext_resource type="Texture2D" path="res://art/achievements/victories.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_ach")
+id = &"ach_hell_erleuchtet"
+condition = 17
+value = 1.0
+stat_key = "wins"
+name_key = "ACH_HELL_ERLEUCHTET"
+description_key = "ACH_HELL_ERLEUCHTET_DESC"
+icon = ExtResource("2_icon")
+category = 2
+difficulty = 0
+order = 11

@@ -166,7 +166,8 @@ func _build_overview(wave_number: int, player: Player, unlocked: Array[Challenge
 	build.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	box.add_child(build)
 	for challenge: ChallengeData in unlocked:
-		box.add_child(_label(tr("RUN_END_UNLOCKED") % challenge.reward_name(), TEXT_SIZE, UNLOCK_COLOR))
+		var key: String = "RUN_END_ACHIEVEMENT" if challenge is AchievementData else "RUN_END_UNLOCKED"
+		box.add_child(_label(tr(key) % challenge.reward_name(), TEXT_SIZE, UNLOCK_COLOR))
 	return scroll
 
 
